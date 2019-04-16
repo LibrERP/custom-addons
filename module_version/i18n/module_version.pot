@@ -1,0 +1,48 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* module_version
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-11 07:02+0000\n"
+"PO-Revision-Date: 2015-08-11 07:02+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: module_version
+#: view:ir.module.module:module_version.module_tree_version
+msgid "Cancel Upgrade"
+msgstr ""
+
+#. module: module_version
+#: model:ir.model,name:module_version.model_ir_module_module
+msgid "Module"
+msgstr ""
+
+#. module: module_version
+#: view:ir.module.module:module_version.view_module_filter_inherit_upgrade
+msgid "Not Installed"
+msgstr ""
+
+#. module: module_version
+#: field:ir.module.module,check_upgrade:0
+#: field:ir.module.module,need_upgrade:0
+msgid "Potrebna posodobitev"
+msgstr ""
+
+#. module: module_version
+#: view:ir.module.module:module_version.view_module_filter_inherit_upgrade
+msgid "To upgrade"
+msgstr ""
+
+#. module: module_version
+#: view:ir.module.module:module_version.module_tree_version
+msgid "Upgrade"
+msgstr ""
+
