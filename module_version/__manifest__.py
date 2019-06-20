@@ -21,7 +21,7 @@
 
 {
     'name': 'Modules to upgrade',
-    'version': '5.0.0.0',
+    'version': '12.0.0.0',
     'category': 'Tools',
     "author": "Didotech srl",
     'website': 'http://www.didotech.com',

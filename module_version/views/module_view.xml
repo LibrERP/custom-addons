@@ -47,16 +47,10 @@
             <field name="model_id" ref="model_ir_module_module"/>
             <field name="state">code</field>
             <field name="code">
-                if context.get('active_model') == 'ir.module.module':
+                if model._context.get('active_model') == 'ir.module.module':
                     action = model.verify_modules()
             </field>
-        </record>
-
-        <record id="verify_modules" model="ir.values">
-            <field name="key2" eval="'client_action_multi'"/>
-            <field name="model" eval="'ir.module.module'"/>
-            <field name="name">Check Module Versions</field>
-            <field name="value" eval="'ir.actions.server,{}'.format(action_check_modules)"/>
+            <field name="binding_model_id" ref="base.model_ir_module_module" />
         </record>
 
     </data>

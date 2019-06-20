@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, _
-from openerp import exceptions
+from odoo import models, fields, api, _
+from odoo import exceptions
 
 
-class module(models.Model):
+class Module(models.Model):
     _inherit = "ir.module.module"
 
     @api.multi
