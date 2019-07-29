@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_category_import_form" model="ir.ui.view">
+            <field name="name">category.import.form</field>
+            <field name="model">category.import</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="state" invisible="1"/>
+                    <group colspan="4" col="4" states="import">
+                        <field name="file_name" invisible="1" />
+                        <field name="content_base64" filename="file_name" />
+                        <field name="root_category" colspan="4" />
+                        <field name="header" colspan="4" />
+                    </group>
+
+                    <group colspan="4" col="4" states="end">
+                        <div class="text-muted">Import file. Verra segnalata la fine del'importazione, nelle 'Messaggi' (Vendite -> Configurazione -> Email -> Messaggi).</div>
+                    </group>
+
+                    <group colspan="4" col="4" states="import">
+                        <button icon="gtk-cancel" special="cancel" string="Annulla"/>
+                        <button type="object" name="action_check_encoding" string="Inizia Importazione" icon="gtk-ok"/>
+                    </group>
+
+                    <!-- Items visibles in state "end" -->
+                    <group colspan="4" col="4" states="end">
+                        <field name="progress_indicator" />
+                        <button icon="gtk-ok" special="cancel" string="Chiudi" />
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Azione per aprire il wizard, questa azione viene associata ad una voce di menu definita in purchase_import_pricelist/partner_properties_view.xml -->
+        <record id="category_file_import" model="ir.actions.act_window">
+            <field name="name">Importazione Categorie in formato Excel (xls)/ODS/CSV</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">category.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_category_import_form"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="data_migration_menu" name="Data Migration" parent="base.menu_custom" />
+        <menuitem action="category_file_import" id="menu_category_file_import" name="Import Categories" parent="data_migration_menu"/>
+
+        <record id="view_product_import_form" model="ir.ui.view">
+            <field name="name">product.import.form</field>
+            <field name="model">product.import</field>
+            <field name="arch" type="xml">
+                <form string="Products import">
+                    <field name="state" invisible="1"/>
+                    <field name="preview_text_original" invisible="1"/>
+                    <group colspan="4" col="4" states="import">
+                        <field name="file_name" invisible="1" />
+                        <field name="content_base64" filename="file_name" required="True" />
+                        <field name="file_format" />
+                        <field name="language" />
+                        <field name="update_product_name" />
+                        <field name="update_public_category" />
+                    </group>
+
+                    <!-- Items per lo stato end -->
+                    <group colspan="4" col="4" states="end">
+                        <div class="text-muted">Importing Products. You will be notified with a message when the import process is finished</div>
+                    </group>
+
+                    <!-- Separatore -->
+                    <group colspan="4" col="4">
+                        <separator string="" colspan="4"/>
+                        <!--<label colspan="6" width="220"/>-->
+                    </group>
+
+                    <!-- Pulsanti per lo stato "import" -->
+                    <group colspan="4" col="4" states="import">
+                        <button icon="gtk-cancel" special="cancel" string="Cancel"/>
+                        <button type="object" name="action_check_encoding" string="Start import" icon="gtk-ok"/>
+                    </group>
+
+                    <!-- Pulsanti per lo stato "preview" -->
+                    <group colspan="4" col="4" states="preview">
+                        <separator string="" colspan="8"/>
+                        <button icon="gtk-cancel" special="cancel" string="Cancel"/>
+                        <button type="object" name="action_start_import" string="Start import" icon="gtk-ok"/>
+                    </group>
+
+                    <!-- Items visibles in state "end" -->
+                    <group colspan="4" col="4" states="end">
+                        <button icon="gtk-ok" special="cancel" string="Close"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Azione per aprire il wizard, questa azione viene associata ad una voce di menu definita in purchase_import_pricelist/product_properties_view.xml -->
+        <record id="product_file_import" model="ir.actions.act_window">
+            <field name="name">Import Products in .xls format</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_import_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="product_file_import" id="menu_product_file_import" name="Import Product" parent="data_migration_menu"/>
+
+        <!-- Partner Import -->
+        <record id="view_partner_import_form" model="ir.ui.view">
+            <field name="name">partner.import.form</field>
+            <field name="model">partner.import</field>
+            <field name="arch" type="xml">
+                <form string="Partner import">
+                    <!-- Invisible field used for hiding and showing widgets based on state value and accessing preview text -->
+                    <field name="state" invisible="1"/>
+                    <field name="preview_text_original" invisible="1"/>
+                    <!-- Items visibles in state "import" -->
+                    <group colspan="4" col="4" states="import">
+                        <field name="file_name" invisible="1" />
+                        <field name="content_base64" filename="file_name" required="True" />
+                        <field name="file_format" />
+                        <field name="partner_type" />
+                    </group>
+
+                    <!-- Items per lo stato end -->
+                    <group colspan="4" col="4" states="end">
+                        <div class="text-muted">Importing Partners. You will be notified with a message when the import process is finished</div>
+                    </group>
+
+                    <!-- Separatore -->
+                    <group colspan="4" col="4">
+                        <separator string="" colspan="4"/>
+                        <!--<label colspan="6" width="220"/>-->
+                    </group>
+
+                    <!-- Pulsanti per lo stato "import" -->
+                    <group colspan="4" col="4" states="import">
+                        <button icon="gtk-cancel" special="cancel" string="Cancel"/>
+                        <button type="object" name="action_check_encoding" string="Start import" icon="gtk-ok"/>
+                    </group>
+
+                    <!-- Pulsanti per lo stato "preview" -->
+                    <group colspan="4" col="4" states="preview">
+                        <separator string="" colspan="8"/>
+                        <button icon="gtk-cancel" special="cancel" string="Cancel"/>
+                        <button type="object" name="action_start_import" string="Start import" icon="gtk-ok"/>
+                    </group>
+
+                    <!-- Items visibles in state "end" -->
+                    <group colspan="4" col="4" states="end">
+                        <button icon="gtk-ok" special="cancel" string="Close"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Azione per aprire il wizard, questa azione viene associata ad una voce di menu definita in purchase_import_pricelist/product_properties_view.xml -->
+        <record id="partner_file_import" model="ir.actions.act_window">
+            <field name="name">Import Partners in .csv, .ods or .xls format</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">partner.import</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_partner_import_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem action="partner_file_import" id="menu_partner_file_import" name="Import Partner" parent="data_migration_menu"/>
+
+    </data>
+</odoo>
