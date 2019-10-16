@@ -3,7 +3,7 @@
 
 {
     'name': 'Core Extended',
-    'version': '12.0.2.0',
+    'version': '12.0.3.0',
     'category': 'core',
     'author': 'Didotech Srl',
     'website': 'http://www.didotech.com',

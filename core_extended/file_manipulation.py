@@ -191,7 +191,7 @@ def import_sheet_generator(filename, content):
 
         def table_reader(virtual_file_utf8):
             for line in virtual_file_utf8:
-                yield line
+                yield line.decode('utf-8')
 
         # from io import StringIO
         from io import BytesIO
@@ -205,7 +205,7 @@ def import_sheet_generator(filename, content):
         ## Process CSV file:
         sample = virtual_file.read(512)
         virtual_file.seek(0)
-        dialect = csv.Sniffer().sniff(sample)
+        dialect = csv.Sniffer().sniff(sample.decode("utf-8"))
 
         # table_latin1 = csv.reader(virtual_file, dialect)
         # self.table is an object of type '_csv.reader' and has no len() method
