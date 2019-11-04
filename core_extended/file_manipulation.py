@@ -109,7 +109,7 @@ from odoo import exceptions
 #     return table, number_of_lines
 
 
-def import_sheet_generator(filename, content):
+def import_sheet_generator(filename, content, delimiter=','):
     name, file_type = filename.rsplit('.', 1)
 
     if file_type in ('xls', 'xlsb'):
@@ -178,8 +178,10 @@ def import_sheet_generator(filename, content):
         def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
             # csv.py doesn't do Unicode; encode temporarily as UTF-8:
             #csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
-            csv_reader = csv.reader(table_reader(unicode_csv_data),
-                                    dialect=dialect, **kwargs)
+            csv_reader = csv.reader(
+                table_reader(unicode_csv_data),
+                delimiter=delimiter,
+                dialect=dialect, **kwargs)
             for row in csv_reader:
                 # decode UTF-8 back to Unicode, cell by cell:
                 # yield [str(cell, 'utf-8') for cell in row]
