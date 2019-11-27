@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# © 2013-2019 Didotech srl
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
 from odoo import exceptions
@@ -68,3 +70,11 @@ class Module(models.Model):
             }
         else:
             raise exceptions.Warning(_('There are no modules that should be updated'))
+
+    @api.multi
+    def _button_immediate_function(self, function):
+        super(Module, self)._button_immediate_function(function)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload'
+        }
