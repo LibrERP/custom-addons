@@ -45,7 +45,7 @@ def update_odoo(odoo_access):
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
 
         if not common.version():
-            raise Warning(_("Cant't connect to remote database"))
+            raise Warning("Cant't connect to remote database")
 
         uid = common.authenticate(rpc.database, rpc.user, rpc.password, {})
         models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
@@ -60,7 +60,7 @@ def update_odoo(odoo_access):
         )
 
         if result:
-            print 'Upgrading modules for {}'.format(rpc.database)
+            print('Upgrading modules for {}'.format(rpc.database))
 
             return models.execute_kw(
                 rpc.database,
@@ -80,7 +80,7 @@ def update_module(odoo_data, name):
         common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
 
         if not common.version():
-            raise Warning(_("Cant't connect to remote database"))
+            raise Warning("Cant't connect to remote database")
 
         uid = common.authenticate(rpc.database, rpc.user, rpc.password, {})
         models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
@@ -93,7 +93,7 @@ def update_module(odoo_data, name):
             'search',
             [[['name', '=', name]]]
         )
-        print module_ids
+        print(module_ids)
 
         return models.execute_kw(
             rpc.database,
@@ -107,11 +107,11 @@ def update_module(odoo_data, name):
 
 def list():
     for name in odoo_access.keys():
-        print name
+        print(name)
 
 
 def usage():
-    print '''Usage: {name} [--help] [--all] [--list] [--odoo=]
+    print('''Usage: {name} [--help] [--all] [--list] [--odoo=]
 
         --all (-q): upgrade all databases
 
@@ -123,7 +123,7 @@ def usage():
 
         --update (-u): update module
 
-        '''.format(name=sys.argv[0])
+        '''.format(name=sys.argv[0]))
 
 
 if __name__ == '__main__':
