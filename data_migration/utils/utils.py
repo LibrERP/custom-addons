@@ -79,7 +79,7 @@ class BaseImport(object):
         return True
 
     def process(self, table):
-        notify_progress_step = (self.number_of_lines / 100) + 1     # NB: divisione tra interi da sempre un numero intero!
+        notify_progress_step = int(self.number_of_lines / 100) + 1     # NB: divisione tra interi da sempre un numero intero!
                                                                 # NB: il + 1 alla fine serve ad evitare divisioni per zero
 
         # Use counter of processed lines
