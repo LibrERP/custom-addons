@@ -44,7 +44,7 @@ class BaseImport(object):
         self.start_time = datetime.now()
 
     def import_data(self):
-        return import_sheet(self.file_name, self.import_record.content_text)
+        return import_sheet(self.file_name, self.import_record.content_text, ';')
 
     def run(self):
         # Recupera i record
