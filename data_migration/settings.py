@@ -46,10 +46,10 @@ class FormatOne():
 
     # Default values
     PRODUCT_DEFAULTS = {
-        'supply_method': 'buy',
-        'uom': 'PCE',
+        'uom_id': 'Unit(s)',
         'type': 'product',
-        'procure_method': 'make_to_stock',
+        # 'supply_method': 'buy',
+        # 'procure_method': 'make_to_stock',
         'cost_method': 'standard',
     }
 
@@ -57,7 +57,7 @@ class FormatOne():
 class FormatTwo():
     # IB.
     HEADER_CUSTOMER = (u'Codice', u'Denominazione / Cognome', u'Nome', u'Sede legale: indirizzo', u'SL: CAP', u'SL: località', u'SL: Prov.', u'Telefono', u'Fax', u'e-mail', u'Sede amministrativa: indirizzo 1', u'Sede amministrativa: indirizzo 2', u'SA: CAP', u'SA: località', u'SA: Prov.', u'Nazione', u'PI', u'CF', u'category', u'Note')
-    #COLUMNS = "code, name, person_name, street_default, zip_default, city_default, province_default, phone_default, fax_default, email_default, street_invoice, street2_invoice, zip_invoice, city_invoice, province_invoice, country_code, vat, fiscalcode, category, comment"
+    # COLUMNS = "code, name, person_name, street_default, zip_default, city_default, province_default, phone_default, fax_default, email_default, street_invoice, street2_invoice, zip_invoice, city_invoice, province_invoice, country_code, vat, fiscalcode, category, comment"
     COLUMNS = "code, name, person_name, street_invoice, zip_invoice, city_invoice, province_invoice, phone_invoice, fax_invoice, email_invoice, street_delivery, street2_delivery, zip_delivery, city_delivery, province_delivery, country_code, vat, fiscalcode, category, comment"
     REQUIRED = ('name', 'code')
     ADDRESS_TYPE = ('invoice', 'delivery')
