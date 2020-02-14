@@ -177,7 +177,7 @@ def import_sheet_generator(filename, content, delimiter=','):
 
         def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
             # csv.py doesn't do Unicode; encode temporarily as UTF-8:
-            #csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
+            # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
             csv_reader = csv.reader(
                 table_reader(unicode_csv_data),
                 delimiter=delimiter,
@@ -224,6 +224,6 @@ def import_sheet_generator(filename, content, delimiter=','):
         raise exceptions.Warning(_('Error: Unknown file extension'))
 
 
-def import_sheet(filename, content):
-    table = list(import_sheet_generator(filename, content))
+def import_sheet(filename, content, delimiter=','):
+    table = list(import_sheet_generator(filename, content, delimiter))
     return table, len(table)

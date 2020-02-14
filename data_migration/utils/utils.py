@@ -44,7 +44,7 @@ class BaseImport(object):
         self.start_time = datetime.now()
 
     def import_data(self):
-        return import_sheet(self.file_name, self.import_record.content_text)
+        return import_sheet(self.file_name, self.import_record.content_text, ';')
 
     def run(self):
         # Recupera i record
@@ -54,14 +54,14 @@ class BaseImport(object):
             self.process(table)
 
             # Genera il report sull'importazione
-            self.notify_import_result(self.message_title, 'Importazione completata')
+            self.notify_import_result(self.message_title, 'Importazione completata', record=self.import_record)
         else:
             # Elaborazione del listino prezzi
             try:
                 self.process(table)
 
                 # Genera il report sull'importazione
-                self.notify_import_result(self.message_title, 'Importazione completata')
+                self.notify_import_result(self.message_title, 'Importazione completata', record=self.import_record)
             except Exception as e:
                 # Annulla le modifiche fatte
                 self.env.cr.rollback()
@@ -76,16 +76,17 @@ class BaseImport(object):
                     pdb.set_trace()
 
                 self.notify_import_result(title, message, error=True)
+        return True
 
     def process(self, table):
-        notify_progress_step = (self.number_of_lines / 100) + 1     # NB: divisione tra interi da sempre un numero intero!
+        notify_progress_step = int(self.number_of_lines / 100) + 1     # NB: divisione tra interi da sempre un numero intero!
                                                                 # NB: il + 1 alla fine serve ad evitare divisioni per zero
 
         # Use counter of processed lines
         # If this line generate an error we will know the right Line Number
         # for self.processed_lines, row_list in enumerate(table, start=1):
         for row_list in table:
-#            self.processed_lines, row_list =
+            self.processed_lines += 1
             if not self.import_row(row_list):
                 self.problems += 1
 
@@ -147,7 +148,7 @@ class BaseImport(object):
         else:
             return False
     
-    def notify_import_result(self, title, body='', error=False):
+    def notify_import_result(self, title, body='', error=False, record=False):
         EOL = '\n<br/>'
         end_time = datetime.now()
         duration_seconds = (end_time - self.start_time).seconds
@@ -168,24 +169,24 @@ class BaseImport(object):
             if self.warning:
                 body += u'{0}{0}<strong>Warnings:</strong>{0}'.format(EOL) + EOL.join(self.warning)
         
-        # OpenERP v.6.1:
-        # self.pool.get('mail.message').create(cr, uid, {
-        #     'subject': title,
-        #     'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        #     'email_from': 'Data@Import',
-        #     'user_id': uid,
-        #     'body_text': body,
-        #     'model': 'filedata.import'
-        # })
-        
-        # OpenERP v.7, v.8:
-        self.env['mail.message'].create({
+        mail = self.env['mail.mail'].create({
             'subject': title,
-            'author_id': self.env.uid,
-            'type': 'notification',
-            'body': body,
-            'model': self.import_record._model
+            'email_to': self.env.user.company_id.email,
+            'body_html': body,
+            'model': self.import_record._name
         })
+
+        if record:
+            # add file to attachment of email for future use
+            self.env['mail.mail'].write({
+                'attachment_ids': [(0, 0, {
+                    'res_model': 'mail.mail',
+                    'name': record.file_name.split('\\')[-1],
+                    'datas_fname': record.file_name,
+                    'datas': record.content_base64,
+                    'res_id': mail.id
+                })]
+            })
 
         _logger.debug(body)
         
@@ -193,6 +194,7 @@ class BaseImport(object):
         self.env.cr.commit()
         # chiudi la connessione
         # self.env.cr.close()
+        return True
 
 
 class ThreadingImport(threading.Thread, BaseImport):

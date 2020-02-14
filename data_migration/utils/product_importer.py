@@ -325,22 +325,22 @@ class ImportFile(BaseImport):
             'LT': 'Litre',
             'lt': 'Litre',
             '20 lt': 'Litre',
-            'PCE': 'PCE',
-            'Pz.': 'PCE',
-            'Pa.': 'PCE',  # Paia
-            'Paia': 'PCE',  # Paia
-            'PZ': 'PCE',
-            'Pz': 'PCE',
-            'CF': 'PCE',
-            'N.': 'PCE',
-            'Mt.': 'PCE',
-            'pz': 'PCE',
-            'copp': 'PCE',
-            'conf': 'PCE',
-            'Kit': 'PCE',
-            'Pacco': 'PCE',
-            'scat': 'PCE',
-            'pac': 'PCE',
+            'PCE': 'Unit(s)',
+            'Pz.': 'Unit(s)',
+            'Pa.': 'Unit(s)',  # Paia
+            'Paia': 'Unit(s)',  # Paia
+            'PZ': 'Unit(s)',
+            'Pz': 'Unit(s)',
+            'CF': 'Unit(s)',
+            'N.': 'Unit(s)',
+            'Mt.': 'Unit(s)',
+            'pz': 'Unit(s)',
+            'copp': 'Unit(s)',
+            'conf': 'Unit(s)',
+            'Kit': 'Unit(s)',
+            'Pacco': 'Unit(s)',
+            'scat': 'Unit(s)',
+            'pac': 'Unit(s)',
             'HH': 'Hour',
             'M': 'm',
             'ML.': 'm',
@@ -480,7 +480,7 @@ class ImportFile(BaseImport):
             vals_product['uom_po_id'] = vals_product['uom_id']
             del default_vals_product['uom']
         elif not vals_product.get('uom_id'):
-            vals_product['uom_id'] = self.get_uom('PCE').id
+            vals_product['uom_id'] = self.get_uom('Unit(s)').id
             vals_product['uom_po_id'] = vals_product['uom_id']
         default_vals_product.update(vals_product)
 
@@ -747,7 +747,7 @@ class ImportFile(BaseImport):
                         vals_product['uom_po_id'] = vals_product['uom_id']
                         del default_vals_product['uom']
                 elif not vals_product.get('uom_id'):
-                    uom_id = self.get_uom('PCE')
+                    uom_id = self.get_uom('Unit(s)')
                     if uom_id:
                         vals_product['uom_id'] = uom_id.id
                         vals_product['uom_po_id'] = vals_product['uom_id']

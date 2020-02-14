@@ -71,7 +71,7 @@ class FiledataImport(models.Model):
         })
 
         self.action_start_import()
-        return False
+        return {'type': 'ir.actions.act_window_close'}
 
     @api.one
     def action_start_import(self):
