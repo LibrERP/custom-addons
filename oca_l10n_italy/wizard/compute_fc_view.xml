@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="wizard_compute_fc_form" model="ir.ui.view">
+        <field name="name">wizard.compute.fc.form</field>
+        <field name="model">wizard.compute.fc</field>
+        <field name="inherit_id" ref="l10n_it_fiscalcode.wizard_compute_fc_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="sex" position="after">
+                <field name="born_abroad"/>
+            </field>
+            <field name="birth_date" position="after">
+                <field name="country_id"  attrs="{
+                    'invisible': [('born_abroad', '=', False)],
+                    'required': [('born_abroad', '=', True)]
+                }"/>
+            </field>
+            <field name="birth_city" position="attributes">
+                <attribute name="attrs">
+                    {
+                        'invisible': [('born_abroad', '=', True)],
+                        'required': [('born_abroad', '=', False)]
+                    }
+                </attribute>
+            </field>
+            <field name="birth_province" position="attributes">
+                <attribute name="attrs">
+                    {
+                        'invisible': [('born_abroad', '=', True)],
+                        'required': [('born_abroad', '=', False)]
+                    }
+                </attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
