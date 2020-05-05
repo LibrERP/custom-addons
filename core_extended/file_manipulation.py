@@ -144,14 +144,15 @@ def import_sheet_generator(filename, content, delimiter=','):
         sh = book.worksheets[0]
         max_column = sh.max_column
 
+        for cx in range(max_column + 1, 1, -1):
+            if sh.cell(1, column=cx).value:
+                max_column = cx - 1                 # Evaluates max columns to use in range
+                break
+
         for rx in range(1, sh.max_row + 1):
             row = []
 
             for cx in range(1, max_column + 1):
-                if rx == 1 and not sh.cell(row=rx, column=cx).value:
-                    max_column = cx - 1
-                    break
-
                 row.append(sh.cell(row=rx, column=cx).value)
 
             if all(c is None for c in row):
