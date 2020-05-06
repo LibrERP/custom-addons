@@ -144,16 +144,20 @@ def import_sheet_generator(filename, content, delimiter=','):
         sh = book.worksheets[0]
         max_column = sh.max_column
 
-        for cx in range(max_column + 1, 1, -1):
-            if sh.cell(1, column=cx).value:
-                max_column = cx - 1                 # Evaluates max columns to use in range
-                break
-
-        for rx in range(1, sh.max_row + 1):
+        for shrow in sh.rows:
             row = []
+            lrrow = list(shrow)
+            for cx in range(max_column-1, 0, -1):
+                if lrrow[cx].value:
+                    max_column = cx - 1                 # Evaluates max columns to use in range
+                    break
+            break
 
-            for cx in range(1, max_column + 1):
-                row.append(sh.cell(row=rx, column=cx).value)
+        for shrow in sh.rows:
+            row = []
+            lrrow = list(shrow)
+            for cx in range(0, max_column):
+                row.append(lrrow[cx].value)
 
             if all(c is None for c in row):
                 break
@@ -223,7 +227,6 @@ def import_sheet_generator(filename, content, delimiter=','):
             yield row
     else:
         raise exceptions.Warning(_('Error: Unknown file extension'))
-
 
 def import_sheet(filename, content, delimiter=','):
     table = list(import_sheet_generator(filename, content, delimiter))
