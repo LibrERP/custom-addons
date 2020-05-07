@@ -149,7 +149,8 @@ def import_sheet_generator(filename, content, delimiter=','):
             lrrow = list(shrow)
             for cx in range(max_column-1, 0, -1):
                 if lrrow[cx].value:
-                    max_column = cx - 1                 # Evaluates max columns to use in range
+                    max_column = cx + 1
+                    # Evaluates max columns to use in range
                     break
             break
 
