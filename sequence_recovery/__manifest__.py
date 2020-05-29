@@ -32,12 +32,15 @@
         [ITA] Modulo per la gestione del recupero dei buchi delle sequence (DDT, Fatture, etc.)
         È sufficente ereditare l'unlink di una classe con sequence per ottenere la funzionalità di ripristino
         """,
-    'author': 'Andrea Cometa, Didotech SRL',
+    'author': 'Andrea Cometa, Didotech srl',
     'website': 'http://www.andreacometa.it',
     'license': 'AGPL-3',
     "active": False,
     "installable": True,
-    "depends": ['base'],
+    "depends": [
+        'base',
+        'account'
+    ],
     "update_xml": [
         'security/sequence_recovery_security.xml',
         'security/ir.model.access.csv',
