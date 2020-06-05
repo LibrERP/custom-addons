@@ -5,7 +5,7 @@
     "name": "Automatic partner creation based on VAT number",
     "summary": "Using VIES webservice, name and address information will "
     "be fetched and added to the partner.",
-    "version": "12.0.1.0.0",
+    "version": "12.0.1.1.0",
     "depends": [
         "base_vat"
     ],

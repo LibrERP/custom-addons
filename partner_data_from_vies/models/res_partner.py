@@ -5,7 +5,7 @@
 import logging
 
 from odoo import _, api, models
-from odoo.exceptions import ValidationError
+# from odoo.exceptions import ValidationError
 from .pyvies import Vies
 
 _logger = logging.getLogger(__name__)
@@ -14,43 +14,56 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    def vies_data(self, vat):
+        vat = vat.strip().upper()
+
+        try:
+            result = Vies().request(vat, bypass_ratelimit=True)
+        except Exception as e:
+            error = _(e)
+            _logger.error(_(u'Error on {vat}: {error}').format(vat=vat, error=error))
+            return False
+
+        # Raise error if partner is not listed on Vies
+        if hasattr(result, 'company_name') and result.company_name:
+            address_values = hasattr(result, 'company_address') and result.company_address.split('\n')
+            values = {
+                'name': result.company_name.title().replace('!', ' ')
+            }
+            if len(address_values) >= 2:
+                values.update({
+                    # 'type': 'default',
+                    'street': address_values[0].title(),
+                    'zip': address_values[1].split(' ')[0].title(),
+                    'city': address_values[1][
+                            len(address_values[1].split(' ')[0]) + 1:len(address_values[1]) - 3].title()
+                })
+
+            # Get country by country code
+            vat_country, vat_number = self._split_vat(vat)
+
+            country = self.env["res.country"].search([("code", "ilike", vat_country)])
+            if country:
+                values["country_id"] = country[0].id
+
+            code_state = address_values[1][-2:]
+            state = self.env['res.country.state'].search([
+                ("code", "ilike", code_state),
+                ("country_id", '=', country.id)
+            ])
+            if state:
+                values["state_id"] = state[0].id
+
+            return values
+        else:
+            # raise ValidationError(_("The partner is not listed on Vies " "Webservice."))
+            return {}
+
     @api.multi
     def get_vies_data(self):
         self.ensure_one()
         if self.vat:
-            vat = self.vat.strip().upper()
-
-            try:
-                result = Vies().request(vat, bypass_ratelimit=True)
-            except Exception as e:
-                error = _(e)
-                _logger.error(_(u'Error on {vat}: {error}').format(vat=vat, error=error))
-                return False
-
-            # Raise error if partner is not listed on Vies
-            if hasattr(result, 'company_name') and result.company_name:
-                address_values = hasattr(result, 'company_address') and result.company_address.split('\n')
-                values = {
-                    'name': result.company_name.title().replace('!', ' ')
-                }
-                if len(address_values) >= 2:
-                    values.update({
-                        # 'type': 'default',
-                        'street': address_values[0].title(),
-                        'zip': address_values[1].split(' ')[0].title(),
-                        'city': address_values[1][
-                                len(address_values[1].split(' ')[0]) + 1:len(address_values[1]) - 3].title()
-                    })
-
-                # Get country by country code
-                vat_country, vat_number = self._split_vat(vat)
-                country = self.env["res.country"].search([("code", "ilike", vat_country)])
-                if country:
-                    values["country_id"] = country[0].id
-
-                return values
-            else:
-                raise ValidationError(_("The partner is not listed on Vies " "Webservice."))
+            return self.vies_data(self.vat)
         else:
             return {}
 
