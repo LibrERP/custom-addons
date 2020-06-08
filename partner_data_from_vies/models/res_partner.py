@@ -39,20 +39,24 @@ class ResPartner(models.Model):
                             len(address_values[1].split(' ')[0]) + 1:len(address_values[1]) - 3].title()
                 })
 
-            # Get country by country code
-            vat_country, vat_number = self._split_vat(vat)
+            if result.country_code:
+                country_code = result.country_code
+            else:
+                # Get country by country code
+                country_code, vat_number = self._split_vat(vat)
 
-            country = self.env["res.country"].search([("code", "ilike", vat_country)])
+            country = self.env["res.country"].search([("code", "ilike", country_code)])
             if country:
                 values["country_id"] = country[0].id
 
-            code_state = address_values[1][-2:]
-            state = self.env['res.country.state'].search([
-                ("code", "ilike", code_state),
-                ("country_id", '=', country.id)
-            ])
-            if state:
-                values["state_id"] = state[0].id
+            if country_code == 'IT':
+                code_state = address_values[1][-2:]
+                state = self.env['res.country.state'].search([
+                    ("code", "ilike", code_state),
+                    ("country_id", '=', country.id)
+                ])
+                if state:
+                    values["state_id"] = state[0].id
 
             return values
         else:

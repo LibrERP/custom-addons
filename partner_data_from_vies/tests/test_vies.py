@@ -44,11 +44,11 @@ class TestVies:
             partner_ids = partner_model.search([('vat', '=', partner.vat)])
             result = partner_model.get_vies_data(partner_ids)
             assert result['country_id'] == partner.country_id
-            assert result['state_id'] == partner.state_id
+            assert result.get('state_id', False) == partner.state_id
 
     def test_vies(self) -> None:
         partner_model = odoo_c.env('res.partner')
         for partner in partners:
             result = partner_model.vies_data(False, partner.vat)
             assert result['country_id'] == partner.country_id
-            assert result['state_id'] == partner.state_id
+            assert result.get('state_id', False) == partner.state_id
