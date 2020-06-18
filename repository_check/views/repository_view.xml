@@ -1,0 +1,72 @@
+<openerp>
+    <data>
+        <record id="repository_check_form_view" model="ir.ui.view">
+            <field name="name">repository.check.form.view</field>
+            <field name="model">repository.check</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Repository Check">
+                    <group col="2" colspan="4">
+                        <field name="repository_path" on_change="onchange_repository_path(repository_path)"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <field name="username"/>
+                        <field name="repository_type"/>
+                        <field name="password" password="True" colspan="2"/>
+                        <field name="last_check"/>
+                    </group>
+<!--                    <group col="2" colspan="2">-->
+<!--                        <field name="username" colspan="2"/>-->
+<!--                        <field name="password" password="True" colspan="2"/>-->
+<!--                    </group>-->
+<!--                    <group col="2" colspan="2">-->
+<!--                        <field name="repository_type" />-->
+<!--                        <field name="last_check" />-->
+<!--                    </group>-->
+
+<!--                    <group col="6" colspan="4">-->
+<!--                        <field name="username"/>-->
+<!--                        <field name="repository_type" />-->
+<!--                        <field name="last_check" />-->
+<!--                    </group>-->
+<!--                    <group>-->
+<!--                        <field name="password" password="True"/>-->
+<!--                    </group>-->
+<!--                    <newline/>-->
+                    <group col="4" colspan="2">
+                        <button name="action_pull" string="Pull" type="object" icon="gtk-ok"/>
+                    </group>
+                    <group>
+                        <field name="log" colspan="4"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="repository_check_tree_view" model="ir.ui.view">
+            <field name="name">repository.check.tree.view</field>
+            <field name="model">repository.check</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Repository Check">
+                    <field name="repository_path" />
+                    <field name="repository_type" />
+                    <field name="last_check" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_repository_pull" model="ir.actions.act_window">
+            <field name="name">Check Repository</field>
+            <field name="res_model">repository.check</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="repository_check_tree_view"/>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="repository_pull_menu" name="Check Repository" parent="base.next_id_5" action="action_repository_pull"/>
+
+    </data>
+
+</openerp>
