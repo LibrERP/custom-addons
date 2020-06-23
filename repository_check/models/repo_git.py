@@ -174,16 +174,16 @@ class RepoGit(RepoBase):
             try:
                 self._repo.remote()
                 # os.environ['SSH_ASKPASS'] = os.path.join(project_dir, 'askpass.py') # NO GIT_SSH
-                # os.environ['GIT_USERNAME'] = 'user'
-                # os.environ['GIT_PASSWORD'] = '...'
+                # os.environ['REPO_USERNAME'] = 'user'
+                # os.environ['REPO_PASSWORD'] = '...'
                 git_cmd = cmd.Git(self._repo_path)
 
                 if self._user and self._passwd and remote_origin.url.startswith('ssh://'):
                     project_dir = os.path.dirname(os.path.abspath(__file__))
                     # old_env = git_cmd.update_environment(SSH_ASKPASS=os.path.join(project_dir, 'askpass.py'),
-                    #                                      GIT_USERNAME=self._user, GIT_PASSWORD=self._passwd)
+                    #                                      REPO_USERNAME=self._user, GIT_PASSWORD=self._passwd)
                     old_env = git_cmd.update_environment(SSH_ASKPASS=os.path.join(project_dir, 'askpass.py'),
-                                                          GIT_USERNAME=self._user, GIT_PASSWORD=self._passwd)
+                                                          REPO_USERNAME=self._user, REPO_PASSWORD=self._passwd)
                 msg = git_cmd.pull()
                 # restore the environment back to its previous state after operation.
                 if old_env:
@@ -200,12 +200,13 @@ class RepoGit(RepoBase):
                 # after some tests we can cancel _logger.error of exc.stdout e exc.stdin because with
                 # GIT_PYTHON_TRACE set to "full" the same output is written to logger.
                 ret_flag = False
-                if exc.stdout:
-                    self._output_list.append(exc.stdout.lstrip())
-                    _logger.error('GitCommandError exception occured: {}'.format(exc.stdout.lstrip()))
                 if exc.stderr:
                     self._output_list.append(exc.stderr.lstrip())
                     _logger.error('GitCommandError exception occured: {}'.format(exc.stderr.lstrip()))
+                elif exc.stdout:
+                    self._output_list.append(exc.stdout.lstrip())
+                    _logger.error('GitCommandError exception occured: {}'.format(exc.stdout.lstrip()))
+
             except CheckoutError as exc:
                 ret_flag = False
                 _logger.error("CheckoutError exception occured: {}".format(exc))
@@ -252,8 +253,8 @@ class RepoGit(RepoBase):
                 _logger.info(repo_details)
                 self._output_list.append(repo_details)
 
-            ret_flag = self.pull_cmd()
-
+            if not self.pull_cmd():
+                ret_flag = False
         else:
             ret_flag = False
 

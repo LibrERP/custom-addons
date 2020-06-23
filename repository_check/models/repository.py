@@ -4,7 +4,7 @@
 from odoo import models, fields, api
 # from .repository_git_pull import git_pull_request
 from .repo_git import RepoGit
-from .repo_hg import hg_pull_request
+from .repo_hg import RepoHg
 
 import time
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
@@ -86,21 +86,20 @@ class RepositoryCheck(models.Model):
         ret_flag = False
         try:
             # to decide if send msg or err_msg to client window
-            ret_flag, err_msgs = hg_pull_request(repo_path, user, passwd)
+            hg_repo = RepoHg(repo_path, user, passwd)
+            ret_flag, err_msgs = hg_repo.pull()
             if len(err_msgs) > 0:
                 ret_str = '\n'.join(str(x) for x in err_msgs)
 
         # except error.Abort as e:
-        #     _logger.error('Mercurial Abort error {}'.format(str(e)))
-
-        except ValidationError as e:
-            _logger.error('ValidationError {}'.format(str(e)))
+        #     _logger.error('Mercurial Abort error {}'.format(e.decode())))
 
         except UserError as e:
-            _logger.error('UserError {}'.format(str(e)))
+            # _logger.error('UserError exception occured, {}'.format(e))
+            raise e
 
         except Exception as e:
-            _logger.error('Exception {}'.format(str(e)))
+            _logger.error('An exception occured, {}'.format(e))
 
         return ret_flag, ret_str
 
@@ -134,8 +133,7 @@ class RepositoryCheck(models.Model):
         if repository_type == GIT_TYPE:
             ret_code, ret_str = self.exec_git_pull_cmd(repository_path, user, password)
         elif repository_type == MERCURIAL_TYPE:
-            # ret_code, ret_str = self.exec_hg_pull_cmd(repository_path, user, password)
-            raise UserError('The mercurial repository type has not yet been implemented.')
+            ret_code, ret_str = self.exec_hg_pull_cmd(repository_path, user, password)
 
         if ret_code:
             # write current date of last pull command
