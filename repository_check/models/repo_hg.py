@@ -124,25 +124,25 @@ class RepoHg(RepoBase):
 
         return ret_code, output
 
-    def remote_ssh_url_has_pwd(self):
-        """
-        Control if remote url of repository starts with 'ssh://', in that case control if username and password are
-        specified, otherwise will raise UseError.
-        :param in: self._repo (hg.repository): the repository to get data from
-        :raise UserError: if username and password are missing.
-        Returns: True if no error message, otherwise False.
-        """
-
-        # pull command doesn't specify source, it will be read from .hg/hgrc in [paths] as default=..(source=b'default')
-        remote_url = self._repo.ui.expandpath(b'default').decode('utf-8')
-        is_ssh_url = remote_url.startswith('ssh://')
-        if not(self._user and self._passwd and is_ssh_url):
-            _logger.error(
-                'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix !')
-            raise UserError(
-                'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix!')
-
-        return True
+    # def remote_ssh_url_has_pwd(self):
+    #     """
+    #     Control if remote url of repository starts with 'ssh://', in that case control if username and password are
+    #     specified, otherwise will raise UseError.
+    #     :param in: self._repo (hg.repository): the repository to get data from
+    #     :raise UserError: if username and password are missing.
+    #     Returns: True if no error message, otherwise False.
+    #     """
+    #
+    #     # pull command doesn't specify source, it will be read from .hg/hgrc in [paths] as default=..(source=b'default')
+    #     remote_url = self._repo.ui.expandpath(b'default').decode('utf-8')
+    #     is_ssh_url = remote_url.startswith('ssh://')
+    #     if not(self._user and self._passwd and is_ssh_url):
+    #         _logger.error(
+    #             'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix !')
+    #         raise UserError(
+    #             'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix!')
+    #
+    #     return True
 
     def pull_cmd(self):
         """
@@ -205,7 +205,7 @@ class RepoHg(RepoBase):
         ret_flag = True
 
         # return True if ok, otherwise raise, doesn't need to control
-        self.remote_ssh_url_has_pwd()
+        # self.remote_ssh_url_has_pwd()
 
         ret_str = self.print_check_status()  # Check that all sources have been committed.
         if not ret_str:

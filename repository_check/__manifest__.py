@@ -30,12 +30,19 @@
 {
     'name': 'repository check',
     'summary': """Module executes "git pull" or "hg pull -u" command on repository path.""",
-    'description': """A module for repository check. Extended by Didotech """,
+    'description': """A module for repository check files from Git and Mercurial repositories
+    
+    You should install GitPython and Mercurial python modules:
+    
+    pip install GitPython==3.1.2
+    pip install mercurial==5.4.1
+    
+    """,
 
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Customer Relationship Management',
-    'version': '0.1.3',
+    'version': '0.2.4',
 
     # any module necessary for this one to work correctly
     'depends': [
