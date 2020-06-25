@@ -14,6 +14,8 @@ import sys
 import logging
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from git.exc import InvalidGitRepositoryError
+
 from mercurial import ui, hg, revlog
 
 # from mercurial.node import hex  # should I have used this?
@@ -97,6 +99,10 @@ class RepositoryCheck(models.Model):
         except UserError as e:
             # _logger.error('UserError exception occured, {}'.format(e))
             raise e
+
+        except InvalidGitRepositoryError as exp:
+            _logger.error('Invalid git repository: {}, {} '.format(repo_path, exp))
+            raise UserError("Invalid git repository: {}, {} ".format(repo_path, exp))
 
         except Exception as e:
             _logger.error('An exception occured, {}'.format(e))
