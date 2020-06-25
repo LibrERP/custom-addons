@@ -58,9 +58,9 @@ class RepoHg(RepoBase):
         """
         Check that all sources in repository path have been committed before calling 'hg pull -u'.
         Calls "hg status" and writes err_str if the changeset has been modified or if a file has
-        been added, removed, or deleted. If finds non commited files pull command will not be started.
+        been added, removed, or deleted. If finds non committed files pull command will not be started.
         :param in: self._repo (hg.mercurial): the repository to get data from
-        Returns err_str: with details of the last non commited files in the repository if found, otherwise ''.
+        Returns err_str: with details of the last non committed files in the repository if found, otherwise ''.
         """
         errstr = ''
         status = self._repo.status()
@@ -68,7 +68,7 @@ class RepoHg(RepoBase):
 
         first_time_flag = True
         for state in changed_state:
-            check = getattr(status, state)
+            check = getattr(status, state, 0)
             if check:
                 if first_time_flag:
                     first_time_flag = False
@@ -150,7 +150,7 @@ class RepoHg(RepoBase):
         :param in: self._repo (hg.mercurial): the repository to get data from
         :param out: self._output_list, list of info or error messages in append, to inform about events that happens
         during the execution of the same command or exceptions.
-        Returns: True if received successfully the message returned from git.cmd.Git().pull(), False otherwise.
+        Returns: True if received successfully the message returned from mercurial.commands.pull(),, False otherwise.
         """
         ret_flag = True
 
@@ -158,7 +158,7 @@ class RepoHg(RepoBase):
 
         if self._user and self._passwd:
             project_dir = os.path.dirname(os.path.abspath(__file__))
-            os.environ['SSH_ASKPASS'] = os.path.join(project_dir, 'askpass.py')  # NO GIT_SSH
+            os.environ['SSH_ASKPASS'] = os.path.join(project_dir, 'askpass.py')
             os.environ['REPO_USERNAME'] = self._user
             os.environ['REPO_PASSWORD'] = self._passwd
 
@@ -168,10 +168,11 @@ class RepoHg(RepoBase):
                 self._output_list.append('{}'.format(output))
                 _logger.info('output {}'.format(output))
 
-            # restore the environment back to its previous state after operation.
-            del (os.environ['SSH_ASKPASS'])
-            del (os.environ['REPO_USERNAME'])
-            del (os.environ['REPO_PASSWORD'])
+            if self._user and self._passwd:
+                # restore the environment back to its previous state after operation.
+                del(os.environ['SSH_ASKPASS'])
+                del(os.environ['REPO_USERNAME'])
+                del(os.environ['REPO_PASSWORD'])
 
         except error.Abort as exc:
             ret_flag = False
@@ -193,7 +194,7 @@ class RepoHg(RepoBase):
         configured username and password for authentication.
         All the warnings or info messagess will be returned in one list of strings to permit to send them in output
         to the web client windows.
-        :param in: self._repo (git.Repo): the repository to get data from
+        :param in: self._repo (hg.mercurial): the repository to get data from
         :param in: self._user: username in SSH private key to use for the session authentication to the desired ``hostname``.
         :param in: self._passwd: password in SSH private key
         Returns:  ret_flag: True if execution finish successfully, False otherwise.

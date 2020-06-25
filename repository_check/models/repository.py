@@ -36,7 +36,7 @@ class RepositoryCheck(models.Model):
     _rec_name = 'repository_path'
     _description = 'Check Repository'
 
-    repository_path = fields.Char('Repository Path', size=200, help="Repository path or URL.", required=True,
+    repository_path = fields.Char('Repository Path', size=200, help="Repository path in local filesystem.", required=True,
                                   default='')
     repository_type = fields.Selection([
         ('git', 'Git'),
