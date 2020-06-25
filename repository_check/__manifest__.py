@@ -30,12 +30,18 @@
 {
     'name': 'repository check',
     'summary': """Module executes "git pull" or "hg pull -u" command on repository path.""",
-    'description': """A module for repository check files from Git and Mercurial repositories
+    'description': """A module permit to pull files from Git and Mercurial repositories
     
-    You should install GitPython and Mercurial python modules:
+You should install GitPython and Mercurial python modules:
     
     pip install GitPython==3.1.2
     pip install mercurial==5.4.1
+    
+It can be necessary to set environment variable:
+
+    GIT_PYTHON_REFRESH=quiet
+    
+And to verify 'git' executable is in the PATH
     
     """,
 
