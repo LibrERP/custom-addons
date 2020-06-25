@@ -42,7 +42,7 @@
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Customer Relationship Management',
-    'version': '0.2.4',
+    'version': '0.3.4',
 
     # any module necessary for this one to work correctly
     'depends': [

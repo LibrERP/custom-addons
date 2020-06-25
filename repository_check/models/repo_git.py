@@ -64,7 +64,10 @@ class RepoGit(RepoBase):
 
         try:
             self._repo = Repo(self._repo_path)
-        except (InvalidGitRepositoryError, NoSuchPathError) as exp:
+        except InvalidGitRepositoryError as exp:
+            _logger.error('Invalid git repository: {}, {} '.format(self._repo_path, exp))
+            raise UserError("Invalid git repository: {}, {} ".format(self._repo_path, exp))
+        except NoSuchPathError as exp:
             _logger.error('Invalid git repository: {}, {} '.format(self._repo_path, exp))
             raise UserError("Invalid git repository: {}, {} ".format(self._repo_path, exp))
 
@@ -206,7 +209,9 @@ class RepoGit(RepoBase):
                 elif exc.stdout:
                     self._output_list.append(exc.stdout.lstrip())
                     _logger.error('GitCommandError exception occured: {}'.format(exc.stdout.lstrip()))
-
+            except InvalidGitRepositoryError as exc:
+                ret_flag = False
+                _logger.error('Invalid git repository: {}, {} '.format(self._repo_path, exc))
             except CheckoutError as exc:
                 ret_flag = False
                 _logger.error("CheckoutError exception occured: {}".format(exc))
