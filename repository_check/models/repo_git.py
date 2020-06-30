@@ -77,25 +77,25 @@ class RepoGit(RepoBase):
             _logger.error('Repository {} is a bare repository! Can\'t launch pull command.'.format(self._repo_path))
             raise UserError("Repository {} is a bare repository! Can\'t launch pull command.".format(self._repo_path))
 
-    def remote_ssh_url_has_pwd(self):
-        """
-        Control if remote url of repository starts with 'ssh://', in that case control if username and password are
-        specified, otherwise will raise UseError.
-        :param in:   self._repo (git.Repo): the repository to get data from
-        :raise UserError: if username and password are missing.
-        Returns: True if no error message, otherwise False.
-        """
-
-        remote_origin = self._repo.remotes.origin
-        if remote_origin.url.startswith('ssh://'):
-            if not (self._user and self._passwd):
-                _logger.error(
-                    'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix !')
-                _logger.error('repo_path={}, remote_url={}'.format(self._repo_path, remote_origin.url))
-                raise UserError(
-                    'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix!')
-
-        return True
+    # def remote_ssh_url_has_pwd(self):
+    #     """
+    #     Control if remote url of repository starts with 'ssh://', in that case control if username and password are
+    #     specified, otherwise will raise UseError.
+    #     :param in:   self._repo (git.Repo): the repository to get data from
+    #     :raise UserError: if username and password are missing.
+    #     Returns: True if no error message, otherwise False.
+    #     """
+    #
+    #     remote_origin = self._repo.remotes.origin
+    #     if remote_origin.url.startswith('ssh://'):
+    #         if not (self._user and self._passwd):
+    #             _logger.error(
+    #                 'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix !')
+    #             _logger.error('repo_path={}, remote_url={}'.format(self._repo_path, remote_origin.url))
+    #             raise UserError(
+    #                 'Can\'t launch pull command, please insert your username and password, necessary for ssh:// prefix!')
+    #
+    #     return True
 
     def check_repo_state(self):
         """
@@ -181,7 +181,8 @@ class RepoGit(RepoBase):
                 # os.environ['REPO_PASSWORD'] = '...'
                 git_cmd = cmd.Git(self._repo_path)
 
-                if self._user and self._passwd and remote_origin.url.startswith('ssh://'):
+                # if self._user and self._passwd and remote_origin.url.startswith('ssh://'):
+                if self._user and self._passwd:
                     project_dir = os.path.dirname(os.path.abspath(__file__))
                     # old_env = git_cmd.update_environment(SSH_ASKPASS=os.path.join(project_dir, 'askpass.py'),
                     #                                      REPO_USERNAME=self._user, GIT_PASSWORD=self._passwd)
@@ -247,7 +248,7 @@ class RepoGit(RepoBase):
         ret_flag = True
 
         # return True if ok, otherwise raise, doesn't need to control
-        self.remote_ssh_url_has_pwd()
+        # self.remote_ssh_url_has_pwd()
 
         # if check_repo_state fails can't continue execution! See if do raise!
         if self.check_repo_state():

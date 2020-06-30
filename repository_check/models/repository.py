@@ -1,32 +1,26 @@
 # -*- encoding: utf-8 -*-
 
-# from openerp.osv import orm, fields
 from odoo import models, fields, api
-# from .repository_git_pull import git_pull_request
 from .repo_git import RepoGit
 from .repo_hg import RepoHg
 
 import time
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from os.path import isdir, join
-from os import chdir
-import sys
 import logging
 from odoo.exceptions import AccessError, UserError, ValidationError
 
-from git.exc import InvalidGitRepositoryError
-
-from mercurial import ui, hg, revlog
-
-# from mercurial.node import hex  # should I have used this?
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
 
 try:
-    import pexpect
+    from git.exc import InvalidGitRepositoryError
 except ImportError as err:
     _logger.debug(err)
+    _logger.debug('!!! Please install gitpython module !!!')
+    time.sleep(3)
+
 
 GIT_TYPE = 'git'
 MERCURIAL_TYPE = 'hg'
