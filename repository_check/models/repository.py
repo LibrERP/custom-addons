@@ -66,8 +66,13 @@ class RepositoryCheck(models.Model):
             # _logger.error('UserError exception occured, {}'.format(e))
             raise e
 
+        except InvalidGitRepositoryError as exp:
+            _logger.error('Invalid git repository: {}, {} '.format(repo_path, exp))
+            raise UserError("Invalid git repository: {}, {} ".format(repo_path, exp))
+
         except Exception as e:
             _logger.error('An exception occured, {}'.format(e))
+            ret_str += 'Git pull request failed. Check logs for details!\n'
 
         # except:
         #     import traceback
@@ -94,12 +99,10 @@ class RepositoryCheck(models.Model):
             # _logger.error('UserError exception occured, {}'.format(e))
             raise e
 
-        except InvalidGitRepositoryError as exp:
-            _logger.error('Invalid git repository: {}, {} '.format(repo_path, exp))
-            raise UserError("Invalid git repository: {}, {} ".format(repo_path, exp))
-
         except Exception as e:
             _logger.error('An exception occured, {}'.format(e))
+            ret_str += 'Hg pull -u request failed. Check logs for details!\n'
+
 
         return ret_flag, ret_str
 
