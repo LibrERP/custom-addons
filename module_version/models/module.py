@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# © 2013-2019 Didotech srl
+# © 2013-2020 Didotech srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
@@ -35,12 +35,17 @@ class Module(models.Model):
 
     _order = 'name'
 
+    @property
+    @api.model
+    def installed_modules(self):
+        return self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
+
     @api.model
     def set_modules_to_upgrade(self, view=False):
         modules = self.env['ir.module.module']
 
-        installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
-        for module in installed_modules:
+        # installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
+        for module in self.installed_modules:
             if not module.latest_version == self.get_module_info(module.name).get('version', '') or module.state in ('to upgrade', 'to remove'):
                 modules += module
 

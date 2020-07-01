@@ -43,11 +43,13 @@
             <field name="context">{'nodelete': '1', 'nocreate': '1', 'noduplicate': '1'}</field>
         </record>
 
-        <menuitem string="Sequence Recovery" action="action_sequence_recovery" id="menu_sequence_recovery"
+        <menuitem id="menu_sequence_recovery" name="Sequence Recovery" action="action_sequence_recovery"
                   parent="base.next_id_5"/>
 
-        <menuitem string="Sequence Recovery" action="action_sequence_recovery" id="menu_account_sequence_recovery"
-                  parent="account.menu_configuration_misc" groups="base.group_user"/>
+        <menuitem id="menu_account_config_miscellaneous" name="Miscellaneous" parent="account.menu_finance_configuration" />
+
+        <menuitem id="menu_account_sequence_recovery" name="Sequence Recovery" action="action_sequence_recovery"
+                  parent="menu_account_config_miscellaneous" groups="base.group_user"/>
 
     </data>
 </odoo>
