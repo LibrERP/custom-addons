@@ -42,6 +42,11 @@ class RepositoryCheck(models.Model):
 
     username = fields.Char('Username', required=False, default='')
     password = fields.Char('Password', required=False, default='')
+    last_check_state = fields.Selection([
+        ('new', ''),
+        ('done', 'Success'),
+        ('failed', 'Failed')
+    ], string='Last Check State', readonly=True, default='new')
     last_check = fields.Date('Last Check', readonly=True)
     log = fields.Text('Logging', readonly=True, default='')
 
@@ -64,13 +69,16 @@ class RepositoryCheck(models.Model):
 
         except UserError as e:
             # _logger.error('UserError exception occured, {}'.format(e))
-            raise e
+            self.last_check_state = 'failed'
+            raise UserError(str(e))
 
-        except InvalidGitRepositoryError as exp:
-            _logger.error('Invalid git repository: {}, {} '.format(repo_path, exp))
-            raise UserError("Invalid git repository: {}, {} ".format(repo_path, exp))
+        except InvalidGitRepositoryError as e:
+            self.last_check_state = 'failed'
+            _logger.error('Invalid git repository: {}, {} '.format(repo_path, e))
+            raise UserError("Invalid git repository: {}, {} ".format(repo_path, e))
 
         except Exception as e:
+            self.last_check_state = 'failed'
             _logger.error('An exception occured, {}'.format(e))
             ret_str += 'Git pull request failed. Check logs for details!\n'
 
@@ -97,14 +105,21 @@ class RepositoryCheck(models.Model):
 
         except UserError as e:
             # _logger.error('UserError exception occured, {}'.format(e))
-            raise e
+            self.last_check_state = 'failed'
+            raise UserError(str(e))
 
         except Exception as e:
             _logger.error('An exception occured, {}'.format(e))
+            self.last_check_state = 'failed'
             ret_str += 'Hg pull -u request failed. Check logs for details!\n'
-
-
         return ret_flag, ret_str
+
+    @api.multi
+    def action_pull_repository(self):
+        if self.env.context.get('active_ids'):
+            for repository in self.browse(self.env.context['active_ids']):
+                # print(repository.repository_path)
+                repository.action_pull()
 
     @api.multi
     def action_pull(self):
@@ -139,9 +154,13 @@ class RepositoryCheck(models.Model):
             ret_code, ret_str = self.exec_hg_pull_cmd(repository_path, user, password)
 
         if ret_code:
+            self.last_check_state = 'done'
             # write current date of last pull command
             values['last_check'] = current_date
+        else:
+            self.last_check_state = 'failed'
 
+        values['last_check_state'] = self.last_check_state
         if ret_str != '':
             values['log'] = '{}'.format(ret_str)
 
@@ -174,6 +193,10 @@ class RepositoryCheck(models.Model):
             _logger.error('{} is not a valid repository.'.format(view_path))
             raise UserError('{} is not a valid repository.'.format(view_path))
 
+        # TODO test if last_check_state should be set as default
+        #  values['log'] = ''
+        self.last_check_state = 'new'
+        values['last_check_state'] = 'new'
         view_type = self.set_default_type(view_path)
         values['repository_type'] = view_type
 
@@ -194,22 +217,26 @@ class RepositoryCheck(models.Model):
             view_path = values['repository_path']
             view_type = self.set_default_type(view_path)  # every time check type, maybe is wrong latest in db!
             values['repository_type'] = view_type
-
+            # onchange doesn't work?, there I set self.log='', but here it's not passed!
+            if view_type == 'disable':
+                values['last_check_state'] = 'new'
+                values['log'] = ''
         else:
             view_path = self.repository_path
             view_type = self.repository_type
+
+        # TODO to control ...
+        # values['last_check_state'] = self.last_check_state
 
         if not isdir(view_path):
             _logger.error('{} is not a valid repository.'.format(view_path))
             raise UserError('{} is not a valid repository.'.format(view_path))
 
-        return super(RepositoryCheck, self).write(values)
-
         # if 'log' not in values: # to see if do this: clear log text field !
         #     values['log'] = ''
         #     self.log.default = ''
 
-        # return super(RepositoryCheck, self).write(values)
+        return super(RepositoryCheck, self).write(values)
 
     @api.onchange('repository_path')
     def onchange_repository_path(self):
@@ -220,9 +247,11 @@ class RepositoryCheck(models.Model):
                 view_type = self.set_default_type(self.repository_path)
                 # try to set repository_type here...to be tested
                 self.repository_type = view_type
+                self.log = ''
+                self.last_check_state = 'new'
             else:
                 return {
-                    'value': {},
+                    # 'value': {},
                     'warning': {
                         'title': 'Warning!',
                         'message': '"{}" is not a valid repository'.format(self.repository_path)
@@ -230,3 +259,5 @@ class RepositoryCheck(models.Model):
                 }
         else:
             self.repository_type = 'disable'
+            self.log = ''
+            self.last_check_state = 'new'

@@ -48,7 +48,7 @@ And to verify 'git' executable is in the PATH
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Customer Relationship Management',
-    'version': '0.5.4',
+    'version': '0.7.5',
 
     # any module necessary for this one to work correctly
     'depends': [

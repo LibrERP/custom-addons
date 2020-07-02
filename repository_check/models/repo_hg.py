@@ -113,11 +113,12 @@ class RepoHg(RepoBase):
         """
 
         ret_code = True
-        # here is wrong to use global ui (self._myui), ui must be self._repo.ui copy associated to repository!
+        # here is wrong to use global ui (self._myui), ui must be self._repo.ui copy associat:ed to repository!
         self._repo.ui.pushbuffer(error=True, subproc=True)
 
         # it's important to use local repository copy of ui (self._repo.ui)
-        if commands.pull(self._repo.ui, self._repo, update=True):
+        ret = commands.pull(self._repo.ui, self._repo, update=True)
+        if ret:
             ret_code = False
 
         output = self._repo.ui.popbuffer().decode('utf-8')
@@ -182,8 +183,9 @@ class RepoHg(RepoBase):
             _logger.error("error.FilteredRepoLookupError exception occured: {}".format(str(exc)))  # to decode
         except UserError as exc:
             # _logger.error('UserError exception occured, {}'.format(str(exc)))
-            raise exc
+            raise UserError(str(exc))
         except Exception as exc:
+            ret_flag = False
             _logger.error('An exception occured, {}'.format(str(exc)))
 
         return ret_flag
