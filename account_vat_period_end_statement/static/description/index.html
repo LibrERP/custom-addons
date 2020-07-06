@@ -1,0 +1,147 @@
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <div class="oe_span12">
+            <h2 class="oe_slogan" style="color:#162832;">Versamento Iva periodica (mensile o trimestrale) / Versamento Iva periodica</h2>
+        </div>
+        <div class="oe_span6">
+            <p align="center">
+                <img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/en_US.png" alt="English"/>
+            </p>
+            <p class="oe_mt16" align="justify">This module evaluates VAT to pay (or on credit).
+<p align="justify">
+Previous debit or credit amount is read from previous VAT statement, according
+to its payments status.
+</p></p>
+        </div>
+        <div class="oe_span6">
+            <p align="center">
+                <img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/it_IT.png" alt="Italiano"/>
+            </p>
+            <p class="oe_mt16" align="justify">Versamento Iva periodica
+<p align="justify">
+
+<code>
+    Cosa &#232;:
+</code>
+</p><p align="justify">
+Modulo per calcolare l'importo IVA da pagare (o a credito) sia per i contribuenti
+mensili che trimestrali.
+L'importo del versamento deve essere dichiarato per via telemativa con il modello F24 (non gestito da questo modulo).
+</p><p align="justify">
+L'IVA &#232; calcolata dalle registrazioni contabili inerenti i registri IVA.
+Inoltre viene sottratto l&#8217;eventuale credito d&#8217;imposta del periodo precedente (o l&#8217;eventuale debito inferiore a 25,82&#8364;).
+Il risultato finale delle operazioni pu&#242; essere un importo:
+</p><p align="justify">
+    * debito, da versare all'erario, se pari o superiore a 25,82 euro (altrimenti si riporta in aumento per il periodo successivo)
+    * credito, da computare in detrazione nel periodo successivo.
+</p><p align="justify">
+
+<code>
+    Destinatari:
+</code>
+</p><p align="justify">
+Tutti i soggetti passivi IVA in regime non forfettario
+</p><p align="justify">
+
+<code>
+    Normativa e prassi:
+</code>
+</p><p align="justify">
+<ul>
+<li><a href="https://www.gazzettaufficiale.it/eli/id/1972/11/11/072U0633/sg/">Articolo 23 del  DPR n. 633/72 - Registrazione fatture emesse</a></li>
+<li><a href="https://www.gazzettaufficiale.it/eli/id/1972/11/11/072U0633/sg/">Articolo 25 del  DPR n. 633/72 - Registrazione fatture degli acquisti</a></li>
+<li>Articolo 39 del DPR n. 633/72 - Della tenuta e conservazione dei registri</li>
+</ul>
+</p><p align="justify">
+Normativa non supportata da questo software:
+</p><p align="justify">
+<ul>
+<li>Articolo 24 del DPR n. 633/72) - Registrazione dei corrispettivi</li>
+</ul>
+</p></p>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <h3 class="oe_slogan" style="color:#162832;">Usage / Utilizzo</h3>
+        <div class="oe_span12">
+<img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/en_US.png"/> In order to create a 'VAT Statement', open Accounting &gt; Adviser &gt; VAT Statements.
+Select a Journal that will contain the journal entries of the statement.
+The field Tax authority VAT account contains the account where the statement balance will be registered.
+<p align="justify">
+The 'VAT statement' object allows to specify every amount and relative account
+used by the statement.
+By default, amounts of debit and credit taxes are automatically loaded
+from taxes of the selected periods (see Configuration to correctly generate the periods).
+Previous debit or credit is loaded from previous VAT statement, according
+to its payments status.
+</p><p align="justify">
+In order to generate the journal entry, click on 'Create move' button, inside the 'Accounts' tab.
+If you select a payment term, the due date(s) will be set.
+</p><p align="justify">
+The 'tax authority' tab contains information about payment(s),
+here you can see statement's result ('authority VAT amount') and residual
+amount to pay ('Balance').
+The statement can be paid like every other debit, by journal item
+reconciliation.
+</p><p align="justify">
+It is also possible to print the 'VAT statement' clicking on print &gt; Print VAT period end statement.
+</p><p align="justify">
+<img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/flags/it_IT.png"/> Per fare la liquidazione IVA, aprire Contabilit&#224; &gt; Contabilit&#224; &gt; Liquidazioni IVA.
+Selezionare un sezionale che conterr&#224; le registrazioni contabili della liquidazione.
+Il campo Conto IVA Erario contiene il conto dove verr&#224; effettuata la registrazione della liquidazione IVA.
+</p><p align="justify">
+L'oggetto 'Liquidazione IVA' permette di specificare ogni importo e il conto utilizzato dalla liquidazione.
+Di norma, gli importi di debito e credito delle tasse vengono caricati automaticamente dai periodi selezionati
+(vedere Configurazione per generare correttamente i periodi).
+I debiti e crediti precedenti vengono caricati dalle liquidazioni IVA precedenti, in base allo stato del loro pagamento.
+</p><p align="justify">
+Per creare la registrazione contabile, cliccare sul bottone 'Crea movimento', dentro il tab 'Conti'.
+Se i termini di pagamento sono impostati viene scritta anche la scadenza (o le scadenze).
+</p><p align="justify">
+Il tab 'Erario' contiene informazioni sui pagamenti,
+qui si possono visualizzare i risultati della liquidazione ('Importo IVA erario')
+e l'importo residuo da pagare ('Importo a saldo').
+La liquidazione pu&#242; essere pagata come qualunque altro debito, con la riconciliazione delle registrazioni contabili.
+</p><p align="justify">
+&#200; inoltre possibile stampare la liquidazione IVA cliccando su Stampa &gt; Stampa liquidazione IVA.
+</p>
+        </div>
+    </div>
+</section>
+
+<section class="oe_container oe_separator"/>
+
+<section class="oe_container">
+    <div class="oe_row oe_spaced">
+        <div class="oe_span6" align="left">
+            <p class="oe_mt16">Authors / Autori:</p>
+            <p class="oe_mt16"><ul>
+<li><a href="https://odoo-community.org/">Odoo Community Association (OCA)</a></li>
+<li><a href="http://www.odoo-italia.org/">Associazione Odoo Italia</a></li>
+<li><a href="http://www.agilebg.com/">Agile Business Group sagl</a></li>
+<li><a href="https://www.zeroincombenze.it/">SHS-AV s.r.l.</a></li>
+</ul></p>
+        </div>
+        <div class="oe_span6" align="left">
+            <p class="oe_mt16">Contributors / Collaboratori:</p>
+            <p class="oe_mt16"><ul>
+<li>Lorenzo Battistini &lt;https://github.com/eLBati&gt;</li>
+<li>Elena Carlesso</li>
+<li>Marco Marchiori &lt;marcomarkiori@gmail.com&gt;</li>
+<li>Sergio Corato &lt;sergiocorato@gmail.com&gt;</li>
+<li>Andrea Gallina &lt;a.gallina@apuliasoftware.it&gt;</li>
+<li>Alex Comba &lt;alex.comba@agilebg.com&gt;</li>
+<li>Alessandro Camilli &lt;camillialex@gmail.com&gt;</li>
+<li>Simone Rubino &lt;simone.rubino@agilebg.com&gt;</li>
+<li>Giacomo Grasso &lt;giacomo.grasso.82@gmail.com&gt;</li>
+<li>Lara Baggio &lt;http://linkgroup.it/&gt;</li>
+<li>Gianmarco Conte &lt;gconte@dinamicheaziendali.it&gt;</li>
+<li>Antonio Maria Vigliotti &lt;antoniomaria.vigliotti@gmail.com&gt;</li>
+</ul></p>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <p>This module is part of l10n-italy project.</p>
+    </div>
+</section>
