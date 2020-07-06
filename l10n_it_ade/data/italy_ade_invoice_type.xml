@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FatturaPA Document Type -->
+    <record id="fatturapa_TD01" model="italy.ade.invoice.type">
+        <field name="code">TD01</field>
+        <field name="name">Fattura</field>
+    </record>
+    <record id="fatturapa_TD02" model="italy.ade.invoice.type">
+        <field name="code">TD02</field>
+        <field name="name">Acconto / anticipo su fattura</field>
+    </record>
+    <record id="fatturapa_TD03" model="italy.ade.invoice.type">
+        <field name="code">TD03</field>
+        <field name="name">Acconto / anticipo su parcella</field>
+    </record>
+    <record id="fatturapa_TD04" model="italy.ade.invoice.type">
+        <field name="code">TD04</field>
+        <field name="name">Nota di credito</field>
+    </record>
+    <record id="fatturapa_TD05" model="italy.ade.invoice.type">
+        <field name="code">TD05</field>
+        <field name="name">Nota di debito</field>
+    </record>
+    <record id="fatturapa_TD06" model="italy.ade.invoice.type">
+        <field name="code">TD06</field>
+        <field name="name">Parcella</field>
+    </record>
+    <record id="fatturapa_TD07" model="italy.ade.invoice.type">
+        <field name="code">TD07</field>
+        <field name="name">Fattura semplificata</field>
+    </record>
+    <record id="fatturapa_TD08" model="italy.ade.invoice.type">
+        <field name="code">TD08</field>
+        <field name="name">Nota di credito semplificata</field>
+    </record>
+    <record id="fatturapa_TD10" model="italy.ade.invoice.type">
+        <field name="code">TD10</field>
+        <field name="name">Fattura di acquisto intracomunitario beni</field>
+    </record>
+    <record id="fatturapa_TD11" model="italy.ade.invoice.type">
+        <field name="code">TD11</field>
+        <field name="name">Fattura di acquisto intracomunitario servizi</field>
+    </record>
+    <record id="fatturapa_TD12" model="italy.ade.invoice.type">
+        <field name="code">TD12</field>
+        <field name="name">Documento riepilogativo (art.6, DPR 695/1996)</field>
+    </record>
+
+</odoo>
+

@@ -1,0 +1,9 @@
+id,code,name,help,active
+n1,N1,Escluse ex art. 15,"Escluso base imponibile: interessi moratori, beni ceduti a titolo di sconto o abbuono, rimborsi di anticipazioni, imballi a spesa concordata, rivalse (es.  artt. 2, 3, 5, 13, 15)",True
+n2,N2,Non soggette,"Operazioni che non determinano il giro d'affari, che non rientrano nell'attività dell'impresa, conferimenti in denaro, attività di enti pubblici (es. artt. 7-bis, 7-ter, 7-quater, 7-quinques)",True
+n3,N3,Non imponibili,"Operazioni senza presupposto territoriale (es. art. 8, 8-bis, 9, 71, 72)",True
+n4,N4,Esenti,Operazioni escluse dal campo di applicazione dell'IVA per presupposto di legge (art 10),True
+n5,N5,Regime del margine / IVA non esposta,Cessioni di prodotti usati / editoria / agenzie di viaggio e turismo,True
+n6,N6,Inversione contabile  (acq. in reverse charge),"IVA assolta del fornitore causa inversione contabile (per le operazioni in reverse charge ovvero nei casi di autofatturazione per acquisti extra UE di servizi ovvero per importazioni di beni nei soli casi previsti)(es. Artt. 74 c7 e c8, 17 c2 e c6, 38 e 40)",True
+n7,N7,IVA assolta in altro stato UE,"IVA per operazione con soggetto in un altro stato UE (vendite a distanza ex art. 40 c. 3 e 4 e art. 41 c. 1 lett. b,  DL 331/93; prestazione di servizi di telecomunicazioni, tele-radiodiffusione ed elettronici ex art. 7-sexies lett. f, g, art. 74-sexies DPR 633/72)",True
+fc,FC,FC applicazione IVA,Operazione esclusa dell'IVA: attenzione! Operazione esclusa da comunicazioni fiscali,True

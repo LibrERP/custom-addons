@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_italy_ade_codice_carica,access_italy_ade_codice_carica,model_italy_ade_codice_carica,,1,1,1,0
+access_italy_ade_tax_nature,access_italy_ade_tax_nature,model_italy_ade_tax_nature,,1,1,1,0
+access_italy_ade_invoice_type,access_italy_ade_invoice_type,model_italy_ade_invoice_type,,1,1,1,0

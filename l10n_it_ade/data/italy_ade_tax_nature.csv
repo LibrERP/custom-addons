@@ -1,0 +1,9 @@
+id,code,name,help,active
+n1,N1,Escluse ex art. 15,"Escluso base imponibile: interessi moratori, beni ceduti a titolo di sconto o abbuono, rimborsi di anticipazioni, imballi a spesa concordata, rivalse",True
+n2,N2,Non soggette,"Operazioni che non determinano il giro d'affari, che non rientrano nell'attività dell'impresa, conferimenti in denaro, attività di enti pubblici",True
+n3,N3,Non imponibili,Operazioni senza presupposto territoriale,True
+n4,N4,Esenti,Operazioni escluse dal campo di applicazione dell'IVA per presupposto di legge,True
+n5,N5,Regime del margine / IVA non esposta,Cessioni di prodotti usati,True
+n6,N6,Inversione contabile  (acq. in reverse charge),IVA assolta del fornitore,True
+n7,N7,IVA assolta in altro stato UE,IVA per operazione con soggetto in un altro stato UE,True
+fc,FC,FC applicazione IVA,Operazione esclusa dell'IVA: attenzione! Operazione esclusa da comunicazioni fiscali,True
