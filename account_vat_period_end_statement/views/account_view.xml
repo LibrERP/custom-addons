@@ -41,16 +41,16 @@
                                 <separator string="Credit Nature Lines"/>
                                 <field name="debit_vat_nature_line_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="nature_code"/>
-                                        <field name="nature_id"/>
+                                        <field name="kind_code"/>
+                                        <field name="kind_id"/>
                                         <field name="base_amount" sum="Total Base"/>
                                         <field name="vat_amount" sum="Total VAT"/>
                                         <field name="amount" sum="Total Amount"/>
                                     </tree>
                                     <form>
                                         <group>
-                                            <field name="nature_code"/>
-                                            <field name="nature_id"/>
+                                            <field name="kind_code"/>
+                                            <field name="kind_id"/>
                                             <field name="base_amount"/>
                                             <field name="vat_amount"/>
                                             <field name="amount"/>
@@ -59,16 +59,16 @@
                                 </field>
                                 <field name="credit_vat_nature_line_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="nature_code"/>
-                                        <field name="nature_id"/>
+                                        <field name="kind_code"/>
+                                        <field name="kind_id"/>
                                         <field name="base_amount" sum="Total Base"/>
                                         <field name="vat_amount" sum="Total VAT"/>
                                         <field name="amount" sum="Total Amount"/>
                                     </tree>
                                     <form>
                                         <group>
-                                            <field name="nature_code"/>
-                                            <field name="nature_id"/>
+                                            <field name="kind_code"/>
+                                            <field name="kind_id"/>
                                             <field name="base_amount"/>
                                             <field name="vat_amount"/>
                                             <field name="amount"/>
@@ -83,7 +83,7 @@
                                 <separator string="Credit Tax Lines"/>
                                 <field name="debit_vat_account_line_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="nature_id"/>
+                                        <field name="kind_id"/>
                                         <field name="account_id"/>
                                         <field name="base_amount" sum="Total Base"/>
                                         <field name="vat_amount" sum="Total VAT"/>
@@ -92,7 +92,7 @@
                                     </tree>
                                     <form>
                                         <group>
-                                            <field name="nature_id"/>
+                                            <field name="kind_id"/>
                                             <field name="account_id"/>
                                             <field name="base_amount"/>
                                             <field name="vat_amount"/>
@@ -103,7 +103,7 @@
                                 </field>
                                 <field name="credit_vat_account_line_ids" nolabel="1">
                                     <tree editable="bottom">
-                                        <field name="nature_id"/>
+                                        <field name="kind_id"/>
                                         <field name="account_id"/>
                                         <field name="base_amount" sum="Total Base"/>
                                         <field name="vat_amount" sum="Total VAT"/>
@@ -112,7 +112,7 @@
                                     </tree>
                                     <form>
                                         <group>
-                                            <field name="nature_id"/>
+                                            <field name="kind_id"/>
                                             <field name="account_id"/>
                                             <field name="base_amount"/>
                                             <field name="vat_amount"/>
