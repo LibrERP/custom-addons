@@ -137,8 +137,8 @@ class RepositoryCheck(models.Model):
         user = self.username
 
         if repository_type == NO_TYPE:
-            _logger.error('Can\'t launch pull command, the specified path isn\'t configured to allow it (path={})!'.format(repository_type))
-            raise UserError('Can\'t launch pull command, the specified path isn\'t configured to allow it!')
+            _logger.error('Can\'t launch pull command, the specified path isn\'t configured to allow it (path={})!'.format(repository_path))
+            raise UserError('Can\'t launch pull command, path={} isn\'t configured to allow it!'.format(repository_path))
 
         if (password and not user) or (not password and user):
             if password:
@@ -193,9 +193,8 @@ class RepositoryCheck(models.Model):
             _logger.error('{} is not a valid repository.'.format(view_path))
             raise UserError('{} is not a valid repository.'.format(view_path))
 
-        # TODO test if last_check_state should be set as default
-        #  values['log'] = ''
-        self.last_check_state = 'new'
+        # TODO test if last_check_state and log should be set as default, add here to be sure
+        values['log'] = ''
         values['last_check_state'] = 'new'
         view_type = self.set_default_type(view_path)
         values['repository_type'] = view_type
@@ -217,10 +216,12 @@ class RepositoryCheck(models.Model):
             view_path = values['repository_path']
             view_type = self.set_default_type(view_path)  # every time check type, maybe is wrong latest in db!
             values['repository_type'] = view_type
-            # onchange doesn't work?, there I set self.log='', but here it's not passed!
-            if view_type == 'disable':
-                values['last_check_state'] = 'new'
-                values['log'] = ''
+            # onchange doesn't work for readonly fields (last_check_state, log), they will not be passed to write!
+            # think that every time when repository_path is changed(in values) need to reset last_check_state and log
+            # if view_type == 'disable':
+            values['last_check_state'] = 'new'
+            values['last_check'] = None
+            values['log'] = ''
         else:
             view_path = self.repository_path
             view_type = self.repository_type
