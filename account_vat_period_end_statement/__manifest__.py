@@ -1,14 +1,16 @@
-#  Copyright 2011-2012 Domsense s.r.l. (<http://www.domsense.com>)
-#  Copyright 2012-17 Agile Business Group (<http://www.agilebg.com>)
-#  Copyright 2012-15 LinkIt Spa (<http://http://www.linkgroup.it>)
-#  Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
-#  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright 2011-12 Domsense s.r.l. <http://www.domsense.com>
+# Copyright 2012-17 Agile Business Group <http://www.agilebg.com>
+# Copyright 2012-15 LinkIt Spa <http://http://www.linkgroup.it>
+# Copyright 2015 Associazione Odoo Italia <http://www.odoo-italia.org>
+# Copyright 2020 Odoo Community Association (OCA) <https://odoo-community.org>
+#
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 {
     'name': 'ITA - Liquidazione IVA',
-    'summary': 'Versamento Iva periodica (mensile o trimestrale) ',
-    'version': '12.0.1.5.3',
+    'version': '12.0.1.5.2',
     'category': 'Localization/Italy',
-    'author': 'Odoo Community Association (OCA) and other subjects',
+    'summary': "Allow to create the 'VAT Statement'.",
+    'author': 'Odoo Community Association (OCA) and other partners',
     'website': 'https://odoo-community.org/',
     'license': 'AGPL-3',
     'depends': [
@@ -17,6 +19,7 @@
         'date_range',
         'l10n_it_account',
         'l10n_it_fiscalcode',
+        'l10n_it_account_tax_kind',
         'web',
     ],
     'data': [

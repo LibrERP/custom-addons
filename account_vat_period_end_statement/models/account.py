@@ -1,7 +1,9 @@
-# Copyright 2011-2012 Domsense s.r.l. (<http://www.domsense.com>).
-# Copyright 2012-15 Agile Business Group sagl (<http://www.agilebg.com>)
-# Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright 2011-12 Domsense s.r.l. <http://www.domsense.com>.
+# Copyright 2012-15 Agile Business Group sagl <http://www.agilebg.com>
+# Copyright 2015 Associazione Odoo Italia <http://www.odoo-italia.org>
+# Copyright 2020 Odoo Community Association (OCA) <https://odoo-community.org>
+#
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import math
 from datetime import datetime
@@ -215,7 +217,7 @@ class AccountVatPeriodEndStatement(models.Model):
             'paid': [('readonly', True)],
             'draft': [('readonly', False)]})
     authority_vat_account_id = fields.Many2one(
-        'account.account', 'Tax Authority VAT Account', required=True,
+        'account.account', 'Tax Authority VAT Account', required=False,
         states={
             'confirmed': [('readonly', True)],
             'paid': [('readonly', True)],
@@ -228,7 +230,7 @@ class AccountVatPeriodEndStatement(models.Model):
         'Deductible VAT Amount', compute="_compute_deductible_vat_amount",
         digits=dp.get_precision('Account'))
     journal_id = fields.Many2one(
-        'account.journal', 'Journal', required=True,
+        'account.journal', 'Journal', required=False,
         states={
             'confirmed': [('readonly', True)],
             'paid': [('readonly', True)],
@@ -341,6 +343,13 @@ class AccountVatPeriodEndStatement(models.Model):
     def create_move(self):
         move_obj = self.env['account.move']
         for statement in self:
+            if not statement.journal_id:
+                raise UserError(
+                    _("Journal is required to create account move"))
+            if not statement.authority_vat_account_id:
+                raise UserError(_(
+                    "VAT Authority account is required to create account move")
+                )
             statement_date = fields.Date.to_string(statement.date)
             move_data = {
                 'name': _('VAT statement') + ' - ' + statement_date,
@@ -773,7 +782,7 @@ class StatementDebitAccountLineNature(models.Model):
         'account.vat.period.end.statement', 'VAT statement'
     )
     nature_code = fields.Char('Tax nature code')
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    nature_id = fields.Many2one('account.tax.kind', 'Tax nature')
     amount = fields.Float(
         'Amount', required=True, digits=dp.get_precision('Account')
     )
@@ -793,7 +802,7 @@ class StatementCreditAccountLineNature(models.Model):
         'account.vat.period.end.statement', 'VAT statement'
     )
     nature_code = fields.Char('Tax nature code')
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    nature_id = fields.Many2one('account.tax.kind', 'Tax nature')
     amount = fields.Float(
         'Amount', required=True, digits=dp.get_precision('Account')
     )
@@ -875,7 +884,7 @@ class StatementDebitAccountLine(models.Model):
     vat_amount = fields.Float(
         'Vat Amount', digits=dp.get_precision('Account')
     )
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    nature_id = fields.Many2one('account.tax.kind', 'Tax nature')
 
 
 class StatementCreditAccountLine(models.Model):
@@ -900,7 +909,7 @@ class StatementCreditAccountLine(models.Model):
     vat_amount = fields.Float(
         'Vat Amount', digits=dp.get_precision('Account')
     )
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    nature_id = fields.Many2one('account.tax.kind', 'Tax nature')
 
 
 class StatementGenericAccountLine(models.Model):

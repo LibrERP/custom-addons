@@ -53,3 +53,6 @@ coverage.xml
 docs/_build/
 
 /.settings/
+stdout.log
+*.oca
+*.z0i

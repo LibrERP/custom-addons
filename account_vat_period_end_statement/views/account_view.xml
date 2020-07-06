@@ -25,7 +25,7 @@
                     <field name="authority_partner_id" domain="[('supplier', '=', True)]"
                            contenxt="{'default_supplier': True}" attrs="{'invisible': [('annual', '=', True)]}"/>
                     <field name="authority_vat_account_id"
-                           attrs="{'invisible': [('annual', '=', True)], 'required': [('annual', '=', False)]}"/>
+                           attrs="{'invisible': [('annual', '=', True)]}"/>
                     <field name="company_id" groups="base.group_multi_company"/>
                     <field name="interest"/>
                     <field name="interest_percent"
@@ -124,7 +124,6 @@
                             </group>
                         </group>
                     </page>
-                    <!--
                     <page string="Periods">
                         <div>
                             <button type='action' name="%(action_add_period)d" string="Add period" colspan="2"
@@ -133,8 +132,10 @@
                             <button type='action' name="%(action_remove_period)d" string="Remove period" colspan="2"
                                     attrs="{'invisible': [('state', 'in', ('confirmed', 'paid'))]}" icon="fa-minus"/>
                         </div>
+                        <group>
+                            <field name="date_range_ids" colspan="4" nolabel="1" readonly="1"/>
+                        </group>
                     </page>
-                    -->
                     <page string="Accounts">
                         <group colspan="4">
                             <group colspan="4" col="2">

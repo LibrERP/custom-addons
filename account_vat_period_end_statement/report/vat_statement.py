@@ -1,9 +1,11 @@
-#  Copyright 2011-2012 Domsense s.r.l. (<http://www.domsense.com>).
-#  Copyright 2012-2017 Agile Business Group (<http://www.agilebg.com>)
-#  Copyright 2015 Associazione OpenERP Italia (<http://www.openerp-italia.org>)
-#  Copyright 2015 Openforce di Alessandro Camilli (<http://www.openforce.it>)
-#  Copyright 2015 Link It S.p.a. (<http://www.linkgroup.it/>)
-#  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright 2011-12 Domsense s.r.l. <http://www.domsense.com>.
+# Copyright 2012-17 Agile Business Group <http://www.agilebg.com>
+# Copyright 2015 Associazione Odoo Italia <http://www.openerp-italia.org>
+# Copyright 2015 Openforce di Alessandro Camilli <http://www.openforce.it>
+# Copyright 2015 Link It S.p.a. <http://www.linkgroup.it/>
+# Copyright 2020 Odoo Community Association (OCA) <https://odoo-community.org>
+#
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import time
 from odoo import models, api
