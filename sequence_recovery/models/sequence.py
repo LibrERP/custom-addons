@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo import models, fields
+from odoo.addons.base.models.ir_sequence import _alter_sequence, _predict_nextval
 
 
 class IrSequenceRecovery(models.Model):
@@ -59,14 +60,16 @@ class IrSequenceRecovery(models.Model):
                     'name': class_name,
                     'sequence': sequence,
                     'sequence_id': seq_id,
+                    'active': True
                 }
-                recovery_ids = self.search(
-                    [('name', '=', class_name), ('sequence', '=', sequence), ('sequence_id', '=', seq_id)])
-                if recovery_ids:
-                    recovery_id = recovery_ids[0]
+                list_ids = self.search(
+                    [('name', '=', class_name),
+                     ('sequence', '=', sequence), ('sequence_id', '=', seq_id)])
+                if list_ids:
+                    recovery_id = list_ids[0]
                 else:
                     recovery_id = self.create(vals)
-                recovery_ids.append(recovery_id)
+                recovery_ids.append(recovery_id.id)
         return recovery_ids
 
 
@@ -76,26 +79,31 @@ class IrSequence(models.Model):
 
     def next_by_id(self, sequence_id):
         # import pdb; pdb.set_trace()
-        recovery_model = self.env['ir.sequence_recovery']
-        recovery_ids = recovery_model.search([('sequence_id', '=', sequence_id)])
+        recovery_model = self.env['ir.sequence.recovery']
+        recovery_ids = recovery_model.search([('sequence_id', '=', sequence_id),
+                                              ('active', '=', True)],
+                                             order='sequence ASC',
+                                             limit=1)
         if recovery_ids:
             # ----- If found it, it recoveries the sequence and return it
             recovery_id = recovery_ids[0]
-            sequence = recovery_model.browse(recovery_id).sequence
-            recovery_model.write({'active': False})
+            sequence = recovery_id.sequence
+            recovery_id.write({'active': False})
         else:
-            sequence = super(IrSequence, self).next_by_id(sequence_id)
+            sequence = super(IrSequence, self).next_by_id()
         return sequence
 
     def next_by_code(self, sequence_code):
         # import pdb; pdb.set_trace()
-        recovery_model = self.env['ir.sequence_recovery']
-        recovery_ids = recovery_model.search([('name', '=', sequence_code)])
+        recovery_model = self.env['ir.sequence.recovery']
+        recovery_ids = recovery_model.search([('name', '=', sequence_code),
+                                              ('active', '=', True)])
         if recovery_ids:
             # ----- If found it, it recoveries the sequence and return it
             recovery_id = recovery_ids[0]
-            sequence = recovery_model.browse(recovery_id).sequence
-            recovery_model.write({'active': False})
+            sequence = recovery_id.sequence
+            recovery_id.write({'active': False})
         else:
-            sequence = super(IrSequence, self).next_by_code(sequence_code)
+            sequence = super(IrSequence, self).next_by_code()
         return sequence
+
