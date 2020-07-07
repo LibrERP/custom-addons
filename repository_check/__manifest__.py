@@ -48,11 +48,12 @@ And to verify 'git' executable is in the PATH
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Customer Relationship Management',
-    'version': '0.8.5',
+    'version': '0.9.5',
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base'
+        'base',
+        'mail'
     ],
 
     # always loaded
