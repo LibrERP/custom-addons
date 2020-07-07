@@ -1,7 +1,9 @@
-#  Copyright 2012 Domsense s.r.l. (<http://www.domsense.com>).
-#  Copyright 2012-15 Agile Business Group sagl (<http://www.agilebg.com>)
-#  Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
-#  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright 2012 Domsense s.r.l. <http://www.domsense.com>.
+# Copyright 2012-15 Agile Business Group sagl <http://www.agilebg.com>
+# Copyright 2015 Associazione Odoo Italia <http://www.odoo-italia.org>
+# Copyright 2020 Odoo Community Association (OCA) <https://odoo-community.org>
+#
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api
 from odoo.tools.translate import _

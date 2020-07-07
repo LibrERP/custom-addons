@@ -1,7 +1,9 @@
-# Copyright 2011-2012 Domsense s.r.l. (<http://www.domsense.com>).
-# Copyright 2012-15 Agile Business Group sagl (<http://www.agilebg.com>)
-# Copyright 2015 Associazione Odoo Italia (<http://www.odoo-italia.org>)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# Copyright 2011-12 Domsense s.r.l. <http://www.domsense.com>.
+# Copyright 2012-15 Agile Business Group sagl <http://www.agilebg.com>
+# Copyright 2015 Associazione Odoo Italia <http://www.odoo-italia.org>
+# Copyright 2020 Odoo Community Association (OCA) <https://odoo-community.org>
+#
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import math
 from datetime import datetime
@@ -215,7 +217,7 @@ class AccountVatPeriodEndStatement(models.Model):
             'paid': [('readonly', True)],
             'draft': [('readonly', False)]})
     authority_vat_account_id = fields.Many2one(
-        'account.account', 'Tax Authority VAT Account', required=True,
+        'account.account', 'Tax Authority VAT Account', required=False,
         states={
             'confirmed': [('readonly', True)],
             'paid': [('readonly', True)],
@@ -228,7 +230,7 @@ class AccountVatPeriodEndStatement(models.Model):
         'Deductible VAT Amount', compute="_compute_deductible_vat_amount",
         digits=dp.get_precision('Account'))
     journal_id = fields.Many2one(
-        'account.journal', 'Journal', required=True,
+        'account.journal', 'Journal', required=False,
         states={
             'confirmed': [('readonly', True)],
             'paid': [('readonly', True)],
@@ -341,6 +343,13 @@ class AccountVatPeriodEndStatement(models.Model):
     def create_move(self):
         move_obj = self.env['account.move']
         for statement in self:
+            if not statement.journal_id:
+                raise UserError(
+                    _("Journal is required to create account move"))
+            if not statement.authority_vat_account_id:
+                raise UserError(_(
+                    "VAT Authority account is required to create account move")
+                )
             statement_date = fields.Date.to_string(statement.date)
             move_data = {
                 'name': _('VAT statement') + ' - ' + statement_date,
@@ -579,8 +588,8 @@ class AccountVatPeriodEndStatement(models.Model):
              debit_tax_ids,
              debit_line_ids,
              credit_line_ids,
-             debit_nature_ids,
-             credit_nature_ids) = self._get_credit_debit_lines(statement)
+             debit_kind_ids,
+             credit_kind_ids) = self._get_credit_debit_lines(statement)
 
             for debit_line in statement.debit_vat_nature_line_ids:
                 debit_line.unlink()
@@ -595,10 +604,10 @@ class AccountVatPeriodEndStatement(models.Model):
             for credit_line in statement.credit_vat_move_line_ids:
                 credit_line.unlink()
 
-            for debit_vals in debit_nature_ids:
+            for debit_vals in debit_kind_ids:
                 debit_vals['statement_id'] = statement.id
                 debit_nature_model.create(debit_vals)
-            for credit_vals in credit_nature_ids:
+            for credit_vals in credit_kind_ids:
                 credit_vals['statement_id'] = statement.id
                 credit_nature_model.create(credit_vals)
             for debit_vals in debit_line_ids:
@@ -647,7 +656,7 @@ class AccountVatPeriodEndStatement(models.Model):
                     'registry_type': reg_type,
                 })[1:4]))
         return {
-            'nature_id': tax.nature_id.id if tax.nature_id else False,
+            'kind_id': tax.kind_id.id if tax.kind_id else False,
             'account_id': tax.account_id.id if tax.account_id else False,
             'tax_id': tax.id,
                 'base_amount': total_base,
@@ -664,7 +673,7 @@ class AccountVatPeriodEndStatement(models.Model):
                     'level': level,
                 }
                 if level == 'N':
-                    for nm in ('nature_id', 'nature_code'):
+                    for nm in ('kind_id', 'nature_code'):
                         total[hash][nm] = vals.get(nm, False)
                 else:
                     total[hash]['account_id'] = vals.get('account_id', False)
@@ -684,22 +693,22 @@ class AccountVatPeriodEndStatement(models.Model):
         vals, valid = self.evaluate_tax_values(tax, statement)
         if self.show_zero or valid:
             line_ids.append(vals)
-            vals['nature_code'] = tax.nature_id.code if tax.nature_id else ' '
+            vals['nature_code'] = tax.kind_id.code if tax.kind_id else ' '
             total = self.sum_to_account(vals, total)
         return line_ids, total
 
     def split_line_total(self, total):
-        nature_ids = []
+        kind_ids = []
         line_ids = []
         for hash in sorted(total.keys()):
             vals = total[hash]
             level = vals['level']
             del vals['level']
             if level == 'N':
-                nature_ids.append(vals)
+                kind_ids.append(vals)
             else:
                 line_ids.append(vals)
-        return nature_ids, line_ids
+        return kind_ids, line_ids
 
     def _get_credit_debit_lines(self, statement):
         credit_tax_ids = []
@@ -733,12 +742,12 @@ class AccountVatPeriodEndStatement(models.Model):
                 credit_tax_ids, credit_total = self._set_dbtcrd_lines(
                     tax, statement, credit_tax_ids, credit_total)
 
-        debit_nature_ids, debit_line_ids = self.split_line_total(debit_total)
-        credit_nature_ids, credit_line_ids = self.split_line_total(
+        debit_kind_ids, debit_line_ids = self.split_line_total(debit_total)
+        credit_kind_ids, credit_line_ids = self.split_line_total(
             credit_total)
         return (credit_tax_ids, debit_tax_ids,
                 debit_line_ids, credit_line_ids,
-                debit_nature_ids, credit_nature_ids)
+                debit_kind_ids, credit_kind_ids)
 
     @api.onchange('authority_partner_id')
     def on_change_partner_id(self):
@@ -772,8 +781,8 @@ class StatementDebitAccountLineNature(models.Model):
     statement_id = fields.Many2one(
         'account.vat.period.end.statement', 'VAT statement'
     )
-    nature_code = fields.Char('Tax nature code')
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    kind_code = fields.Char('Tax nature code')
+    kind_id = fields.Many2one('account.tax.kind', 'Tax nature')
     amount = fields.Float(
         'Amount', required=True, digits=dp.get_precision('Account')
     )
@@ -792,8 +801,8 @@ class StatementCreditAccountLineNature(models.Model):
     statement_id = fields.Many2one(
         'account.vat.period.end.statement', 'VAT statement'
     )
-    nature_code = fields.Char('Tax nature code')
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    kind_code = fields.Char('Tax nature code')
+    kind_id = fields.Many2one('account.tax.kind', 'Tax nature')
     amount = fields.Float(
         'Amount', required=True, digits=dp.get_precision('Account')
     )
@@ -875,7 +884,7 @@ class StatementDebitAccountLine(models.Model):
     vat_amount = fields.Float(
         'Vat Amount', digits=dp.get_precision('Account')
     )
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    kind_id = fields.Many2one('account.tax.kind', 'Tax nature')
 
 
 class StatementCreditAccountLine(models.Model):
@@ -900,13 +909,13 @@ class StatementCreditAccountLine(models.Model):
     vat_amount = fields.Float(
         'Vat Amount', digits=dp.get_precision('Account')
     )
-    nature_id = fields.Many2one('italy.ade.tax.nature', 'Tax nature')
+    kind_id = fields.Many2one('account.tax.kind', 'Tax nature')
 
 
 class StatementGenericAccountLine(models.Model):
     _name = 'statement.generic.account.line'
     _description = "VAT Statement generic account line"
-    _sort = 'nature_id, account_id, tax_id'
+    _sort = 'kind_id, account_id, tax_id'
 
     account_id = fields.Many2one(
         'account.account', 'Account', required=True
@@ -923,7 +932,7 @@ class StatementGenericAccountLine(models.Model):
     vat_amount = fields.Float(
         'Vat Amount', digits=dp.get_precision('Account')
     )
-    nature_id = fields.Many2one('italy.ade.tax.nature_id', 'Tax nature')
+    kind_id = fields.Many2one('italy.ade.tax.kind_id', 'Tax nature')
     name = fields.Char('Description')
 
 
