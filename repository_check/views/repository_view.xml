@@ -100,7 +100,7 @@
                 if model._context.get('active_model') == 'repository.check':
                     action = model.action_pull_repository()
             </field>
-<!--            <field name="binding_model_id" ref="repository_check.model_repository_check"/>-->
+            <field name="binding_model_id" ref="repository_check.model_repository_check"/>
         </record>
 
 
