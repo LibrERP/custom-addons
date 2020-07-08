@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import models, fields
-from odoo.addons.base.models.ir_sequence import _alter_sequence, _predict_nextval
+from odoo import models, fields, _
+from odoo.exceptions import UserError
 
 
 class IrSequenceRecovery(models.Model):
@@ -104,6 +104,47 @@ class IrSequence(models.Model):
             sequence = recovery_id.sequence
             recovery_id.write({'active': False})
         else:
-            sequence = super(IrSequence, self).next_by_code()
+            sequence = super(IrSequence, self).next_by_code(sequence_code)
         return sequence
+
+    def reset_nogap(self, number_reset):
+        if self.use_date_range:
+            dt = fields.Date.today()
+            year = fields.Date.from_string(dt).strftime('%Y')
+            date_from = '{}-01-01'.format(year)
+            date_to = '{}-12-31'.format(year)
+            table = 'ir_sequence_date_range'
+            query = "SELECT number_next FROM %s WHERE id=%s " \
+                    " AND date_from >= '%s'" \
+                    " AND date_from <= '%s'" \
+                    "FOR UPDATE NOWAIT"
+            self._cr.execute(query % (table, self.id, date_from, date_to))
+            self._cr.execute("UPDATE %s SET number_next=%s WHERE id=%s "
+                             " AND date_from >= '%s'"
+                             " AND date_from <= '%s'"
+                             % (table, number_reset, self.id, date_from,
+                                date_to))
+        else:
+            table = 'ir_sequence'
+            query = "SELECT number_next FROM %s WHERE id=%s FOR UPDATE NOWAIT"
+            self._cr.execute(query % (table, self.id))
+            self._cr.execute("UPDATE %s SET number_next=%s WHERE id=%s "
+                             % (table, number_reset, self.id))
+
+        self.invalidate_cache(['number_next'], [self.id])
+
+    def alter_sequence(self, seq_name, number_increment=None, number_next=None):
+        """ Alter a PostreSQL sequence. """
+        if number_increment == 0:
+            raise UserError(_("Step must not be zero."))
+        query = "SELECT relname FROM pg_class WHERE relkind=%s AND relname=%s"
+        self._cr.execute(query, ('S', seq_name))
+        if not self._cr.fetchone():
+            return
+        statement = "ALTER SEQUENCE %s" % (seq_name, )
+        if number_increment is not None:
+            statement += " INCREMENT BY %d" % (number_increment, )
+        if number_next is not None:
+            statement += " RESTART WITH %d" % (number_next, )
+        self._cr.execute(statement)
 
