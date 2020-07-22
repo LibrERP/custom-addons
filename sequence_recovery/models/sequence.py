@@ -77,8 +77,10 @@ class IrSequence(models.Model):
     _name = "ir.sequence"
     _inherit = "ir.sequence"
 
-    def next_by_id(self, sequence_id):
+    def next_by_id(self, sequence_id=None):
         # import pdb; pdb.set_trace()
+        if sequence_id is None:
+            return super(IrSequence, self).next_by_id()
         recovery_model = self.env['ir.sequence.recovery']
         recovery_ids = recovery_model.search([('sequence_id', '=', sequence_id),
                                               ('active', '=', True)],
