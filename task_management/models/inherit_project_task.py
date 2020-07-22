@@ -12,5 +12,4 @@ class ProjectTask(models.Model):
         #stage_id changed: update user_id
         if 'stage_id' in vals:
             vals['user_id'] = self.env.uid
-            res = super(ProjectTask, self).write(vals)
-            return res
+        return super(ProjectTask, self).write(vals)

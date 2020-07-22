@@ -3,7 +3,7 @@
 
 {
     'name': 'Task Management',
-    'version': '12.0.1.0',
+    'version': '12.0.2.0',
     'category': 'core',
     'author': 'Didotech Srl',
     'website': 'http://www.didotech.com',
