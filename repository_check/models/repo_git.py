@@ -16,7 +16,8 @@ try:
         Git,
         cmd,
         GitError,
-        NoSuchPathError
+        NoSuchPathError,
+        remote
     )
 
     from git.exc import (
@@ -34,19 +35,50 @@ try:
         CallableRemoteProgress
     )
 
+
 except ImportError as err:
     _logger.debug(err)
     _logger.debug('!!! Please install gitpython module !!!')
     time.sleep(3)
 
+import re
+from os.path import isdir,dirname, join
+from io import StringIO
+import sys
+
+
 
 # logging.basicConfig(format='%(name)s: %(message)s')
 # _logger.setLevel(logging.INFO)
 
+regex = r"^([A-Za-z0-9]+@|http(|s)\:\/\/)([A-Za-z0-9.]+(:\d+)?)(?::|\/)([\d\/\w.-]+?)(\.git)?$"
+clone_log = ''
+
+class Progress(remote.RemoteProgress):
+    def line_dropped(self, line):
+        print(line)
+
+
+
+class RedirectedStdout:
+    def __init__(self):
+        self._stdout = None
+        self._string_io = None
+
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._string_io = StringIO()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        sys.stdout = self._stdout
+
+    def __str__(self):
+        return self._string_io.getvalue()
 
 class RepoGit(RepoBase):
 
-    def __init__(self, repo_path, user, passwd):
+    def __init__(self, repo_path, user, passwd, repo_name):
         """
         Initialize the class. This function from repo_path creates self._repo object (git.Repo). If the repository is
         bare repository (does not have a default remote origin repository or a working_tree') raise an error.
@@ -57,10 +89,13 @@ class RepoGit(RepoBase):
         """
         super().__init__(repo_path, user, passwd)
 
+        # if re.search(regex, self._repo_path) or repo_name:
+        #     return
+
         self._repo = None
-        if not os.path.exists(self._repo_path):
-            _logger.error('No such path exists, path = {}'.format(self._repo_path))
-            raise UserError('No such path exists, path = {}'.format(self._repo_path))
+        # if not os.path.exists(self._repo_path) and not re.search(regex, self._repo_path):
+        #     _logger.error('No such path exists, path = {}'.format(self._repo_path))
+        #     raise UserError('No such path exists, path = {}'.format(self._repo_path))
 
         try:
             self._repo = Repo(self._repo_path)
@@ -69,13 +104,14 @@ class RepoGit(RepoBase):
             raise UserError("Invalid git repository: {}, {} ".format(self._repo_path, exp))
         except NoSuchPathError as exp:
             _logger.error('Invalid git repository: {}, {} '.format(self._repo_path, exp))
-            raise UserError("Invalid git repository: {}, {} ".format(self._repo_path, exp))
+            return
+            #raise UserError("Invalid git repository: {}, {} ".format(self._repo_path, exp))
 
         if not self._repo.bare:
             type(self._repo.git).GIT_PYTHON_TRACE = "full"  # this works, writes log!
-        else:
-            _logger.error('Repository {} is a bare repository! Can\'t launch pull command.'.format(self._repo_path))
-            raise UserError("Repository {} is a bare repository! Can\'t launch pull command.".format(self._repo_path))
+        # else:
+        #     _logger.error('Repository {} is a bare repository! Can\'t launch pull command.'.format(self._repo_path))
+        #     raise UserError("Repository {} is a bare repository! Can\'t launch pull command.".format(self._repo_path))
 
     # def remote_ssh_url_has_pwd(self):
     #     """
@@ -230,6 +266,8 @@ class RepoGit(RepoBase):
 
         return ret_flag
 
+
+
     def pull(self):
         """
         Tis function makes some control to repo object and executes 'git pull' command. All the warnings or
@@ -269,6 +307,46 @@ class RepoGit(RepoBase):
             _logger.info('Git pull request failed. Check logs for details!')
 
         return ret_flag, self._output_list
+
+    def clone_cmd(self, repo_name):
+        """
+        Clones repositories either from a local source or from a remote origin
+        :param in: self._repo (git.Repo): the repository to get data from
+        :param out: self._output_list, list of error message in append, to inform about exceptions of GitCmd in GitPython.
+        Returns: True if the process of cloning the repo executes without errors, False if the directory already exists or
+        the repo link is incorrect
+        """
+        cloned_log=''
+
+        #Build Github url
+        github_url = f'https://github.com/OCA/{repo_name}'
+
+        #Check if target directory already contains the repo
+        if isdir(self._repo_path):
+            raise UserError(f'Module already exists in: {self._repo_path}')
+
+        #Clone the repository using a remote url
+        if re.search(regex, self._repo_path) or repo_name:
+            try:
+                with RedirectedStdout() as out:
+                    cloned_log = Repo.clone_from(url=github_url, to_path=self._repo_path, progress=Progress())
+
+                #_logger.info('Git clone request failed. Check logs for details!')
+            except GitCommandError:
+                _logger.info('Git clone request failed. Check logs for details!')
+                return False
+        # else:
+        #     # Clone the repository using a local directory as source
+        #     try:
+        #         self._repo.clone(path=target_dir)
+        #     except GitCommandError:
+        #         _logger.info('Git clone request failed. Check logs for details!')
+        #         return False
+
+        return True, out
+
+
+
 
     # end RepoGit
     # the next functions can be used forward

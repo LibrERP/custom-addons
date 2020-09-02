@@ -7,13 +7,15 @@
             <field name="arch" type="xml">
                 <form string="Repository Check">
                     <group col="2" colspan="4">
-                        <field name="repository_path" on_change="onchange_repository_path(repository_path)"/>
+                        <field name="repository_name" attrs="{'readonly': [('state','=','repo')]}" widget="selection" on_change="onchange_repository_name(repository_name)"/>
+                        <field name="repository_path" force_save = "1" attrs="{'readonly': [('state','=','clone')]}" on_change="onchange_repository_path(repository_path)"/>
                     </group>
                     <group col="4" colspan="4">
                         <field name="username"/>
                         <field name="repository_type"/>
                         <field name="password" password="True" colspan="2"/>
                         <field name="last_check"/>
+                        <field name="state"/>
                     </group>
 <!--                    <group col="2" colspan="2">-->
 <!--                        <field name="username" colspan="2"/>-->
@@ -34,7 +36,10 @@
 <!--                    </group>-->
 <!--                    <newline/>-->
                     <group colspan="2">
-                        <button name="action_pull" string="Pull" type="object"/>
+                         <button name="action_pull" attrs="{'invisible': [('state','!=','repo')]}" string="Pull" type="object"/>
+                    </group>
+                    <group colspan="2">
+                         <button name="action_clone" attrs="{'invisible': [('state','!=','clone')]}" string="Clone" type="object"/>
                     </group>
                     <group col="2" colspan="2">
                         <field name="last_check_state"/>
@@ -68,32 +73,46 @@
 <!--            </record>-->
 
 
+
         <record id="repository_check_tree_view" model="ir.ui.view">
             <field name="name">repository.check.tree.view</field>
             <field name="model">repository.check</field>
-            <field name="type">tree</field>
+            <field name="type" >tree</field>
             <field name="arch" type="xml">
                 <tree string="Repository Check">
+                    <field name="repository_name" />
                     <field name="repository_path" />
                     <field name="repository_type" />
                     <field name="last_check_state" />
                     <field name="last_check" />
+                    <field name="state" />
                 </tree>
             </field>
         </record>
 
-        <record id="action_repository_pull" model="ir.actions.act_window">
-            <field name="name">Check Repository</field>
+<!--        <record id="action_repository_pull" model="ir.actions.act_window">-->
+<!--            <field name="name">Check Repository</field>-->
+<!--            <field name="res_model">repository.check</field>-->
+<!--            <field name="view_type">form</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--            <field name="view_id" ref="repository_check_tree_view"/>-->
+<!--            <field name="target">current</field>-->
+<!--            &lt;!&ndash;field name="domain">[('state','=', 'repo')]</field&ndash;&gt;-->
+<!--        </record>-->
+
+        <record id="action_repository_check_clone" model="ir.actions.act_window">
+            <field name="name">Check or Clone Repository</field>
             <field name="res_model">repository.check</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="repository_check_tree_view"/>
             <field name="target">current</field>
+<!--            <field name="domain">[('state','=', 'clone')]</field>-->
         </record>
 
-        <!--  insert in the action menu in the tree_view Check Repository item with action -->
+          insert in the action menu in the tree_view Check Repository item with action
         <record id="action_start_pull" model="ir.actions.server">
-            <field name="name">Action Check Repository</field>
+            <field name="name">Check Repository</field>
             <field name="model_id" ref="model_repository_check"/>
             <field name="state">code</field>
             <field name="code">
@@ -103,6 +122,17 @@
             <field name="binding_model_id" ref="repository_check.model_repository_check"/>
         </record>
 
+        <!--  insert in the action menu in the tree_view Check Repository item with action -->
+        <record id="action_start_clone" model="ir.actions.server">
+            <field name="name">Clone Repository</field>
+            <field name="model_id" ref="model_repository_check"/>
+            <field name="state">code</field>
+            <field name="code">
+                if model._context.get('active_model') == 'repository.check':
+                    action = model.action_clone_repository()
+            </field>
+            <field name="binding_model_id" ref="repository_check.model_repository_check"/>
+        </record>
 
         <menuitem
             name="Repository"
@@ -110,12 +140,20 @@
             id="menu_repository"
             parent="base.menu_management"
             sequence="150"/>
+<!--        <menuitem-->
+<!--            id="repository_pull_menu"-->
+<!--            name="Check Repository"-->
+<!--            parent="menu_repository"-->
+<!--            groups="base.group_no_one"-->
+<!--            action="action_repository_pull"/>-->
+
         <menuitem
-            id="repository_pull_menu"
-            name="Check Repository"
+            id="repository_clone_menu"
+            name="Check/Clone Repository"
             parent="menu_repository"
             groups="base.group_no_one"
-            action="action_repository_pull"/>
+            action="action_repository_check_clone"
+            />
 
     </data>
 

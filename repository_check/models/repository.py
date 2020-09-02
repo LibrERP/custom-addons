@@ -3,12 +3,17 @@
 from odoo import models, fields, api
 from .repo_git import RepoGit
 from .repo_hg import RepoHg
+from .helper import get_oca_repositories
 
 import time
+import re
+import requests
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from os.path import isdir, join
+import os
 import logging
 from odoo.exceptions import AccessError, UserError, ValidationError
+from pathlib import Path
 
 
 _logger = logging.getLogger(__name__)
@@ -21,19 +26,22 @@ except ImportError as err:
     _logger.debug('!!! Please install gitpython module !!!')
     time.sleep(3)
 
-
 GIT_TYPE = 'git'
 MERCURIAL_TYPE = 'hg'
 NO_TYPE = 'disable'
 
+regex = r"^([A-Za-z0-9]+@|http(|s)\:\/\/)([A-Za-z0-9.]+(:\d+)?)(?::|\/)([\d\/\w.-]+?)(\.git)?$"
+
 
 class RepositoryCheck(models.Model):
     _name = 'repository.check'
-    _rec_name = 'repository_path'
+    _rec_name = 'repository_name'
     _description = 'Check Repository'
 
     repository_path = fields.Char('Repository Path', size=200, help="Repository path in local filesystem.", required=True,
-                                  default='')
+                                  default='', store=True)
+
+    repository_name = fields.Selection(get_oca_repositories(), string='Repository Name')
     repository_type = fields.Selection([
         ('git', 'Git'),
         ('hg', 'Mercurial'),
@@ -49,7 +57,11 @@ class RepositoryCheck(models.Model):
     ], string='Last Check State', readonly=True, default='new')
     last_check = fields.Date('Last Check', readonly=True)
     log = fields.Text('Logging', readonly=True, default='')
-
+    state = fields.Selection([
+        ('clone', 'Clone'),
+        ('repo', 'Pull'),
+        ('', '')
+    ], string='State', readonly=True, default='')
     _sql_constraints = [
         ('unique_repository_path', 'UNIQUE(repository_path)', 'Repository path must be unique !')
     ]
@@ -62,7 +74,7 @@ class RepositoryCheck(models.Model):
         ret_flag = False
         try:
             # to decide if send msg or err_msg to client window
-            git_repo = RepoGit(repo_path, user, passwd)
+            git_repo = RepoGit(repo_path, user, passwd, self.repository_name)
             ret_flag, err_msgs = git_repo.pull()
             if len(err_msgs) > 0:
                 ret_str = '\n'.join(str(x) for x in err_msgs)
@@ -169,6 +181,30 @@ class RepositoryCheck(models.Model):
 
         return True
 
+    @api.multi
+    def action_clone_repository(self):
+        if self.env.context.get('active_ids'):
+            for repository in self.browse(self.env.context['active_ids']):
+                repository.action_clone()
+
+    @api.multi
+    def action_clone(self):
+        values = {}
+        ret_str = ''
+        git_repo = RepoGit(self.repository_path, self.username, self.password, self.repository_name)
+        #Clone repository
+        outcome, ret_str = git_repo.clone_cmd(self.repository_name)
+        #If the cloning process executed with success then change state to repo
+        if outcome == True:
+            self.state = 'repo'
+            self.log = '{}'.format(ret_str)
+        #if ret_str != '':
+        #    values['log'] = '{}'.format(ret_str)
+
+
+
+
+
     def set_default_type(self, path):
         path = path.rstrip('/')
 
@@ -176,8 +212,10 @@ class RepositoryCheck(models.Model):
             ret_type = GIT_TYPE
         elif isdir(join(path, '.hg')):
             ret_type = MERCURIAL_TYPE
+        elif re.search(regex, path):
+            ret_type = GIT_TYPE
         else:
-            ret_type = NO_TYPE
+            ret_type = GIT_TYPE
 
         return ret_type
 
@@ -189,16 +227,26 @@ class RepositoryCheck(models.Model):
             _logger.error('You have not defined the \'Repository Path\'')
             raise UserError('You have not defined the \'Repository Path\'')
 
-        if not isdir(view_path):
-            _logger.error('{} is not a valid repository.'.format(view_path))
-            raise UserError('{} is not a valid repository.'.format(view_path))
+        if not values.get('repository_name', '') and values.get('repository_path'):
+            # Set status as 'repo' which means that the can be pulled
+            values['state'] = 'repo'
+        else:
+            # Set status as 'clone' which means that the repo is still awaiting to be cloned
+            values['state'] = 'clone'
+
+        if not re.search(regex, view_path) and not values.get('repository_name', ''):
+            _logger.error(f"{view_path} is not a remote repository")
+            if not isdir(view_path):
+                _logger.error('{} is not a valid repository.'.format(view_path))
+                raise UserError('{} is not a valid repository.'.format(view_path))
+
+        #Set status as 'clone' which means that the repo is still awaiting to be cloned
 
         # TODO test if last_check_state and log should be set as default, add here to be sure
         values['log'] = ''
         values['last_check_state'] = 'new'
         view_type = self.set_default_type(view_path)
         values['repository_type'] = view_type
-
         return super(RepositoryCheck, self).create(values)
 
     @api.multi
@@ -229,9 +277,9 @@ class RepositoryCheck(models.Model):
         # TODO to control ...
         # values['last_check_state'] = self.last_check_state
 
-        if not isdir(view_path):
-            _logger.error('{} is not a valid repository.'.format(view_path))
-            raise UserError('{} is not a valid repository.'.format(view_path))
+        #if not isdir(view_path) and not re.search(regex, view_path):
+        #    _logger.error('{} is not a valid repository.'.format(view_path))
+        #    raise UserError('{} is not a valid repository.'.format(view_path))
 
         # if 'log' not in values: # to see if do this: clear log text field !
         #     values['log'] = ''
@@ -239,12 +287,24 @@ class RepositoryCheck(models.Model):
 
         return super(RepositoryCheck, self).write(values)
 
+    @api.onchange('repository_name')
+    def onchange_repository_name(self):
+        if self.repository_name:
+            #Get current directory
+            current_dir = Path(__file__).resolve().parents[3]
+            #Build the target directory
+            target_dir = join(current_dir, self.repository_name)
+
+            self.repository_path = str(target_dir)
+            self.state = 'clone'
+
     @api.onchange('repository_path')
     def onchange_repository_path(self):
-
         # ids is set only if path field is changed on already created record (not if it's new to be create)
         if self.repository_path:
-            if isdir(self.repository_path):
+
+            #Check if the path is a remote link or local directory
+            if isdir(self.repository_path) or re.search(regex, self.repository_path) or self.repository_name:
                 view_type = self.set_default_type(self.repository_path)
                 # try to set repository_type here...to be tested
                 self.repository_type = view_type
