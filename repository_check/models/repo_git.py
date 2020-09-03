@@ -329,7 +329,7 @@ class RepoGit(RepoBase):
         if re.search(regex, self._repo_path) or repo_name:
             try:
                 with RedirectedStdout() as out:
-                    cloned_log = Repo.clone_from(url=github_url, to_path=self._repo_path, progress=Progress())
+                    cloned_log = Repo.clone_from(url=github_url, to_path=self._repo_path, progress=Progress(), branch='12.0')
 
                 #_logger.info('Git clone request failed. Check logs for details!')
             except GitCommandError:
