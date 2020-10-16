@@ -8,3 +8,5 @@ Extends Core Functionality
 
         file_manipulation - contains function that recognise Excel, Open Document and CSV documents
             and return them as list of rows
+            
+        pip3 install openpyxl

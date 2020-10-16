@@ -10,6 +10,10 @@
     'depends': [
         'base',
     ],
+    "external_dependencies": {
+        'python': [
+            "openpyxl",
+        ],
 
     'data': [],
     'demo': [],
