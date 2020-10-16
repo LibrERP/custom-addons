@@ -3,7 +3,7 @@
 
 {
     'name': 'Core Extended',
-    'version': '12.0.4.0',
+    'version': '12.0.4.1',
     'category': 'core',
     'author': 'Didotech Srl',
     'website': 'http://www.didotech.com',
@@ -14,6 +14,7 @@
         'python': [
             "openpyxl",
         ],
+    },
 
     'data': [],
     'demo': [],
