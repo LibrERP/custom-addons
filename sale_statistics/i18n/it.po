@@ -559,7 +559,7 @@ msgstr "Gruppo di Nazioni"
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Category of Product"
-msgstr "Categoria of Prodotto"
+msgstr "Categoria Prodotto"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
