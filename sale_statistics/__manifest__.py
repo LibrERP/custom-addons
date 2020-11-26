@@ -23,7 +23,7 @@
 ############################################################################
 {
     'name': 'Sale Statistics',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     "author": "Didotech srl",
     'category': 'Sales Analisys',
     'description': """
