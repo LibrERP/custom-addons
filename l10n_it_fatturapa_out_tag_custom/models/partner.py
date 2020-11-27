@@ -11,3 +11,4 @@ class Partner(models.Model):
         ]
 
     xml_dialect = fields.Selection(string="XML Dialect", selection=supported_dialects, required=False)
+    require_po_reference = fields.Boolean(string="PO Reference in Invoice", help="Add idDocumento in Invoice XML")
