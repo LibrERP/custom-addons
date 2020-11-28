@@ -93,7 +93,7 @@ class SaleReport(models.Model):
                 sale_order_line l
                     join sale_order s on (l.order_id=s.id)
                     join res_company company on s.company_id = company.id
-                    left join res_partner partner_company on (company.partner_id=partner_company.id)
+                        left join res_partner partner_company on (company.partner_id=partner_company.id)
                     join res_partner partner on s.partner_id = partner.id
                     left join res_country partner_country on (partner.country_id=partner_country.id)
                     left join res_country_state partner_state on (partner.state_id=partner_state.id)
