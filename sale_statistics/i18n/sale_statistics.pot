@@ -41,7 +41,7 @@ msgid "Basilicata"
 msgstr ""
 
 #. module: sale_statistics
-#: model:ir.filters,name:sale_statistics.filter_isale_report_product
+#: model:ir.filters,name:sale_statistics.filter_sale_report_product
 msgid "By Product"
 msgstr ""
 

@@ -80,7 +80,7 @@
         <field name="context">{'group_by': ['team_id'], 'measures': ['price_total','product_uom_qty']}</field>
     </record>
 
-    <record id="filter_isale_report_product" model="ir.filters">
+    <record id="filter_sale_report_product" model="ir.filters">
         <field name="name">By Product</field>
         <field name="model_id">sale.stat.report</field>
         <field name="user_id" eval="False"/>
