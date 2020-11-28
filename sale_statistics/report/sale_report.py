@@ -71,11 +71,11 @@ class SaleReport(models.Model):
             s.analytic_account_id as analytic_account_id,
             s.team_id as team_id,
             p.product_tmpl_id as product_tmpl_id,
-            partner.state_id as state_id,
+            partner_state.id as state_id,
             region_state.id as region_id,
-            partner.country_id as country_id,
+            partner_country.id as country_id,
             partner_company.country_id as country_company_id,
-            CASE WHEN partner_company.country_id = partner.country_id THEN FALSE ELSE TRUE END as is_foreign,
+            CASE WHEN partner_company.country_id = partner_country.id THEN FALSE ELSE TRUE END as is_foreign,
             rcgrel.res_country_group_id as country_group_id,
             partner.commercial_partner_id as supplier_id,
             partner.commercial_partner_id as commercial_partner_id,
@@ -95,14 +95,15 @@ class SaleReport(models.Model):
                     join res_company company on s.company_id = company.id
                     left join res_partner partner_company on (company.partner_id=partner_company.id)
                     join res_partner partner on s.partner_id = partner.id
-                    join res_country_state partner_state on (partner.state_id=partner_state.id)
+                    left join res_country partner_country on (partner.country_id=partner_country.id)
+                    left join res_country_state partner_state on (partner.state_id=partner_state.id)
                         left join res_country_region region_state on (partner_state.region_id=region_state.id)
                         left join product_product p on (l.product_id=p.id)
                             left join product_template t on (p.product_tmpl_id=t.id)
                     left join uom_uom u on (u.id=l.product_uom)
                     left join uom_uom u2 on (u2.id=t.uom_id)
                     left join product_pricelist pp on (s.pricelist_id = pp.id)
-                    left join res_country_res_country_group_rel rcgrel on (partner.country_id = rcgrel.res_country_id)
+                    left join res_country_res_country_group_rel rcgrel on (partner_country.id = rcgrel.res_country_id)
         """
         from_str += ", {}".format(other_from) if other_from else ""
         return from_str
@@ -124,9 +125,9 @@ class SaleReport(models.Model):
             s.analytic_account_id,
             s.team_id,
             p.product_tmpl_id,
-            partner.state_id,
+            partner_state.id,
             region_state.id,
-            partner.country_id,
+            partner_country.id,
             partner.commercial_partner_id,
             partner_company.id,
             partner_company.country_id,
