@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-26 11:21+0000\n"
-"PO-Revision-Date: 2020-11-26 11:21+0000\n"
+"POT-Creation-Date: 2020-11-28 16:08+0000\n"
+"PO-Revision-Date: 2020-11-28 16:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,24 @@ msgid "# of Lines"
 msgstr "N. di righe"
 
 #. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ab
+msgid "Abruzzo"
+msgstr ""
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__country_group_id
+msgid "Aggregated region of"
+msgstr "Regioni Aggregate"
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__analytic_account_id
 msgid "Analytic Account"
 msgstr "Conto analitico"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ba
+msgid "Basilicata"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.filters,name:sale_statistics.filter_isale_report_product
@@ -41,6 +56,16 @@ msgid "By Salesteam"
 msgstr "per Team Vendite"
 
 #. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ca
+msgid "Calabria"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-cm
+msgid "Campania"
+msgstr ""
+
+#. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_advanced_sale_report
 msgid "Cancel"
 msgstr "Annulla"
@@ -49,6 +74,11 @@ msgstr "Annulla"
 #: selection:sale.stat.report,state:0
 msgid "Cancelled"
 msgstr "Cancellato"
+
+#. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-center
+msgid "Center"
+msgstr "Centro"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__company_id
@@ -71,12 +101,44 @@ msgid "Confirmation Date"
 msgstr "Data di conferma"
 
 #. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_res_partner
+msgid "Contact"
+msgstr "Contatto"
+
+#. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_res_country
+msgid "Country"
+msgstr "Nazione"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__code
+msgid "Country Code"
+msgstr "Codice nazione"
+
+#. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_res_country_group
+msgid "Country Group"
+msgstr "Raggruppamento nazioni"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__name
+msgid "Country Name"
+msgstr "Nome nazione"
+
+#. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_res_country_state
+msgid "Country state"
+msgstr "Stato nazionale"
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__create_uid
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__create_uid
 msgid "Created by"
 msgstr "Creato da"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__create_date
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__create_date
 msgid "Created on"
 msgstr "Creato il"
 
@@ -99,6 +161,11 @@ msgstr "Gruppo Paese Cliente"
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__commercial_partner_id
 msgid "Customer Entity"
 msgstr "Cliente"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__region_id
+msgid "Customer Region"
+msgstr "Regione Cliente"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__state_id
@@ -142,6 +209,7 @@ msgstr "Importo dello sconto"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__display_name
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__display_name
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
@@ -152,9 +220,19 @@ msgid "Draft Quotation"
 msgstr "Preventivo in bozza"
 
 #. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-er
+msgid "Emilia-Romagna"
+msgstr ""
+
+#. module: sale_statistics
 #: model:res.country.group,name:sale_statistics.euextraue
 msgid "Europe extra UE"
 msgstr "Europa extra UE"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-fv
+msgid "Friuli-Venezia Giulia"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__choose_0101
@@ -168,9 +246,16 @@ msgstr "Peso lordo"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__id
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__id
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__id
 msgid "ID"
 msgstr ""
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__image
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_state__image
+msgid "Image"
+msgstr "Immagine"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__is_foreign
@@ -178,20 +263,58 @@ msgid "Is Foreign"
 msgstr ""
 
 #. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-islands
+msgid "Islands"
+msgstr "Isole"
+
+#. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-regions
+msgid "Italian Regions"
+msgstr "Regioni Italiane"
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary____last_update
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region____last_update
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica il"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__write_uid
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__write_date
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-la
+msgid "Lazio"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-li
+msgid "Liguria"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-lm
+msgid "Lombardia"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ma
+msgid "Marche"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-mo
+msgid "Molise"
+msgstr ""
 
 #. module: sale_statistics
 #: selection:board.temporary,date_represent:0
@@ -217,6 +340,11 @@ msgid "My Sales Analysis by Week"
 msgstr "Mie Analisi Vendite per Settimana"
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__country_id
+msgid "National region of"
+msgstr "Regione nazionale"
+
+#. module: sale_statistics
 #: selection:board.temporary,date_represent:0
 msgid "None"
 msgstr ""
@@ -225,6 +353,16 @@ msgstr ""
 #: model:res.country.group,name:sale_statistics.north_america
 msgid "North America"
 msgstr "Nord America"
+
+#. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-northeast
+msgid "North East"
+msgstr "Nord Est"
+
+#. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-northwest
+msgid "North West"
+msgstr "Nord Ovest"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__order_id
@@ -244,6 +382,11 @@ msgstr "Riferimento ordine"
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__partner_id
 msgid "Partner"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-pm
+msgid "Piemonte"
 msgstr ""
 
 #. module: sale_statistics
@@ -271,6 +414,11 @@ msgstr "Modello prodotto"
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__product_id
 msgid "Product Variant"
 msgstr "Variante prodotto"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-pu
+msgid "Puglia"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__qty_delivered
@@ -308,6 +456,20 @@ msgstr "Preventivo inviato"
 #: model:ir.cron,name:sale_statistics.ir_cron_sale_report_action
 msgid "Refresh Sale Report Materialized View"
 msgstr "Aggiorna vista materializzata Report Vendite"
+
+#. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_res_country_region
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_state__region_id
+#: model:ir.model.fields,field_description:sale_statistics.field_res_partner__region_id
+#: model:ir.model.fields,field_description:sale_statistics.field_res_users__region_id
+msgid "Region"
+msgstr "Region"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country__region_ids
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_group__region_ids
+msgid "Regions"
+msgstr "Regioni"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__order_id
@@ -380,9 +542,29 @@ msgid "Salesperson"
 msgstr "Addetto vendite"
 
 #. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-sa
+msgid "Sardegna"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-si
+msgid "Sicilia"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.group,name:sale_statistics.it-south
+msgid "South"
+msgstr "Sud"
+
+#. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_advanced_sale_report
 msgid "Start Query"
 msgstr "Interrogazione iniziale"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__state_ids
+msgid "States/Provinces"
+msgstr "Stati/Province"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__state
@@ -390,9 +572,24 @@ msgid "Status"
 msgstr "Stato"
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__supplier_id
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: sale_statistics
 #: model:ir.model,name:sale_statistics.model_board_temporary
 msgid "Temporary Class"
 msgstr "Classe Temporanea"
+
+#. module: sale_statistics
+#: model:ir.model.fields,help:sale_statistics.field_res_country_region__code
+msgid "The ISO region code follows ISO 3166 rules."
+msgstr "Il codice della regione segue la normativa ISO 3166 "
+
+#. module: sale_statistics
+#: model:ir.model.fields,help:sale_statistics.field_res_country_region__name
+msgid "The full name of the region."
+msgstr "Nome della Regione"
 
 #. module: sale_statistics
 #: model_terms:ir.actions.act_window,help:sale_statistics.action_order_report_month_all
@@ -411,9 +608,24 @@ msgid "To 31/12"
 msgstr "Al 31/12"
 
 #. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-to
+msgid "Toscana"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__price_total
 msgid "Total"
 msgstr "Totale"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ta
+msgid "Trentino-Alto Adige"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-um
+msgid "Umbria"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__product_uom
@@ -434,6 +646,16 @@ msgstr "Imponibile da fatturare"
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__price_subtotal
 msgid "Untaxed Total"
 msgstr "Totale imponibile"
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-va
+msgid "Valle d'Aosta"
+msgstr ""
+
+#. module: sale_statistics
+#: model:res.country.region,name:sale_statistics.it-ve
+msgid "Veneto"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__volume
@@ -545,6 +767,11 @@ msgstr "Cliente"
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Customer Country"
 msgstr "Nazione Cliente"
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Customer Region"
+msgstr "Regione Cliente"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search

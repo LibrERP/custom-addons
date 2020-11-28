@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-
+	<!-- Country groups -->
         <record id="euextraue" model="res.country.group">
             <field name="name">Europe extra UE</field>
             <field name="country_ids" eval="[(6,0,[
@@ -15,5 +15,152 @@
                 ref('base.us'),ref('base.ca')
 				])]"/>
         </record>
+	<!-- Country groups -->
+
+	<!-- Italy Regions -->
+        <record id="it-ab" model="res.country.region">
+            <field name="name">Abruzzo</field>
+            <field name="code">IT-65</field>
+            <field file="sale_statistics/static/img/region_flags/it-ab.png" name="image" type="base64" />
+        </record>
+        <record id="it-ba" model="res.country.region">
+            <field name="name">Basilicata</field>
+            <field name="code">IT-77</field>
+            <field file="sale_statistics/static/img/region_flags/it-ba.png" name="image" type="base64" />
+        </record>
+        <record id="it-ca" model="res.country.region">
+            <field name="name">Calabria</field>
+            <field name="code">IT-78</field>
+            <field file="sale_statistics/static/img/region_flags/it-ca.png" name="image" type="base64" />
+        </record>
+        <record id="it-cm" model="res.country.region">
+            <field name="name">Campania</field>
+            <field name="code">IT-72</field>
+            <field file="sale_statistics/static/img/region_flags/it-cm.png" name="image" type="base64" />
+        </record>
+        <record id="it-er" model="res.country.region">
+            <field name="name">Emilia-Romagna</field>
+            <field name="code">IT-45</field>
+            <field file="sale_statistics/static/img/region_flags/it-er.png" name="image" type="base64" />
+        </record>
+        <record id="it-fv" model="res.country.region">
+            <field name="name">Friuli-Venezia Giulia</field>
+            <field name="code">IT-36</field>
+            <field file="sale_statistics/static/img/region_flags/it-fv.png" name="image" type="base64" />
+        </record>
+        <record id="it-la" model="res.country.region">
+            <field name="name">Lazio</field>
+            <field name="code">IT-62</field>
+            <field file="sale_statistics/static/img/region_flags/it-la.png" name="image" type="base64" />
+        </record>
+        <record id="it-li" model="res.country.region">
+            <field name="name">Liguria</field>
+            <field name="code">IT-42</field>
+            <field file="sale_statistics/static/img/region_flags/it-li.png" name="image" type="base64" />
+        </record>
+        <record id="it-lm" model="res.country.region">
+            <field name="name">Lombardia</field>
+            <field name="code">IT-25</field>
+            <field file="sale_statistics/static/img/region_flags/it-lm.png" name="image" type="base64" />
+        </record>
+        <record id="it-ma" model="res.country.region">
+            <field name="name">Marche</field>
+            <field name="code">IT-57</field>
+            <field file="sale_statistics/static/img/region_flags/it-ma.png" name="image" type="base64" />
+        </record>
+        <record id="it-mo" model="res.country.region">
+            <field name="name">Molise</field>
+            <field name="code">IT-67</field>
+            <field file="sale_statistics/static/img/region_flags/it-mo.png" name="image" type="base64" />
+        </record>
+        <record id="it-pm" model="res.country.region">
+            <field name="name">Piemonte</field>
+            <field name="code">IT-21</field>
+            <field file="sale_statistics/static/img/region_flags/it-pm.png" name="image" type="base64" />
+        </record>
+        <record id="it-pu" model="res.country.region">
+            <field name="name">Puglia</field>
+            <field name="code">IT-75</field>
+            <field file="sale_statistics/static/img/region_flags/it-pu.png" name="image" type="base64" />
+        </record>
+        <record id="it-sa" model="res.country.region">
+            <field name="name">Sardegna</field>
+            <field name="code">IT-88</field>
+            <field file="sale_statistics/static/img/region_flags/it-sa.png" name="image" type="base64" />
+        </record>
+        <record id="it-si" model="res.country.region">
+            <field name="name">Sicilia</field>
+            <field name="code">IT-82</field>
+            <field file="sale_statistics/static/img/region_flags/it-si.png" name="image" type="base64" />
+        </record>
+        <record id="it-to" model="res.country.region">
+            <field name="name">Toscana</field>
+            <field name="code">IT-52</field>
+            <field file="sale_statistics/static/img/region_flags/it-to.png" name="image" type="base64" />
+        </record>
+        <record id="it-ta" model="res.country.region">
+            <field name="name">Trentino-Alto Adige</field>
+            <field name="code">IT-32</field>
+            <field file="sale_statistics/static/img/region_flags/it-ta.png" name="image" type="base64" />
+        </record>
+        <record id="it-um" model="res.country.region">
+            <field name="name">Umbria</field>
+            <field name="code">IT-55</field>
+            <field file="sale_statistics/static/img/region_flags/it-um.png" name="image" type="base64" />
+        </record>
+        <record id="it-va" model="res.country.region">
+            <field name="name">Valle d'Aosta</field>
+            <field name="code">IT-23</field>
+            <field file="sale_statistics/static/img/region_flags/it-va.png" name="image" type="base64" />
+        </record>
+        <record id="it-ve" model="res.country.region">
+            <field name="name">Veneto</field>
+            <field name="code">IT-34</field>
+            <field file="sale_statistics/static/img/region_flags/it-ve.png" name="image" type="base64" />
+        </record>
+	<!-- Italy Regions -->
+
+	<!-- Aggregated Regions -->
+	    <record id="it-regions" model="res.country.group">
+            <field name="name">Italian Regions</field>
+            <field name="region_ids" eval="[(6,0,[
+                ref('it-ab'),ref('it-ba'),ref('it-ca'),ref('it-cm'),ref('it-er'),
+                ref('it-fv'),ref('it-la'),ref('it-li'),ref('it-lm'),ref('it-ma'),
+                ref('it-mo'),ref('it-pm'),ref('it-pu'),ref('it-sa'),ref('it-si'),
+                ref('it-to'),ref('it-ta'),ref('it-um'),ref('it-va'),ref('it-ve')
+                ])]"/>
+        </record>
+	    <record id="it-northeast" model="res.country.group">
+            <field name="name">North East</field>
+            <field name="region_ids" eval="[(6,0,[
+            	ref('it-ve'),ref('it-fv'),ref('it-ta')
+                ])]"/>
+        </record>
+	    <record id="it-northwest" model="res.country.group">
+            <field name="name">North West</field>
+            <field name="region_ids" eval="[(6,0,[
+            	ref('it-va'),ref('it-li'),ref('it-lm'),ref('it-pm')
+                ])]"/>
+        </record>
+	    <record id="it-center" model="res.country.group">
+            <field name="name">Center</field>
+            <field name="region_ids" eval="[(6,0,[
+                ref('it-er'),ref('it-ma'),ref('it-la'),ref('it-to'),ref('it-ab'),
+                ref('it-um')
+                ])]"/>
+        </record>
+	    <record id="it-south" model="res.country.group">
+            <field name="name">South</field>
+            <field name="region_ids" eval="[(6,0,[
+                ref('it-ba'),ref('it-ca'),ref('it-cm'),ref('it-mo'),ref('it-pu')
+                ])]"/>
+       </record>
+	    <record id="it-islands" model="res.country.group">
+            <field name="name">Islands</field>
+            <field name="region_ids" eval="[(6,0,[
+                ref('it-sa'),ref('it-si')
+                ])]"/>
+        </record>
+	<!-- Aggregated Regions -->
     </data>
 </odoo>

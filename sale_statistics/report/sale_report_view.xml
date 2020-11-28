@@ -121,6 +121,7 @@
                     <filter string="Salesperson" name="user" context="{'group_by':'user_id'}"/>
                     <filter string="Customer" name="customer" context="{'group_by':'partner_id'}"/>
                     <filter string="Customer Country" name="country_id" context="{'group_by':'country_id'}"/>
+                    <filter string="Customer Region" name="region_id" context="{'group_by':'region_id'}"/>
                     <filter string="Customer State" name="state_id" context="{'group_by':'state_id'}"/>
                     <filter string="Country Group" name="country_group_id" context="{'group_by':'country_group_id'}"/>
                     <filter string="Category of Product" name="category" context="{'group_by':'categ_id'}"/>

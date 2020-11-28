@@ -36,6 +36,7 @@ class SaleReport(models.Model):
 
     supplier_id = fields.Many2one('res.partner', 'Supplier', readonly=True, index=True)
     state_id = fields.Many2one('res.country.state', 'Customer State', readonly=True, index=True)
+    region_id = fields.Many2one('res.country.region', 'Customer Region', readonly=True, index=True)
     country_group_id = fields.Many2one('res.country.group', 'Customer Country Group', readonly=True, index=True)
     country_company_id = fields.Many2one('res.country', 'Company Country', readonly=True, index=True)
     partner_company_id = fields.Many2one('res.partner', 'Company Partner', readonly=True, index=True)
@@ -71,6 +72,7 @@ class SaleReport(models.Model):
             s.team_id as team_id,
             p.product_tmpl_id as product_tmpl_id,
             partner.state_id as state_id,
+            region_state.id as region_id,
             partner.country_id as country_id,
             partner_company.country_id as country_company_id,
             CASE WHEN partner_company.country_id = partner.country_id THEN FALSE ELSE TRUE END as is_foreign,
@@ -93,6 +95,8 @@ class SaleReport(models.Model):
                     join res_company company on s.company_id = company.id
                     left join res_partner partner_company on (company.partner_id=partner_company.id)
                     join res_partner partner on s.partner_id = partner.id
+                    join res_country_state partner_state on (partner.state_id=partner_state.id)
+                        left join res_country_region region_state on (partner_state.region_id=region_state.id)
                         left join product_product p on (l.product_id=p.id)
                             left join product_template t on (p.product_tmpl_id=t.id)
                     left join uom_uom u on (u.id=l.product_uom)
@@ -121,6 +125,7 @@ class SaleReport(models.Model):
             s.team_id,
             p.product_tmpl_id,
             partner.state_id,
+            region_state.id,
             partner.country_id,
             partner.commercial_partner_id,
             partner_company.id,
@@ -150,6 +155,7 @@ class SaleReport(models.Model):
             'analytic_account_id',
             'team_id',
             'state_id',
+            'region_id',
             'country_id',
             'supplier_id',
             'commercial_partner_id',

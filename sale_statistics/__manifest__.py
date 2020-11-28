@@ -23,7 +23,7 @@
 ############################################################################
 {
     'name': 'Sale Statistics',
-    'version': '12.0.0.1',
+    'version': '12.0.1.0',
     "author": "Didotech srl",
     'category': 'Sales Analisys',
     'description': """
@@ -42,6 +42,7 @@ Creates a dashboard for accountants that includes:
     * Sales grouped by Supplier
     * Sales grouped by Salesman
     * Sales grouped by Customer
+    * Sales grouped by Country, Region, Province
     * Sales grouped by Product Template
     * Sales grouped by Product
 
@@ -60,6 +61,8 @@ Contributors:
     ],
     'data': [
         'data/res_country_data.xml',
+        'data/res.country.region.csv',
+        'data/res.country.state.csv',
         'security/account_security.xml',
         'security/ir.model.access.csv',
         'report/sale_report_view.xml',

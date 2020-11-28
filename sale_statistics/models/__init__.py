@@ -24,3 +24,5 @@
 
 from . import common
 from . import board
+from . import res_country
+from . import res_partner

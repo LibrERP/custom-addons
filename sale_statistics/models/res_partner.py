@@ -27,8 +27,6 @@ from odoo import api, fields, models, tools, SUPERUSER_ID, _
 
 
 class Partner(models.Model):
-    _description = 'Contact'
-    _inherit = ['format.address.mixin']
-    _name = "res.partner"
+    _inherit = "res.partner"
 
-    state_id = fields.Many2one("res.country.state", string='State', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
+    region_id = fields.Many2one("res.country.region", string='Region', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
