@@ -121,6 +121,7 @@
 	<!-- Italy Regions -->
 
 	<!-- Aggregated Regions -->
+<!--
 	    <record id="it-regions" model="res.country.group">
             <field name="name">Italian Regions</field>
             <field name="region_ids" eval="[(6,0,[
@@ -130,6 +131,7 @@
                 ref('it-to'),ref('it-ta'),ref('it-um'),ref('it-va'),ref('it-ve')
                 ])]"/>
         </record>
+-->
 	    <record id="it-northeast" model="res.country.group">
             <field name="name">North East</field>
             <field name="region_ids" eval="[(6,0,[
