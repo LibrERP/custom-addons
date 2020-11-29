@@ -168,6 +168,11 @@ msgid "Customer Region"
 msgstr ""
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__region_group_id
+msgid "Customer Region Group"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__state_id
 msgid "Customer State"
 msgstr ""
@@ -810,6 +815,11 @@ msgstr ""
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Country Group"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Region Group"
 msgstr ""
 
 #. module: sale_statistics

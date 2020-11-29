@@ -34,14 +34,25 @@ class SaleReport(models.Model):
     _order = 'date desc'
     # _rec_name = 'date'
 
-    supplier_id = fields.Many2one('res.partner', 'Supplier', readonly=True, index=True)
-    state_id = fields.Many2one('res.country.state', 'Customer State', readonly=True, index=True)
-    region_id = fields.Many2one('res.country.region', 'Customer Region', readonly=True, index=True)
-    country_group_id = fields.Many2one('res.country.group', 'Customer Country Group', readonly=True, index=True)
-    country_company_id = fields.Many2one('res.country', 'Company Country', readonly=True, index=True)
-    partner_company_id = fields.Many2one('res.partner', 'Company Partner', readonly=True, index=True)
-    is_foreign = fields.Boolean(readonly=True)    
-
+    supplier_id = fields.Many2one('res.partner', 'Supplier',
+                                  readonly=True, index=True)
+    state_id = fields.Many2one('res.country.state', 'Customer State',
+                               readonly=True, index=True)
+    region_id = fields.Many2one('res.country.region', 'Customer Region',
+                                readonly=True, index=True)
+    region_group_id = fields.Many2one('res.country.group',
+                                       'Customer Region Group',
+                                       readonly=True, index=True)
+    country_group_id = fields.Many2one('res.country.group',
+                                       'Customer Country Group',
+                                       readonly=True, index=True)
+    country_company_id = fields.Many2one('res.country',
+                                         'Company Country',
+                                         readonly=True, index=True)
+    partner_company_id = fields.Many2one('res.partner',
+                                         'Company Partner',
+                                         readonly=True, index=True)
+    is_foreign = fields.Boolean(readonly=True)
 
     def _select(self, other_select=""):
         select_str = """
@@ -77,6 +88,7 @@ class SaleReport(models.Model):
             partner_company.country_id as country_company_id,
             CASE WHEN partner_company.country_id = partner_country.id THEN FALSE ELSE TRUE END as is_foreign,
             rcgrel.res_country_group_id as country_group_id,
+            regrel.res_country_group_id as region_group_id,
             partner.commercial_partner_id as supplier_id,
             partner.commercial_partner_id as commercial_partner_id,
             sum(p.weight * l.product_uom_qty / u.factor * u2.factor) as weight,
@@ -104,6 +116,7 @@ class SaleReport(models.Model):
                     left join uom_uom u2 on (u2.id=t.uom_id)
                     left join product_pricelist pp on (s.pricelist_id = pp.id)
                     left join res_country_res_country_group_rel rcgrel on (partner_country.id = rcgrel.res_country_id)
+                    left join res_country_group_res_country_region_rel regrel on (region_state.id = regrel.res_country_region_id)
         """
         from_str += ", {}".format(other_from) if other_from else ""
         return from_str
@@ -132,6 +145,7 @@ class SaleReport(models.Model):
             partner_company.id,
             partner_company.country_id,
             rcgrel.res_country_group_id,
+            regrel.res_country_group_id,
             l.discount,
             s.id
         """

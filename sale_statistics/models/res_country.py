@@ -41,8 +41,10 @@ class CountryRegion(models.Model):
                                  string='National region of',
                                  index=True)
     country_group_ids = fields.Many2many('res.country.group',
-                                         index=True,
-                                         string='Regions aggregated')
+                                         'res_country_group_id',
+                                         'res_country_region_id',
+                                         string='Aggregate of Regions',
+                                         index=True)
     state_ids = fields.One2many('res.country.state', 'region_id',
                                 string='States/Provinces')
 
@@ -57,7 +59,10 @@ class Country(models.Model):
 class CountryGroup(models.Model):
     _inherit = 'res.country.group'
 
-    region_ids = fields.Many2many('res.country.region', string='Regions',
+    region_ids = fields.Many2many('res.country.region',
+                                  'res_country_region_id',
+                                  'res_country_group_id',
+                                  string='Regions aggregated',
                                   index=True)
 
 

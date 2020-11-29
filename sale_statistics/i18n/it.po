@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-29 12:48+0000\n"
-"PO-Revision-Date: 2020-11-29 12:48+0000\n"
+"POT-Creation-Date: 2020-11-29 14:49+0000\n"
+"PO-Revision-Date: 2020-11-29 14:49+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,9 +26,9 @@ msgid "Abruzzo"
 msgstr ""
 
 #. module: sale_statistics
-#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__country_group_id
-msgid "Aggregated region of"
-msgstr "Regioni Aggregate"
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_region__country_group_ids
+msgid "Aggregate of Regions"
+msgstr "Aggregato di Regioni"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__analytic_account_id
@@ -168,6 +168,11 @@ msgid "Customer Region"
 msgstr "Regione Cliente"
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__region_group_id
+msgid "Customer Region Group"
+msgstr "Gruppo Regione Cliente"
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__state_id
 msgid "Customer State"
 msgstr "Provincia/Stato Cliente"
@@ -291,11 +296,6 @@ msgstr ""
 #: model:res.country.group,name:sale_statistics.it-islands
 msgid "Islands"
 msgstr "Isole"
-
-#. module: sale_statistics
-#: model:res.country.group,name:sale_statistics.it-regions
-msgid "Italian Regions"
-msgstr "Regioni Italiane"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary____last_update
@@ -488,13 +488,17 @@ msgstr "Aggiorna vista materializzata Report Vendite"
 #: model:ir.model.fields,field_description:sale_statistics.field_res_partner__region_id
 #: model:ir.model.fields,field_description:sale_statistics.field_res_users__region_id
 msgid "Region"
-msgstr "Region"
+msgstr "Regione"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_res_country__region_ids
-#: model:ir.model.fields,field_description:sale_statistics.field_res_country_group__region_ids
 msgid "Regions"
 msgstr "Regioni"
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_res_country_group__region_ids
+msgid "Regions aggregated"
+msgstr "Regioni aggregate"
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__order_id
@@ -536,7 +540,7 @@ msgstr "Analisi Vendite per Settimana"
 #. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_yearly_all
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_yearly_all
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_year
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_pivot_year
 msgid "Sales Analysis by Year"
 msgstr "Analisi Vendite per Anno"
 
@@ -810,6 +814,11 @@ msgstr "Provincia/Stato Cliente"
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
 msgid "Country Group"
 msgstr "Gruppo di Nazioni"
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
+msgid "Region Group"
+msgstr "Gruppo di Regioni"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
