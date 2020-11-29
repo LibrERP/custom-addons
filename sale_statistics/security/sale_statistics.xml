@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="group_sale_statistics" model="res.groups">
+	  		<field name="name">Sales Analysis Users</field>
+		</record>
+		<record id="group_sale_statistics_mgr" model="res.groups">
+			<field name="name">Sales Analysis Managers</field>
+		</record>
+	</data>
+</odoo>
