@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-29 14:49+0000\n"
-"PO-Revision-Date: 2020-11-29 14:49+0000\n"
+"POT-Creation-Date: 2020-11-29 15:32+0000\n"
+"PO-Revision-Date: 2020-11-29 15:32+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -253,6 +253,8 @@ msgstr "Grafico Analisi Vendite per Mese"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_quarter
+#: model:ir.actions.act_window,name:sale_statistics.action_order_graph_quarterly_all
+#: model:ir.ui.menu,name:sale_statistics.menu_graph_product_quarterlly_all
 msgid "Graphic Sales Analysis by Quarter"
 msgstr "Grafico Analisi Vendite per Trimestre"
 
@@ -262,12 +264,6 @@ msgstr "Grafico Analisi Vendite per Trimestre"
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_year
 msgid "Graphic Sales Analysis by Year"
 msgstr "Grafico Analisi Vendite per Anno"
-
-#. module: sale_statistics
-#: model:ir.actions.act_window,name:sale_statistics.action_order_graph_quarterly_all
-#: model:ir.ui.menu,name:sale_statistics.menu_graph_product_quarterlly_all
-msgid "Graphic Sales This Year by Quarter"
-msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__weight
@@ -510,6 +506,16 @@ msgstr "Ordine di vendita"
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_advanced_sale_report
 msgid "Sale Report Board"
 msgstr "Riepilogo Vendite"
+
+#. module: sale_statistics
+#: model:res.groups,name:sale_statistics.group_sale_statistics_mgr
+msgid "Sales Analysis Managers"
+msgstr "Analisi Vendite Manager"
+
+#. module: sale_statistics
+#: model:res.groups,name:sale_statistics.group_sale_statistics
+msgid "Sales Analysis Users"
+msgstr "Analisi Vendite Utenti"
 
 #. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_month_all
@@ -812,13 +818,13 @@ msgstr "Provincia/Stato Cliente"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Country Group"
-msgstr "Gruppo di Nazioni"
+msgid "Region Group"
+msgstr "Gruppo di Regioni"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Region Group"
-msgstr "Gruppo di Regioni"
+msgid "Country Group"
+msgstr "Gruppo di Nazioni"
 
 #. module: sale_statistics
 #: model_terms:ir.ui.view,arch_db:sale.view_order_product_search

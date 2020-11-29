@@ -133,9 +133,9 @@
                 <field name="is_foreign" invisible="1"/>
                 <filter string="My Year"   name="thisyearmine" domain="['&amp;',('user_id','=',uid),'&amp;',('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]"/>
                 <separator/>
-                <filter string="This Year" name="thisyear"     domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" groups="sales_team.group_sale_manager"/>
+                <filter string="This Year" name="thisyear"     domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]"   groups="sale_statistics.group_sale_statistics_mgr"/>
                 <separator/>
-                <filter string="This Month" name="thismonth"   domain="[('date','&lt;=', time.strftime('%%Y-%%m-%d')),('date','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
+                <filter string="This Month" name="thismonth"   domain="[('date','&lt;=', time.strftime('%%Y-%%m-%d')),('date','&gt;=',time.strftime('%%Y-%%m-01'))]" groups="sale_statistics.group_sale_statistics_mgr"/>
                 <separator/>
                 <filter string="Quotations" name="quotations"  domain="[('state','=','draft')]"/>
                 <filter string="Sales" 		name="sales" 	   domain="[('state','not in',('draft', 'cancel'))]"/>
@@ -271,7 +271,7 @@
     </record>
 
     <record id="action_order_graph_quarterly_all" model="ir.actions.act_window">
-        <field name="name">Graphic Sales This Year by Quarter</field>
+        <field name="name">Graphic Sales Analysis by Quarter</field>
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
@@ -293,18 +293,26 @@
     </record>
 
 	<!-- Restricted to Sales Manager -->
-    <menuitem action="action_order_report_yearly_all"  id="menu_report_product_yearly_all"  parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
-    <menuitem action="action_order_report_quarter_all" id="menu_report_product_quarter_all" parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
-    <menuitem action="action_order_report_month_all"   id="menu_report_product_month_all"   parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
-    <menuitem action="action_order_report_weekly_all"  id="menu_report_product_weekly_all"  parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
+    <menuitem action="action_order_report_yearly_all"  id="menu_report_product_yearly_all"  parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>/>
+    <menuitem action="action_order_report_quarter_all" id="menu_report_product_quarter_all" parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>/>
+    <menuitem action="action_order_report_month_all"   id="menu_report_product_month_all"   parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>/>
+    <menuitem action="action_order_report_weekly_all"  id="menu_report_product_weekly_all"  parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>/>
 
-    <menuitem action="action_order_graph_yearly_all"    id="menu_graph_product_yearly_all"     parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
-    <menuitem action="action_order_graph_quarterly_all" id="menu_graph_product_quarterlly_all" parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
-    <menuitem action="action_order_graph_monthly_all"   id="menu_graph_product_monthly_all"    parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
+    <menuitem action="action_order_graph_yearly_all"    id="menu_graph_product_yearly_all"     parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>
+    <menuitem action="action_order_graph_quarterly_all" id="menu_graph_product_quarterlly_all" parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>
+    <menuitem action="action_order_graph_monthly_all"   id="menu_graph_product_monthly_all"    parent="sale.menu_sale_report" sequence="10" groups="sale_statistics.group_sale_statistics_mgr"/>
 	<!-- Restricted to Sales Manager -->
 
-    <menuitem action="action_order_report_quarter_only_mine" id="menu_report_product_quarter_only_mine" parent="sale.menu_sale_report" sequence="11"/>
-    <menuitem action="action_order_report_month_only_mine"   id="menu_report_product_month_only_mine"   parent="sale.menu_sale_report" sequence="11"/>
-    <menuitem action="action_order_report_weekly_only_mine"  id="menu_report_product_weekly_only_mine"  parent="sale.menu_sale_report" sequence="11"/>
+    <menuitem action="action_order_report_quarter_only_mine" id="menu_report_product_quarter_only_mine" parent="sale.menu_sale_report" sequence="11" groups="sale_statistics.group_sale_statistics"/>
+    <menuitem action="action_order_report_month_only_mine"   id="menu_report_product_month_only_mine"   parent="sale.menu_sale_report" sequence="11" groups="sale_statistics.group_sale_statistics"/>
+    <menuitem action="action_order_report_weekly_only_mine"  id="menu_report_product_weekly_only_mine"  parent="sale.menu_sale_report" sequence="11" groups="sale_statistics.group_sale_statistics"/>
+
+	<!-- Redefined menu items -->
+	<menuitem id="sale.menu_sale_report"
+		name="Reporting"
+		parent="sale.sale_menu_root"
+		sequence="5"
+		groups="sales_team.group_sale_manager,sale_statistics.group_sale_statistics,sale_statistics.group_sale_statistics_mgr"/>
+
 </data>
 </odoo>

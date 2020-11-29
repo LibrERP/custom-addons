@@ -23,9 +23,9 @@
 ############################################################################
 {
     'name': 'Sale Statistics',
-    'version': '12.0.2.0',
+    'version': '12.0.3.0',
     "author": "Didotech srl",
-    'category': 'Sales Analisys',
+    'category': 'Business Analisys',
     'description': """
 Sales Statistics
 ================
@@ -33,13 +33,11 @@ Sales Statistics
 Sales Statistics module that covers:
 ------------------------------------
     * Sale Orders
-    * Purchase Orders
     * Sale Volumes
 
 Creates a dashboard for accountants that includes:
 --------------------------------------------------
     * Sales organized by Year, Quarter, Month, Week
-    * Sales grouped by Supplier
     * Sales grouped by Salesman
     * Sales grouped by Customer
     * Sales grouped by Country, Region, Province
@@ -60,11 +58,12 @@ Contributors:
         'sale',
     ],
     'data': [
+        'security/sale_statistics.xml',
+        'security/account_security.xml',
+        'security/ir.model.access.csv',
         'data/res_country_data.xml',
         'data/res.country.region.csv',
         'data/res.country.state.csv',
-        'security/account_security.xml',
-        'security/ir.model.access.csv',
         'report/sale_report_view.xml',
         'data/scheduled_action.xml',
         'views/board_view.xml',
