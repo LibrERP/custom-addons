@@ -38,8 +38,10 @@ class CountryRegion(models.Model):
         help='The ISO region code follows ISO 3166 rules.')
     image = fields.Binary(attachment=True)
     country_id = fields.Many2one('res.country', string='National region of')
-    country_group_id = fields.Many2one('res.country.group', string='Aggregated region of')
-    state_ids = fields.One2many('res.country.state', 'region_id', string='States/Provinces')
+    country_group_ids = fields.Many2many('res.country.group', 'region_id',
+                                         string='Regions aggregated')
+    state_ids = fields.One2many('res.country.state', 'region_id',
+                                string='States/Provinces')
 
 
 class Country(models.Model):
@@ -51,7 +53,7 @@ class Country(models.Model):
 class CountryGroup(models.Model):
     _inherit = 'res.country.group'
 
-    region_ids = fields.One2many('res.country.region', 'country_group_id', string='Regions')
+    region_ids = fields.Many2many('res.country.region', string='Regions')
 
 
 class CountryState(models.Model):
