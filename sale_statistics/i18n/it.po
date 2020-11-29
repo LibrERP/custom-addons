@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-28 16:08+0000\n"
-"PO-Revision-Date: 2020-11-28 16:08+0000\n"
+"POT-Creation-Date: 2020-11-29 12:48+0000\n"
+"PO-Revision-Date: 2020-11-29 12:48+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -238,6 +238,31 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__choose_0101
 msgid "From 01/01"
 msgstr "Dal 01/01"
+
+#. module: sale_statistics
+#: model:ir.actions.act_window,name:sale_statistics.action_order_graph_monthly_all
+#: model:ir.ui.menu,name:sale_statistics.menu_graph_product_monthly_all
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_month
+msgid "Graphic Sales Analysis by Month"
+msgstr "Grafico Analisi Vendite per Mese"
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_quarter
+msgid "Graphic Sales Analysis by Quarter"
+msgstr "Grafico Analisi Vendite per Trimestre"
+
+#. module: sale_statistics
+#: model:ir.actions.act_window,name:sale_statistics.action_order_graph_yearly_all
+#: model:ir.ui.menu,name:sale_statistics.menu_graph_product_yearly_all
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_year
+msgid "Graphic Sales Analysis by Year"
+msgstr "Grafico Analisi Vendite per Anno"
+
+#. module: sale_statistics
+#: model:ir.actions.act_window,name:sale_statistics.action_order_graph_quarterly_all
+#: model:ir.ui.menu,name:sale_statistics.menu_graph_product_quarterlly_all
+msgid "Graphic Sales This Year by Quarter"
+msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__weight
@@ -485,26 +510,26 @@ msgstr "Riepilogo Vendite"
 #. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_month_all
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_month_all
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_month
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_pivot_month
 msgid "Sales Analysis by Month"
 msgstr "Analisi Vendite per Mese"
 
 #. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_quarter_all
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_quarter_all
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_quarter
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_pivot_quarter
 msgid "Sales Analysis by Quarter"
 msgstr "Analisi Vendite per Trimestre"
 
 #. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_team_graph
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_team_pivot
 msgid "Sales Analysis by Salesteam"
 msgstr "Analisi Vendite per Team Vendite"
 
 #. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_weekly_all
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_weekly_all
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_week
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_pivot_week
 msgid "Sales Analysis by Week"
 msgstr "Analisi Vendite per Settimana"
 
@@ -592,6 +617,9 @@ msgid "The full name of the region."
 msgstr "Nome della Regione"
 
 #. module: sale_statistics
+#: model_terms:ir.actions.act_window,help:sale_statistics.action_order_graph_monthly_all
+#: model_terms:ir.actions.act_window,help:sale_statistics.action_order_graph_quarterly_all
+#: model_terms:ir.actions.act_window,help:sale_statistics.action_order_graph_yearly_all
 #: model_terms:ir.actions.act_window,help:sale_statistics.action_order_report_month_all
 #: model_terms:ir.actions.act_window,help:sale_statistics.action_order_report_month_only_mine
 #: model_terms:ir.actions.act_window,help:sale_statistics.action_order_report_quarter_all
