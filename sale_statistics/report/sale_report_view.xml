@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>
-
-    <record id="view_order_product_team_graph" model="ir.ui.view">
+	<!-- Pivot Tables -->
+    <record id="view_order_product_team_pivot" model="ir.ui.view">
          <field name="name">sale.report.graph</field>
          <field name="model">sale.report</field>
          <field name="arch" type="xml">
@@ -14,9 +14,8 @@
          </field>
     </record>
 
- 
-    <record id="view_order_product_graph_month" model="ir.ui.view">
-         <field name="name">sale.stat.report.graph.month</field>
+    <record id="view_order_product_pivot_month" model="ir.ui.view">
+         <field name="name">sale.stat.report.pivot.month</field>
          <field name="model">sale.stat.report</field>
          <field name="arch" type="xml">
              <pivot string="Sales Analysis by Month" disable_linking="True">
@@ -27,8 +26,8 @@
          </field>
     </record>
 
-    <record id="view_order_product_graph_quarter" model="ir.ui.view">
-         <field name="name">sale.stat.report.graph.quarter</field>
+    <record id="view_order_product_pivot_quarter" model="ir.ui.view">
+         <field name="name">sale.stat.report.pivot.quarter</field>
          <field name="model">sale.stat.report</field>
          <field name="arch" type="xml">
              <pivot string="Sales Analysis by Quarter" disable_linking="True">
@@ -39,9 +38,9 @@
          </field>
     </record>
 
-    <record id="view_order_product_graph_week" model="ir.ui.view">
-          <field name="name">sale.stat.report.graph.weekly</field>
-         <field name="model">sale.stat.report</field>
+    <record id="view_order_product_pivot_week" model="ir.ui.view">
+          <field name="name">sale.stat.report.pivot.weekly</field>
+          <field name="model">sale.stat.report</field>
           <field name="arch" type="xml">
               <pivot string="Sales Analysis by Week" disable_linking="True">
                  <field name="user_id" type="row"/>
@@ -51,8 +50,8 @@
         </field>
     </record>
 
-    <record id="view_order_product_graph_year" model="ir.ui.view">
-         <field name="name">sale.stat.report.graph.year</field>
+    <record id="view_order_product_pivot_year" model="ir.ui.view">
+         <field name="name">sale.stat.report.pivot.year</field>
          <field name="model">sale.stat.report</field>
          <field name="arch" type="xml">
               <pivot string="Sales Analysis by Year" disable_linking="True">
@@ -63,8 +62,44 @@
          </field>
     </record>
 
-    <!-- Custom reports (aka filters) -->
+	<!-- Graphic Tables -->
+     <record id="view_order_product_graph_year" model="ir.ui.view">
+         <field name="name">sale.stat.report.graph.year</field>
+         <field name="model">sale.stat.report</field>
+         <field name="arch" type="xml">
+             <graph string="Graphic Sales Analysis by Year" type="bar">
+                 <field name="user_id" type="row"/>
+                 <field name="date" interval="year" type="col"/>
+                 <field name="price_total" type="measure"/>
+             </graph>
+         </field>
+    </record>
  
+    <record id="view_order_product_graph_quarter" model="ir.ui.view">
+         <field name="name">sale.stat.report.graph.quarter</field>
+         <field name="model">sale.stat.report</field>
+         <field name="arch" type="xml">
+             <graph string="Graphic Sales Analysis by Quarter" type="bar">
+                 <field name="country_id" type="row"/>
+                 <field name="date" interval="quarter" type="col"/>
+                 <field name="price_total" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_order_product_graph_month" model="ir.ui.view">
+         <field name="name">sale.stat.report.graph.month</field>
+         <field name="model">sale.stat.report</field>
+         <field name="arch" type="xml">
+             <graph string="Graphic Sales Analysis by Month" type="bar">
+                 <field name="user_id" type="row"/>
+                 <field name="date" interval="month" type="col"/>
+                 <field name="price_total" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <!-- Custom reports (aka filters) --> 
     <record id="filter_sale_report_salespersons" model="ir.filters">
         <field name="name">By Salesperson</field>
         <field name="model_id">sale.stat.report</field>
@@ -133,13 +168,14 @@
         </field>
     </record>
 
+ 	<!-- Pivot Actions -->
     <record id="sale.action_order_report_all" model="ir.actions.act_window">
         <field name="name">Sales Analysis</field>
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_team_graph"/>
+        <field name="view_id" ref="view_order_product_team_pivot"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -150,7 +186,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_month"/>
+        <field name="view_id" ref="view_order_product_pivot_month"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -161,7 +197,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_quarter"/>
+        <field name="view_id" ref="view_order_product_pivot_quarter"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -172,7 +208,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_week"/>
+        <field name="view_id" ref="view_order_product_pivot_week"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -183,7 +219,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_year"/>
+        <field name="view_id" ref="view_order_product_pivot_year"/>
         <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -194,7 +230,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_month"/>
+        <field name="view_id" ref="view_order_product_pivot_month"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[]}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -205,7 +241,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_quarter"/>
+        <field name="view_id" ref="view_order_product_pivot_quarter"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[]}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
@@ -216,8 +252,42 @@
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
         <field name="search_view_id" ref="sale.view_order_product_search"/>
-        <field name="view_id" ref="view_order_product_graph_week"/>
+        <field name="view_id" ref="view_order_product_pivot_week"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
+        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+    </record>
+
+	<!-- Graphic Actions -->
+    <record id="action_order_graph_yearly_all" model="ir.actions.act_window">
+        <field name="name">Graphic Sales Analysis by Year</field>
+        <field name="res_model">sale.stat.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="view_id" ref="view_order_product_graph_year"/>
+        <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
+        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+    </record>
+
+    <record id="action_order_graph_quarterly_all" model="ir.actions.act_window">
+        <field name="name">Graphic Sales This Year by Quarter</field>
+        <field name="res_model">sale.stat.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="view_id" ref="view_order_product_graph_quarter"/>
+        <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
+        <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
+    </record>
+
+    <record id="action_order_graph_monthly_all" model="ir.actions.act_window">
+        <field name="name">Graphic Sales Analysis by Month</field>
+        <field name="res_model">sale.stat.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="view_id" ref="view_order_product_graph_month"/>
+        <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
     </record>
 
@@ -226,6 +296,10 @@
     <menuitem action="action_order_report_quarter_all" id="menu_report_product_quarter_all" parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
     <menuitem action="action_order_report_month_all"   id="menu_report_product_month_all"   parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
     <menuitem action="action_order_report_weekly_all"  id="menu_report_product_weekly_all"  parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>/>
+
+    <menuitem action="action_order_graph_yearly_all"    id="menu_graph_product_yearly_all"     parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
+    <menuitem action="action_order_graph_quarterly_all" id="menu_graph_product_quarterlly_all" parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
+    <menuitem action="action_order_graph_monthly_all"   id="menu_graph_product_monthly_all"    parent="sale.menu_sale_report" sequence="10" groups="sales_team.group_sale_manager"/>
 	<!-- Restricted to Sales Manager -->
 
     <menuitem action="action_order_report_quarter_only_mine" id="menu_report_product_quarter_only_mine" parent="sale.menu_sale_report" sequence="11"/>
