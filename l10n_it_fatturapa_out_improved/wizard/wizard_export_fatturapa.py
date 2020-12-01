@@ -21,13 +21,8 @@ class WizardExportFatturapa(models.TransientModel):
         attach_obj = self.env['fatturapa.attachment.out']
         vat = attach_obj.get_file_vat()
 
-        # attach_str = fatturapa.toxml(
-        #     encoding="UTF-8",
-        #     bds=fatturapaBDS,
-        # )
-        attach_str = fatturapa.toDOM().toprettyxml(
-            encoding="UTF-8",
-            # bds=fatturapaBDS,
+        attach_str = fatturapa.toDOM(bds=fatturapaBDS).toprettyxml(
+            encoding="UTF-8"
         )
         fatturapaBDS.reset()
         attach_vals = {
