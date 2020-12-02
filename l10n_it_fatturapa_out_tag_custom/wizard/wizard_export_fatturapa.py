@@ -43,12 +43,23 @@ class WizardExportFatturapa(models.TransientModel):
                 ('product_id', '=', line.product_id.id),
                 ('name', '=', line.invoice_id.partner_id.id)
             ])
-
-            for info in customerinfo:
-                CodiceArticolo = CodiceArticoloType(
-                    CodiceTipo=info[0].product_code_type,
-                    CodiceValore=info[0].product_code[:35]
-                )
-                DettaglioLinea.CodiceArticolo.append(CodiceArticolo)
+            if customerinfo:
+                for info in customerinfo:
+                    CodiceArticolo = CodiceArticoloType(
+                        CodiceTipo=info[0].product_code_type,
+                        CodiceValore=info[0].product_code[:35]
+                    )
+                    DettaglioLinea.CodiceArticolo.append(CodiceArticolo)
+            else:
+                customerinfo = self.env['product.customerinfo'].search([
+                    ('product_tmpl_id', '=', line.product_id.product_tmpl_id.id),
+                    ('name', '=', line.invoice_id.partner_id.id)
+                ])
+                for info in customerinfo:
+                    CodiceArticolo = CodiceArticoloType(
+                        CodiceTipo=info[0].product_code_type,
+                        CodiceValore=info[0].product_code[:35]
+                    )
+                    DettaglioLinea.CodiceArticolo.append(CodiceArticolo)
 
         return DettaglioLinea
