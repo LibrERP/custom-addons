@@ -11,6 +11,7 @@ class CustomerInfo(models.Model):
         domain=[('customer', '=', True)],
         help="Product acquirer"
     )
+    # If not set, info will apply to all variants of this product.
     product_id = fields.Many2one(
         comodel_name="product.product", string="Product Variant", ondelete='cascade',
         help="Product acquirer"
@@ -43,17 +44,7 @@ class CustomerInfo(models.Model):
         return super().create(values)
 
 
-class ProductProduct(models.Model):
-    _inherit = 'product.product'
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
 
-    buyer_ids = fields.One2many('product.customerinfo', 'product_id', 'Customers', help="Define buyer info")
-
-    # @api.model_create_multi
-    # def create(self, values):
-    #
-    #     return super().create(values)
-    #
-    # @api.multi
-    # def write(self, values):
-    #
-    #     return super().write(values)
+    buyer_ids = fields.One2many('product.customerinfo', 'product_tmpl_id', 'Customers', help="Define buyer info")
