@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_bank_id" position="after">
+                    <field name="customer_reference" attrs="{'required': [('reference_required', '=', True)]}" />
+                    <field name="reference_required" invisible="True" />
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
