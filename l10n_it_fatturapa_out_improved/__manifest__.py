@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "l10n_it_fatturapa_out_improved",
+    'name': "Italian localization - l10n_it_fatturapa_out_improved",
 
     'summary': """
         Corrections to official l10n_it_fatturapa_out""",
