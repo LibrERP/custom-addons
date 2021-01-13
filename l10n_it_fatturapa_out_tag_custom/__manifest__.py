@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Localisation/Italy',
-    'version': '0.2.2',
+    'version': '0.3.3',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -30,7 +30,8 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/partner_view.xml',
-        'views/account_invoice_view.xml'
+        'views/sale_order_view.xml',
+        # 'views/account_invoice_view.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

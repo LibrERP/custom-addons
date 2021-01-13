@@ -24,16 +24,16 @@ class WizardExportFatturapa(models.TransientModel):
     #
     #     return super().saveAttachment(fatturapa, number)
 
-    def setDatiOrdineAcquisto(self, inv, body):
-        if inv.customer_reference:
-            # 2.1.2.2 <IdDocumento>
-            body.DatiGenerali.DatiOrdineAcquisto.append(DatiDocumentiCorrelatiType(
-                IdDocumento=inv.customer_reference
-            ))
-
-    def setFatturaElettronicaBody(self, inv, FatturaElettronicaBody):
-        super().setFatturaElettronicaBody(inv, FatturaElettronicaBody)
-        self.setDatiOrdineAcquisto(inv, FatturaElettronicaBody)
+    # def setDatiOrdineAcquisto(self, inv, body):
+    #     if inv.customer_reference:
+    #         # 2.1.2.2 <IdDocumento>
+    #         body.DatiGenerali.DatiOrdineAcquisto.append(DatiDocumentiCorrelatiType(
+    #             IdDocumento=inv.customer_reference
+    #         ))
+    #
+    # def setFatturaElettronicaBody(self, inv, FatturaElettronicaBody):
+    #     super().setFatturaElettronicaBody(inv, FatturaElettronicaBody)
+    #     self.setDatiOrdineAcquisto(inv, FatturaElettronicaBody)
 
     def setDettaglioLinea(self, line_no, line, body, price_precision, uom_precision):
         DettaglioLinea = super().setDettaglioLinea(line_no, line, body, price_precision, uom_precision)
