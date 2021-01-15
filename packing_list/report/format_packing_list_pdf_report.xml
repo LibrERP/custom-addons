@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+<!-- Paper Format Reports -->
+
+
+<!-- Actions Reports -->
+
+         <report
+            id="report_action_packing_list"
+            model="stock.picking"
+            string="Packing List Report"
+            report_type="qweb-pdf"
+            name="packing_list.report_packing_list"
+            file="packing_list.report_packing_list"
+        />
+
+    </data>
+</odoo>
