@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.tools import config
 from .repo_git import RepoGit
 from .repo_hg import RepoHg
 from .helper import get_oca_repositories
@@ -14,7 +15,6 @@ import os
 import logging
 from odoo.exceptions import AccessError, UserError, ValidationError
 from pathlib import Path
-
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
@@ -38,7 +38,8 @@ class RepositoryCheck(models.Model):
     _rec_name = 'repository_name'
     _description = 'Check Repository'
 
-    repository_path = fields.Char('Repository Path', size=200, help="Repository path in local filesystem.", required=True,
+    repository_path = fields.Char('Repository Path', size=200, help="Repository path in local filesystem.",
+                                  required=True,
                                   default='', store=True)
 
     repository_name = fields.Selection(get_oca_repositories(), string='Repository Name')
@@ -134,6 +135,29 @@ class RepositoryCheck(models.Model):
                 repository.action_pull()
 
     @api.multi
+    def fix_directory(self):
+        root = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+        rs = root.split("/")[1:]
+        rps = self.repository_path.split("/")[1:]
+        popped = False
+        for v in rs:
+            if v == rps[0]:
+                rps.pop(0)
+                popped = True
+            elif popped:
+                break
+        # If not popped, add record to config and change state
+        if not popped:
+            final_dir = self.repository_path
+            if not final_dir in config.options['addons_path']:
+                config.options['addons_path'] = config.options['addons_path'] + ',' + final_dir
+                config.save()
+        else:
+            final_dir = "/" + "/".join(rs + rps)
+            self.write({'state': 'clone', 'repository_path': final_dir})
+        return True
+
+    @api.multi
     def action_pull(self):
         values = {}
 
@@ -149,8 +173,11 @@ class RepositoryCheck(models.Model):
         user = self.username
 
         if repository_type == NO_TYPE:
-            _logger.error('Can\'t launch pull command, the specified path isn\'t configured to allow it (path={})!'.format(repository_path))
-            raise UserError('Can\'t launch pull command, path={} isn\'t configured to allow it!'.format(repository_path))
+            _logger.error(
+                'Can\'t launch pull command, the specified path isn\'t configured to allow it (path={})!'.format(
+                    repository_path))
+            raise UserError(
+                'Can\'t launch pull command, path={} isn\'t configured to allow it!'.format(repository_path))
 
         if (password and not user) or (not password and user):
             if password:
@@ -192,18 +219,19 @@ class RepositoryCheck(models.Model):
         values = {}
         ret_str = ''
         git_repo = RepoGit(self.repository_path, self.username, self.password, self.repository_name)
-        #Clone repository
-        outcome, ret_str = git_repo.clone_cmd(self.repository_name)
-        #If the cloning process executed with success then change state to repo
+        # Clone repository
+        try:
+            outcome, ret_str = git_repo.clone_cmd(self.repository_name)
+        except UserError as exc:
+            self.write({'state': 'repo'})
+            return True
+
+        # If the cloning process executed with success then change state to repo
         if outcome == True:
             self.state = 'repo'
             self.log = '{}'.format(ret_str)
-        #if ret_str != '':
+        # if ret_str != '':
         #    values['log'] = '{}'.format(ret_str)
-
-
-
-
 
     def set_default_type(self, path):
         path = path.rstrip('/')
@@ -240,7 +268,7 @@ class RepositoryCheck(models.Model):
                 _logger.error('{} is not a valid repository.'.format(view_path))
                 raise UserError('{} is not a valid repository.'.format(view_path))
 
-        #Set status as 'clone' which means that the repo is still awaiting to be cloned
+        # Set status as 'clone' which means that the repo is still awaiting to be cloned
 
         # TODO test if last_check_state and log should be set as default, add here to be sure
         values['log'] = ''
@@ -277,7 +305,7 @@ class RepositoryCheck(models.Model):
         # TODO to control ...
         # values['last_check_state'] = self.last_check_state
 
-        #if not isdir(view_path) and not re.search(regex, view_path):
+        # if not isdir(view_path) and not re.search(regex, view_path):
         #    _logger.error('{} is not a valid repository.'.format(view_path))
         #    raise UserError('{} is not a valid repository.'.format(view_path))
 
@@ -290,9 +318,9 @@ class RepositoryCheck(models.Model):
     @api.onchange('repository_name')
     def onchange_repository_name(self):
         if self.repository_name:
-            #Get current directory
+            # Get current directory
             current_dir = Path(__file__).resolve().parents[3]
-            #Build the target directory
+            # Build the target directory
             target_dir = join(current_dir, self.repository_name)
 
             self.repository_path = str(target_dir)
@@ -303,7 +331,7 @@ class RepositoryCheck(models.Model):
         # ids is set only if path field is changed on already created record (not if it's new to be create)
         if self.repository_path:
 
-            #Check if the path is a remote link or local directory
+            # Check if the path is a remote link or local directory
             if isdir(self.repository_path) or re.search(regex, self.repository_path) or self.repository_name:
                 view_type = self.set_default_type(self.repository_path)
                 # try to set repository_type here...to be tested
