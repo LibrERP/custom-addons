@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # #############################################################################
 #
-#    Copyright © 2013-2020 Didotech srl (<http://www.didotech.com>)
+#    Copyright © 2013-2021 Didotech srl (<http://www.didotech.com>)
 #    All Rights Reserved
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 {
     'name': 'Modules to upgrade',
-    'version': '12.0.2.0',
+    'version': '12.0.3.0',
     'category': 'Tools',
     "author": "Didotech srl",
     'website': 'http://www.didotech.com',

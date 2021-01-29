@@ -28,7 +28,7 @@ odoo_access = {
 
 """
 
-import xmlrpclib
+import xmlrpc.client
 from collections import namedtuple
 from update_config import odoo_access
 import getopt
@@ -42,13 +42,13 @@ def update_odoo(odoo_access):
     for name, access_data in odoo_access.items():
         rpc = OdooRPC(*access_data)
 
-        common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
+        common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
 
         if not common.version():
             raise Warning("Cant't connect to remote database")
 
         uid = common.authenticate(rpc.database, rpc.user, rpc.password, {})
-        models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
+        models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
 
         result = models.execute_kw(
             rpc.database,
@@ -77,13 +77,13 @@ def update_module(odoo_data, name):
     for _name, access_data in odoo_data.items():
         rpc = OdooRPC(*access_data)
 
-        common = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
+        common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(rpc.url))
 
         if not common.version():
             raise Warning("Cant't connect to remote database")
 
         uid = common.authenticate(rpc.database, rpc.user, rpc.password, {})
-        models = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
+        models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(rpc.url))
 
         module_ids = models.execute_kw(
             rpc.database,
