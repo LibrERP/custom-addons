@@ -12,23 +12,32 @@ class AccountInvoice(models.Model):
 
     def _get_document_type_and_date(self):
         delivery_document_model = self.env['stock.picking.package.preparation']
-        # Take the last transport document
-        delivery_document = delivery_document_model.search([
-            ('id', 'in', self.env.context['active_ids'])
-        ], order='date desc', limit=1)[0]
 
-        if delivery_document.date.month == datetime.datetime.now().month:
+        if self.env.context.get('active_model') == 'sale.order':
+            order = self.env['sale.order'].browse(self.env.context['active_id'])
+            delivery_documents = order.ddt_ids
+            delivery_document = delivery_documents and delivery_documents[0] or False
+        else:
+            # Take the last transport document
+            delivery_document = delivery_document_model.search([
+                ('id', 'in', self.env.context['active_ids'])
+            ], order='date desc', limit=1)[0]
+
+        if delivery_document and delivery_document.date.month == datetime.datetime.now().month:
             domain = [('code', '=', 'TD24')]
             document_date = datetime.datetime.now()
-        elif delivery_document.date.month == (datetime.datetime.now() - relativedelta(months=1)).month \
+        elif delivery_document and delivery_document.date.month == (datetime.datetime.now() - relativedelta(months=1)).month \
                 and datetime.datetime.now().day < 11:
             # TD is from previous month but we are in the first 10 days of the next month
             domain = [('code', '=', 'TD24')]
             # Invoice date is the last day from the previous month
             today = datetime.datetime.now()
             document_date = datetime.datetime(year=today.year, month=today.month, day=1) - relativedelta(days=1)
-        else:
+        elif delivery_document:
             domain = [('code', '=', 'TD25')]
+            document_date = datetime.datetime.now()
+        else:
+            domain = [('code', '=', 'TD01')]
             document_date = datetime.datetime.now()
 
         return {
@@ -39,7 +48,7 @@ class AccountInvoice(models.Model):
     def _get_document_fiscal_type(self, type=None, partner=None,
                                   fiscal_position=None, journal=None):
 
-        if self.env.context.get('active_model') == 'stock.picking.package.preparation' \
+        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order')\
                 and type == 'out_invoice' or not type:
 
             document_data = self._get_document_type_and_date()
@@ -52,7 +61,7 @@ class AccountInvoice(models.Model):
         return dt
 
     def create(self, values):
-        if self.env.context.get('active_model') == 'stock.picking.package.preparation' \
+        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order')\
                 and values.get('type', 'out_invoice') == 'out_invoice':
             document_data = self._get_document_type_and_date()
             values['date_invoice'] = document_data['document_date']
