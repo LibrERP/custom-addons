@@ -21,3 +21,4 @@
 
 from . import color
 from . import partner
+from . import models
