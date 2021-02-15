@@ -8,7 +8,7 @@
     'description': """
     Inverse sign in Account Invoice and transform it in Credit Note
 """,
-    'version': '12.0.1.0',
+    'version': '12.0.2.0',
     'category': 'Accounting',
     'author': 'Didotech Srl',
     'website': 'https://github.com/LibrERP/custom-addons',
