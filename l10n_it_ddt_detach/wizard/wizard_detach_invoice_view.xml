@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_detachment_confirmation_form" model="ir.ui.view">
+        <field name="name">wizard.detach.invoice.form</field>
+        <field name="model">wizard.detach.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Attention!" create="false" edit="false">
+                <sheet>
+                    <h3>Attention! You are going to detach Invoice!</h3>
+                    <group>
+                        <button name="action_detach_invoice" string="Detach" type="object" />
+                        <button string="Cancel" special="cancel"/>
+                    </group>
+                    <footer></footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
