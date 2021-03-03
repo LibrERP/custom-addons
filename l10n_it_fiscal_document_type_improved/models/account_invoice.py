@@ -48,7 +48,7 @@ class AccountInvoice(models.Model):
     def _get_document_fiscal_type(self, type=None, partner=None,
                                   fiscal_position=None, journal=None):
 
-        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order')\
+        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order', 'ddt.invoicing')\
                 and type == 'out_invoice' or not type:
 
             document_data = self._get_document_type_and_date()
@@ -61,7 +61,7 @@ class AccountInvoice(models.Model):
         return dt
 
     def create(self, values):
-        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order')\
+        if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order', 'ddt.invoicing')\
                 and values.get('type', 'out_invoice') == 'out_invoice':
             document_data = self._get_document_type_and_date()
             values['date_invoice'] = document_data['document_date']
