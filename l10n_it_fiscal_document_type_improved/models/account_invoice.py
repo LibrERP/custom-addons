@@ -51,8 +51,18 @@ class AccountInvoice(models.Model):
         if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order', 'ddt.invoicing')\
                 and type == 'out_invoice' or not type:
 
-            document_data = self._get_document_type_and_date()
-            dt = self.env['fiscal.document.type'].search(document_data['domain']).ids
+            for invoice_line in self.invoice_line_ids:
+                is_downpayment = [sale_line for sale_line in invoice_line.sale_line_ids if sale_line.is_downpayment]
+                if is_downpayment:
+                    break
+            else:
+                is_downpayment = False
+
+            if is_downpayment:
+                dt = self.env['fiscal.document.type'].search([('code', '=', 'TD02')]).ids
+            else:
+                document_data = self._get_document_type_and_date()
+                dt = self.env['fiscal.document.type'].search(document_data['domain']).ids
         else:
             dt = super()._get_document_fiscal_type(
                 type=type, partner=partner, fiscal_position=fiscal_position, journal=journal
