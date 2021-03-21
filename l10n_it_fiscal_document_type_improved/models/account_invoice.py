@@ -70,6 +70,7 @@ class AccountInvoice(models.Model):
 
         return dt
 
+    @api.model
     def create(self, values):
         if self.env.context.get('active_model') in ('stock.picking.package.preparation', 'sale.order', 'ddt.invoicing')\
                 and values.get('type', 'out_invoice') == 'out_invoice':
