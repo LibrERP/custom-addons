@@ -25,10 +25,10 @@
     'name': "enhance_l10n_it_ddt",
 
     'summary': """
-        Kalamitica OCA ddt extensions and customizations""",
+        OCA ddt extensions and customizations""",
 
     'description': """
-        Kalamitica OCA ddt extensions and customizations
+        OCA ddt extensions and customizations to manage TD settings
     """,
 
     'author': "Didotech srl",
