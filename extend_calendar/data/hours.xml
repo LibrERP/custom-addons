@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="moreg" model="res.calendar.intervals">
+            <field name="name">Morning Regular</field>
+            <field name="hour_code">moreg</field>
+            <field eval="8" name="start_hour" />
+            <field eval="0" name="start_minute" />
+            <field eval="12" name="end_hour" />
+            <field eval="0" name="end_minute" />
+        </record>
+
+        <record id="mo" model="res.calendar.intervals">
+            <field name="name">Morning</field>
+            <field name="hour_code">mo</field>
+            <field eval="8" name="start_hour" />
+            <field eval="30" name="start_minute" />
+            <field eval="12" name="end_hour" />
+            <field eval="30" name="end_minute" />
+        </record>
+
+        <record id="afreg" model="res.calendar.intervals">
+            <field name="name">Afternoon Regular</field>
+            <field name="hour_code">afreg</field>
+            <field eval="14" name="start_hour" />
+            <field eval="0" name="start_minute" />
+            <field eval="18" name="end_hour" />
+            <field eval="0" name="end_minute" />
+        </record>
+
+        <record id="af" model="res.calendar.intervals">
+            <field name="name">Afternoon</field>
+            <field name="hour_code">af</field>
+            <field eval="14" name="start_hour" />
+            <field eval="30" name="start_minute" />
+            <field eval="18" name="end_hour" />
+            <field eval="30" name="end_minute" />
+        </record>
+
+        <record id="moday" model="res.calendar.intervals">
+            <field name="name">Daily Morning</field>
+            <field name="hour_code">moday</field>
+            <field eval="6" name="start_hour" />
+            <field eval="0" name="start_minute" />
+            <field eval="14" name="end_hour" />
+            <field eval="0" name="end_minute" />
+        </record>
+
+        <record id="afday" model="res.calendar.intervals">
+            <field name="name">Daily Afternoon</field>
+            <field name="hour_code">afday</field>
+            <field eval="14" name="start_hour" />
+            <field eval="0" name="start_minute" />
+            <field eval="22" name="end_hour" />
+            <field eval="0" name="end_minute" />
+        </record>
+
+        <record id="niday" model="res.calendar.intervals">
+            <field name="name">Daily Night</field>
+            <field name="hour_code">niday</field>
+            <field eval="22" name="start_hour" />
+            <field eval="0" name="start_minute" />
+            <field eval="6" name="end_hour" />
+            <field eval="0" name="end_minute" />
+        </record>
+
+
+    </data>
+</odoo>

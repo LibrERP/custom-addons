@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hour_intervals_tree" model="ir.ui.view">
+            <field name="name">view.hour.intervals.tree</field>
+            <field name="model">res.calendar.intervals</field>
+            <field name="arch" type="xml">
+                <tree string="Time Intervals">
+                    <field name="name"/>
+                    <field name="hour_code"/>
+                    <field name="starting"/>
+                    <field name="ending"/>
+                    <field name="duration"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hour_intervals_form" model="ir.ui.view">
+            <field name="name">view.hour.intervals.form</field>
+            <field name="model">res.calendar.intervals</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Time Intervals">
+                <sheet>
+                    <group colspan="4" col="4">
+                        <field name="name" placeholder="Interval Name"/>
+                        <field name="hour_code"/>
+                        <field name="start_hour"/>
+                        <field name="start_minute"/>
+                        <field name="end_hour"/>
+                        <field name="end_minute"/>
+                    </group>
+                    <separator/>
+                    <group colspan="4" col="4">
+                    	<field name="starting" readonly="True"/>
+                    	<field name="ending"   readonly="True"/>
+                        <field name="duration" readonly="True"/>
+                    </group>
+                </sheet>
+                </form>
+           </field>
+        </record>
+
+        <record id="view_hour_intervals_search" model="ir.ui.view">
+            <field name="name">view.hour.intervals.search</field>
+            <field name="model">res.calendar.intervals</field>
+            <field name="arch" type="xml">
+                <search string="Time Intervals">
+                    <field name="name"/>
+                    <field name="hour_code"/>
+                    <field name="start_hour"/>
+                    <field name="start_minute"/>
+                    <field name="end_hour"/>
+                    <field name="end_minute"/>
+                    <separator/>
+                    <filter name="morning" string="Morning" domain="[('start_hour','&gt;',8),('start_hour','&lt;',13)]"/>
+                    <filter name="afternoon" string="Afternoon" domain="[('start_hour','&gt;',13),('start_hour','&lt;',19)]"/>
+                    <filter name="evening" string="Evening" domain="[('start_hour','&gt;',18),('start_hour','&lt;',22)]"/>
+                </search>
+           </field>
+        </record>
+
+        <record id="action_hour_intervals_tree" model="ir.actions.act_window">
+            <field name="name">Time Intervals</field>
+            <field name="res_model">res.calendar.intervals</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+       </record>
+ 
+     </data>
+</odoo>

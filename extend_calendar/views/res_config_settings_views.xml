@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+      <record id="res_config_settings_view_form_calendar_extend" model="ir.ui.view">
+          <field name="name">res.config.settings.view.form.inherit.calendar.extend</field>
+          <field name="model">res.config.settings</field>
+          <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+          <field name="arch" type="xml">
+              <xpath expr="//div[@id='business_documents']" position="after" >
+                  <div id="time_management">
+                      <h2>Time Management</h2>
+                      <div class="row mt16 o_settings_container">
+                          <div class="col-12 col-lg-6 o_setting_box">
+                              <div class="o_setting_left_pane"/>
+                              <div class="o_setting_right_pane">
+                                  <span class="o_form_label">Days Management</span>
+                                  <div class="text-muted">
+                                       Set the days assigning time intervals
+                                  </div>
+                                  <div class="mt16">
+                                      <button name="%(extend_calendar.action_calendar_day_tree)d" icon="fa-arrow-right" type="action" string="Calendar Days" class="btn-link"/>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-12 col-lg-6 o_setting_box">
+                              <div class="o_setting_left_pane"/>
+                              <div class="o_setting_right_pane">
+                                  <span class="o_form_label">Time Intervals</span>
+                                  <div class="text-muted">
+                                       Set the time intervals
+                                  </div>
+                                  <div class="mt16">
+                                      <button name="%(extend_calendar.action_hour_intervals_tree)d" icon="fa-arrow-right" type="action" string="Time Intervals" class="btn-link"/>
+                                  </div>
+                              </div>
+                          </div>
+                       </div>
+                  </div>
+              </xpath>
+          </field>
+      </record>
+
+</odoo>

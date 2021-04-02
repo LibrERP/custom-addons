@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="su" model="res.calendar.day">
+            <field name="name">Sunday</field>
+            <field name="day_code">su</field>
+            <field eval="0" name="day_number" />
+        </record>
+        <record id="mo" model="res.calendar.day">
+            <field name="name">Monday</field>
+            <field name="day_code">mo</field>
+            <field eval="1" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('moreg'),ref('afreg')])]"/>
+         </record>
+        <record id="tu" model="res.calendar.day">
+            <field name="name">Tuesday</field>
+            <field name="day_code">tu</field>
+            <field eval="2" name="day_number" />
+            <field name="interval_ids" eval="[(6,0,[
+                ref('moreg'),ref('afreg')])]"/>
+        </record>
+        <record id="we" model="res.calendar.day">
+            <field name="name">Wednesday</field>
+            <field name="day_code">we</field>
+            <field eval="3" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('moreg'),ref('afreg')])]"/>
+        </record>
+        <record id="th" model="res.calendar.day">
+            <field name="name">Thursday</field>
+            <field name="day_code">th</field>
+            <field eval="4" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('moreg'),ref('afreg')])]"/>
+        </record>
+        <record id="fr" model="res.calendar.day">
+            <field name="name">Friday</field>
+            <field name="day_code">fr</field>
+            <field eval="5" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('moreg'),ref('afreg')])]"/>
+        </record>
+        <record id="sa" model="res.calendar.day">
+            <field name="name">Saturday</field>
+            <field name="day_code">sa</field>
+            <field eval="6" name="day_number" />
+        </record>
+
+    </data>
+</odoo>

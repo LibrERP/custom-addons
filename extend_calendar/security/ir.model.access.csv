@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_calendar,access_res_calendar,model_res_calendar,base.group_user,1,1,1,1
+access_res_calendar_day,access_res_calendar_day,model_res_calendar_day,base.group_user,1,1,1,1
+access_res_calendar_intervals,access_res_calendar_intervals,model_res_calendar_intervals,base.group_user,1,1,1,1

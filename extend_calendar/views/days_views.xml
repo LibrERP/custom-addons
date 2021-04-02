@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_calendar_day_tree" model="ir.ui.view">
+            <field name="name">view.calendar.day.tree</field>
+            <field name="model">res.calendar.day</field>
+            <field name="arch" type="xml">
+                <tree string="Time Intervals">
+                    <field name="name"/>
+                    <field name="day_code"/>
+                    <field name="day_number"/>
+                    <field name="interval_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_calendar_day_form" model="ir.ui.view">
+            <field name="name">view.calendar.day.form</field>
+            <field name="model">res.calendar.day</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Time Intervals">
+                <sheet>
+                    <group colspan="6" col="6">
+                        <field name="name" placeholder="Interval Name"/>
+                        <field name="day_code"/>
+                        <field name="day_number"/>
+                    </group>
+                    <separator/>
+                    <group colspan="2" col="2">
+                        <field name="interval_ids"/>
+                    </group>
+                </sheet>
+                </form>
+           </field>
+        </record>
+
+        <record id="view_calendar_day_search" model="ir.ui.view">
+            <field name="name">view.calendar.day.search</field>
+            <field name="model">res.calendar.day</field>
+            <field name="arch" type="xml">
+                <search string="Calendar Days">
+                    <field name="name"/>
+                    <field name="day_code"/>
+                    <field name="day_number"/>
+                    <field name="interval_ids"/>
+                    <separator/>
+                    <filter name="working" string="Working Days" domain="[('day_number','&gt;',0),('day_number','&lt;',6)]"/>
+                    <filter name="extd_working" string="Extended Working Days" domain="[('day_number','&gt;',0)]"/>
+                </search>
+           </field>
+        </record>
+
+        <record id="action_calendar_day_tree" model="ir.actions.act_window">
+            <field name="name">Calendar Days</field>
+            <field name="res_model">res.calendar.day</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+       </record>
+ 
+     </data>
+</odoo>
