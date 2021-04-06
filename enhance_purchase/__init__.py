@@ -4,7 +4,7 @@
 #    Copyright (C) 2020-2021 Didotech srl
 #    (<http://www.didotech.com/>).
 #
-#    Created on : 2021-01-09
+#    Created on : 2021-04-02
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,22 +21,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-from odoo import models, fields, api
-
-
-class StockPickingPackagePreparation(models.Model):
-    _inherit = 'stock.picking.package.preparation'
-
-    @api.onchange('partner_id', 'ddt_type_id')
-    def on_change_partner(self):
-        """
-            Set ddt type based on Partner setting or on res.config.settings values.
-        """
-        if not self.ddt_type_id:
-            if self.partner_id.ddt_type_id:
-                self.ddt_type_id = self.partner_id.ddt_type_id
-            else:
-                self.ddt_type_id = self.env['res.config.settings']._get_ddt_type(self.partner_id)
-        super(StockPickingPackagePreparation, self).on_change_partner()
 
