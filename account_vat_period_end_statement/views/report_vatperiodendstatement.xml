@@ -126,7 +126,7 @@
                         <span t-if="not (total_to_pay >= 0)">
                             <td/>
                             <td class="text-right"><strong>Total Credit</strong></td>
-                            <td class="text-right"><strong><span t-esc="formatLang(env, (total_to_pay account_view.xml config.xml config.xml.bak report_vatperiodendstatement.xml report_vatperiodendstatement.xml.new -1))"/></strong></td>
+                            <td class="text-right"><strong><span t-esc="formatLang(env, (total_to_pay*-1))"/></strong></td>
                         </span>
                     </tr>
                 </table>
