@@ -7,7 +7,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 {
     'name': 'ITA - Liquidazione IVA',
-    'version': '12.0.1.5.2',
+    'version': '12.0.1.5.3',
     'category': 'Localization/Italy',
     'summary': "Allow to create the 'VAT Statement'.",
     'author': 'Odoo Community Association (OCA) and other partners',
