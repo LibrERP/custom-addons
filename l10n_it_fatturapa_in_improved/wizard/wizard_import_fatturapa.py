@@ -43,7 +43,7 @@ class WizardImportFatturapa(models.TransientModel):
                         'lines.') % (AliquotaIVA, Natura,
                                      account_taxes[0].description)
                 self.log_inconsistency(msg)
-                raise UserError(msg)
+                # raise UserError(msg)
         else:
             account_taxes = account_tax_model.search(
                 [
