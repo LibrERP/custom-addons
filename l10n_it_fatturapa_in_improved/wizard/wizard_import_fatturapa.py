@@ -1,6 +1,5 @@
-#
-# Copyright (c) 2021
-#
+# © 2021 Fabio Giovannelli <fabio.giovannelli@didotech.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 import logging
 from odoo import models, _
 from odoo.exceptions import UserError
