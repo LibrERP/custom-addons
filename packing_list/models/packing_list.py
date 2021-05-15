@@ -23,6 +23,6 @@ class StockPicking(models.Model):
             return self.env.ref('packing_list.report_action_packing_list').report_action(records, config=False)
 
     def _total_packages(self):
-        rec = self.env['stock.move'].search([('picking_id', '=', self.id)]).mapped('pack_number')
+        rec = self.env['stock.move.line'].search([('picking_id', '=', self.id)]).mapped('result_package_id')
         test = list(unique(rec))
         self.total_package = len(test)

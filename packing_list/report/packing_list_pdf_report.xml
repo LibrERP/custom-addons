@@ -80,8 +80,16 @@
                                              <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5"><span t-esc="l.product_id.default_code" style="font-size:18px;"/></td>
                                          </t>
                                          <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center"><span t-esc="l.product_uom_qty" style="font-size:18px;"/></td>
-                                         <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center"><span t-esc="l.reserved_availability" style="font-size:18px;"/></td>
-                                         <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center"><span t-esc="l.pack_number" style="font-size:18px;"/></td>
+                                         <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
+                                        	<t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
+                                         		<t t-esc="mvl.qty_done" style="font-size:18px;"/><br/>
+                                         	</t>
+                                         </td>
+                                         <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
+                                         	<t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
+                                         		<span t-esc="mvl.result_package_id.name" style="font-size:18px;"/>
+                                         	</t>
+                                         </td>
                                          <td style="border:2px solid black;color: #000000;vertical-align: middle; margin-left:15px;" class="td5"><span t-esc="l.remarks" style="font-size:18px;margin-left:10px;"/></td>
                                      </tr>
                                  </t>

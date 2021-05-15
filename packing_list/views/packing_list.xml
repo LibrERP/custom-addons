@@ -10,7 +10,6 @@
                      <button name="print_pdf_report" type="object" string="Print Packing List" class="oe_highlight"/>
                 </header>
                 <xpath expr="//field[@name='move_ids_without_package']//field[@name='quantity_done']" position="after">
-
                     <field name="pack_number"/>
                     <field name="remarks"/>
                 </xpath>

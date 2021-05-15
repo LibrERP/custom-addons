@@ -19,7 +19,7 @@
 ##############################################################################
 {
     'name': "Packing List",
-    'version': '12.0.0.0.0',
+    'version': '12.0.0.1.0',
     'summary': """Packing List""",
     'description': """ """,
     'author': "Cybrosys Technologies, Didotech srl", 
