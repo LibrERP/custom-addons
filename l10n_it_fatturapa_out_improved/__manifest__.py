@@ -17,7 +17,7 @@
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Localisation/Italy',
-    'version': '1.2.2',
+    'version': '1.3.3',
 
     # any module necessary for this one to work correctly
     'depends': [

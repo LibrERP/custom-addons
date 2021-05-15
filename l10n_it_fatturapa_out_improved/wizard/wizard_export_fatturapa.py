@@ -64,3 +64,27 @@ class WizardExportFatturapa(models.TransientModel):
             Telefono=self._wep_phone_number(company.partner_id.phone) or None,
             Email=company.partner_id.email or None
         )
+
+    def setDettaglioLinea(
+        self, line_no, line, body, price_precision, uom_precision
+    ):
+        """
+        Extension checks quantity and unit price
+        and updates the values correctly
+        Odoo standard balance invoice set quantity as negative
+        and unit price as positive in down payment line
+        SDI doesn't allow these values
+        """
+
+        # patch
+        # down payment
+        # if quantity is negative (odoo standard invoice balance)
+        # and unit price is positive
+        if line.quantity < 0 < line.price_unit:
+            # set quantity as positive
+            line.quantity = line.quantity * -1
+            # and set negative the unit price
+            line.price_unit = line.price_unit * -1
+
+        return super().setDettaglioLinea(line_no, line, body,
+                                         price_precision, uom_precision)
