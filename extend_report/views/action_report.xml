@@ -11,7 +11,7 @@
          src_model="product.product"
          res_model="wizard.print.report.label"
          view_mode="form"
-         view_id="extend_report.view_wizard_print_product_report_label_form"
+         view_id="extend_report.view_wizard_print_report_label_form"
          context="{'myModel':'product.product','myType':'qweb-zpl2'}"
          target="new"
          key2="client_action_multi"/>
@@ -21,7 +21,7 @@
          src_model="mrp.production"
          res_model="wizard.print.report.label"
          view_mode="form"
-         view_id="extend_report.view_wizard_print_product_report_label_form"
+         view_id="extend_report.view_wizard_print_report_label_form"
          context="{'myModel':'mrp.production','myType':'qweb-zpl2'}"
          target="new"
          key2="client_action_multi"/>
@@ -31,7 +31,7 @@
          src_model="stock.picking"
          res_model="wizard.print.report.label"
          view_mode="form"
-         view_id="extend_report.view_wizard_print_product_report_label_form"
+         view_id="extend_report.view_wizard_print_report_label_form"
          context="{'myModel':'stock.picking','myType':'qweb-zpl2'}"
          target="new"
          key2="client_action_multi"/>
