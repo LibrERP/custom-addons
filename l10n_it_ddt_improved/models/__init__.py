@@ -25,5 +25,6 @@
 from . import uom
 from . import product
 from . import stock_picking
+from . import stock_quant
 from . import product_packaging
 from . import stock_picking_package_preparation
