@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-# © 2014-2021 Andrei Levin - Didotech srl (www.didotech.com)
+# © 2014-2021 Didotech srl (<http://www.didotech.com>)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
     'name': 'Core Extended',
