@@ -113,15 +113,18 @@ class Product(models.Model):
         digits=dp.get_precision('Volume'),
         help="The volume in m3.")
 
-    def _get_default_uom_id(self, category="length"):
+    def get_uom_by_category(self, category="length"):
         ret = False
         category_id = self._get_category_uom_id(category=category)
         if category_id:
             criteria = [('uom_type', '=', 'reference'),
                         ('category_id', '=', category_id.id),
                     ]
-            ret = self.env["uom.uom"].search(criteria, limit=1, order='id').id
+            ret = self.env["uom.uom"].search(criteria, limit=1, order='id')
         return ret
+
+    def _get_default_uom_id(self, category="length"):
+        return self.get_uom_by_category(category=category).id
 
     def _get_package_volume(self):
         """
