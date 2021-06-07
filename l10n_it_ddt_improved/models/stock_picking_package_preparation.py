@@ -26,7 +26,7 @@ from operator import attrgetter
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero
+from odoo.tools import float_is_zero, float_compare
 
 def get_dimension(by_length, by_width, by_height):
     if (by_length.length > by_width.width):
@@ -333,9 +333,9 @@ class StockPickingPackagePreparation(models.Model):
  
         if move_lines:
             count_lines = 0
-            weight = volume = 0.0
             remaining_lines = move_lines
             for move_line in move_lines:
+                weight = volume = 0.0
                 pre_packing_lines = {}
                 if move_line:
                     iteration = 1
@@ -369,7 +369,9 @@ class StockPickingPackagePreparation(models.Model):
                                     "location_id": move_line.location_id.id,
                                     }
                         if packaging_id:
-                            if ((weight+this_weight) < weight_limit) and ((volume+this_volume) < volume_limit):
+                            check_volume = float_compare(volume_limit, (volume+this_volume), precision_rounding=0.00001) >= 0
+                            check_weight = float_compare(weight_limit, (weight+this_weight), precision_rounding=0.00001) >= 0
+                            if check_weight and check_volume:
                                 weight += this_weight
                                 volume += this_volume
                                 pre_packing_lines.update({
