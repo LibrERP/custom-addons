@@ -103,6 +103,37 @@ class StockPickingPackagePreparation(models.Model):
                         break
         return ret
 
+    def get_package_by_line(self, packaging_ids=None, move_line=None):
+        """
+            Returns a packaging adequate to satisfy volume and weight
+            to be contained.
+        """
+        packType = self.env['product.packaging']
+        ret = packType
+        if packaging_ids and move_line:
+            max_pack = self.get_max_package(packaging_ids)
+            move_id = move_line.move_id
+            if move_id:
+                quantity = move_id.product_uom_qty - move_id.quantity_done
+                max_weight = move_line.product_id.weight * quantity
+                max_volume = move_line.product_id.volume * quantity
+                if max_pack['weight'].max_weight >= max_weight:
+                    by_volume = packType
+                    by_weight = sorted(packaging_ids, key=attrgetter('max_weight'))
+                    for packaging_id in by_weight:
+                        if max_weight <= packaging_id.max_weight:
+                            by_weight = packaging_id
+                            if max_volume > 10e-6:
+                                if max_volume <= packaging_id.max_volume:
+                                    by_volume = packaging_id
+                                if by_volume == by_weight:
+                                    ret = packaging_id
+                                    break
+                            else:
+                                ret = packaging_id
+                                break
+        return ret
+
     def get_package(self, packaging_ids=None, move_lines=None):
         """
             Returns a packaging adequate to satisfy volume and weight
@@ -313,13 +344,14 @@ class StockPickingPackagePreparation(models.Model):
         pre_packing_lines = {}
 #         iterations_weigth = iterations_volume = 0
         remaining_lines = self.env['stock.move.line']
+        packaging_id = self.env['product.packaging']
 
-        packaging_id = self.get_package(packaging_ids, move_lines)
-#         max_packs = self.get_max_package(packaging_ids)
-# 
-#         packaging_id = max_packs['weight']
-        volume_limit = packaging_id.max_volume or 0.0
-        weight_limit = packaging_id.max_weight or 0.0
+#         packaging_id = self.get_package(packaging_ids, move_lines)
+# #         max_packs = self.get_max_package(packaging_ids)
+# # 
+# #         packaging_id = max_packs['weight']
+#         volume_limit = packaging_id.max_volume or 0.0
+#         weight_limit = packaging_id.max_weight or 0.0
 #         max_load = self.get_max_valuelines(move_lines)
 # 
 #         if (max_load['weight'] <= weight_limit) and (max_load['volume'] <= volume_limit):
@@ -339,10 +371,11 @@ class StockPickingPackagePreparation(models.Model):
                 pre_packing_lines = {}
                 if move_line:
                     iteration = 1
+                    packaging_id = self.get_package_by_line(packaging_ids, move_line)
                     if not packaging_id:
                         packaging_id = self.get_package(packaging_ids, remaining_lines)
-                        volume_limit = packaging_id.max_volume or 0.0
-                        weight_limit = packaging_id.max_weight or 0.0
+                    volume_limit = packaging_id.max_volume or 0.0
+                    weight_limit = packaging_id.max_weight or 0.0
                     qty_line = 0
                     remaining_lines -= move_line
                     this_weight = this_volume = 0.0
