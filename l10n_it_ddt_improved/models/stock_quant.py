@@ -48,28 +48,9 @@ class StockQuant(models.Model):
         quants = self._gather(product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
         reserved_quants = []
 
-#         if float_compare(quantity, 0, precision_rounding=rounding) > 0:
-#             # if we want to reserve
-#             available_quantity = sum(quants.filtered(lambda q: float_compare(q.quantity, 0, precision_rounding=rounding) > 0).mapped('quantity')) - sum(quants.mapped('reserved_quantity'))
-#             if float_compare(quantity, available_quantity, precision_rounding=rounding) > 0:
-#                 raise UserError(_('It is not possible to reserve more products of %s than you have in stock.') % product_id.display_name)
-#         elif float_compare(quantity, 0, precision_rounding=rounding) < 0:
-#             # if we want to unreserve
-#             available_quantity = sum(quants.mapped('reserved_quantity'))
-#             if float_compare(abs(quantity), available_quantity, precision_rounding=rounding) > 0:
-#                 raise UserError(_('It is not possible to unreserve more products of %s than you have in stock.') % product_id.display_name)
-#         else:
-#             return reserved_quants
-        values = {}
         for quant in quants:
             if float_compare(quant.reserved_quantity, quantity, precision_rounding=rounding)>=0:
-#                 quant.reserved_quantity -= quantity
                 quant.write({'reserved_quantity': quant.reserved_quantity - quantity})
-
-#             if float_compare(quant.quantity, quantity, precision_rounding=rounding)>=0:
-#                 quant.write({'quantity': quant.quantity - quantity})
-#                 check = True
-#                quant.quantity -= quantity
             else:
                 quant.write({'reserved_quantity': quant.reserved_quantity - quant.reserved_quantity})
                 
