@@ -66,10 +66,16 @@ class StockQuant(models.Model):
 #                 quant.reserved_quantity -= quantity
                 quant.write({'reserved_quantity': quant.reserved_quantity - quantity})
 
-            if float_compare(quant.quantity, quantity, precision_rounding=rounding)>=0:
-                quant.write({'quantity': quant.quantity - quantity})
+#             if float_compare(quant.quantity, quantity, precision_rounding=rounding)>=0:
+#                 quant.write({'quantity': quant.quantity - quantity})
+#                 check = True
 #                quant.quantity -= quantity
- 
+            else:
+                quant.write({'reserved_quantity': quant.reserved_quantity - quant.reserved_quantity})
+                
             if float_is_zero(quantity, precision_rounding=rounding) or float_is_zero(quant.reserved_quantity, precision_rounding=rounding):
                 break
         return reserved_quants
+
+
+c

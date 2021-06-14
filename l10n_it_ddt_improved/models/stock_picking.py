@@ -29,3 +29,4 @@ class StockQuantPackage(models.Model):
 
     package_id = fields.Many2one('stock.quant.package', string='Package container')
     package_ids = fields.One2many('stock.quant.package', 'package_id', string='Packages contained')
+

@@ -103,6 +103,21 @@ class StockPickingPackagePreparation(models.Model):
                         break
         return ret
 
+    def get_max_right_package(self, packaging_ids=None, move_lines=None):
+        """
+            Returns a packaging adequate to satisfy max move (in weight)
+            taken from remaining move lines.
+        """
+        packType = packList = self.env['product.packaging']
+        ret = packType
+        if packaging_ids and move_lines:
+            for move_line in move_lines:
+                packList += self.get_package_by_line(packaging_ids, move_line)
+            if packList:
+                last = len(packList)-1
+                ret = sorted(packList, key=attrgetter('max_weight'))[last]
+        return ret
+
     def get_package_by_line(self, packaging_ids=None, move_line=None):
         """
             Returns a packaging adequate to satisfy volume and weight
@@ -337,8 +352,6 @@ class StockPickingPackagePreparation(models.Model):
 
         return packed_lines
 
-### Overriding standard methods
-
     def pack_order_lines(self, move_lines, packaging_ids):
         packed_lines = {}
         pre_packing_lines = {}
@@ -346,34 +359,21 @@ class StockPickingPackagePreparation(models.Model):
         remaining_lines = self.env['stock.move.line']
         packaging_id = self.env['product.packaging']
 
-#         packaging_id = self.get_package(packaging_ids, move_lines)
-# #         max_packs = self.get_max_package(packaging_ids)
-# # 
-# #         packaging_id = max_packs['weight']
-#         volume_limit = packaging_id.max_volume or 0.0
-#         weight_limit = packaging_id.max_weight or 0.0
-#         max_load = self.get_max_valuelines(move_lines)
-# 
-#         if (max_load['weight'] <= weight_limit) and (max_load['volume'] <= volume_limit):
-#             packaging_id = self.get_right_package(packaging_ids, max_load['volume'], max_load['weight'])
-#         else:
-#             if (max_load['weight'] > weight_limit):
-#                 iterations_weigth = int(max_load['weight'] // weight_limit) + int((max_load['weight'] % weight_limit)>0)
-#             if (max_load['volume'] > volume_limit):
-#                 iterations_volume = int(max_load['volume'] // volume_limit) + int((max_load['volume'] % volume_limit)>0)
-#             iterations = max([iterations_weigth, iterations_volume])
+        packaging_id = self.get_max_right_package(packaging_ids, move_lines)
  
         if move_lines:
-            count_lines = 0
+            count_lines = 1
             remaining_lines = move_lines
+            weight = volume = 0.0
             for move_line in move_lines:
-                weight = volume = 0.0
-                pre_packing_lines = {}
                 if move_line:
                     iteration = 1
-                    packaging_id = self.get_package_by_line(packaging_ids, move_line)
+
                     if not packaging_id:
-                        packaging_id = self.get_package(packaging_ids, remaining_lines)
+                        packaging_id = self.get_package_by_line(packaging_ids, move_line)
+                    if not packaging_id:
+                        packaging_id = self.get_max_right_package(packaging_ids, remaining_lines)
+
                     volume_limit = packaging_id.max_volume or 0.0
                     weight_limit = packaging_id.max_weight or 0.0
                     qty_line = 0
@@ -411,7 +411,6 @@ class StockPickingPackagePreparation(models.Model):
                                         item_name: [line_value, move_line],
                                         })
                             else:
-                                count_lines +=1
                                 values.update({
                                     'weight': weight, 'shipping_weight': weight
                                     })
@@ -421,11 +420,12 @@ class StockPickingPackagePreparation(models.Model):
                                     })
                                 qty_line = 1
                                 iteration += 1
+                                count_lines +=1
                                 weight = volume = 0.0
                                 item_name = "{}.{}".format(move_line.id, iteration)
                                 line_value.update({
                                             "quantity": qty_line + quantity,
-                                            "reserved_quantity": qty_line + quantity if (reserved > 0) else 0,
+#                                             "reserved_quantity": qty_line + quantity if (reserved > 0) else 0,
                                             })
                                 pre_packing_lines={
                                         item_name: [line_value, move_line],
@@ -435,13 +435,16 @@ class StockPickingPackagePreparation(models.Model):
                                 volume += this_volume
     #                             max_load = self.get_max_valuelines(remaining_lines)
     #                             packaging_id = self.get_right_package(packaging_ids, max_load['volume'], max_load['weight'])
-                                packaging_id = self.get_package(packaging_ids, remaining_lines)
-                                values = {
-                                        'packaging_id': packaging_id.id,
-                                        'location_id': location_id.id,
-                                     }
-                                volume_limit = packaging_id.max_volume or 0.0
-                                weight_limit = packaging_id.max_weight or 0.0
+                                packaging_id = self.get_max_right_package(packaging_ids, remaining_lines)
+                                if not packaging_id:
+                                    packaging_id = self.get_package_by_line(packaging_ids, move_line)
+                                if packaging_id:
+                                    values = {
+                                            'packaging_id': packaging_id.id,
+                                            'location_id': location_id.id,
+                                         }
+                                    volume_limit = packaging_id.max_volume or 0.0
+                                    weight_limit = packaging_id.max_weight or 0.0
                         else:
                             weight += this_weight
                             volume += this_volume
@@ -454,7 +457,6 @@ class StockPickingPackagePreparation(models.Model):
                                  'weight': weight,
                                 'shipping_weight': weight,
                             })
-                        count_lines +=1
                         item_name = "{}".format(count_lines)
                         packed_lines.update({
                             item_name: [pre_packing_lines, values]
@@ -465,7 +467,6 @@ class StockPickingPackagePreparation(models.Model):
                              'weight': weight,
                             'shipping_weight': weight,
                         })
-                    count_lines +=1
                     item_name = "{}".format(count_lines)
                     packed_lines.update({
                         item_name: [pre_packing_lines, values]
@@ -473,14 +474,14 @@ class StockPickingPackagePreparation(models.Model):
                     qty_line = 1
                     weight = volume = 0.0
                     iteration += 1
+                    count_lines +=1
 
-            if pre_packing_lines:
-                values.update({'weight': weight, 'shipping_weight': weight})
-                count_lines +=1
-                item_name = "{}".format(count_lines)
-                packed_lines.update({
-                    item_name: [pre_packing_lines, values]
-                    })
+#             if pre_packing_lines:
+#                 values.update({'weight': weight, 'shipping_weight': weight})
+#                 item_name = "{}".format(count_lines)
+#                 packed_lines.update({
+#                     item_name: [pre_packing_lines, values]
+#                     })
 
         return packed_lines
 
@@ -520,23 +521,26 @@ class StockPickingPackagePreparation(models.Model):
             package_ids = pack_model
             weight = shipping_weight = 0.0
             processed_lines = []
- 
             # Packages as dictionary of quants
             for item_package in packed_lines.keys():
                 packing_lines = quant_line_model
                 pre_packing_lines, values = packed_lines[item_package]
                 pack = pack_model.create(values)
+                move_lines_to_pack = move_line_model
                 for item_in_package in pre_packing_lines.keys():
                     need_update = False
                     this_line, tmp_idx = item_in_package.split('.')
                     idx = int(tmp_idx)
                     line_value, move_line = pre_packing_lines[item_in_package]
                     move_id = move_line.move_id
+                    picking_id = move_line.picking_id
                     line_qty = move_line.qty_done
                     item_qty = line_value['quantity']
 
-                    if (idx < 2):
-                        quant_line_model._reset_reserved_quantity(move_line.product_id, move_line.location_id, move_line.product_uom_qty, lot_id=move_line.lot_id, package_id=move_line.package_id, owner_id=move_line.owner_id, strict=True)
+#                     if (idx < 2):
+#                         unreserve_qty = move_id.reserved_availability - move_id.quantity_done
+#                         quant_line_model._reset_reserved_quantity(move_line.product_id, move_line.location_id, unreserve_qty, lot_id=move_line.lot_id, package_id=move_line.package_id, owner_id=move_line.owner_id, strict=True)
+                    quant_line_model._reset_reserved_quantity(move_line.product_id, move_line.location_id, item_qty, lot_id=move_line.lot_id, package_id=move_line.package_id, owner_id=move_line.owner_id, strict=True)
 
                     line_value['quantity'] = item_qty
                     quant_line = quant_line_model.create(line_value)
@@ -545,17 +549,7 @@ class StockPickingPackagePreparation(models.Model):
                         line_qty = 0
                         move_line = move_line.copy()
                         need_update = True
-
-#                     if (idx < 2):
-#                         line_value['quantity'] = item_qty
-#                         quant_line = quant_line_model.create(line_value)
-#                     else:
-#                         if this_line in processed_lines:
-#                         # introduces new move lines where shipping package is different
-#                             line_qty = 0
-#                             move_line = move_line.copy()
-#                             need_update = True
-
+                    move_lines_to_pack += move_line
                     move_line.with_context(bypass_reservation_update=True).write({
 #                     move_line.write({
                             "product_uom_qty": line_qty + item_qty,
@@ -565,14 +559,25 @@ class StockPickingPackagePreparation(models.Model):
                     move_id.with_context(skip_update_line_ids=True).write({
 #                     move_id.write({
                             "pack_number": int(item_package),
+                            "product_weight": move_line.product_id.weight,
+                            "product_volume": move_line.product_id.volume,
                             })
 #                     move_id.with_context(skip_update_line_ids=True)._compute_reserved_availability()
 #                     if need_update:
 #                         quant_line._update_reserved_quantity(move_line.product_id, move_line.location_id, (line_qty + item_qty), lot_id=move_line.lot_id, package_id=move_line.package_id, owner_id=move_line.owner_id, strict=True)
                         # Manages reservations for added move lines, where needed adopting different packages.
+                    quant_line_model._update_reserved_quantity(move_line.product_id, move_line.location_id, (line_qty + item_qty), lot_id=move_line.lot_id, package_id=move_line.package_id, owner_id=move_line.owner_id, strict=True)
                     packing_lines += quant_line
                     if not(this_line in processed_lines):
                         processed_lines.append(this_line)
+#                 package_level = self.env['stock.package_level'].create({
+#                         'package_id': pack.id,
+#                         'picking_id': picking_id.id,
+#                         'location_id': False,
+#                         'location_dest_id': values['location_id'],
+#                         'move_line_ids': [(6, 0, move_lines_to_pack.ids)]
+#                         })
+
                 packed_lines.update({
                     item_package: [packing_lines, values]
                     })
