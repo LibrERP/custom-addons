@@ -3,20 +3,20 @@
 <data>
 
 <template id="stock.report_package_barcode">
-    <t t-call="web.basic_layout">
-        <t t-foreach="docs" t-as="o">
-            <t>
+    <t t-call="web.internal_layout">
+        <main>
+            <t t-foreach="docs" t-as="o">
                 <div class="page">
-                    <div class="oe_structure"/>
+                    <div class="row oe_structure"/>
                     <table class="table table-condensed" style="border-bottom: 0px solid white !important;">
                         <tr>
-                          <th>
-                            <h1 t-field="o.name" class="mt0 float-left"/>
-                          </th>
+                            <th>
+                                <h1 t-field="o.name" class="mt0 float-left"/>
+                            </th>
                             <th style="text-align: center">
                                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" alt="Barcode"
                                   style="width:300px;height:50px"/>
-                                  <p t-field="o.name"/>
+                                <p t-field="o.name"/>
                             </th>
                         </tr>
                     </table>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                        	<t t-if="o.quant_ids">
+                            <t t-if="o.quant_ids">
                                 <table class="table table-sm" style="border-bottom: 0px solid white !important;">
                                     <thead>
                                         <tr>
@@ -57,7 +57,7 @@
                             </t>
                             <t t-if="o.package_ids">
                                 <t t-foreach="o.package_ids" t-as="package">
-                                	<br/>
+                                    <br/>
                                     <table class="table table-condensed" style="border-bottom: 0px solid white !important;">
                                         <tr>
                                           <th>
@@ -70,20 +70,20 @@
                                             </th>
                                         </tr>
                                     </table>
-                                    <div class="row o_packaging_type" t-if="package.packaging_id">
+                                    <div class="o_packaging_type" t-if="package.packaging_id">
                                         <div class="col-12" style="font-weight:bold;">Package Type: <span t-field="package.packaging_id.name"/></div>
                                     </div>
-                                    <div class="row" t-if="package.shipping_weight">
+                                    <div class="o_packaging_type" t-if="package.shipping_weight">
                                         <div class="col-12" style="font-weight:bold;">Shipping Weight: <span t-field="package.shipping_weight"/></div>
                                     </div>
-                                    <div class="row">
+                                    <div class="o_packaging_type">
                                         <div class="col-12">
                                             <h3>Package Content</h3>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="o_packaging_type">
                                         <div class="col-12">
-                                          <t t-if="package.quant_ids">
+                                            <t t-if="package.quant_ids">
                                                 <table class="table table-sm" style="border-bottom: 0px solid white !important;">
                                                     <thead>
                                                         <tr>
@@ -112,7 +112,7 @@
                                                     </tbody>
                                                 </table>
                                             </t>
-                                       </div>
+                                        </div>
                                     </div>
                                 </t>
                             </t>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
             </t>
-        </t>
+        </main>
     </t>
 </template>
 
