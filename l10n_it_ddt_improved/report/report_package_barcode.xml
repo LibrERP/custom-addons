@@ -62,8 +62,8 @@
                                         <tr>
                                           <th>
                                             <h2 t-field="package.name" class="mt0 float-left"/>
-                                          </th>
-                                            <th style="text-align: center">
+                                           </th>
+                                           <th style="text-align: center">
                                                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', package.name, 600, 100)" alt="Barcode"
                                                   style="width:300px;height:50px"/>
                                                   <p t-field="package.name"/>
@@ -88,14 +88,18 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Product</th>
+                                                            <th class="text-right">Weight</th>
                                                             <th class="text-right">Quantity</th>
                                                             <th class="text-right">Lot/Serial Number</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr t-foreach="package.quant_ids" t-as="l">
+                                                        <tr t-foreach="package.get_sorted_lines(package.quant_ids)" t-as="l">
                                                             <td>
                                                                <span  t-field="l.product_id.name"/>
+                                                            </td>
+                                                             <td class="text-right">
+                                                                <span t-field="l.product_weight"/>
                                                             </td>
                                                             <td class="text-right">
                                                                 <span t-field="l.quantity"/>
