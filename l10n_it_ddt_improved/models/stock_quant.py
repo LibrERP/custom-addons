@@ -22,6 +22,7 @@
 #
 ##############################################################################
 
+from operator import attrgetter
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -29,6 +30,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class StockQuant(models.Model):
     _inherit = 'stock.quant'
+
+    product_weight = fields.Float(related='product_id.weight', string="Weight", readonly=True, digits=(6, 2))
 
     @api.model
     def _reset_reserved_quantity(self, product_id, location_id, quantity, lot_id=None, package_id=None, owner_id=None, strict=False):
@@ -53,10 +56,19 @@ class StockQuant(models.Model):
                 quant.write({'reserved_quantity': quant.reserved_quantity - quantity})
             else:
                 quant.write({'reserved_quantity': quant.reserved_quantity - quant.reserved_quantity})
-                
+
             if float_is_zero(quantity, precision_rounding=rounding) or float_is_zero(quant.reserved_quantity, precision_rounding=rounding):
                 break
         return reserved_quants
 
 
-c
+class QuantPackage(models.Model):
+    _inherit = "stock.quant.package"
+
+    def get_sorted_lines(self, quant_ids):
+        """
+            Returns stock.quant lines sorted by weight
+        """
+        if quant_ids:
+            by_weight = sorted(quant_ids, key=attrgetter('product_weight'), reverse=True)
+        return by_weight
