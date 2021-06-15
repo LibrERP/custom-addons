@@ -21,84 +21,94 @@
     </template>
 
     <template id="packing_list_report">
-        <t t-call="web.basic_layout">
-           <div class="page" >
-               <link rel='stylesheet' href='/broc_quality_controls/static/src/css/report.css'/>
-               <t t-if="o and 'company_id' in o">
-                  <t t-set="company" t-value="o.company_id"> </t>
-              </t>
-              <t t-if="not o or not 'company_id' in o">
-                  <t t-set="company" t-value="res_company" style="border:1px solid black;"> </t>
-              </t>
-               <h3 class="text-center"><b>PACKING LIST</b></h3>
-               <div class="row">
-                   <table class="table table-condensed table table-striped" style=" table-layout:fixed;" width="100%">
-                       <thead style=" background-color: #3d3d3d   ;">
-                           <tr>
-                               <th class="text-center" width="30px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Delivery Address</th>
-                               <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Origin</th>
-                               <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Scheduled Date</th>
-                               <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Packages</th>
-                           </tr>
-                       </thead>
-                       <tbody>
-                           <tr>
-                               <td style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
-                                   <div t-field="o.partner_id"
-                                        t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
-                                   <div t-field="o.partner_id.vat"/>
-                               </td>
-                               <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
-                                   <span t-esc="o.origin"/>
-                               </td>
-                               <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
-                                   <span t-esc="o.scheduled_date"/>
-                               </td>
-                               <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
-                                   <span t-esc="o.total_package"/>
-                               </td>
-                           </tr>
-                       </tbody>
-                   </table>
-               </div>
-               <table  style="border:1px solid black;padding-left:1.16cm;font-size:18px;">
-                   <thead>
-                       <th style="border:2px solid black;color: #000000;vertical-align: middle" width="21%" class="td4 text-center" height="35">Product</th>
-                       <t t-if="o.product_ref == True">
-                           <th style="border:2px solid black;color: #000000;vertical-align: middle" width="20%" class="td4 text-center">Product Ref</th>
-                       </t>
-                       <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Qty Ordered</th>
-                       <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Qty Packaged</th>
-                       <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Package Number</th>
-                       <th style="border:2px solid black;color: #000000;vertical-align: middle" width="20%" class="td4 text-center">Remarks </th>
-                   </thead>
-                   <tbody>
-                       <t t-foreach="o.move_lines.sorted(key=lambda x: x.pack_number)" t-as="l">
-                           <tr>
-                               <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5" height="30"><span t-esc="l.product_id.name" style="font-size:18px;"/></td>
-                               <t t-if="o.product_ref == True">
-                                   <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5"><span t-esc="l.product_id.default_code" style="font-size:18px;"/></td>
-                               </t>
-                               <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center"><span t-esc="l.product_uom_qty" style="font-size:18px;"/></td>
-                               <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
-                                <t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
-                                  <t t-esc="mvl.qty_done" style="font-size:18px;"/><br/>
-                                </t>
-                               </td>
-                               <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
-                                <t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
-                                  <span t-esc="mvl.result_package_id.name" style="font-size:18px;"/>
-                                </t>
-                               </td>
-                               <td style="border:2px solid black;color: #000000;vertical-align: middle; margin-left:15px;" class="td5"><span t-esc="l.remarks" style="font-size:18px;margin-left:10px;"/></td>
-                           </tr>
-                       </t>
-                   </tbody>
-               </table>
-               <br/>
-               <br/>
-           </div>
-           <p style="page-break-after:always"> </p>
+        <t t-call="web.internal_layout">
+            <main>
+                <div class="page" >
+                    <link rel='stylesheet' href='/broc_quality_controls/static/src/css/report.css'/>
+                    <t t-if="o and 'company_id' in o">
+                       <t t-set="company" t-value="o.company_id"> </t>
+                    </t>
+                    <t t-if="not o or not 'company_id' in o">
+                        <t t-set="company" t-value="res_company" style="border:1px solid black;"> </t>
+                    </t>
+                    <h3 class="text-center"><b>PACKING LIST</b></h3>
+                    <div class="row">
+                        <table class="table table-condensed table table-striped" style=" table-layout:fixed;" width="100%">
+                            <thead style=" background-color: #3d3d3d   ;">
+                                <tr>
+                                    <th class="text-center" width="30px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Delivery Address</th>
+                                    <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Origin</th>
+                                    <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Scheduled Date</th>
+                                    <th class="text-center" width="20px" style="border: 1px !important; border-style: solid !important; border-color: #fff; color:#fff !important;font-size:18px; ">Packages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
+                                        <div t-field="o.partner_id"
+                                             t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true, "phone_icons": true}'/>
+                                        <div t-field="o.partner_id.vat"/>
+                                    </td>
+                                    <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
+                                        <span t-esc="o.origin"/>
+                                    </td>
+                                    <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
+                                        <span t-esc="o.scheduled_date"/>
+                                    </td>
+                                    <td class="text-center" style="border: 1px !important; border-style: solid !important; border-color: #fff !important;font-size:18px;">
+                                        <span t-esc="o.total_package"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table  style="border:1px solid black;padding-left:1.16cm;font-size:18px;">
+                        <thead>
+                            <th style="border:2px solid black;color: #000000;vertical-align: middle" width="21%" class="td4 text-center" height="35">Product</th>
+                            <t t-if="o.product_ref == True">
+                                <th style="border:2px solid black;color: #000000;vertical-align: middle" width="20%" class="td4 text-center">Product Ref</th>
+                            </t>
+                            <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Qty Ordered</th>
+                            <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Qty Packaged</th>
+                            <th style="border:2px solid black;color: #000000;vertical-align: middle" width="13%" class="td4 text-center">Package Number</th>
+                            <th style="border:2px solid black;color: #000000;vertical-align: middle" width="20%" class="td4 text-center">Remarks </th>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.move_lines.sorted(key=lambda x: x.pack_number)" t-as="l">
+                                <tr>
+<!--
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5" height="30"><span t-esc="l.product_id.name" style="font-size:18px;"/></td>
+                                    <t t-if="o.product_ref == True">
+                                        <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5"><span t-esc="l.product_id.default_code" style="font-size:18px;"/></td>
+                                    </t>
+-->
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5" height="30">
+                                    	<span t-esc="l.product_id.name" style="font-size:18px;"/>
+                                    	<br>
+                                    		[<span t-esc="l.product_id.default_code" style="font-size:18px;"/>]
+                                    	</br>
+                                    </td>
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center"><span t-esc="l.product_uom_qty" style="font-size:18px;"/></td>
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
+                                     <t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
+                                       <t t-esc="mvl.qty_done" style="font-size:18px;"/><br/>
+                                     </t>
+                                    </td>
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle" class="td5 text-center">
+                                     <t t-foreach="l.move_line_ids.sorted(key=lambda x: x.result_package_id)" t-as="mvl">
+                                       <span t-esc="mvl.result_package_id.name" style="font-size:18px;"/>
+                                     </t>
+                                    </td>
+                                    <td style="border:2px solid black;color: #000000;vertical-align: middle; margin-left:15px;" class="td5"><span t-esc="l.remarks" style="font-size:18px;margin-left:10px;"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                </div>
+                <p style="page-break-after:always"> </p>
+            </main>
         </t>
     </template>
 
