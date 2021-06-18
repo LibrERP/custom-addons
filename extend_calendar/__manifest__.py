@@ -54,7 +54,9 @@
         'data/days.xml',
         'views/days_views.xml',
         'views/intervals_views.xml',
+        'views/date_interval_view.xml',
         'views/res_config_settings_views.xml',
+        'wizard/calendar_generator.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -26,6 +26,7 @@ from workalendar.registry import registry
 from datetime import date, datetime, timedelta
 
 from odoo import api, models, fields, _
+from odoo.exceptions import ValidationError
 
 
 def check_in_range(this_value=0, minimum=0, maximum=0):
@@ -55,7 +56,6 @@ def check_minute(this_minute=0):
 
 
 class WorkCal(object):
-
     calendar = None
 
     def __init__(self, iso_country="", year=0):
@@ -86,8 +86,8 @@ class Hours(models.Model):
     end_hour = fields.Integer('Ending Hour')
     end_minute = fields.Integer('Ending Minutes')
     duration = fields.Float(compute='_compute_duration',
-        string='Interval Duration',
-        help='The interval duration expressed in hours.')
+                            string='Interval Duration',
+                            help='The interval duration expressed in hours.')
     starting = fields.Char('Starting Hour', compute='_compute_duration')
     ending = fields.Char('Ending Hour', compute='_compute_duration')
 
@@ -117,9 +117,9 @@ class Hours(models.Model):
             starting = datetime.strptime(h1, "%H:%M")
 
             if end_hour < start_hour:
-                ending += timedelta(days=1)     # Manages ranges ending on next day
+                ending += timedelta(days=1)  # Manages ranges ending on next day
 
-            interval.duration = ((ending-starting).total_seconds())/3600
+            interval.duration = ((ending - starting).total_seconds()) / 3600
             interval.ending = h2
             interval.starting = h1
 
@@ -154,3 +154,58 @@ class Calendar(models.Model):
             iso_country = partner_id.country_id.code
             calendar = WorkCal(iso_country=iso_country, year=year)
         return calendar
+
+
+class DateInterval(models.Model):
+    _name = "res.calendar.date.interval"
+
+    name = fields.Char(required=True, translate=True)
+    date_start = fields.Date(string='Start date', required=True)
+    date_end = fields.Date(string='End date', required=True)
+    type_id = fields.Many2one(
+        comodel_name='res.calendar.date.interval.type', string='Type', index=1, required=True,
+        ondelete='restrict')
+    company_id = fields.Many2one(
+        comodel_name='res.company', string='Company', index=1,
+    )
+    type_name = fields.Char(
+        related='type_id.name', readonly=True, store=True, string="Type Name")
+    active = fields.Boolean(
+        help="The active field allows you to hide the date range without "
+             "removing it.", default=True)
+
+    @api.constrains('type_id', 'date_start', 'date_end')
+    def _validate_range(self):
+        for range in self:
+            if range.date_start > range.date_end:
+                raise ValidationError(
+                    _("%s is not a valid range (%s > %s)") % (
+                        range.name, range.date_start, range.date_end))
+            if range.type_id.allow_overlap:
+                continue
+            res = self.env['res.calendar.date.interval'].search(
+                [('id', '!=', range.id), ('type_id.id', '=', range.type_id.id), ('date_end', '>=', range.date_start),
+                 ('date_start', '<=', range.date_end)])
+            if res:
+                name = res[0].name
+                raise ValidationError(
+                    _("%s overlaps %s") % (range.name, name))
+
+
+class DateIntervalType(models.Model):
+    _name = "res.calendar.date.interval.type"
+
+    name = fields.Char(required=True, translate=True)
+    allow_overlap = fields.Boolean(
+        help="If sets date range of same type must not overlap.",
+        default=False)
+    active = fields.Boolean(
+        help="The active field allows you to hide the date range type "
+             "without removing it.", default=True)
+    company_id = fields.Many2one(
+        comodel_name='res.company', string='Company', index=1,
+    )
+    date_range_ids = fields.One2many('res.calendar.date.interval', 'type_id', string='Ranges')
+    parent_type_id = fields.Many2one(
+        comodel_name='res.calendar.date.interval.type',
+        index=1)

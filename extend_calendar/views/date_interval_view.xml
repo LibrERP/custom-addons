@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_res_calendar_date_interval_tree" model="ir.ui.view">
+        <field name="name">res.calendar.date.interval.tree</field>
+        <field name="model">res.calendar.date.interval</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" string="Date interval">
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_calendar_date_interval_form_view" model="ir.ui.view">
+        <field name="name">res.calendar.date.interval.form</field>
+        <field name="model">res.calendar.date.interval</field>
+        <field name="arch" type="xml">
+            <form string="Date Interval">
+                <group col="4">
+                    <field name="name"/>
+                    <field name="type_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="active"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="view_res_calendar_date_interval_type_tree" model="ir.ui.view">
+        <field name="name">res.calendar.date.interval.type.tree</field>
+        <field name="model">res.calendar.date.interval.type</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" string="Date interval type">
+                <field name="name"/>
+                <field name="allow_overlap"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_res_calendar_date_interval_type_form_view" model="ir.ui.view">
+        <field name="name">res.calendar.date.interval.type.form</field>
+        <field name="model">res.calendar.date.interval.type</field>
+        <field name="arch" type="xml">
+            <form string="Date Interval Type">
+                <group col="4">
+                    <field name="name"/>
+                    <field name="allow_overlap"/>
+                    <field name="active"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="res_calendar_date_interval_action" model="ir.actions.act_window">
+        <field name="name">Date Intervals</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.calendar.date.interval</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_res_calendar_date_interval_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="res_calendar_date_interval_type_action" model="ir.actions.act_window">
+        <field name="name">Date Interval Types</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.calendar.date.interval.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_res_calendar_date_interval_type_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem id="menu_res_calendar_date_interval" name="Date intervals"
+        parent="base.menu_custom" sequence="1"/>
+    <menuitem action="res_calendar_date_interval_action" id="menu_res_calendar_date_interval_action" parent="menu_res_calendar_date_interval"/>
+    <menuitem action="res_calendar_date_interval_type_action"
+        id="menu_res_calendar_date_interval_type_action" parent="menu_res_calendar_date_interval"/>
+</odoo>
