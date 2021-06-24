@@ -1,1 +1,0 @@
-from . import packing_list

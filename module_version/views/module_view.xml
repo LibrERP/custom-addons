@@ -35,7 +35,6 @@
         <record id="base.open_module_tree" model="ir.actions.act_window">
             <field name="name">Modules</field>
             <field name="res_model">ir.module.module</field>
-            <field name="view_type">form</field>
             <field name="view_mode">tree,form,kanban</field>
             <field name="context">{'search_default_app':0, 'search_default_no_hidden': 0, 'search_default_installed': 1}</field>
             <field name="search_view_id" ref="base.view_module_filter"/>

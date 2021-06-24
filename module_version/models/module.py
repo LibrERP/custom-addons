@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# © 2013-2020 Didotech srl
+# © 2013-2021 Didotech srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
@@ -9,7 +9,6 @@ from odoo import exceptions
 class Module(models.Model):
     _inherit = "ir.module.module"
 
-    @api.multi
     def _check_upgrade(self):
         installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
         for module in installed_modules:
@@ -22,13 +21,13 @@ class Module(models.Model):
             elif module.latest_version == self.get_module_info(module.name).get('version', '') and module.need_upgrade:
                 module.need_upgrade = False
 
-    @api.one
     @api.depends('installed_version', 'latest_version')
     def _need_upgrade(self):
-        if self.state in ['installed', 'to upgrade', 'to remove'] and not self.latest_version == self.get_module_info(self.name).get('version', ''):
-            self.need_upgrade = True
-        else:
-            self.need_upgrade = False
+        for module in self:
+            if module.state in ['installed', 'to upgrade', 'to remove'] and not module.latest_version == module.get_module_info(module.name).get('version', ''):
+                module.need_upgrade = True
+            else:
+                module.need_upgrade = False
 
     need_upgrade = fields.Boolean(compute='_need_upgrade', string=_('Need Upgrade'), store=True)
     check_upgrade = fields.Boolean(compute='_check_upgrade', string=_('Need Upgrade (hidden)'), store=False)
@@ -58,7 +57,6 @@ class Module(models.Model):
         else:
             return False
 
-    @api.multi
     def verify_modules(self):
         modules = self.set_modules_to_upgrade(view=True)
         if modules:
@@ -76,7 +74,6 @@ class Module(models.Model):
         else:
             raise exceptions.Warning(_('There are no modules that should be updated'))
 
-    @api.multi
     def _button_immediate_function(self, function):
         super(Module, self)._button_immediate_function(function)
         return {

@@ -3,7 +3,7 @@
 
 {
     'name': 'Modules to upgrade',
-    'version': '12.0.3.0',
+    'version': '14.0.0.0',
     'category': 'Tools',
     "author": "Didotech srl",
     'website': 'http://www.didotech.com',

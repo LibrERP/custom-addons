@@ -3,7 +3,7 @@
 
 {
     'name': 'Core Extended',
-    'version': '12.0.5.3',
+    'version': '14.0.5.3',
     'category': 'core',
     'author': 'Didotech Srl',
     'website': 'https://github.com/LibrERP/custom-addons',
@@ -16,7 +16,7 @@
     ],
     'demo': [],
     'test': [],
-    'installable': True,
+    'installable': False,
     'application': True,
     'auto_install': False,
     "external_dependencies": {

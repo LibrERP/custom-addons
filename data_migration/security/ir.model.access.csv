@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_filedata_import,access_filedata_import,model_filedata_import,,1,1,1,1
-access_category_import,access_category_import,model_category_import,,1,1,1,1
-access_product_import,access_product_import,model_product_import,,1,1,1,1
-access_partner_import,access_partner_import,model_partner_import,,1,1,1,1
