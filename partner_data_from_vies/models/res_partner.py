@@ -1,5 +1,6 @@
 # Copyright (C) 2015 Forest and Biomass Romania
 # Copyright (C) 2020 OdooERP Romania
+# Copyright © 2021 Didotech srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
@@ -25,7 +26,7 @@ class ResPartner(models.Model):
             return False
 
         # Raise error if partner is not listed on Vies
-        if hasattr(result, 'company_name') and result.company_name:
+        if hasattr(result, 'company_name') and result.company_name and not result.company_address[:3] == '***':
             address_values = hasattr(result, 'company_address') and result.company_address.split('\n')
             values = {
                 'name': result.company_name.title().replace('!', ' ')
