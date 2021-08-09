@@ -6,39 +6,29 @@
 #    Author: Ijaz Ahammed(<http://www.cybrosys.com>)
 #    you can modify it under the terms of the GNU LESSER
 #    GENERAL PUBLIC LICENSE (LGPL v3), Version 3.
-
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU LESSER GENERAL PUBLIC LICENSE (LGPL v3) for more details.
-#
-#    You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
-#    GENERAL PUBLIC LICENSE (LGPL v3) along with this program.
-#    If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
 {
-    'name': "Packing List",
+    'name': 'Packing List',
     'version': '12.0.0.1.2',
-    'summary': """Packing List""",
-    'description': """ """,
-    'author': "Cybrosys Technologies, Didotech srl", 
-    'company': 'Cybrosys Techno Solutions, Didotech srl',
-    'website': "https://www.cybrosys.com",
     'category': 'Accounting',
+    'summary': 'Packing List',
+    'author': 'powERP enterprise network',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'LGPL-3',
     'depends': [
         'base',
         'account',
         'stock',
-        'sale'],
+        'sale',
+    ],
     'data': [
         'views/packing_list.xml',
         'report/packing_list_pdf_report.xml',
         'report/format_packing_list_pdf_report.xml',
     ],
-    'images': ['static/description/banner.jpg'],
-    'license': 'LGPL-3',
     'installable': True,
-    'auto_install': False,
+    'company': 'Cybrosys Techno Solutions, Didotech srl',
     'application': False,
+    'auto_install': False,
+    'images': ['static/description/banner.jpg'],
 }

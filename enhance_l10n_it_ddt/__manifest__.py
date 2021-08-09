@@ -22,21 +22,14 @@
 #
 ##############################################################################
 {
-    'name': "enhance_l10n_it_ddt",
-
-    'summary': """
-        OCA ddt extensions and customizations""",
-
-    'description': """
-        OCA ddt extensions and customizations to manage TD settings
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
+    'name': 'enhance_l10n_it_ddt',
     'version': '12.0.0.0.1',
-
-    # any module necessary for this one to work correctly
+    'category': 'Customization',
+    'summary': 'OCA ddt extensions and customizations',
+    'author': 'powERP enterprise network',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'AGPL-3',
     'depends': [
         'base',
         'sale',
@@ -44,18 +37,11 @@
         'l10n_it_ddt',
         'core_extended',
     ],
-
-    # always loaded
     'data': [
         'views/res_config_settings_views.xml',
         'views/res_partner.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'AGPL-3',
 }

@@ -12,11 +12,13 @@
 <p align="justify">
 This module has no specific function for End-user.
 </p><p align="justify">
-It defines the structures by Italian Tax Authority to manage
+It defines the structures by Italian IRS (Tax Authority) to manage
 all fiscal communications.
 Inside there are xml schema files used by FatturaPA, EInvoice and VAT settlement.
 </p><p align="justify">
-This module requires <a href="http://pyxb.sourceforge.net/">PyXB 1.2.4</a>
+This module requires <a href="http://pyxb.sourceforge.net/">PyXB 1.2.4</a> or <a href="http://pyxb.sourceforge.net/">PyXB 1.2.5</a>
+</p><p align="justify">
+This code partially inherits some parts from l10n_it_account of OCA.
 </p></p>
         </div>
         <div class="oe_span6">
@@ -26,26 +28,17 @@ This module requires <a href="http://pyxb.sourceforge.net/">PyXB 1.2.4</a>
             <p class="oe_mt16" align="justify"><h1>Definizioni Agenzia delle Entrate</h1>
 <p align="justify">
 Questo modulo non ha funzioni specifiche per l'utente finale.
-Contiene dati e definizioni stabilite dall'Agenzia delle Entrate
+Contiene dati e definizioni come stabilito dall'Agenzia delle Entrate
 All'interno sono presenti gli schemi xml usati da FatturaPA,
 Fattura Elettronica B2B, Liquidazione IVA elettronica e Comunicazione IVA.
 </p><p align="justify">
 <img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/info.png"/> Questo modulo &#232; incompatibile con alcuni moduli OCA.
 </p><p align="justify">
-<img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/warning.png"/> Lo schema di definizione dei file xml, pubblicato
-con urn:www.agenziaentrate.gov.it:specificheTecniche &#232; base per tutti i file
-xml dell'Agenzia delle Entrate; come conseguenza nasce un conflitto tra
-moduli diversi che riferiscono allo schema dell'Agenzia delle Entrate,
-segnalato dall'errore:
-</p><p align="justify">
-<img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/exclamation.png"/> name CryptoBinary used for multiple values in typeBinding
-</p><p align="justify">
-Tutti i moduli della localizzazione italiana che generano file xml dipendenti
+Tutti i moduli che generano file xml dipendenti
 dallo schema dell'Agenzia delle Entrate devono dichiare il modulo
-<a href="https://github.com/zeroincombenze/l10n-italy/tree/11.0/l10n_it_ade">l10n_it_ade</a> come dipendenza.
+<a href="https://github.com/zeroincombenze/custom-addons/tree/12.0/l10n_it_ade/">l10n_it_ade</a> come dipendenza.
 </p><p align="justify">
-Per maggiori informazioni visitare il sito www.odoo-italia.org o contattare
-l'ultimo autore: Antonio M. Vigliotti &lt;antoniomaria.vigliotti@gmail.com&gt;.
+Questo modulo eredita alcune parti di codice del modulo l10n_it_account di OCA.
 </p></p>
         </div>
     </div>
@@ -57,13 +50,11 @@ l'ultimo autore: Antonio M. Vigliotti &lt;antoniomaria.vigliotti@gmail.com&gt;.
 <table style="width:100%; padding:2px; border-spacing:2px; text-align:left;"><tr>
 <td>Feature / Funzione</td><td>Status</td><td>Notes / Note</td>
 </tr><tr>
-<td>Emissione FatturaPA</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Genera file .xml versione 1.2</td>
+<td>Fiscal Invoice Type / Tipo fattura fiscale</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Codifica tipo di fattura come da AdE</td>
 </tr><tr>
-<td>Emissione Fattura B2B</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Genera file .xml versione 1.2</td>
+<td>Codice Carica</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Codifica codice carica come da AdE</td>
 </tr><tr>
-<td>Dati azienda da fattura</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Versione OCA utilizza dati azienda da utente</td>
-</tr><tr>
-<td>Controllo dati durante inserimento</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td/>
+<td>Tax Nature / Natura fiscale dell'IVA</td><td><img src="https://raw.githubusercontent.com/zeroincombenze/grymb/master/awesome/check.png"/></td><td>Codifica natura fiscale dell'IVA come da AdE</td>
 </tr></table>
 </p>
         </div>
@@ -89,14 +80,23 @@ l'ultimo autore: Antonio M. Vigliotti &lt;antoniomaria.vigliotti@gmail.com&gt;.
     <div class="oe_row oe_spaced">
         <div class="oe_span6" align="left">
             <p class="oe_mt16">Authors / Autori:</p>
-            <p class="oe_mt16">* SHS-AV s.r.l. <https://www.zeroincombenze.it/></p>
+            <p class="oe_mt16"><ul>
+<li><a href="https://www.zeroincombenze.it/">SHS-AV s.r.l.</a></li>
+</ul></p>
         </div>
         <div class="oe_span6" align="left">
             <p class="oe_mt16">Contributors / Collaboratori:</p>
-            <p class="oe_mt16">* Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com></p>
+            <p class="oe_mt16"><ul>
+<li>Antonio Maria Vigliotti &lt;antoniomaria.vigliotti@gmail.com&gt;</li>
+</ul></p>
         </div>
     </div>
     <div class="oe_row oe_spaced">
-        <p>This module is part of l10n-italy project.</p>
+        <div class="oe_span12">
+            <p>This module is maintained by the <b>SHS_AV s.r.l.</b>.</p>
+        </div>
+    </div>
+    <div class="oe_row oe_spaced">
+        <p>This module is part of custom-addons project.</p>
     </div>
 </section>

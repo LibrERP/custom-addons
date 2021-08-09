@@ -20,21 +20,14 @@
 #
 ##############################################################################
 {
-    'name': "l10n_it_ddt_improved",
-
-    'summary': """
-        OCA ddt extension for packaging""",
-
-    'description': """
-        OCA ddt extensions to compose product packaging in an automatic way
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
+    'name': 'l10n_it_ddt_improved',
     'version': '12.0.2.0.0',
-
-    # any module necessary for this one to work correctly
+    'category': 'Customization',
+    'summary': 'OCA ddt extension for packaging',
+    'author': 'powERP enterprise network',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'AGPL-3',
     'depends': [
         'l10n_it_ddt',
         'core_extended',
@@ -42,8 +35,6 @@
         'stock',
         'extend_report',
     ],
-
-    # always loaded
     'data': [
         'security/ir.model.access.csv',
         'data/decimal_precision.xml',
@@ -55,12 +46,7 @@
         'views/product_views.xml',
         'views/action_report.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'AGPL-3',
 }

@@ -20,34 +20,16 @@
 #
 ##############################################################################
 {
-    'name': "extend_calendar",
-
-    'summary': """
-        Calendar extensions for time intervals""",
-
-    'description': """
-        Calendar extensions and customizations to manage generic day names with time intervals.
-        A time interval expose start and end time as standard time string ("hh:mm") and duration as float.
-        A day can contain several time intervals. 
-    """,
-    #TODO: There isn't a check to avoid partial or total overriding for time intervals in a day.
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
+    'name': 'extend_calendar',
     'version': '12.0.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': [
-        'calendar',
-    ],
-    "external_dependencies": {
-        'python': [
-            "workalendar",
-        ],
-    },
-
-    # always loaded
+    'category': 'Customization',
+    'summary': 'Calendar extensions for time intervals',
+    'author': 'powERP enterprise network',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'LGPL-3',
+    'depends': ['calendar'],
+    'external_dependencies': {'python': ['workalendar']},
     'data': [
         'security/ir.model.access.csv',
         'data/hours.xml',
@@ -56,12 +38,7 @@
         'views/intervals_views.xml',
         'views/res_config_settings_views.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'LGPL-3',
 }

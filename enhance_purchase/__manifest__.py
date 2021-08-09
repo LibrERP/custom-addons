@@ -22,35 +22,17 @@
 #
 ##############################################################################
 {
-    'name': "enhance_purchase",
-
-    'summary': """
-        Purchase extensions and customizations""",
-
-    'description': """
-        Purchase extensions and basic customizations.
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
+    'name': 'enhance_purchase',
     'version': '12.0.0.0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': [
-        'purchase',
-    ],
-
-    # always loaded
-    'data': [
-        'views/purchase_views.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
+    'category': 'Customization',
+    'summary': 'Purchase extensions and customizations',
+    'author': 'SHS-AV s.r.l.',
+    'website': 'https://www.zeroincombenze.it',
+    'development_status': 'Alpha',
+    'license': 'LGPL-3',
+    'depends': ['purchase'],
+    'data': ['views/purchase_views.xml'],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'LGPL-3',
 }
