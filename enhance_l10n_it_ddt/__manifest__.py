@@ -34,7 +34,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.0.0.1',
+    'version': '12.0.0.1.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -49,6 +49,7 @@
     'data': [
         'views/res_config_settings_views.xml',
         'views/res_partner.xml',
+        'views/stock_picking_package_preparation.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

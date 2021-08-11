@@ -10,6 +10,9 @@
                 <field name="transportation_method_id" position="after">
                     <field name="ddt_type_id" widget="selection" options="{'no_create': True}"/>
                 </field>                
+                <field name="transportation_method_id" position="after">
+                    <field name="is_delivery_carrier"/>
+                </field>                
             </field>
         </record>
 
