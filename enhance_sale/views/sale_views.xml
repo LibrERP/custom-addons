@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <record id="view_sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+         	<field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+  				<field name="partner_invoice_id" position="replace">
+					<field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
+						domain="[('parent_id','!=',False),('parent_id','=', partner_id)]"
+						context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+ 	            </field>
+                <field name="partner_shipping_id" position="replace">
+					<field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" 
+						domain="[('parent_id','!=',False),('parent_id','=', partner_id)]"
+						context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+	            </field>
+
+ 				<xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
+					<button string="Transport Documents" icon="fa-truck" name="show_transport_documents" type="object" attrs="{'invisible': ['|',('qty_delivered','=', 0),('state','in',('draft','sent','cancel'))]}"/>
+				</xpath>
+				
+                <xpath expr="//field[@name='order_line']/tree//field[@name='name']" position="replace">
+                    <field name="name" options="{'no_create': True}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form//field[@name='product_id']" position="replace">
+                	<field name="product_id"
+                             context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"
+                             options="{'no_create': True}"
+                             attrs="{
+                             	'readonly': [('product_updatable', '=', False)],
+                             	'required': [('display_type', '=', False)],
+                             }"
+                            force_save="1"
+                    />
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form//field[@name='product_uom']" position="replace">
+                      <field
+                          name="product_uom"
+                          force_save="1"
+                          groups="uom.group_uom"
+                          class="oe_inline oe_no_button"
+                          options="{'no_create': True}"
+                          attrs="{
+                              'readonly': [('state', 'in', ('sale', 'done', 'cancel'))],
+                              'required': [('display_type', '=', False)],
+                          }"
+                      />
+                </xpath>
+           </field>
+        </record>
+
+        <record id="view_order_form_inherit_sale_stock_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.sale.stock.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_delivery']" position="replace">
+                     <field name="delivered" invisible="1"/>
+                     <button type="object"
+                        name="action_view_delivery"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        attrs="{'invisible': [('delivery_count', '=', 0)]}" groups="base.group_user">
+                        <t widget="statinfo"> <b><field name="delivery_count" nolabel="1"/></b>
+                            <t attrs="{'invisible': [('delivery_count', '&gt;', 0),('delivered','=', True)]}">
+                        	    <span>Delivery</span>
+                            </t>
+                            <t attrs="{'invisible': [('delivery_count', '&gt;', 0),('delivered','=', False)]}">
+                        	    <span>Delivered</span>
+                            </t>
+                        </t>
+                    </button>
+                </xpath>
+           </field>
+        </record>
+
+     </data>
+</odoo>
+            
