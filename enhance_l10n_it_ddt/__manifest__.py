@@ -22,13 +22,16 @@
 #
 ##############################################################################
 {
-    'name': "enhance_l10n_it_ddt",
+    'name': "Enhance Transport Document",
 
-    'summary': """
-        OCA ddt extensions and customizations""",
+    'summary':
+    """
+        OCA TD extensions
+    """,
 
-    'description': """
-        OCA ddt extensions and customizations to manage TD settings
+    'description':
+    """
+        OCA Transport Document extensions to manage default settings
     """,
 
     'author': "Didotech srl",
