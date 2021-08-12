@@ -31,8 +31,8 @@
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.0.9.8',
+    'category': 'Sales',
+    'version': '12.0.0.9.9',
 
     # any module necessary for this one to work correctly
     'depends': [

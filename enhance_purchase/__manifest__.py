@@ -33,8 +33,8 @@
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.0.0.1',
+    'category': 'Purchases',
+    'version': '12.0.0.0.2',
 
     # any module necessary for this one to work correctly
     'depends': [

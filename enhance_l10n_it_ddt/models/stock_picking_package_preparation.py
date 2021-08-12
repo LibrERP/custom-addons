@@ -28,7 +28,7 @@ from odoo import models, fields, api
 class StockPickingPackagePreparation(models.Model):
     _inherit = 'stock.picking.package.preparation'
 
-    def get_partner_bysaleorder_id(self, kind = ''):
+    def get_partner_bysaleorder_id(self, kind=''):
         """
             Returns partner invoice address
         """
@@ -45,7 +45,7 @@ class StockPickingPackagePreparation(models.Model):
             ret = self.get_partner_reference_id(kind=kind)
         return ret
 
-    def get_partner_reference_id(self, kind = 'invoice'):
+    def get_partner_reference_id(self, kind='invoice'):
         """
             Returns partner invoice address
         """
