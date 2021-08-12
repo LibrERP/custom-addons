@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_price_range,accessprice_range,model_price_range,stock.group_stock_manager,1,1,1,1
+read_price_range,read_price_range,model_price_range,,1,0,0,0
