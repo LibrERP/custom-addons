@@ -1,12 +1,12 @@
 # Copyright 2019 ForgeFlow, S.L.
 # Copyright 2020 CorporateHub (https://corporatehub.eu)
-# © 2021 Didotech  (http://www.didotech.com)
+# © 2021 Didotech  (https://www.didotech.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 {
     "name": "Account Bank Statement Import TXT/CSV/XLSX",
     "summary": "Import TXT/CSV or XLSX files as Bank Statements in Odoo",
-    "version": "12.0.2.0.5_a",
+    "version": "12.0.2.0.5_b",
     "category": "Accounting",
     "website": "https://github.com/OCA/bank-statement-import",
     "author":
@@ -26,6 +26,7 @@
     "external_dependencies": {
         "python": [
             "xlrd",
+            'openpyxl'
         ]
     },
     "data": [
