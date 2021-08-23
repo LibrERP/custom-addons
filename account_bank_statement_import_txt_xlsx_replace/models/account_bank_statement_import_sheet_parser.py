@@ -237,7 +237,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 timestamp = values[timestamp_column]
                 currency = values[currency_column] \
                     if currency_column is not None else currency_code
-                amount = values[amount_column] or values[debit_column]
+                amount = values[amount_column] or values[debit_column] or 0
                 balance = values[balance_column] \
                     if balance_column is not None else None
                 original_currency = values[original_currency_column] \
@@ -400,7 +400,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             return value
         elif isinstance(value, (float, int)):
             return Decimal(value)
-        else:
+        elif value:
             thousands, decimal = mapping._get_float_separators()
             value = value.replace(thousands, '')
             value = value.replace(decimal, '.')
