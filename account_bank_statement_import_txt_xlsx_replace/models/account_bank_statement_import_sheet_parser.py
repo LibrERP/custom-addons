@@ -262,11 +262,17 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                     if bank_account_column is not None else None
 
                 if currency.upper() == currency_code.upper():
-                    if isinstance(timestamp, str):
+                    if isinstance(timestamp, str) and timestamp.replace('0', ''):
                         timestamp = datetime.strptime(
                             timestamp,
                             mapping.timestamp_format
                         )
+                    elif isinstance(timestamp, str):
+                        # Set date to minimum value accepted by JavaScript
+                        timestamp = datetime(1970, 1, 1, 0, 0, 0)
+                    else:
+                        # timestamp is already in datetime format. Do nothing
+                        pass
 
                     amount = self._parse_decimal(amount, mapping)
                     if balance:
