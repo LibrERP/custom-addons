@@ -137,6 +137,7 @@ class AccountBankStatementImportSheetMappingWizard(models.TransientModel):
             csv_options['quotechar'] = self.quotechar
         header = Parser.parse_header(
             b64decode(self.data_file),
+            self.filename,
             self.file_encoding,
             csv_options
         )

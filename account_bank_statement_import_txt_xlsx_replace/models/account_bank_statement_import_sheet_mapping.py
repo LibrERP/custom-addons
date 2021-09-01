@@ -12,6 +12,8 @@ class AccountBankStatementImportSheetMapping(models.Model):
     name = fields.Char(
         required=True,
     )
+    start_from = fields.Integer(
+        string="Start from line:", default=0, help="Line that contains table header")
     float_thousands_sep = fields.Selection(
         string='Thousands Separator',
         selection=[

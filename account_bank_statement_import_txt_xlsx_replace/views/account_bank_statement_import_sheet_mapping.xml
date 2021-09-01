@@ -28,6 +28,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="start_from"/>
                             <field name="float_thousands_sep"/>
                             <field name="float_decimal_sep"/>
                         </group>
