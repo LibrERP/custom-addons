@@ -26,6 +26,9 @@
             'csv',
         ]
     },
+    'excludes': [
+        'account_bank_statement_import_paypal'
+    ],
     'data': [
         'security/ir.model.access.csv',
         'data/maps.xml',
