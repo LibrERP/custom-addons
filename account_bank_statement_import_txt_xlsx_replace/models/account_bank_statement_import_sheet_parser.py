@@ -21,9 +21,38 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
     @api.model
     def parse_header(self, data_file, filename, encoding, csv_options):
-        Parser = self.env['account.bank.statement.import.sheet.parser']
-        csv_or_xlsx = Parser.read_table(data_file, filename, encoding, csv_options)
+        """
+        Parse table header
+
+        :return: list of column names
+        """
+        # Parser = self.env['account.bank.statement.import.sheet.parser']
+        csv_or_xlsx = self.read_table(data_file, filename, encoding, csv_options)
         return [str(value) for value in next(csv_or_xlsx)]
+
+    # @api.model
+    def parse_data_header(self, mapping, data_file, filename):
+        header = {
+            'name': '',
+            'date': False
+        }
+        finish_at = mapping.start_from and mapping.start_from - 1 or None
+        header_data = list(self.read_table(
+            data_file, filename, mapping.file_encoding, self.get_csv_options(mapping), start_from=0, finish_at=finish_at))
+
+        if mapping.header_name_raw and mapping.header_name_column:
+            header['name'] = header_data[int(mapping.header_name_raw)][int(mapping.header_name_column)]
+
+        if mapping.header_date_raw and mapping.header_date_column:
+            header['date'] = header_data[int(mapping.header_date_raw)][int(mapping.header_date_column)]
+
+            if isinstance(header['date'], str):
+                header['date'] = datetime.strptime(
+                    header['date'],
+                    mapping.timestamp_format
+                )
+
+        return header
 
     @api.model
     def parse(self, mapping, data_file, filename):
@@ -35,7 +64,12 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
         ).name
         account_number = journal.bank_account_id.acc_number
 
-        name = _('%s: %s') % (
+        if mapping.start_from:
+            header = self.parse_data_header(mapping, data_file, filename)
+        else:
+            header = {}
+
+        name = header.get('name', None) or _('%s: %s') % (
             journal.code,
             path.basename(filename),
         )
@@ -54,7 +88,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
         last_line = lines[-1]
         data = {
             'name': name,
-            'date': first_line['timestamp'].date(),
+            'date': header.get('date', None) and header['date'].date() or first_line['timestamp'].date()
         }
 
         if mapping.balance_column:
@@ -76,7 +110,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
         return currency_code, account_number, [data]
 
-    def import_sheet_generator(self, data_file, filename, encoding, csv_options, start_from=0):
+    def import_sheet_generator(self, data_file, filename, encoding, csv_options, start_from=0, finish_at=None):
         name, file_type = filename.lower().rsplit('.', 1)
         if file_type in ('xls', 'xlsb'):
             import xlrd
@@ -93,7 +127,9 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
             sh = book.sheet_by_index(0)
 
-            for rx in range(start_from-1, sh.nrows):
+            start_from = start_from and start_from - 1 or 0
+
+            for rx in range(start_from, finish_at or sh.nrows):
                 row = []
                 for cx in range(sh.ncols):
                     cell = sh.cell(rowx=rx, colx=cx)
@@ -128,22 +164,27 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
             for count, shrow in enumerate(sh.rows, 1):
                 if count >= start_from:
+                    if finish_at and count > finish_at - 1:
+                        break
                     row = []
                     lrrow = list(shrow)
                     for cx in range(0, max_column):
                         row.append(lrrow[cx].value)
 
                     if all(c is None for c in row):
-                        break
+                        if finish_at and count < finish_at:
+                            pass
+                        else:
+                            break
                     yield row
         elif file_type == 'csv':
             import csv
 
-            def unicode_csv_reader(unicode_csv_data,  delimiter, start_from, dialect=csv.excel, **kwargs):
+            def unicode_csv_reader(unicode_csv_data,  delimiter, start_from, finish_at, dialect=csv.excel, **kwargs):
                 # csv.py doesn't do Unicode; encode temporarily as UTF-8:
                 # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
                 csv_reader = csv.reader(
-                    table_reader(unicode_csv_data, start_from),
+                    table_reader(unicode_csv_data, start_from, finish_at),
                     delimiter=delimiter,
                     dialect=dialect, **kwargs)
                 for row in csv_reader:
@@ -151,9 +192,11 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                     # yield [str(cell, 'utf-8') for cell in row]
                     yield row
 
-            def table_reader(virtual_file_utf8, start_from):
+            def table_reader(virtual_file_utf8, start_from, finish_at):
                 for count, line in enumerate(virtual_file_utf8, 1):
                     if count >= start_from:
+                        if finish_at and count > finish_at:
+                            break
                         yield line.decode('utf-8')
 
             ## Create virtual File
@@ -164,29 +207,34 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             # sample = virtual_file.read(512)
             # virtual_file.seek(0)
 
-            for row in unicode_csv_reader(virtual_file_utf8, csv_options.get('delimiter', None), start_from):
+            for row in unicode_csv_reader(virtual_file_utf8, csv_options.get('delimiter', None), start_from, finish_at):
                 yield row
 
         else:
             raise exceptions.Warning(_('Error: Unknown file extension'))
 
-    def read_table(self, data_file, filename, encoding, csv_options, start_from):
+    def read_table(self, data_file, filename, encoding, csv_options, start_from, finish_at=None):
         # table = list(self.import_sheet_generator(data_file, filename, encoding, csv_options))
-        table = self.import_sheet_generator(data_file, filename, encoding, csv_options, start_from=start_from)
+        table = self.import_sheet_generator(
+            data_file, filename, encoding, csv_options, start_from=start_from, finish_at=finish_at)
         return table
 
-    def _parse_lines(self, mapping, data_file, filename, currency_code):
+    def get_csv_options(self, mapping):
         csv_options = {}
         csv_delimiter = mapping._get_column_delimiter_character()
         if csv_delimiter:
             csv_options['delimiter'] = csv_delimiter
         if mapping.quotechar:
             csv_options['quotechar'] = mapping.quotechar
+
+        return csv_options
+
+    def _parse_lines(self, mapping, data_file, filename, currency_code):
         if mapping.start_from:
             start_from = mapping.start_from
         else:
             start_from = 0
-        csv_or_xlsx = self.read_table(data_file, filename, mapping.file_encoding, csv_options, start_from)
+        csv_or_xlsx = self.read_table(data_file, filename, mapping.file_encoding, self.get_csv_options(mapping), start_from)
 
         # header = [str(value) for value in csv_or_xlsx.pop(0)]
         header = [str(value) for value in next(csv_or_xlsx)]
@@ -237,7 +285,10 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 timestamp = values[timestamp_column]
                 currency = values[currency_column] \
                     if currency_column is not None else currency_code
-                amount = values[amount_column] or values[debit_column] or 0
+
+                debit_amount = debit_column and values[debit_column] and - abs(values[debit_column]) or 0
+                amount = values[amount_column] or debit_amount or 0
+
                 balance = values[balance_column] \
                     if balance_column is not None else None
                 original_currency = values[original_currency_column] \

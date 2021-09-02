@@ -45,6 +45,16 @@
                             <field name="credit_value" attrs="{'required': [('debit_credit_column', '!=', False)]}"/>
                         </group>
                     </group>
+                    <group string="Header">
+                        <group>
+                            <field name="header_name_raw" />
+                            <field name="header_name_column" />
+                        </group>
+                        <group>
+                            <field name="header_date_raw" />
+                            <field name="header_date_column" />
+                        </group>
+                    </group>
                     <group string="Columns">
                         <field name="timestamp_column"/>
                         <field name="currency_column"/>
