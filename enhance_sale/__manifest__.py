@@ -1,11 +1,9 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
-#    (<http://www.didotech.com/>).
-#
-#    Created on : 2021-04-02
+#    Created on : 2020-07-20
 #    Author : Fabio Colognesi
+#    Copyright: Didotech srl 2020 - 2021
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,37 +20,30 @@
 #
 ##############################################################################
 {
-    'name': "Enhance Transport Document",
+    'name': "Enhance Sale Order",
 
-    'summary':
-    """
-        OCA TD extensions
-    """,
+    'summary': """
+        Sales Order extensions""",
 
-    'description':
-    """
-        OCA Transport Document extensions to manage default settings
+    'description': """
+        Sales extensions adding TD access.
     """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Stock',
-    'version': '12.0.0.2.0',
+    'category': 'Sales',
+    'version': '12.0.0.9.9',
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base',
         'sale',
-        'stock',
-        'l10n_it_ddt',
-        'core_extended',
+        'sale_stock',
+        'l10n_it_ddt',  # OCA l10n_italy
     ],
 
     # always loaded
     'data': [
-        'views/res_config_settings_views.xml',
-        'views/res_partner.xml',
-        'views/stock_picking_package_preparation.xml',
+        'views/sale_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -61,5 +52,5 @@
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'AGPL-3',
+    'license': 'LGPL-3',
 }

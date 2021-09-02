@@ -46,7 +46,7 @@ Usage
 
 To use this module, you need to:
 
-#. Get statement in TXT/CSV or XLSX from your online banking software
+#. Get statement in TXT/CSV or XLS/XLSX from your online banking software
 #. Go to Odoo and and import the statement file, selecting corresponding format
 
 Changelog
@@ -78,6 +78,7 @@ Authors
 
 * ForgeFlow
 * CorporateHub
+* Didotech Srl
 
 Contributors
 ~~~~~~~~~~~~
@@ -97,10 +98,14 @@ Contributors
 
   * Alexey Pelykh <alexey.pelykh@corphub.eu>
 
+* Didotech Srl (https://www.didotech.com/)
+
+  * Andrei Levin <andrei.levin@didotech.com>
+
 Maintainers
 ~~~~~~~~~~~
 
-This module is maintained by the OCA.
+This module is maintained by the Didotech srl.
 
 .. image:: https://odoo-community.org/logo.png
    :alt: Odoo Community Association
@@ -114,10 +119,10 @@ promote its widespread use.
     :target: https://github.com/alexey-pelykh
     :alt: alexey-pelykh
 
-Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
+Former `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-alexey-pelykh| 
 
-This module is part of the `OCA/bank-statement-import <https://github.com/OCA/bank-statement-import/tree/12.0/account_bank_statement_import_txt_xlsx>`_ project on GitHub.
+This module was part of the `OCA/bank-statement-import <https://github.com/OCA/bank-statement-import/tree/12.0/account_bank_statement_import_txt_xlsx>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

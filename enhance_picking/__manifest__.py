@@ -4,7 +4,7 @@
 #    Copyright (C) 2020-2021 Didotech srl
 #    (<http://www.didotech.com/>).
 #
-#    Created on : 2021-04-02
+#    Created on : 2021-00-11
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,37 +22,32 @@
 #
 ##############################################################################
 {
-    'name': "Enhance Transport Document",
+    'name': "Enhance Stock Picking",
 
-    'summary':
-    """
-        OCA TD extensions
-    """,
+    'summary': 
+        """
+            Stock picking extensions
+        """,
 
-    'description':
-    """
-        OCA Transport Document extensions to manage default settings
-    """,
+    'description': 
+        """
+            Stock picking extensions referring to TD.
+        """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Stock',
-    'version': '12.0.0.2.0',
+    'version': '12.0.0.0.2',
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base',
-        'sale',
-        'stock',
-        'l10n_it_ddt',
-        'core_extended',
+       'stock',
+       'l10n_it_ddt',  # OCA l10n_italy
     ],
 
     # always loaded
     'data': [
-        'views/res_config_settings_views.xml',
-        'views/res_partner.xml',
-        'views/stock_picking_package_preparation.xml',
+        'views/stock_picking_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -61,5 +56,5 @@
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'AGPL-3',
+    'license': 'LGPL-3',
 }

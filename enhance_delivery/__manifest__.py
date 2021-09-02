@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
-#    (<http://www.didotech.com/>).
+#    LibrERP, Open Source Product Enterprise Management System    
+#    Copyright (C) 2020-2021 Didotech srl (<http://didotech.com>). All Rights Reserved
 #
-#    Created on : 2021-04-02
+#    Created on : 2021-08-12
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,37 +22,29 @@
 #
 ##############################################################################
 {
-    'name': "Enhance Transport Document",
+    'name': "Enhance Delivery Costs",
 
-    'summary':
-    """
-        OCA TD extensions
-    """,
+    'summary': """
+        Delivery Costs extensions""",
 
-    'description':
-    """
-        OCA Transport Document extensions to manage default settings
+    'description': """
+        Delivery Costs extensions adding Price Ranges to quote shipping.
     """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Stock',
-    'version': '12.0.0.2.0',
+    'version': '12.0.0.0.0',
 
     # any module necessary for this one to work correctly
     'depends': [
-        'base',
-        'sale',
-        'stock',
-        'l10n_it_ddt',
-        'core_extended',
+        'delivery',
     ],
 
     # always loaded
     'data': [
-        'views/res_config_settings_views.xml',
-        'views/res_partner.xml',
-        'views/stock_picking_package_preparation.xml',
+        'security/ir.model.access.csv',
+        'views/delivery_carrier_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -61,5 +53,5 @@
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'AGPL-3',
+    'license': 'LGPL-3',
 }

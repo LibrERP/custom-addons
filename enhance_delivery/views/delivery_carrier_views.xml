@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_delivery_carrier_form_inherit" model="ir.ui.view">
+        <field name="name">delivery.carrier.form.inherit</field>
+        <field name="model">delivery.carrier</field>
+        <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+        <field name="arch" type="xml">
+            <field name="integration_level" position="after">
+            	<field name="use_ranges"/>
+            </field>
+ 			<xpath expr="//page/group/group/field[@name='fixed_price']/../../.." position="after">
+                <page name="ranges" string="Price Ranges" attrs="{'invisible': [('use_ranges', '=', False)]}">
+                    <field name="range_line_ids">
+                        <tree string="Price Ranges" editable="bottom">
+                            <field name="min_limit"/>
+                            <field name="max_limit"/>
+                            <field name="value"/>
+                            <field name="percent"/>
+                        </tree>
+                    </field>
+            	</page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+               

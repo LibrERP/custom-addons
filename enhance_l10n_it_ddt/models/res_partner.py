@@ -78,3 +78,8 @@ class ResPartner(models.Model):
         string='Preferred Transport Document Type',
         default=_ddt_type_method)
 
+    is_delivery_carrier = fields.Boolean(
+        string='Is it a Delivery Carrier',
+        help='Choose this option if this partner would be used as delivery carrier.',
+        default=False)
+

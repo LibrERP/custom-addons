@@ -1,11 +1,9 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
-#    (<http://www.didotech.com/>).
-#
-#    Created on : 2021-04-02
+#    Created on : 2020-07-20
 #    Author : Fabio Colognesi
+#    Copyright: Didotech srl 2020 - 2020
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,40 +19,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Enhance Purchase",
 
-    'summary':
-    """
-        Purchase extensions
-    """,
-
-    'description':
-    """
-        Purchase extensions and basic customizations.
-        Fixes Quotation filter.
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Purchases',
-    'version': '12.0.0.1.0',
-
-    # any module necessary for this one to work correctly
-    'depends': [
-        'purchase',
-    ],
-
-    # always loaded
-    'data': [
-        'views/purchase_views.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
+from . import models

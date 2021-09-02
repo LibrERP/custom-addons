@@ -1,9 +1,0 @@
-Dato Fattura Elettronica,Nome tecnico,Modulo OCA,Modulo OIA,Note tecnico OCA,Nome tecnico OIA,Note
-Schema di definione xsd,,l10n_it_fatturapa,l10n_it_ade,,,Il modulo di OIA serve anche alla liquidazione IVA e comunicazione IVA (ex Spesometro)
-Natura dell'IVA,,l10n_it_account_tax_kind,l10n_it_ade,account.tax.kind,italy.ade.tax.nature,Estensione della tabella account.tax usata anche da liquidazione IVA e comunicazione IVA (ex Spesometro)
-Termini di pagamento,,l10n_it_fiscal_payment_term,l10n_it_fiscal_payment_term,fatturapa.payment_term,fatturapa.payment_term,Modelli compatibili tra OIA e OCA
-Metodi di pagamento,,l10n_it_fiscal_payment_term,l10n_it_fiscal_payment_term,fatturapa.payment_method,fatturapa.payment_method,Modelli compatibili tra OIA e OCA
-Codice Destinatario,codice_destinatario,l10n_it_fatturapa,l10n_it_fiscal_ipa,res.partner,res.partner,
-Partner è PA?,is_pa,l10n_it_fatturapa,l10n_it_fiscal_ipa,res.partner,res.partner,
-Soggetto a Fattura elettronica,electronic_invoice_subjected,l10n_it_fatturapa,l10n_it_fiscal_ipa,res.partner,res.partner,Il nome del campo è diverso
-Regime Fiscale,fiscal_position,l10n_it_fatturapa,l10n_it_fatturapa,fatturapa.fiscal_position,fatturapa.fiscal_position,

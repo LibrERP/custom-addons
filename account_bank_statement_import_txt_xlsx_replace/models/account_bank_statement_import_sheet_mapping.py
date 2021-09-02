@@ -12,6 +12,81 @@ class AccountBankStatementImportSheetMapping(models.Model):
     name = fields.Char(
         required=True,
     )
+#     statement_name = fields.Char(
+#         string='Statement Name',
+#         required=False,
+#         help="""Name of the column which value should be used as the name of the Statement.
+# The name of the file is used if this field is not set"""
+#     )
+
+    header_name_raw = fields.Selection(
+        string="Statement Name raw",
+        selection=[
+            ('0', '1'),
+            ('1', '2'),
+            ('2', '3'),
+            ('3', '4'),
+            ('4', '5'),
+            ('5', '6'),
+            ('6', '7'),
+            ('7', '8'),
+            ('8', '9'),
+            ('9', '10')
+        ],
+        default=0, help="""Raw that contains value that should be used as the name of the Statement.
+The name of the file is used if this field is not set""")
+    header_name_column = fields.Selection(
+        string="Statement Name column",
+        selection=[
+            ('0', 'A'),
+            ('1', 'B'),
+            ('2', 'C'),
+            ('3', 'D'),
+            ('4', 'E'),
+            ('5', 'F'),
+            ('6', 'G'),
+            ('7', 'H'),
+            ('8', 'I'),
+            ('9', 'J')
+        ],
+        default=0, help="""Column that contains value that should be used as the name of the Statement.
+The name of the file is used if this field is not set""")
+
+    header_date_raw = fields.Selection(
+        string="Statement Date raw",
+        selection=[
+            ('0', '1'),
+            ('1', '2'),
+            ('2', '3'),
+            ('3', '4'),
+            ('4', '5'),
+            ('5', '6'),
+            ('6', '7'),
+            ('7', '8'),
+            ('8', '9'),
+            ('9', '10')
+        ],
+        default=0, help="""Raw that contains value that should be used as the date of the Statement.
+The earliest date is used if this field is not set""")
+    header_date_column = fields.Selection(
+        string="Statement Date column",
+        selection=[
+            ('0', 'A'),
+            ('1', 'B'),
+            ('2', 'C'),
+            ('3', 'D'),
+            ('4', 'E'),
+            ('5', 'F'),
+            ('6', 'G'),
+            ('7', 'H'),
+            ('8', 'I'),
+            ('9', 'J')
+        ],
+        default=0, help="""Column that contains value that should be used as the date of the Statement.
+The earliest date is used if this field is not set""")
+
+    start_from = fields.Integer(
+        string="Start from line:", default=0, help="Line that contains table header")
     float_thousands_sep = fields.Selection(
         string='Thousands Separator',
         selection=[
