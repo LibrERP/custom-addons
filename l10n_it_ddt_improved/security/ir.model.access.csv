@@ -1,3 +1,0 @@
-id,name,model_id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_stock_quant_base,access_stock_quant,stock.quant,base.group_user,1,1,1,1
-access_stock_quant_package_base,access_stock_quant_package,stock.quant.package,base.group_user,1,1,1,1
