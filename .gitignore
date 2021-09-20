@@ -1,15 +1,33 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*~
-*~*
 *.csync_journal.db
+example_*
 
 # C extensions
 *.so
 
+# Temporay files
+*.log
+*.bak
+*.swp
+*.out
+*~
+*~*
+
 # Distribution / packaging
 .Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -21,7 +39,7 @@ pip-delete-this-directory.txt
 # Unit test / coverage reports
 htmlcov/
 .tox/
-.coverage
+**/.coverage
 .cache
 nosetests.xml
 coverage.xml
@@ -52,6 +70,10 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# OSX Files
+*.DS_Store
+
+# Altro
 /.settings/
 stdout.log
 *.oca
