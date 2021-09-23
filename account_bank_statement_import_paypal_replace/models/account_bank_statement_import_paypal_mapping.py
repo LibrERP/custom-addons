@@ -9,100 +9,41 @@ class AccountBankStatementImportPayPalMapping(models.Model):
     _name = 'account.bank.statement.import.paypal.mapping'
     _description = 'Account Bank Statement Import PayPal Mapping'
 
-    name = fields.Char(
-        required=True,
-    )
+    name = fields.Char(required=True,)
     float_thousands_sep = fields.Selection(
         string='Thousands Separator',
-        selection=[
-            ('dot', 'dot (.)'),
-            ('comma', 'comma (,)'),
-            ('none', 'none'),
-        ],
+        selection=[('dot', 'dot (.)'), ('comma', 'comma (,)'), ('none', 'none')],
         default='dot',
         required=True,
     )
     float_decimal_sep = fields.Selection(
         string='Decimals Separator',
-        selection=[
-            ('dot', 'dot (.)'),
-            ('comma', 'comma (,)'),
-            ('none', 'none'),
-        ],
+        selection=[('dot', 'dot (.)'), ('comma', 'comma (,)'), ('none', 'none')],
         default='comma',
         required=True,
     )
-    date_format = fields.Char(
-        string='Date Format',
-        required=True,
-    )
-    time_format = fields.Char(
-        string='Time Format',
-        required=True,
-    )
-    date_column = fields.Char(
-        string='"Date" column',
-        required=True,
-    )
-    time_column = fields.Char(
-        string='"Time" column',
-        required=True,
-    )
-    tz_column = fields.Char(
-        string='"Timezone" column',
-        required=True,
-    )
-    name_column = fields.Char(
-        string='"Name" column',
-        required=True,
-    )
-    currency_column = fields.Char(
-        string='"Currency" column',
-        required=True,
-    )
-    gross_column = fields.Char(
-        string='"Gross" column',
-        required=True,
-    )
-    fee_column = fields.Char(
-        string='"Fee" column',
-        required=True,
-    )
-    balance_column = fields.Char(
-        string='"Balance" column',
-        required=True,
-    )
+    date_format = fields.Char(string='Date Format', required=True,)
+    time_format = fields.Char(string='Time Format', required=True,)
+    date_column = fields.Char(string='"Date" column', required=True,)
+    time_column = fields.Char(string='"Time" column', required=True,)
+    tz_column = fields.Char(string='"Timezone" column', required=True,)
+    name_column = fields.Char(string='"Name" column', required=True,)
+    currency_column = fields.Char(string='"Currency" column', required=True,)
+    gross_column = fields.Char(string='"Gross" column', required=True,)
+    fee_column = fields.Char(string='"Fee" column', required=True,)
+    balance_column = fields.Char(string='"Balance" column', required=True,)
     transaction_id_column = fields.Char(
-        string='"Transaction ID" column',
-        required=True,
+        string='"Transaction ID" column', required=True,
     )
-    description_column = fields.Char(
-        string='"Description" column',
-    )
-    type_column = fields.Char(
-        string='"Type" column',
-    )
-    from_email_address_column = fields.Char(
-        string='"From Email Address" column',
-    )
-    to_email_address_column = fields.Char(
-        string='"To Email Address" column',
-    )
-    invoice_id_column = fields.Char(
-        string='"Invoice ID" column',
-    )
-    subject_column = fields.Char(
-        string='"Subject" column',
-    )
-    note_column = fields.Char(
-        string='"Note" column',
-    )
-    bank_name_column = fields.Char(
-        string='"Bank Name" column',
-    )
-    bank_account_column = fields.Char(
-        string='"Bank Account" column',
-    )
+    description_column = fields.Char(string='"Description" column',)
+    type_column = fields.Char(string='"Type" column',)
+    from_email_address_column = fields.Char(string='"From Email Address" column',)
+    to_email_address_column = fields.Char(string='"To Email Address" column',)
+    invoice_id_column = fields.Char(string='"Invoice ID" column',)
+    subject_column = fields.Char(string='"Subject" column',)
+    note_column = fields.Char(string='"Note" column',)
+    bank_name_column = fields.Char(string='"Bank Name" column',)
+    bank_account_column = fields.Char(string='"Bank Account" column',)
 
     @api.onchange('float_thousands_sep')
     def onchange_thousands_separator(self):
@@ -126,5 +67,7 @@ class AccountBankStatementImportPayPalMapping(models.Model):
             'comma': ',',
             'none': '',
         }
-        return (separators[self.float_thousands_sep],
-                separators[self.float_decimal_sep])
+        return (
+            separators[self.float_thousands_sep],
+            separators[self.float_decimal_sep],
+        )
