@@ -1,0 +1,19 @@
+{
+    'name': "Training Service",
+    'summary': """
+        Manage Training""",
+    'author': "powERP enterprise network",
+    'website': "https://github.com/LibrERP/custom-addons",
+    'category': 'Training',
+    'version': '12.0.0.1',
+    'depends': [
+        'base',
+    ],
+    # always loaded
+    'data': [
+        'security/ir.model.access.csv',
+        'views/training_views.xml',
+    ],
+    # only loaded in demonstration mode
+    'demo': [],
+}
