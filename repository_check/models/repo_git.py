@@ -309,7 +309,7 @@ class RepoGit(RepoBase):
             ret_flag = False
 
         if not ret_flag:
-            self._output_list.append('Git pull request <strodddng>failed</strong>. Check logs for details!')
+            self._output_list.append('Git pull request failed. Check logs for details!')
             _logger.info('Git pull request failed. Check logs for details!')
 
         tags_unformatted = self._repo.git.tag()
