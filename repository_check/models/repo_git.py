@@ -28,6 +28,8 @@ try:
         CheckoutError
     )
 
+
+
     from git.util import (
         Iterable,
         IterableList,
@@ -45,6 +47,7 @@ import re
 from os.path import isdir,dirname, join
 from io import StringIO
 import sys
+from distutils.version import StrictVersion
 
 
 
@@ -133,6 +136,8 @@ class RepoGit(RepoBase):
     #
     #     return True
 
+
+    @property
     def check_repo_state(self):
         """
         Check up self._repo object, control  if repository is unstaged (without 'git add') or detached (without branch)
@@ -152,6 +157,7 @@ class RepoGit(RepoBase):
         #         ret_code = False
         #         _logger.info('Branch {} is not master'.format(self._repo.head.ref))
         #         self._output_list.append('Branch {} is not master'.format(self._repo.head.ref))
+
 
         if self._repo.is_dirty():
             ret_code = False
@@ -289,7 +295,7 @@ class RepoGit(RepoBase):
         # self.remote_ssh_url_has_pwd()
 
         # if check_repo_state fails can't continue execution! See if do raise!
-        if self.check_repo_state():
+        if self.check_repo_state:
 
             _logger.info('Repo at {} successfully loaded.'.format(self._repo_path))
             repo_details = self.print_repository()
@@ -303,10 +309,37 @@ class RepoGit(RepoBase):
             ret_flag = False
 
         if not ret_flag:
-            self._output_list.append('Git pull request failed. Check logs for details!')
+            self._output_list.append('Git pull request <strodddng>failed</strong>. Check logs for details!')
             _logger.info('Git pull request failed. Check logs for details!')
 
-        return ret_flag, self._output_list
+        tags_unformatted = self._repo.git.tag()
+        tags = tags_unformatted.split('\n')
+        tags = [tag.replace('r', '').replace('a', '').replace('b', '') for tag in tags if tag[0] == 'r']
+        tags.sort(key=StrictVersion)
+        last_version = int(tags[-1].split('.')[1]) - 2
+        tags.reverse()
+        for idx, tag in  enumerate(tags):
+            if last_version == int(tag.split('.')[1]):
+                tag_to_start = tags[idx-1]
+                break
+        logs = self._repo.git.log(f"r{tag_to_start}..HEAD", '--tags', '--oneline', '--pretty=format:"%d%ad%x09%s"')
+
+        collective_text = ""
+        for idx, log in enumerate(logs.split('\n')):
+            if idx == 0:
+                tag = log.split(': ')[1].split(',')[0]
+                date, message = log.split(')')[1].split('\t')
+                collective_text += tag + '\n'
+                collective_text += date + message + '\n'
+            else:
+                if "tag:" in log:
+                    tag = log.split(': ')[1].split(')')[0]
+                    collective_text += tag + '\n'
+                else:
+                    date, message = log.split('\t')
+                    collective_text += date + message + '\n'
+
+        return ret_flag, self._output_list, collective_text
 
     def clone_cmd(self, repo_name):
         """

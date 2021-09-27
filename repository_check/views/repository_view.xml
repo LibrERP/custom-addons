@@ -54,6 +54,9 @@
                     <group>
                         <field name="log" colspan="4"/>
                     </group>
+                    <group>
+                        <field name="release" colspan="4"/>
+                    </group>
                 </form>
             </field>
         </record>

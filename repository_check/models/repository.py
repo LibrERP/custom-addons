@@ -58,6 +58,7 @@ class RepositoryCheck(models.Model):
     ], string='Last Check State', readonly=True, default='new')
     last_check = fields.Date('Last Check', readonly=True)
     log = fields.Text('Logging', readonly=True, default='')
+    release = fields.Text('Release', readonly=True, default='')
     state = fields.Selection([
         ('clone', 'Clone'),
         ('repo', 'Pull'),
@@ -73,10 +74,11 @@ class RepositoryCheck(models.Model):
 
         ret_str = ''
         ret_flag = False
+        release_data = ''
         try:
             # to decide if send msg or err_msg to client window
             git_repo = RepoGit(repo_path, user, passwd, self.repository_name)
-            ret_flag, err_msgs = git_repo.pull()
+            ret_flag, err_msgs, release_data = git_repo.pull()
             if len(err_msgs) > 0:
                 ret_str = '\n'.join(str(x) for x in err_msgs)
 
@@ -93,13 +95,13 @@ class RepositoryCheck(models.Model):
         except Exception as e:
             self.last_check_state = 'failed'
             _logger.error('An exception occured, {}'.format(e))
-            ret_str += 'Git pull request failed. Check logs for details!\n'
+            ret_str += 'Git pull request <>failed</strong>. Check logs for details!\n'
 
         # except:
         #     import traceback
         #     _logger.error(traceback.format_exc())
 
-        return ret_flag, ret_str
+        return ret_flag, ret_str, release_data
 
     def exec_hg_pull_cmd(self, repo_path, user, passwd):
 
@@ -188,7 +190,7 @@ class RepositoryCheck(models.Model):
                 raise UserError('Can\'t launch pull command, please insert also your password!')
 
         if repository_type == GIT_TYPE:
-            ret_code, ret_str = self.exec_git_pull_cmd(repository_path, user, password)
+            ret_code, ret_str, release_data = self.exec_git_pull_cmd(repository_path, user, password)
         elif repository_type == MERCURIAL_TYPE:
             ret_code, ret_str = self.exec_hg_pull_cmd(repository_path, user, password)
 
@@ -203,6 +205,7 @@ class RepositoryCheck(models.Model):
         if ret_str != '':
             values['log'] = '{}'.format(ret_str)
 
+        values['release'] = release_data
         if values:
             self.write(values)
 
