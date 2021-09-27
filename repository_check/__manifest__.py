@@ -22,7 +22,7 @@ And to verify 'git' executable is in the PATH
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Tools',
-    'version': '1.11.7',
+    'version': '1.12.8',
 
     # any module necessary for this one to work correctly
     'depends': [
