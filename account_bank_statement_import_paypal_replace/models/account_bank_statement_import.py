@@ -3,9 +3,10 @@
 # Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
+
 from odoo import api, fields, models
 
-import logging
 _logger = logging.getLogger(__name__)
 
 
@@ -22,14 +23,9 @@ class AccountBankStatementImport(models.TransientModel):
         self.ensure_one()
         try:
             Parser = self.env['account.bank.statement.import.paypal.parser']
-            return Parser.parse(
-                self.paypal_mapping_id,
-                data_file,
-                self.filename
-            )
-        except:
-            if self.env.context.get(
-                    'account_bank_statement_import_paypal_test'):
+            return Parser.parse(self.paypal_mapping_id, data_file, self.filename)
+        except ValueError:
+            if self.env.context.get('account_bank_statement_import_paypal_test'):
                 raise
             _logger.warning('PayPal parser error', exc_info=True)
         return super()._parse_file(data_file)

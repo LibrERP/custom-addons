@@ -339,4 +339,3 @@ msgstr ""
 #: selection:account.bank.statement.import.paypal.mapping,float_thousands_sep:0
 msgid "none"
 msgstr ""
-
