@@ -6,18 +6,17 @@
 # Code partially inherited by l10n_it_account of OCA
 #
 {
-    "name": "Base xml Agenzia delle Entrate",
-    "version": "12.0.0.1.10",
-    "category": "Localization/Italy",
-    "summary": "Codice con le definizioni dei file xml Agenzia delle Entrate",
-    "author": "SHS-AV s.r.l.,"
-              " Odoo Italia Associazione",
-    "maintainer": "Antonio Maria Vigliotti <antoniomaria.vigliotti@gmail.com>",
-    "license": "LGPL-3",
-    "depends": [
-        'account',
-    ],
-    "data": [
+    'name': 'Base xml Agenzia delle Entrate',
+    'version': '12.0.0.1.10',
+    'category': 'Localization/Italy',
+    'summary': 'Codice con le definizioni dei file xml Agenzia delle Entrate',
+    'author': 'powERP enterprise network, SHS-AV s.r.l.',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'LGPL-3',
+    'depends': ['account'],
+    'external_dependencies': {'python': ['pyxb']},
+    'data': [
         'security/ir.model.access.csv',
         'data/italy_ade_tax_nature.xml',
         'data/italy_ade_codice_carica.xml',
@@ -29,8 +28,6 @@
         'views/tax_nature_view.xml',
         'views/invoice_type_view.xml',
     ],
+    'maintainer': 'powERP enterprise network',
     'installable': False,
-    "external_dependencies": {
-        "python": ["pyxb"],
-    }
 }

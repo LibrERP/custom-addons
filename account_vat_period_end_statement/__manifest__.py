@@ -9,9 +9,10 @@
     'name': 'ITA - Liquidazione IVA',
     'version': '12.0.1.5.3',
     'category': 'Localization/Italy',
-    'summary': "Allow to create the 'VAT Statement'.",
+    'summary': 'Allow to create the "VAT Statement".',
     'author': 'Odoo Community Association (OCA) and other partners',
-    'website': 'https://odoo-community.org/',
+    'website': 'https://odoo-community.org',
+    'development_status': 'Beta',
     'license': 'AGPL-3',
     'depends': [
         'account',
@@ -33,5 +34,4 @@
         'views/account_view.xml',
     ],
     'installable': True,
-    'development_status': 'Beta',
 }

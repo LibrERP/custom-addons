@@ -1,21 +1,19 @@
 # Copyright 2018 Apruzzese Francesco <f.apruzzese@apuliasoftware.it>
 # Copyright 2020 Andrei Levin <andrei.levin@didotech.com>
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Partner fax',
+    'version': '12.0.1.0.0',
     'category': 'Extra Tools',
     'summary': 'Add fax number on partner',
-    'version': '12.0.1.0.0',
-    'license': 'AGPL-3',
-    'author':  'Odoo Community Association (OCA)',
-    'website': 'https://github.com/OCA/partner-contact',
+    'author': 'powERP enterprise network',
+    'website': 'https://www.powerp.it',
+    'development_status': 'Alpha',
+    'license': 'LGPL-3',
     'depends': [
         'base_setup',
-        'module_version'
-        ],
-    'data': [
-        'views/res_partner.xml',
-        ],
+        'module_version',
+    ],
+    'data': ['views/res_partner.xml'],
     'installable': True,
 }

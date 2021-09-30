@@ -6,7 +6,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 import math
-from datetime import datetime
+# from datetime import datetime
 from odoo import models, fields, api
 from odoo.tools.translate import _
 from odoo.exceptions import UserError
@@ -659,9 +659,9 @@ class AccountVatPeriodEndStatement(models.Model):
             'kind_id': tax.kind_id.id if tax.kind_id else False,
             'account_id': tax.account_id.id if tax.account_id else False,
             'tax_id': tax.id,
-                'base_amount': total_base,
-                'vat_amount': total_vat,
-                'amount': total,
+            'base_amount': total_base,
+            'vat_amount': total_vat,
+            'amount': total,
         }, bool(total or total_base or total_vat)
 
     def sum_to_account(self, vals, total):
