@@ -9,7 +9,9 @@
     'website': 'https://www.powerp.it',
     'development_status': 'Alpha',
     'license': 'LGPL-3',
-    'depends': ['base_vat'],
+    'depends': [
+        'base_vat',  # base_vat depends on account
+    ],
     'installable': True,
     'application': False,
     'auto_install': False,
