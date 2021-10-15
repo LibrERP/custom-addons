@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+
+    <record id="training_service_form" model="ir.ui.view">
+      <field name="name">training_service form</field>
+      <field name="model">training.service</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="training_date"/>
+                <field name="partner_id" domain="[('parent_id', '=', False)]"/>
+                <field name="contract" domain="[('partner_id', '=', partner_id)]" />
+              </group>
+              <group>
+                <field name="training_date_end"/>
+                <field name="meeting_type"/>
+              </group>
+            </group>
+            <group>
+              <field name="description"/>
+            </group>
+            <field name="student_ids" domain="[('parent_id', '=', partner_id)]"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="training_service_tree" model="ir.ui.view">
+      <field name="name">training_service list</field>
+      <field name="model">training.service</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="training_date"/>
+          <field name="partner_id"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record id="action_training_window" model="ir.actions.act_window">
+      <field name="name">training_service window</field>
+      <field name="res_model">training.service</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Training" id="menu_training_root" groups="base.group_no_one" />
+    <menuitem name="Lessons" id="menu_training_list" parent="menu_training_root"
+              action="action_training_window" groups="base.group_no_one" />
+
+  </data>
+</odoo>
