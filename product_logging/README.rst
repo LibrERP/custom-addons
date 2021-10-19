@@ -1,8 +1,8 @@
-==================
-Sale Order Logging
-==================
+===============
+Product Logging
+===============
 
-This module create more detailed log of Sale Order changes
+This module create more detailed log of Product changes
 
 Credits
 =======

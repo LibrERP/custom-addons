@@ -1,8 +1,8 @@
-==================
-Sale Order Logging
-==================
+===================
+Model Logging Mixin
+===================
 
-This module create more detailed log of Sale Order changes
+This is an Mixin Class to create more detailed log model change
 
 Credits
 =======
