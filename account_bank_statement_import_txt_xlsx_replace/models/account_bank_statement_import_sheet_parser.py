@@ -2,16 +2,15 @@
 # Copyright 2020 CorporateHub (https://corporatehub.eu)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import api, models, _
-from odoo import exceptions
-
+import itertools
+import logging
 from datetime import datetime
 from decimal import Decimal
 from io import BytesIO
 from os import path
-import itertools
 
-import logging
+from odoo import _, api, exceptions, models
+
 _logger = logging.getLogger(__name__)
 
 
@@ -32,36 +31,40 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
     # @api.model
     def parse_data_header(self, mapping, data_file, filename):
-        header = {
-            'name': '',
-            'date': False
-        }
+        header = {'name': '', 'date': False}
         finish_at = mapping.start_from and mapping.start_from - 1 or None
-        header_data = list(self.read_table(
-            data_file, filename, mapping.file_encoding, self.get_csv_options(mapping), start_from=0, finish_at=finish_at))
+        header_data = list(
+            self.read_table(
+                data_file,
+                filename,
+                mapping.file_encoding,
+                self.get_csv_options(mapping),
+                start_from=0,
+                finish_at=finish_at,
+            )
+        )
 
         if mapping.header_name_raw and mapping.header_name_column:
-            header['name'] = header_data[int(mapping.header_name_raw)][int(mapping.header_name_column)]
+            header['name'] = header_data[int(mapping.header_name_raw)][
+                int(mapping.header_name_column)
+            ]
 
         if mapping.header_date_raw and mapping.header_date_column:
-            header['date'] = header_data[int(mapping.header_date_raw)][int(mapping.header_date_column)]
+            header['date'] = header_data[int(mapping.header_date_raw)][
+                int(mapping.header_date_column)
+            ]
 
             if isinstance(header['date'], str):
                 header['date'] = datetime.strptime(
-                    header['date'],
-                    mapping.timestamp_format
+                    header['date'], mapping.timestamp_format
                 )
 
         return header
 
     @api.model
     def parse(self, mapping, data_file, filename):
-        journal = self.env['account.journal'].browse(
-            self.env.context.get('journal_id')
-        )
-        currency_code = (
-            journal.currency_id or journal.company_id.currency_id
-        ).name
+        journal = self.env['account.journal'].browse(self.env.context.get('journal_id'))
+        currency_code = (journal.currency_id or journal.company_id.currency_id).name
         account_number = journal.bank_account_id.acc_number
 
         if mapping.start_from:
@@ -75,148 +78,194 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
         )
         lines = self._parse_lines(mapping, data_file, filename, currency_code)
         if not lines:
-            return currency_code, account_number, [{
-                'name': name,
-                'transactions': [],
-            }]
+            return (
+                currency_code,
+                account_number,
+                [
+                    {
+                        'name': name,
+                        'transactions': [],
+                    }
+                ],
+            )
 
-        lines = list(sorted(
-            lines,
-            key=lambda line: line['timestamp']
-        ))
+        lines = list(sorted(lines, key=lambda line: line['timestamp']))
         first_line = lines[0]
         last_line = lines[-1]
         data = {
             'name': name,
-            'date': header.get('date', None) and header['date'].date() or first_line['timestamp'].date()
+            'date': header.get('date', None)
+            and header['date'].date()
+            or first_line['timestamp'].date(),
         }
 
         if mapping.balance_column:
             balance_start = first_line['balance']
             balance_start -= first_line['amount']
             balance_end = last_line['balance']
-            data.update({
-                'balance_start': float(balance_start),
-                'balance_end_real': float(balance_end),
-            })
+            data.update(
+                {
+                    'balance_start': float(balance_start),
+                    'balance_end_real': float(balance_end),
+                }
+            )
 
-        transactions = list(itertools.chain.from_iterable(map(
-            lambda line: self._convert_line_to_transactions(line),
-            lines
-        )))
-        data.update({
-            'transactions': transactions,
-        })
+        transactions = list(
+            itertools.chain.from_iterable(
+                map(lambda line: self._convert_line_to_transactions(line), lines)
+            )
+        )
+        data.update(
+            {
+                'transactions': transactions,
+            }
+        )
 
         return currency_code, account_number, [data]
 
-    def import_sheet_generator(self, data_file, filename, encoding, csv_options, start_from=0, finish_at=None):
+    @staticmethod
+    def import_xls_generator(data_file, encoding, start_from=0, finish_at=None):
+        import xlrd
+        from xlrd.xldate import xldate_as_datetime
+
+        try:
+            book = xlrd.open_workbook(
+                file_contents=data_file,
+                encoding_override=(encoding if encoding else None),
+            )
+        except UnicodeDecodeError:
+            pass
+
+        sh = book.sheet_by_index(0)
+
+        start_from = start_from and start_from - 1 or 0
+
+        for rx in range(start_from, finish_at or sh.nrows):
+            row = []
+            for cx in range(sh.ncols):
+                cell = sh.cell(rowx=rx, colx=cx)
+                if cell.ctype == xlrd.XL_CELL_DATE:
+                    cell_value = xldate_as_datetime(cell.value, book.datemode)
+                else:
+                    cell_value = cell.value
+
+                row.append(cell_value)
+            yield row
+
+    @staticmethod
+    def import_xlsx_generator(data_file, start_from=0, finish_at=None):
+        from openpyxl import load_workbook
+
+        # Create virtual File:
+        virtual_file = BytesIO(data_file)
+        book = load_workbook(virtual_file, read_only=False)
+
+        sh = book.worksheets[0]
+        max_column = sh.max_column
+
+        for count, shrow in enumerate(sh.rows, 1):
+            if count >= start_from:
+                lrrow = list(shrow)
+                for cx in range(max_column - 1, 0, -1):
+                    if lrrow[cx].value:
+                        max_column = cx + 1
+                        # Evaluates max columns to use in range
+                        break
+                break
+
+        for count, shrow in enumerate(sh.rows, 1):
+            if count >= start_from:
+                if finish_at and count > finish_at - 1:
+                    break
+                row = []
+                lrrow = list(shrow)
+                for cx in range(0, max_column):
+                    row.append(lrrow[cx].value)
+
+                if all(c is None for c in row):
+                    if finish_at and count < finish_at:
+                        pass
+                    else:
+                        break
+                yield row
+
+    @staticmethod
+    def import_csv_generator(data_file, csv_options, start_from=0, finish_at=None):
+        import csv
+
+        def unicode_csv_reader(
+            unicode_csv_data,
+            delimiter,
+            start_from,
+            finish_at,
+            dialect=csv.excel,
+            **kwargs
+        ):
+            # csv.py doesn't do Unicode; encode temporarily as UTF-8:
+            # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
+            csv_reader = csv.reader(
+                table_reader(unicode_csv_data, start_from, finish_at),
+                delimiter=delimiter,
+                dialect=dialect,
+                **kwargs
+            )
+            for row in csv_reader:
+                # decode UTF-8 back to Unicode, cell by cell:
+                # yield [str(cell, 'utf-8') for cell in row]
+                yield row
+
+        def table_reader(virtual_file_utf8, start_from, finish_at):
+            for count, line in enumerate(virtual_file_utf8, 1):
+                if count >= start_from:
+                    if finish_at and count > finish_at:
+                        break
+                    yield line.decode('utf-8')
+
+        # Create virtual File
+        virtual_file_utf8 = BytesIO(data_file)
+
+        for row in unicode_csv_reader(
+            virtual_file_utf8,
+            csv_options.get('delimiter', None),
+            start_from,
+            finish_at,
+        ):
+            yield row
+
+    def import_sheet_generator(
+        self, data_file, filename, encoding, csv_options, start_from=0, finish_at=None
+    ):
         name, file_type = filename.lower().rsplit('.', 1)
         if file_type in ('xls', 'xlsb'):
-            import xlrd
-            from xlrd.xldate import xldate_as_datetime
-            try:
-                book = xlrd.open_workbook(
-                    file_contents=data_file,
-                    encoding_override=(
-                        encoding if encoding else None
-                    )
-                )
-            except UnicodeDecodeError:
-                pass
-
-            sh = book.sheet_by_index(0)
-
-            start_from = start_from and start_from - 1 or 0
-
-            for rx in range(start_from, finish_at or sh.nrows):
-                row = []
-                for cx in range(sh.ncols):
-                    cell = sh.cell(rowx=rx, colx=cx)
-                    if cell.ctype == xlrd.XL_CELL_DATE:
-                        cell_value = xldate_as_datetime(cell.value, book.datemode)
-                    else:
-                        cell_value = cell.value
-
-                    row.append(cell_value)
-                yield row
+            return self.import_xls_generator(
+                data_file, encoding, start_from=start_from, finish_at=finish_at
+            )
 
         elif file_type in ('xlsx', 'xlsm', 'xltx', 'xltm'):
-            from openpyxl import load_workbook
+            return self.import_xlsx_generator(
+                data_file, start_from=start_from, finish_at=finish_at
+            )
 
-            ## Create virtual File:
-            virtual_file = BytesIO(data_file)
-            # book = load_workbook(virtual_file, read_only=True)
-            book = load_workbook(virtual_file, read_only=False)
-
-            sh = book.worksheets[0]
-            max_column = sh.max_column
-
-            for count, shrow in enumerate(sh.rows, 1):
-                if count >= start_from:
-                    lrrow = list(shrow)
-                    for cx in range(max_column - 1, 0, -1):
-                        if lrrow[cx].value:
-                            max_column = cx + 1
-                            # Evaluates max columns to use in range
-                            break
-                    break
-
-            for count, shrow in enumerate(sh.rows, 1):
-                if count >= start_from:
-                    if finish_at and count > finish_at - 1:
-                        break
-                    row = []
-                    lrrow = list(shrow)
-                    for cx in range(0, max_column):
-                        row.append(lrrow[cx].value)
-
-                    if all(c is None for c in row):
-                        if finish_at and count < finish_at:
-                            pass
-                        else:
-                            break
-                    yield row
         elif file_type == 'csv':
-            import csv
-
-            def unicode_csv_reader(unicode_csv_data,  delimiter, start_from, finish_at, dialect=csv.excel, **kwargs):
-                # csv.py doesn't do Unicode; encode temporarily as UTF-8:
-                # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
-                csv_reader = csv.reader(
-                    table_reader(unicode_csv_data, start_from, finish_at),
-                    delimiter=delimiter,
-                    dialect=dialect, **kwargs)
-                for row in csv_reader:
-                    # decode UTF-8 back to Unicode, cell by cell:
-                    # yield [str(cell, 'utf-8') for cell in row]
-                    yield row
-
-            def table_reader(virtual_file_utf8, start_from, finish_at):
-                for count, line in enumerate(virtual_file_utf8, 1):
-                    if count >= start_from:
-                        if finish_at and count > finish_at:
-                            break
-                        yield line.decode('utf-8')
-
-            ## Create virtual File
-            # virtual_file = BytesIO(data_file)
-            virtual_file_utf8 = BytesIO(data_file)
-
-            ## Process CSV file:
-            # sample = virtual_file.read(512)
-            # virtual_file.seek(0)
-
-            for row in unicode_csv_reader(virtual_file_utf8, csv_options.get('delimiter', None), start_from, finish_at):
-                yield row
+            return self.import_csv_generator(
+                data_file, csv_options, start_from=start_from, finish_at=finish_at
+            )
 
         else:
             raise exceptions.Warning(_('Error: Unknown file extension'))
 
-    def read_table(self, data_file, filename, encoding, csv_options, start_from, finish_at=None):
+    def read_table(
+        self, data_file, filename, encoding, csv_options, start_from, finish_at=None
+    ):
         # table = list(self.import_sheet_generator(data_file, filename, encoding, csv_options))
         table = self.import_sheet_generator(
-            data_file, filename, encoding, csv_options, start_from=start_from, finish_at=finish_at)
+            data_file,
+            filename,
+            encoding,
+            csv_options,
+            start_from=start_from,
+            finish_at=finish_at,
+        )
         return table
 
     def get_csv_options(self, mapping):
@@ -229,48 +278,110 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
         return csv_options
 
-    def _parse_lines(self, mapping, data_file, filename, currency_code):
+    def _parse_lines(self, mapping, data_file, filename, currency_code):  # noqa: C901
+        def get_index_or_none(header, column_name):
+            if column_name and column_name in header:
+                return header.index(column_name)
+            else:
+                return None
+
+        def get_key_or_none(values_dict, key):
+            return key and values_dict[key] or None
+
+        def get_timestamp(values_dict, key, mapping):
+            normalized_timestamp = values_dict[key]
+            if normalized_timestamp:
+                if isinstance(
+                    normalized_timestamp, str
+                ) and normalized_timestamp.replace('0', ''):
+                    return datetime.strptime(
+                        normalized_timestamp, mapping.timestamp_format
+                    )
+                elif isinstance(normalized_timestamp, str):
+                    # Set date to minimum value accepted by JavaScript
+                    return datetime(1970, 1, 1, 0, 0, 0)
+                else:
+                    # timestamp is already in datetime format. Do nothing
+                    return normalized_timestamp
+            else:
+                return None
+
+        def get_original_carrency_and_ammount(
+            values, currency_key, ammount_key, currency, amount, mapping
+        ):
+            original_currency = get_key_or_none(values, currency_key)
+            original_amount = get_key_or_none(values, ammount_key)
+            if not original_currency:
+                original_currency = currency
+                original_amount = amount
+            elif original_currency == currency:
+                original_amount = amount
+
+            line['original_currency'] = original_currency
+
+            if original_amount:
+                original_amount = self._parse_decimal(
+                    original_amount, mapping
+                ).copy_sign(amount)
+            else:
+                original_amount = 0.0
+
+            return original_currency, original_amount
+
+        def get_amount(values, columns, mapping):
+            debit_amount = (
+                columns['debit']
+                and values[columns['debit']]
+                and -abs(values[columns['debit']])
+                or 0
+            )
+
+            amount = values[columns['amount']] or debit_amount or 0
+            amount = self._parse_decimal(amount, mapping)
+
+            debit_credit = get_key_or_none(values, columns['debit_credit'])
+            if debit_credit:
+                amount = amount.copy_abs()
+                if debit_credit == mapping.debit_value:
+                    amount = -amount
+            return amount
+
         if mapping.start_from:
             start_from = mapping.start_from
         else:
             start_from = 0
-        csv_or_xlsx = self.read_table(data_file, filename, mapping.file_encoding, self.get_csv_options(mapping), start_from)
 
-        # header = [str(value) for value in csv_or_xlsx.pop(0)]
+        csv_or_xlsx = self.read_table(
+            data_file,
+            filename,
+            mapping.file_encoding,
+            self.get_csv_options(mapping),
+            start_from,
+        )
+
         header = [str(value) for value in next(csv_or_xlsx)]
 
-        timestamp_column = header.index(mapping.timestamp_column)
-        currency_column = header.index(mapping.currency_column) \
-            if mapping.currency_column else None
-        amount_column = header.index(mapping.amount_column)
-        debit_column = header.index(mapping.debit_column) \
-            if mapping.debit_column else None
-        balance_column = header.index(mapping.balance_column) \
-            if mapping.balance_column else None
-        original_currency_column = (
-            header.index(mapping.original_currency_column)
-            if mapping.original_currency_column else None
-        )
-        original_amount_column = (
-            header.index(mapping.original_amount_column)
-            if mapping.original_amount_column else None
-        )
-        debit_credit_column = header.index(mapping.debit_credit_column) \
-            if mapping.debit_credit_column else None
-        transaction_id_column = header.index(mapping.transaction_id_column) \
-            if mapping.transaction_id_column else None
-        description_column = header.index(mapping.description_column) \
-            if mapping.description_column else None
-        notes_column = header.index(mapping.notes_column) \
-            if mapping.notes_column else None
-        reference_column = header.index(mapping.reference_column) \
-            if mapping.reference_column else None
-        partner_name_column = header.index(mapping.partner_name_column) \
-            if mapping.partner_name_column else None
-        bank_name_column = header.index(mapping.bank_name_column) \
-            if mapping.bank_name_column else None
-        bank_account_column = header.index(mapping.bank_account_column) \
-            if mapping.bank_account_column else None
+        columns = {
+            'timestamp': header.index(mapping.timestamp_column),
+            'currency': get_index_or_none(header, mapping.currency_column),
+            'amount': header.index(mapping.amount_column),
+            'debit': get_index_or_none(header, mapping.debit_column),
+            'balance': get_index_or_none(header, mapping.balance_column),
+            'original_currency': get_index_or_none(
+                header, mapping.original_currency_column
+            ),
+            'original_amount': get_index_or_none(
+                header, mapping.original_amount_column
+            ),
+            'debit_credit': get_index_or_none(header, mapping.debit_credit_column),
+            'transaction_id': get_index_or_none(header, mapping.transaction_id_column),
+            'description': get_index_or_none(header, mapping.description_column),
+            'notes': get_index_or_none(header, mapping.notes_column),
+            'reference': get_index_or_none(header, mapping.reference_column),
+            'partner_name': get_index_or_none(header, mapping.partner_name_column),
+            'bank_name': get_index_or_none(header, mapping.bank_name_column),
+            'bank_account': get_index_or_none(header, mapping.bank_account_column),
+        }
 
         # if isinstance(csv_or_xlsx, tuple):
         #     rows = range(1, csv_or_xlsx[1].nrows)
@@ -282,98 +393,59 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             if row and any(row):
                 values = list(row)
 
-                timestamp = values[timestamp_column]
-                currency = values[currency_column] \
-                    if currency_column is not None else currency_code
-
-                debit_amount = debit_column and values[debit_column] and - abs(values[debit_column]) or 0
-                amount = values[amount_column] or debit_amount or 0
-
-                balance = values[balance_column] \
-                    if balance_column is not None else None
-                original_currency = values[original_currency_column] \
-                    if original_currency_column is not None else None
-                original_amount = values[original_amount_column] \
-                    if original_amount_column is not None else None
-                debit_credit = values[debit_credit_column] \
-                    if debit_credit_column is not None else None
-                transaction_id = values[transaction_id_column] \
-                    if transaction_id_column is not None else None
-                description = values[description_column] \
-                    if description_column is not None else None
-                notes = values[notes_column] \
-                    if notes_column is not None else None
-                reference = values[reference_column] \
-                    if reference_column is not None else None
-                partner_name = values[partner_name_column] \
-                    if partner_name_column is not None else None
-                bank_name = values[bank_name_column] \
-                    if bank_name_column is not None else None
-                bank_account = values[bank_account_column] \
-                    if bank_account_column is not None else None
+                currency = (
+                    values[columns['currency']]
+                    if columns['currency'] is not None
+                    else currency_code
+                )
 
                 if currency.upper() == currency_code.upper():
-                    if isinstance(timestamp, str) and timestamp.replace('0', ''):
-                        timestamp = datetime.strptime(
-                            timestamp,
-                            mapping.timestamp_format
-                        )
-                    elif isinstance(timestamp, str):
-                        # Set date to minimum value accepted by JavaScript
-                        timestamp = datetime(1970, 1, 1, 0, 0, 0)
-                    else:
-                        # timestamp is already in datetime format. Do nothing
-                        pass
+                    # timestamp is a required field
+                    timestamp = get_timestamp(values, columns['timestamp'], mapping)
 
-                    amount = self._parse_decimal(amount, mapping)
-                    if balance:
-                        balance = self._parse_decimal(balance, mapping)
-                    else:
-                        balance = None
+                    if timestamp:
+                        line = {
+                            'timestamp': timestamp,
+                            'amount': get_amount(values, columns, mapping),
+                            'currency': currency,
+                        }
 
-                    if debit_credit:
-                        amount = amount.copy_abs()
-                        if debit_credit == mapping.debit_value:
-                            amount = -amount
+                        balance = get_key_or_none(values, columns['balance'])
+                        if balance:
+                            line['balance'] = self._parse_decimal(balance, mapping)
 
-                    if not original_currency:
-                        original_currency = currency
-                        original_amount = amount
-                    elif original_currency == currency:
-                        original_amount = amount
-
-                    if original_amount:
-                        original_amount = self._parse_decimal(
+                        (
+                            original_currency,
                             original_amount,
-                            mapping
-                        ).copy_sign(amount)
-                    else:
-                        original_amount = 0.0
+                        ) = get_original_carrency_and_ammount(
+                            values,
+                            columns['original_currency'],
+                            columns['original_amount'],
+                            currency,
+                            line['amount'],
+                            mapping,
+                        )
+                        line.update(
+                            {
+                                'original_currency': original_currency,
+                                'original_amount': original_amount,
+                            }
+                        )
 
-                    line = {
-                        'timestamp': timestamp,
-                        'amount': amount,
-                        'currency': currency,
-                        'original_amount': original_amount,
-                        'original_currency': original_currency,
-                    }
-                    if balance is not None:
-                        line['balance'] = balance
-                    if transaction_id is not None:
-                        line['transaction_id'] = transaction_id
-                    if description is not None:
-                        line['description'] = description
-                    if notes is not None:
-                        line['notes'] = notes
-                    if reference is not None:
-                        line['reference'] = reference
-                    if partner_name is not None:
-                        line['partner_name'] = partner_name
-                    if bank_name is not None:
-                        line['bank_name'] = bank_name
-                    if bank_account is not None:
-                        line['bank_account'] = bank_account
-                    lines.append(line)
+                        for column in (
+                            'transaction_id',
+                            'description',
+                            'notes',
+                            'reference',
+                            'partner_name',
+                            'bank_name',
+                            'bank_account',
+                        ):
+                            result = get_key_or_none(values, columns[column])
+                            if result:
+                                line[column] = result
+
+                        lines.append(line)
                 else:
                     _logger.warning('Wrong currency')
             else:
@@ -406,13 +478,15 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 limit=1,
             )
             if original_currency:
-                transaction.update({
-                    'amount_currency': str(original_amount),
-                    'currency_id': original_currency.id,
-                })
+                transaction.update(
+                    {
+                        'amount_currency': str(original_amount),
+                        'currency_id': original_currency.id,
+                    }
+                )
 
         if transaction_id:
-            transaction['unique_import_id'] = '%s-%s' % (
+            transaction['unique_import_id'] = '{}-{}'.format(
                 transaction_id,
                 int(timestamp.timestamp()),
             )
@@ -423,19 +497,13 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
         note = ''
         if bank_name:
-            note += _('Bank: %s; ') % (
-                bank_name,
-            )
+            note += _('Bank: %s; ') % (bank_name,)
         if bank_account:
-            note += _('Account: %s; ') % (
-                bank_account,
-            )
+            note += _('Account: %s; ') % (bank_account,)
         if transaction_id:
-            note += _('Transaction ID: %s; ') % (
-                transaction_id,
-            )
+            note += _('Transaction ID: %s; ') % (transaction_id,)
         if note and notes:
-            note = '%s\n%s' % (
+            note = '{}\n{}'.format(
                 note,
                 note.strip(),
             )
