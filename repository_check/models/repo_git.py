@@ -48,6 +48,7 @@ from os.path import isdir,dirname, join
 from io import StringIO
 import sys
 from distutils.version import StrictVersion
+from dateutil import parser
 
 
 
@@ -312,6 +313,7 @@ class RepoGit(RepoBase):
             self._output_list.append('Git pull request failed. Check logs for details!')
             _logger.info('Git pull request failed. Check logs for details!')
 
+        # Get the tags
         tags_unformatted = self._repo.git.tag()
         tags = tags_unformatted.split('\n')
         tags = [tag.replace('r', '').replace('a', '').replace('b', '') for tag in tags if tag[0] == 'r']
@@ -325,21 +327,35 @@ class RepoGit(RepoBase):
         logs = self._repo.git.log(f"r{tag_to_start}..HEAD", '--tags', '--oneline', '--pretty=format:"%d%ad%x09%s"')
 
         collective_text = ""
+        tag_name = {}
         for idx, log in enumerate(logs.split('\n')):
             if idx == 0:
                 tag = log.split(': ')[1].split(',')[0]
                 date, message = log.split(')')[1].split('\t')
+                date = parser.parse(date).strftime("%d-%m-%Y %H:%M:%S")
+                message = message.replace('"', '')
                 collective_text += tag + '\n'
                 collective_text += date + message + '\n'
+                tag_name[tag] = [{'date': date, 'message': message}]
             else:
                 if "tag:" in log:
                     tag = log.split(': ')[1].split(')')[0]
                     collective_text += tag + '\n'
+                    tag_name[tag] = []
                 else:
                     date, message = log.split('\t')
-                    collective_text += date + message + '\n'
+                    if 'Merge' in message:
+                        continue
+                    message = message.replace('"', '')
+                    date = date.replace('"', '')
+                    if ')' in date:
+                        date = date.split(')')[1]
+                    date = parser.parse(date).strftime("%d-%m-%Y %H:%M:%S")
+                    dict_copy = tag_name.copy()
+                    tag_list = dict_copy[tag]
+                    tag_list.append({'date': date, 'message': message})
 
-        return ret_flag, self._output_list, collective_text
+        return ret_flag, self._output_list, tag_name
 
     def clone_cmd(self, repo_name):
         """

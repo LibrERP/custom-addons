@@ -64,6 +64,7 @@ class RepositoryCheck(models.Model):
         ('repo', 'Pull'),
         ('', '')
     ], string='State', readonly=True, default='')
+    tag_ids = fields.One2many('repository.tags', 'repository_id', 'Tags')
     _sql_constraints = [
         ('unique_repository_path', 'UNIQUE(repository_path)', 'Repository path must be unique !')
     ]
@@ -74,11 +75,19 @@ class RepositoryCheck(models.Model):
 
         ret_str = ''
         ret_flag = False
-        release_data = ''
         try:
             # to decide if send msg or err_msg to client window
             git_repo = RepoGit(repo_path, user, passwd, self.repository_name)
             ret_flag, err_msgs, release_data = git_repo.pull()
+
+            #Unlink tag and commits table
+            self.env['repository.tags'].search([]).unlink()
+            self.env['repository.commits'].search([]).unlink()
+            for key, value in release_data.items():
+                tag = self.env['repository.tags'].create({'name': key, 'repository_id': self.id})
+                for commit in value:
+                    self.env['repository.commits'].create({'name': commit['message'], 'commit_date': commit['date'], 'tag_id': tag.id})
+
             if len(err_msgs) > 0:
                 ret_str = '\n'.join(str(x) for x in err_msgs)
 
@@ -95,13 +104,13 @@ class RepositoryCheck(models.Model):
         except Exception as e:
             self.last_check_state = 'failed'
             _logger.error('An exception occured, {}'.format(e))
-            ret_str += 'Git pull request <>failed</strong>. Check logs for details!\n'
+            ret_str += 'Git pull request failed. Check logs for details!\n'
 
         # except:
         #     import traceback
         #     _logger.error(traceback.format_exc())
 
-        return ret_flag, ret_str, release_data
+        return ret_flag, ret_str
 
     def exec_hg_pull_cmd(self, repo_path, user, passwd):
 
@@ -168,7 +177,6 @@ class RepositoryCheck(models.Model):
         current_date = time.strftime(DEFAULT_SERVER_DATE_FORMAT)
 
         self.ensure_one()
-
         repository_path = self.repository_path
         repository_type = self.repository_type
         password = self.password
@@ -190,7 +198,7 @@ class RepositoryCheck(models.Model):
                 raise UserError('Can\'t launch pull command, please insert also your password!')
 
         if repository_type == GIT_TYPE:
-            ret_code, ret_str, release_data = self.exec_git_pull_cmd(repository_path, user, password)
+            ret_code, ret_str = self.exec_git_pull_cmd(repository_path, user, password)
         elif repository_type == MERCURIAL_TYPE:
             ret_code, ret_str = self.exec_hg_pull_cmd(repository_path, user, password)
 
@@ -205,7 +213,6 @@ class RepositoryCheck(models.Model):
         if ret_str != '':
             values['log'] = '{}'.format(ret_str)
 
-        values['release'] = release_data
         if values:
             self.write(values)
 
@@ -353,3 +360,23 @@ class RepositoryCheck(models.Model):
             self.repository_type = 'disable'
             self.log = ''
             self.last_check_state = 'new'
+
+
+class RepositoryTags(models.Model):
+    _name = 'repository.tags'
+    _description = 'Repository Tags'
+
+    name = fields.Char('Tag name', size=30)
+
+    commit_ids = fields.One2many('repository.commits', 'tag_id', 'Commits')
+    repository_id = fields.Many2one('repository.check')
+
+
+class RepositoryCommits(models.Model):
+    _name = 'repository.commits'
+    _description = 'Repository Commits'
+
+    name = fields.Char('Commit name', size=80)
+    commit_date = fields.Char('Commit date', size=80)
+    tag_id = fields.Many2one('repository.tags')
+

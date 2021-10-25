@@ -47,9 +47,9 @@
     </record>
 
     <!-- Top menu item -->
-    <menuitem name="Training" id="menu_training_root" groups="base.group_no_one" />
+    <menuitem name="Training" id="menu_training_root" groups="group_training_manager" />
     <menuitem name="Lessons" id="menu_training_list" parent="menu_training_root"
-              action="action_training_window" groups="base.group_no_one" />
+              action="action_training_window" groups="group_training_manager" />
 
   </data>
 </odoo>

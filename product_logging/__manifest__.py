@@ -1,20 +1,18 @@
 {
-    'name': "Training Service",
+    'name': "Product Logging",
     'summary': """
-        Manage Training""",
+        More detailed logging of Product changes""",
     'author': "powERP enterprise network",
     'website': "https://github.com/LibrERP/custom-addons",
-    'category': 'Training',
+    'category': 'Sales',
     'version': '12.0.0.1',
     'depends': [
         'base',
+        'product',
+        'model_logging',
     ],
     # always loaded
-    'data': [
-        'security/training_security.xml',
-        'security/ir.model.access.csv',
-        'views/training_views.xml',
-    ],
+    'data': [],
     # only loaded in demonstration mode
     'demo': [],
 }

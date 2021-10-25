@@ -2,11 +2,11 @@
 # Copyright 2020 CorporateHub (https://corporatehub.eu)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, _
-
-from base64 import b64decode
 import json
+from base64 import b64decode
 from os import path
+
+from odoo import _, api, fields, models
 
 
 class AccountBankStatementImportSheetMappingWizard(models.TransientModel):
@@ -113,15 +113,19 @@ class AccountBankStatementImportSheetMappingWizard(models.TransientModel):
 
     @api.model
     def _selection_file_encoding(self):
-        return self.env['account.bank.statement.import.sheet.mapping']._fields[
-            'file_encoding'
-        ].selection
+        return (
+            self.env['account.bank.statement.import.sheet.mapping']
+            ._fields['file_encoding']
+            .selection
+        )
 
     @api.model
     def _selection_delimiter(self):
-        return self.env['account.bank.statement.import.sheet.mapping']._fields[
-            'delimiter'
-        ].selection
+        return (
+            self.env['account.bank.statement.import.sheet.mapping']
+            ._fields['delimiter']
+            .selection
+        )
 
     @api.onchange('data_file')
     def _onchange_data_file(self):
@@ -131,15 +135,13 @@ class AccountBankStatementImportSheetMappingWizard(models.TransientModel):
             return
         csv_options = {}
         if self.delimiter:
-            csv_options['delimiter'] = \
-                Mapping._decode_column_delimiter_character(self.delimiter)
+            csv_options['delimiter'] = Mapping._decode_column_delimiter_character(
+                self.delimiter
+            )
         if self.quotechar:
             csv_options['quotechar'] = self.quotechar
         header = Parser.parse_header(
-            b64decode(self.data_file),
-            self.filename,
-            self.file_encoding,
-            csv_options
+            b64decode(self.data_file), self.filename, self.file_encoding, csv_options
         )
         self.header = json.dumps(header)
 
@@ -184,8 +186,9 @@ class AccountBankStatementImportSheetMappingWizard(models.TransientModel):
     @api.multi
     def import_mapping(self):
         self.ensure_one()
-        mapping = self.env['account.bank.statement.import.sheet.mapping']\
-            .create(self._get_mapping_values())
+        mapping = self.env['account.bank.statement.import.sheet.mapping'].create(
+            self._get_mapping_values()
+        )
         return {
             'type': 'ir.actions.act_window',
             'name': _('Imported Mapping'),

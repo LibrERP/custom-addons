@@ -55,9 +55,30 @@
                         <field name="log" colspan="4"/>
                     </group>
                     <group>
-                        <field name="release" colspan="4"/>
+                        <field name="tag_ids">
+                            <tree>
+                                <field name="name"/>
+                                <field name="commit_ids"/>
+                            </tree>
+                            <form>
+                                <field name="commit_ids"/>
+                            </form>
+                        </field>
                     </group>
                 </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="repository_check.list">
+            <field name="name">repository.commits list</field>
+            <field name="model">repository.commits</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="commit_date"/>
+                    <field name="tag_id"/>
+                </tree>
             </field>
         </record>
 
