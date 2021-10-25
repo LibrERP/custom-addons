@@ -32,7 +32,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Sales',
-    'version': '12.0.0.9.11',
+    'version': '12.0.0.9.12',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -43,7 +43,8 @@
 
     # always loaded
     'data': [
-        'views/sale_views.xml'
+        'views/sale_views.xml',
+        'views/sale.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
