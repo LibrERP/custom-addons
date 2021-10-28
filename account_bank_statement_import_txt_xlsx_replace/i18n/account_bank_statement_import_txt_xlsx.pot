@@ -515,4 +515,3 @@ msgstr ""
 #: selection:account.bank.statement.import.sheet.mapping,delimiter:0
 msgid "tab"
 msgstr ""
-
