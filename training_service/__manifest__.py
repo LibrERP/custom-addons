@@ -11,6 +11,7 @@
     ],
     # always loaded
     'data': [
+        'security/training_security.xml',
         'security/ir.model.access.csv',
         'views/training_views.xml',
     ],

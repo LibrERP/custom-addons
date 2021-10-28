@@ -2,14 +2,16 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Automatic partner creation based on VAT number',
-    'version': '12.0.1.3.0',
+    'version': '12.0.1.4.0',
     'category': 'Customer Relationship Management',
     'summary': 'Using VIES webservice, name and address information will be fetched and added to the partner.',
     'author': 'powERP enterprise network',
     'website': 'https://www.powerp.it',
     'development_status': 'Alpha',
     'license': 'LGPL-3',
-    'depends': ['base_vat'],
+    'depends': [
+        'base',
+    ],
     'installable': True,
     'application': False,
     'auto_install': False,
