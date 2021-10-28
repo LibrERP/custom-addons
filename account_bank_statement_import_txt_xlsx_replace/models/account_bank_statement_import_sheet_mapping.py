@@ -12,12 +12,6 @@ class AccountBankStatementImportSheetMapping(models.Model):
     name = fields.Char(
         required=True,
     )
-#     statement_name = fields.Char(
-#         string='Statement Name',
-#         required=False,
-#         help="""Name of the column which value should be used as the name of the Statement.
-# The name of the file is used if this field is not set"""
-#     )
 
     header_name_raw = fields.Selection(
         string="Statement Name raw",
@@ -31,10 +25,12 @@ class AccountBankStatementImportSheetMapping(models.Model):
             ('6', '7'),
             ('7', '8'),
             ('8', '9'),
-            ('9', '10')
+            ('9', '10'),
         ],
-        default=0, help="""Raw that contains value that should be used as the name of the Statement.
-The name of the file is used if this field is not set""")
+        default=0,
+        help="""Raw that contains value that should be used as the name of the Statement.
+The name of the file is used if this field is not set""",
+    )
     header_name_column = fields.Selection(
         string="Statement Name column",
         selection=[
@@ -47,10 +43,12 @@ The name of the file is used if this field is not set""")
             ('6', 'G'),
             ('7', 'H'),
             ('8', 'I'),
-            ('9', 'J')
+            ('9', 'J'),
         ],
-        default=0, help="""Column that contains value that should be used as the name of the Statement.
-The name of the file is used if this field is not set""")
+        default=0,
+        help="""Column that contains value that should be used as the name of the Statement.
+The name of the file is used if this field is not set""",
+    )
 
     header_date_raw = fields.Selection(
         string="Statement Date raw",
@@ -64,10 +62,12 @@ The name of the file is used if this field is not set""")
             ('6', '7'),
             ('7', '8'),
             ('8', '9'),
-            ('9', '10')
+            ('9', '10'),
         ],
-        default=0, help="""Raw that contains value that should be used as the date of the Statement.
-The earliest date is used if this field is not set""")
+        default=0,
+        help="""Raw that contains value that should be used as the date of the Statement.
+The earliest date is used if this field is not set""",
+    )
     header_date_column = fields.Selection(
         string="Statement Date column",
         selection=[
@@ -80,13 +80,16 @@ The earliest date is used if this field is not set""")
             ('6', 'G'),
             ('7', 'H'),
             ('8', 'I'),
-            ('9', 'J')
+            ('9', 'J'),
         ],
-        default=0, help="""Column that contains value that should be used as the date of the Statement.
-The earliest date is used if this field is not set""")
+        default=0,
+        help="""Column that contains value that should be used as the date of the Statement.
+The earliest date is used if this field is not set""",
+    )
 
     start_from = fields.Integer(
-        string="Start from line:", default=0, help="Line that contains table header")
+        string="Start from line:", default=0, help="Line that contains table header"
+    )
     float_thousands_sep = fields.Selection(
         string='Thousands Separator',
         selection=[
@@ -250,18 +253,22 @@ The earliest date is used if this field is not set""")
             'comma': ',',
             'none': '',
         }
-        return (separators[self.float_thousands_sep],
-                separators[self.float_decimal_sep])
+        return (
+            separators[self.float_thousands_sep],
+            separators[self.float_decimal_sep],
+        )
 
     @api.model
     def _decode_column_delimiter_character(self, delimiter):
-        return ({
-            'dot': '.',
-            'comma': ',',
-            'semicolon': ';',
-            'tab': '\t',
-            'space': ' ',
-        }).get(delimiter)
+        return (
+            {
+                'dot': '.',
+                'comma': ',',
+                'semicolon': ';',
+                'tab': '\t',
+                'space': ' ',
+            }
+        ).get(delimiter)
 
     @api.multi
     def _get_column_delimiter_character(self):

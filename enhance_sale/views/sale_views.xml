@@ -17,13 +17,13 @@
  	            </field>
   				<field name="partner_invoice_id" position="replace">
 					<field name="partner_invoice_id" groups="sale.group_delivery_invoice_address"
-						domain="[('parent_id','!=',False),('parent_id','=', partner_id)]"
-						context="{'default_type':'invoice'}" options='{"always_reload": True}'/>
+						domain="[('parent_id','!=',False),('parent_id','=', partner_id),('type','=','invoice')]"
+						context="{'default_search_type':'invoice'}" options='{"always_reload": True}'/>
  	            </field>
                 <field name="partner_shipping_id" position="replace">
 					<field name="partner_shipping_id" groups="sale.group_delivery_invoice_address" 
-						domain="[('parent_id','!=',False),('parent_id','=', partner_id)]"
-						context="{'default_type':'delivery'}" options='{"always_reload": True}'/>
+						domain="[('parent_id','!=',False),('parent_id','=', partner_id),('type','=','delivery')]"
+						context="{'default_search_type':'delivery'}" options='{"always_reload": True}'/>
 	            </field>
 
  				<xpath expr="//field[@name='order_line']/tree//field[@name='price_subtotal']" position="after">
