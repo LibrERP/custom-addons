@@ -23,7 +23,7 @@ Account Bank Statement Import TXT/CSV/XLSX
     :target: https://runbot.odoo-community.org/runbot/174/12.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module allows you to import the any TXT/CSV or XLSX file in Odoo as bank
 statements.
@@ -121,7 +121,7 @@ promote its widespread use.
 
 Former `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
-|maintainer-alexey-pelykh| 
+|maintainer-alexey-pelykh|
 
 This module was part of the `OCA/bank-statement-import <https://github.com/OCA/bank-statement-import/tree/12.0/account_bank_statement_import_txt_xlsx>`_ project on GitHub.
 

@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_backend" name="enhance_sale_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript"
+                    src="/enhance_sale/static/src/js/enhance_sale.js"/>
+        </xpath>
+    </template>
+</odoo>
