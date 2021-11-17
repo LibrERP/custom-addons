@@ -1,2 +1,4 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 access_repository_check,access_repository_check,model_repository_check,base.group_user,1,1,1,1
+access_repository_tags,access_repository_tags,model_repository_tags,base.group_user,1,1,1,1
+access_repository_commits,access_repository_commits,model_repository_commits,base.group_user,1,1,1,1
