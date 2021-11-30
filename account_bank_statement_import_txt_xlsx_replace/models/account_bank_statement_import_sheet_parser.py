@@ -219,7 +219,10 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 if count >= start_from:
                     if finish_at and count > finish_at:
                         break
-                    yield line.decode('utf-8')
+                    try:
+                        yield line.decode('utf-8')
+                    except UnicodeDecodeError:
+                        yield line.decode('ISO-8859-1')  # Latin 1
 
         # Create virtual File
         virtual_file_utf8 = BytesIO(data_file)
@@ -332,7 +335,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             debit_amount = (
                 columns['debit']
                 and values[columns['debit']]
-                and -abs(values[columns['debit']])
+                and -abs(self._parse_decimal(values[columns['debit']], mapping))
                 or 0
             )
 
