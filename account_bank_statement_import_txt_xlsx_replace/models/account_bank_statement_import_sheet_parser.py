@@ -190,7 +190,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 yield row
 
     @staticmethod
-    def import_csv_generator(data_file, csv_options, start_from=0, finish_at=None):
+    def import_csv_generator(data_file, encoding, csv_options, start_from=0, finish_at=None):
         import csv
 
         def unicode_csv_reader(
@@ -199,12 +199,13 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             start_from,
             finish_at,
             dialect=csv.excel,
+            encoding='utf-8',
             **kwargs
         ):
             # csv.py doesn't do Unicode; encode temporarily as UTF-8:
             # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
             csv_reader = csv.reader(
-                table_reader(unicode_csv_data, start_from, finish_at),
+                table_reader(unicode_csv_data, start_from, finish_at, encoding),
                 delimiter=delimiter,
                 dialect=dialect,
                 **kwargs
@@ -214,15 +215,13 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
                 # yield [str(cell, 'utf-8') for cell in row]
                 yield row
 
-        def table_reader(virtual_file_utf8, start_from, finish_at):
+        def table_reader(virtual_file_utf8, start_from, finish_at, encoding):
             for count, line in enumerate(virtual_file_utf8, 1):
                 if count >= start_from:
                     if finish_at and count > finish_at:
                         break
-                    try:
-                        yield line.decode('utf-8')
-                    except UnicodeDecodeError:
-                        yield line.decode('ISO-8859-1')  # Latin 1
+
+                    yield line.decode(encoding)
 
         # Create virtual File
         virtual_file_utf8 = BytesIO(data_file)
@@ -232,6 +231,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             csv_options.get('delimiter', None),
             start_from,
             finish_at,
+            encoding=encoding
         ):
             yield row
 
@@ -251,7 +251,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
 
         elif file_type == 'csv':
             return self.import_csv_generator(
-                data_file, csv_options, start_from=start_from, finish_at=finish_at
+                data_file, encoding, csv_options, start_from=start_from, finish_at=finish_at
             )
 
         else:
