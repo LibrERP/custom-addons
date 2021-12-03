@@ -1,9 +1,12 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Created on : 2020-07-20
+#    Copyright (C) 2020-2021 Didotech srl
+#    (<http://www.didotech.com/>).
+#
+#    Created on : 2021-07-01
 #    Author : Fabio Colognesi
-#    Copyright: Didotech srl 2020 - 2021
+#
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,39 +22,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Enhance Sale Order",
 
-    'summary': """
-        Sales Order extensions""",
-
-    'description': """
-        Sales extensions adding TD access.
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Sales',
-    'version': '12.0.0.10.12',
-
-    # any module necessary for this one to work correctly
-    'depends': [
-        'sale',
-        'sale_stock',
-        'l10n_it_ddt',  # OCA l10n_italy
-    ],
-
-    # always loaded
-    'data': [
-        'views/sale_views.xml',
-        'views/sale.xml'
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
+from . import models

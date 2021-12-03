@@ -64,6 +64,9 @@ odoo.define('enhance_sale.on_add_record', function(require) {
                     var saleOrderForm = self.getParent() && self.getParent().getParent();
                     var stateData = saleOrderForm && saleOrderForm.state && saleOrderForm.state.data;
                     var order_id = stateData.id;
+                    if (order_id == null){
+                        order_id = 0;
+                    }
                     if (context == null) {
                         context = {
                             order_id: order_id

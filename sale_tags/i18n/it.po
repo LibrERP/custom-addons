@@ -1,0 +1,122 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_tags
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-05 15:50+0000\n"
+"PO-Revision-Date: 2021-07-05 15:50+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_tags
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_quotation_view_search_inherit_sale_tag_ids
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_view_search_inherit_sale_tag_ids
+msgid "Deliveries Status"
+msgstr "Stato delle Consegne"
+
+#. module: sale_tags
+#: model:ir.model.fields,field_description:sale_tags.field_sale_order__deliveries_status
+msgid "Delivery Status"
+msgstr "Stato Consegna"
+
+#. module: sale_tags
+#: selection:sale.order,deliveries_status:0
+msgid "Fully delivered"
+msgstr "Completamente consegnato"
+
+#. module: sale_tags
+#: selection:sale.order,invoices_status:0
+msgid "Fully invoiced"
+msgstr "Completamente fatturato"
+
+#. module: sale_tags
+#: selection:sale.order,payments_status:0
+msgid "Fully paid"
+msgstr "Completamente pagato"
+
+#. module: sale_tags
+#: model:ir.model.fields,field_description:sale_tags.field_sale_order__invoices_status
+msgid "Invoice Status"
+msgstr "Stato fattura"
+
+#. module: sale_tags
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_quotation_view_search_inherit_sale_tag_ids
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_view_search_inherit_sale_tag_ids
+msgid "Invoices Status"
+msgstr "Stato delle Fatture"
+
+#. module: sale_tags
+#: selection:sale.order,deliveries_status:0
+msgid "Nothing to deliver"
+msgstr "Niente da consegnare"
+
+#. module: sale_tags
+#: selection:sale.order,invoices_status:0
+msgid "Nothing to invoice"
+msgstr "Niente da fatturare"
+
+#. module: sale_tags
+#: selection:sale.order,payments_status:0
+msgid "Nothing to pay"
+msgstr "Niente da pagare"
+
+#. module: sale_tags
+#: selection:sale.order,deliveries_status:0
+msgid "Partially delivered"
+msgstr "Parzialmente consegnato"
+
+#. module: sale_tags
+#: selection:sale.order,invoices_status:0
+msgid "Partially invoiced"
+msgstr "Parzialmente fatturato"
+
+#. module: sale_tags
+#: selection:sale.order,payments_status:0
+msgid "Partially paid"
+msgstr "Parzialmente pagato"
+
+#. module: sale_tags
+#: model:ir.model.fields,field_description:sale_tags.field_sale_order__payments_status
+msgid "Payment Status"
+msgstr ""
+
+#. module: sale_tags
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_quotation_view_search_inherit_sale_tag_ids
+#: model_terms:ir.ui.view,arch_db:sale_tags.sale_order_view_search_inherit_sale_tag_ids
+msgid "Payments Status"
+msgstr "Stato dei Pagamenti"
+
+#. module: sale_tags
+#: model:ir.model,name:sale_tags.model_sale_order
+msgid "Sale Order"
+msgstr "Ordine di vendita"
+
+#. module: sale_tags
+#: model:ir.actions.server,name:sale_tags.ir_cron_sale_order_tags_ir_actions_server
+#: model:ir.cron,cron_name:sale_tags.ir_cron_sale_order_tags
+#: model:ir.cron,name:sale_tags.ir_cron_sale_order_tags
+msgid "Sale Tags Updater"
+msgstr "Aggiorna le etichette degli Ordini di Vendita"
+
+#. module: sale_tags
+#: selection:sale.order,deliveries_status:0
+msgid "To deliver"
+msgstr "Da consegnare"
+
+#. module: sale_tags
+#: selection:sale.order,invoices_status:0
+msgid "To invoice"
+msgstr "Da fatturare"
+
+#. module: sale_tags
+#: selection:sale.order,payments_status:0
+msgid "To pay"
+msgstr "Da pagare"
+
