@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="ir_cron_sale_order_tags" model="ir.cron">
+            <field name="name">Sale Tags Updater</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="code">model.check_tag_on_sale_orders()</field>
+            <field name="state">code</field>
+        </record>
+
+    </data>
+</odoo>
