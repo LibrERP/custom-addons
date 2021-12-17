@@ -213,6 +213,7 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
             for row in csv_reader:
                 # decode UTF-8 back to Unicode, cell by cell:
                 # yield [str(cell, 'utf-8') for cell in row]
+                row = [cell.strip() for cell in row]
                 yield row
 
         def table_reader(virtual_file_utf8, start_from, finish_at, encoding):
