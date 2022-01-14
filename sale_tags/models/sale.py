@@ -63,7 +63,7 @@ class SaleOrder(models.Model):
                 delivered = True if (deliveries > 0) else False
                 for picking in order.picking_ids:
                     delivered &= (picking.state in ['done', 'cancel'])
-                ret = 'delivered' if deliveries else ret
+                ret = 'delivered' if (deliveries and delivered) else ret
             order.deliveries_status = ret
 
     @api.multi
