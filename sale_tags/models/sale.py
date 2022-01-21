@@ -117,7 +117,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def check_tag_on_sale_orders(self):
-        domain = [('state', 'in', ['draft', 'sent', 'sale', 'done'])]
+        domain = [('state', 'not in', ['cancel', 'done'])]
         self.search(domain or []).manage_tags()
 
     @api.model
