@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_history" model="ir.ui.view">
+        <field name="name">partner history tab</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Partner History">
+                    <field name="version_ids" />
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="action_check_modules" model="ir.actions.server">
+        <field name="name">Duplicate for Business Name change</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            if model._context.get('active_model') == 'res.partner':
+                action = records.action_rebranding_copy()
+        </field>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+    </record>
+
+</odoo>
