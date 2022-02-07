@@ -23,7 +23,7 @@
 ############################################################################
 {
     'name': 'Sale Statistics',
-    'version': '12.0.3.0',
+    'version': '12.0.4.0',
     'category': 'Business Analisys',
     'author': 'powERP enterprise network',
     'website': 'https://www.powerp.it',

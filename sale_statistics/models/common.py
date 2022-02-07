@@ -23,15 +23,15 @@
 ############################################################################
 
 
-def get_view_id(self, view_name=""):
+def get_view_id(obj, view_name=""):
     """
         Gets a view id from model data.
     """
     ret = False
     if view_name:
-        model_data_model = self.pool['ir.model.data']
+        model_data_model = obj.env['ir.model.data']
         criteria = [('model', '=', 'ir.ui.view'), ('name', '=', view_name)]
         model_data_ids = model_data_model.search(criteria)
         if model_data_ids:
-            ret = model_data_model.read(model_data_ids, fields=['res_id'])[0]['res_id']
+            ret = model_data_ids.res_id
     return ret

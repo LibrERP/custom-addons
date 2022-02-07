@@ -116,7 +116,7 @@ class SaleReport(models.Model):
                     left join uom_uom u2 on (u2.id=t.uom_id)
                     left join product_pricelist pp on (s.pricelist_id = pp.id)
                     left join res_country_res_country_group_rel rcgrel on (partner_country.id = rcgrel.res_country_id)
-                    left join res_country_group_res_country_region_rel regrel on (region_state.id = regrel.res_country_region_id)
+                    left join res_country_region_id regrel on (region_state.id = regrel.res_country_region_id)
         """
         from_str += ", {}".format(other_from) if other_from else ""
         return from_str
