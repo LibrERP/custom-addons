@@ -63,7 +63,7 @@ class SaleOrder(models.Model):
                 delivered = True if (deliveries > 0) else False
                 for picking in order.picking_ids:
                     delivered &= (picking.state in ['done', 'cancel'])
-                ret = 'delivered' if deliveries else ret
+                ret = 'delivered' if (deliveries and delivered) else ret
             order.deliveries_status = ret
 
     @api.multi
@@ -117,7 +117,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def check_tag_on_sale_orders(self):
-        domain = [('state', 'in', ['draft', 'sent', 'sale', 'done'])]
+        domain = [('state', 'not in', ['cancel', 'done'])]
         self.search(domain or []).manage_tags()
 
     @api.model

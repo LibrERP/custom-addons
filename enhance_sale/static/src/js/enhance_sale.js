@@ -108,5 +108,4 @@ odoo.define('enhance_sale.on_add_record', function(require) {
 
     fieldRegistry.add('section_and_note_one2many', SectionAndNoteFieldOne2Many);
 
-
 });
