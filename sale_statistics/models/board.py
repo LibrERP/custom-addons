@@ -77,20 +77,18 @@ class BoardCreate(models.TransientModel):
         graph_name = 'view_order_product_graph'
         now = datetime.now()
 
-        oid_fly = self.browse(ids[0])
+        oid_fly = self.browse(self.ids[0])
         report_search_id = get_view_id(self,  'view_order_product_search')
 
         if oid_fly and report_search_id:
-            date_start = datetime.strptime(oid_fly.date_start, '%Y-%m-%d %H:%M:%S') if oid_fly.date_start else now
-            date_end = datetime.strptime(oid_fly.date_end, '%Y-%m-%d %H:%M:%S') if oid_fly.date_end else now
+            date_start = oid_fly.date_start if oid_fly.date_start else now
+            date_end = oid_fly.date_end if oid_fly.date_end else now
 
             if date_start == now and oid_fly.date_confirm_start:
-                date_start = datetime.strptime(oid_fly.date_confirm_start,
-                                                 '%Y-%m-%d %H:%M:%S') if oid_fly.date_confirm_start else now
+                date_start = oid_fly.date_confirm_start if oid_fly.date_confirm_start else now
                 confirmed = True
             if date_end == now and oid_fly.date_confirm_end:
-                date_end = datetime.strptime(oid_fly.date_confirm_end,
-                                                 '%Y-%m-%d %H:%M:%S') if oid_fly.date_confirm_end else now
+                date_end = oid_fly.date_confirm_end if oid_fly.date_confirm_end else now
                 confirmed = True
 
             if oid_fly.choose_0101:
@@ -152,4 +150,5 @@ class BoardCreate(models.TransientModel):
                         'measures': ['price_total', 'product_uom_qty'],
                     }
                 }
+
         return ret
