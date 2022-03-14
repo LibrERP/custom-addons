@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_email_runaway_settings" model="ir.ui.view">
+        <field name="name">view_email_runaway_settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="emails" position='after'>
+                <h2>Email Runaway Prevention</h2>
+                <div class="row mt16 o_settings_container" id="email_runaway">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <div class="text-muted">
+                                Only if both hosts are the same, emails can be sent
+                            </div>
+                            <div class="content-group">
+                                <div class="row">
+                                    <label for="local_node" class="col-lg-3 o_light_label"/>
+                                    <field name="local_node"/>
+                                </div>
+                            </div>
+                            <div class="content-group">
+                                <div class="row">
+                                    <label for="email_node" class="col-lg-3 o_light_label"/>
+                                    <field name="email_node"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+
+</odoo>
