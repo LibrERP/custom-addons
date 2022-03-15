@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="create_purchase_order" model="ir.actions.server">
+        <field name="name">Create Purchase Order</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">
+            if model._context.get('active_model') == 'stock.picking':
+                action = model.action_create_purchase_order()
+        </field>
+    </record>
+
+    <record id="view_picking_purchase_order_form" model="ir.ui.view">
+        <field name="name">stock.picking.purchase.order.form</field>
+        <field name="model">stock.picking</field>
+<!--        <field eval="12" name="priority"/>-->
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="move_type" position="before">
+                <field name="purchase_order_id" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
