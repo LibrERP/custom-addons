@@ -3,7 +3,7 @@
 
 {
     'name': 'MRP Stock Picking to Purchase Order',
-    'version': '12.0.0.0.0',
+    'version': '12.0.0.0.1',
     'category': 'MRP',
     "author": "Didotech SRL",
     'website': 'https://www.didotech.com',
