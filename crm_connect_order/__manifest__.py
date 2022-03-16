@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'CRM connect Order',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Customer Relationship Management',
     'summary': 'Connect Opportunity with existing Sale Order',
     'author': 'LibrERP enterprise network',

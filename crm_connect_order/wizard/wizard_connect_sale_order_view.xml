@@ -8,8 +8,8 @@
             <form string="Connect Sale Order">
                 <sheet>
                     <group>
-                        <field name="sale_order_id" domain="[('partner_id', '=', partner_id), ('opportunity_id', '=', False)]"/>
-                        <field name="partner_id"/>
+                        <field name="sale_order_id" domain="[('opportunity_id', '=', False), '|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
+                        <field name="partner_id" invisible="True" />
                     </group>
                 </sheet>
                 <footer>
