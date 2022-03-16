@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_crm_finance_form" model="ir.ui.view">
+        <field name="name">crm.lead.finance.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='lead']" position="after">
+                <page string="Finance" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('type', '=', 'lead')]}">
+                    <group col="3">
+                        <field name="received_payment" />
+                        <field name="remaining_payment" />
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_case_kanban_view_leads_finance" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.lead.finance</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads" />
+        <field name="arch" type="xml">
+            <progressbar position="attributes">
+                <attribute name="sum_field">remaining_payment</attribute>
+            </progressbar>
+            <field name="planned_revenue" position="after">
+                <field name="remaining_payment"/>
+            </field>
+            <xpath expr="//div[@class='text-muted o_kanban_record_subtitle']" position="after">
+                <div class="text-muted">
+                    <field name="remaining_payment" invisible="False" />
+                    R: <field name="received_payment" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                </div>
+           </xpath>
+        </field>
+    </record>
+
+</odoo>
