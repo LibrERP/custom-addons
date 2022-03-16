@@ -30,7 +30,7 @@
             </field>
             <xpath expr="//div[@class='text-muted o_kanban_record_subtitle']" position="after">
                 <div class="text-muted">
-                    <field name="remaining_payment" invisible="False" />
+                    <field name="remaining_payment" invisible="True" />
                     R: <field name="received_payment" widget="monetary" options="{'currency_field': 'company_currency'}"/>
                 </div>
            </xpath>
