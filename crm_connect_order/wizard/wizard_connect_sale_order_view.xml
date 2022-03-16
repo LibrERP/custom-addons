@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="connect_order_view_form" model="ir.ui.view">
+        <field name="name">connect_sale_order.form</field>
+        <field name="model">wizard.connect.sale.order</field>
+        <field name="arch" type="xml">
+            <form string="Connect Sale Order">
+                <sheet>
+                    <group>
+                        <field name="sale_order_id" domain="[('opportunity_id', '=', False), '|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
+                        <field name="partner_id" invisible="True" />
+                    </group>
+                </sheet>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Connect" type="object" class="oe_highlight" name="action_connect_order"/>
+                            <button string="Cancel" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="connect_order_form_action" model="ir.actions.act_window">
+        <field name="name">Menu Connect Sale Order</field>
+        <field name="res_model">wizard.connect.sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Add action entry in the Action Menu for Leads and Opportunities -->
+    <act_window id="connect_order_action"
+        name="Connect Sale Order"
+        src_model="crm.lead"
+        res_model="wizard.connect.sale.order"
+        view_type="form"
+        view_mode="form"
+        key2="client_action_multi"
+        target="new"/>
+
+</odoo>
