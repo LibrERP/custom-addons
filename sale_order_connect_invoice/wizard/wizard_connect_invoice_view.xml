@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="connect_invoice_to_order_view_form" model="ir.ui.view">
+        <field name="name">connect_account_invoice.form</field>
+        <field name="model">wizard.connect.account.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Connect Invoice">
+                <sheet>
+                    <group>
+                        <field name="invoice_id" domain="[('origin', '=', False), '|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
+                        <field name="partner_id" invisible="True" />
+                    </group>
+                </sheet>
+                <footer>
+                    <group>
+                        <span>
+                            <button string="Connect" type="object" class="oe_highlight" name="action_connect_order"/>
+                            <button string="Cancel" class="oe_link" special="cancel" />
+                        </span>
+                    </group>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="connect_invoice_form_action" model="ir.actions.act_window">
+        <field name="name">Menu Connect Sale Order</field>
+        <field name="res_model">wizard.connect.account.invoice</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Add action entry in the Action Menu for Leads and Opportunities -->
+    <act_window id="connect_invoice_action"
+        name="Connect Invoice"
+        src_model="sale.order"
+        res_model="wizard.connect.account.invoice"
+        view_type="form"
+        view_mode="form"
+        key2="client_action_multi"
+        target="new"/>
+
+</odoo>
