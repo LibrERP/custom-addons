@@ -9,7 +9,7 @@
                 <sheet>
                     <group>
                         <field name="invoice_id" domain="[('origin', '=', False), '|', ('partner_id', '=', partner_id), ('partner_id.parent_id', '=', partner_id)]"/>
-                        <field name="partner_id" invisible="False" />
+                        <field name="partner_id" invisible="True" />
                     </group>
                 </sheet>
                 <footer>
