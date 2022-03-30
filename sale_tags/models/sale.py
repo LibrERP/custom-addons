@@ -23,8 +23,11 @@
 #
 ##############################################################################
 
+from datetime import datetime
+
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 PAYMENT_STATUSES = [
     ('no', "Nothing to pay"),
@@ -117,12 +120,23 @@ class SaleOrder(models.Model):
 
     @api.model
     def check_tag_on_sale_orders(self):
-        domain = [('state', 'not in', ['cancel', 'done'])]
+        domain = [('state', 'in', ['sale'])]
+        thisDate = self.get_last_execution()
+        if thisDate:
+            domain.extend([('write_date', '>=', thisDate)])
         self.search(domain or []).manage_tags()
+        self.set_last_execution()
 
     @api.model
     def manage_tags(self):
         self._get_invoice_status()
         self._get_delivery_status()
         self._get_payment_status()
+
+    def get_last_execution(self):
+        return self.env["ir.config_parameter"].sudo().get_param("sale.latest_tags_update") or False
+
+    def set_last_execution(self):
+        today = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        self.env["ir.config_parameter"].sudo().set_param("sale.latest_tags_update", today)
 
