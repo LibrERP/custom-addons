@@ -120,7 +120,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def check_tag_on_sale_orders(self):
-        domain = [('state', 'in', ['sale'])]
+        domain = [('state', 'not in', ['cancel'])]
         thisDate = self.get_last_execution()
         if thisDate:
             domain.extend([('write_date', '>=', thisDate)])
