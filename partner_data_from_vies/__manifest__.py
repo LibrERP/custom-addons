@@ -2,7 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Automatic partner creation based on VAT number',
-    'version': '12.0.1.4.0',
+    'version': '12.0.1.4.1',
     'category': 'Customer Relationship Management',
     'summary': 'Using VIES webservice, name and address information will be fetched and added to the partner.',
     'author': 'powERP enterprise network',
