@@ -20,7 +20,9 @@ class StockPicking(models.Model):
             new_orders = self.env['purchase.order']
             for picking in pickings:
                 if picking.purchase_order_id:
-                    raise exceptions.Warning(_(f'Order from transfer {picking.name} is already created'))
+                    raise exceptions.Warning(_(f'Order from transfer {picking.name} is already created.'))
+                if not picking.partner_id:
+                    raise exceptions.Warning(_(f'Partner from transfer {picking.name} is not specified.'))
 
                 order_values = {
                     'partner_id': picking.partner_id.id,
