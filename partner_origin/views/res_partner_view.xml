@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_customer" model="ir.ui.view">
+        <field name="name">Partner form inherited</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Cusomer Origin" attrs="{'invisible': [('customer', '=', False)]}">
+                    <separator name="p" colspan="4" string="Cusomer Origin"/>
+                    <field colspan="4" name="contact_origin_ids" nolabel="1"  widget="many2many_checkboxes" />
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="view_partner_contact_origin_form" model="ir.ui.view">
+        <field name="name">Contact Origin</field>
+        <field name="model">res.partner.contact.origin</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Contact Origin">
+                <field name="name" select="1"/>
+                <field name="active" groups="base.group_extended"/>
+                <separator colspan="4" string="Contacts"/>
+<!--                    <field colspan="4" name="partner_ids" nolabel="1"/>-->
+            </form>
+        </field>
+    </record>
+
+    <record id="view_partner_contact_origin_list" model="ir.ui.view">
+        <field name="name">Contact Origin</field>
+        <field name="model">res.partner.contact.origin</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Contact Origin">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="res_partner_contact_origin_act" model="ir.actions.act_window" >
+        <field name="name">Contact Origin</field>
+        <field name="res_model">res.partner.contact.origin</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_partner_contact_origin_form"
+              name="Contact Origins"
+              parent="contacts.res_partner_menu_config"
+              groups="base.group_system"
+              action="res_partner_contact_origin_act"
+              sequence="5"/>
+
+</odoo>
