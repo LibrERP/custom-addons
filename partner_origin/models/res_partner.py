@@ -30,15 +30,11 @@ class ResPartner(models.Model):
                 # so the next line will generate an error
                 # if not partner.contact_origin_ids and not values.get('contact_origin_ids'):
                 #     raise orm.except_orm(_('Warning'), 'Per favore seleziona Provenienza Contatto')
-                # el
+
                 if values.get('contact_origin_ids'):
                     origin_ids = [contact[2] for contact in values['contact_origin_ids'] if contact[2]]
                     if not origin_ids:
                         raise Warning(_('Per favore seleziona Provenienza Contatto'))
-                if values.get('category_id'):
-                    category_id = [category[2] for category in values['category_id'] if category[2]]
-                    if not category_id:
-                        raise Warning(_('Per favore seleziona una Categoria'))
 
         return super().write(values)
 
