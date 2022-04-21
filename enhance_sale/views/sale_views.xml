@@ -110,7 +110,7 @@
         </record>
 
         <record id="sale.action_orders" model="ir.actions.act_window">
-             <field name="domain">[('state', 'in', ('sale', 'done', 'cancel'))]</field>
+             <field name="domain">[('state', 'in', ('sale', 'done'))]</field>
         </record>
 
 

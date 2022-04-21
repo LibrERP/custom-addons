@@ -32,7 +32,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Sales',
-    'version': '12.0.0.11.1',
+    'version': '12.0.0.11.2',
 
     # any module necessary for this one to work correctly
     'depends': [
