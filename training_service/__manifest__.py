@@ -5,9 +5,10 @@
     'author': "powERP enterprise network",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Training',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'depends': [
         'base',
+        'sale'
     ],
     # always loaded
     'data': [
