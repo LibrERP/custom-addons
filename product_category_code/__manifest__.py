@@ -3,7 +3,7 @@
 
 {
     "name": "Add Code in Product Category",
-    "version": "12.0.0.0",
+    "version": "12.0.0.1",
     "category": "Sales Management",
     "description": """
         This module adds Code on Product Category.
