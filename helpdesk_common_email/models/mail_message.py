@@ -9,7 +9,7 @@ class Message(models.Model):
 
     @api.model
     def create(self, values):
-        if values.get('model', False) == 'helpdesk.ticket':
+        if values.get('model', False) == 'helpdesk.ticket' and values.get('message_type', '') == 'comment':
             ICP = self.env['ir.config_parameter'].sudo()
             values['email_from'] = ICP.get_param("helpdesk.email")
 
