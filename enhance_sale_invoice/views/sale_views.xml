@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+        <record id="view_order_form_inherit_sale_stock_enhance" model="ir.ui.view">
+            <field name="name">sale.order.form.sale.stock.enhance</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_delivery']" position="after">
+                    <button type="object"
+                        name="action_view_to_invoices"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        style="color: red;"
+                        attrs="{'invisible': [('not_paid_invoice_count', '=', 0)]}" groups="base.group_user">
+                        <field name="not_paid_invoice_count" widget="statinfo" string="Yet to Pay"/>
+                    </button>
+                </xpath>
+           </field>
+        </record>
+
+</odoo>
+            
