@@ -40,6 +40,7 @@ class SaleOrder(models.Model):
                 ('partner_id', 'in', partner_id.child_ids.ids),
                 ]
             pickings = self.env['stock.picking'].search(criteria)
+            pickings -= order_id.picking_ids
             order_id.not_yet_delivered_count = len(pickings)
     
     not_yet_delivered_count = fields.Integer(
