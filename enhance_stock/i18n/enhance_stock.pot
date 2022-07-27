@@ -1,0 +1,27 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* enhance_stock
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-07-27 09:46+0000\n"
+"PO-Revision-Date: 2022-07-27 09:46+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: enhance_stock
+#: model:ir.model,name:enhance_stock.model_stock_location
+msgid "Inventory Locations"
+msgstr ""
+
+#. module: enhance_stock
+#: model_terms:ir.ui.view,arch_db:enhance_stock.view_location_form_extend
+msgid "Products"
+msgstr ""
+
