@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_invoice_from_td" model="ir.ui.view">
+        <field name="name">stock.picking.form.invoice.from.td</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="returned_by" />
+                <field name="credit_note" attrs="{'invisible': [('returned_by', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
