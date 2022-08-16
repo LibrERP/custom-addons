@@ -105,5 +105,5 @@ class WizardInvoiceFromDdt(models.TransientModel):
             if group is False:
                 cntx.update({'group': False})
             return_ids += sp_in.with_context(cntx).action_invoice_refund()
-            print(return_ids)
-
+            
+        return {'type': 'ir.actions.act_window_close'}
