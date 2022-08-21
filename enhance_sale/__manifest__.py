@@ -32,13 +32,14 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Sales',
-    'version': '12.0.0.11.2',
+    'version': '12.0.0.12.0',
 
     # any module necessary for this one to work correctly
     'depends': [
         'sale',
         'sale_stock',
         'l10n_it_ddt',  # OCA l10n_italy
+        'enhance_sale_view',
     ],
 
     # always loaded
