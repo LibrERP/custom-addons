@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+       <record id="sale.sale_order_view_search_inherit_quotation" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.quotation</field>
+            <field name="model">sale.order</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='my_sale_orders_filter']" position="replace">
+                    <separator/>
+                    <filter string="My Quotations" name="my_quotation" domain="[('user_id', '=', uid),('state','in',['draft', 'sent'])]"/>
+                    <separator/>
+                    <filter string="Quotations" name="draft" domain="[('state','in',('draft', 'sent'))]"/>
+                    <filter string="Sales Orders" name="sales" domain="[('state','in',('sale','done'))]"/>
+                    <separator/>
+                    <filter string="Order Date" name="filter_order_date" date="date_order"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Override view action using generic quotations -->
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="context">{'search_default_draft': 1}</field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+             <field name="domain">[('state', 'in', ('sale', 'done'))]</field>
+        </record>
+
+
+     </data>
+</odoo>
+            

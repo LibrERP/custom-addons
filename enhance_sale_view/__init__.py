@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Created on : 2020-07-20
+#    LibrERP, Open Source Product Enterprise Management System    
+#    Copyright (C) 2020-2022 Didotech srl (<http://didotech.com>). All Rights Reserved
+#
+#    Created on : 2022-08-21
 #    Author : Fabio Colognesi
-#    Copyright: Didotech srl 2020 - 2021
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,40 +21,4 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Enhance Sale Order",
 
-    'summary': """
-        Sales Order extensions""",
-
-    'description': """
-        Sales extensions adding TD access.
-    """,
-
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Sales',
-    'version': '12.0.0.12.0',
-
-    # any module necessary for this one to work correctly
-    'depends': [
-        'sale',
-        'sale_stock',
-        'l10n_it_ddt',  # OCA l10n_italy
-        'enhance_sale_view',
-    ],
-
-    # always loaded
-    'data': [
-        'views/sale_views.xml',
-        'views/sale.xml'
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
