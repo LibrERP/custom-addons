@@ -174,3 +174,19 @@ class StockPickingPackagePreparation(models.Model):
 
         return group_key
 
+    @api.multi
+    def _prepare_invoice(self):
+        """
+        override j
+        """
+        self.ensure_one()
+
+        res = super()._prepare_invoice()
+
+        journal_id = self._context.get('invoice_journal_id', res['journal_id'])
+        res.update({
+            'journal_id': journal_id,
+        })
+
+        return res
+
