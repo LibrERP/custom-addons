@@ -40,6 +40,7 @@
     'data': [
         'wizard/wizard_invoice_from_ddt.xml',
         'views/stock_picking_view.xml',
+        'views/menuitem.xml',
     ],
     'demo': [],
     'installable': True,
