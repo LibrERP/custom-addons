@@ -6,7 +6,7 @@
 
 {
     'name': 'Aeroo Reports Fix',
-    'version': '12.0.2.2.1',
+    'version': '12.0.2.2.2',
     'category': 'Generic Modules/Aeroo Reports',
     'summary': 'Fix context lang and other documents reference',
     'author': 'Didotech s.r.l.',
