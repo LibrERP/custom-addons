@@ -1,0 +1,9 @@
+.o_form_view .o_form_sheet_bg > .o_form_sheet {
+    min-width: 650px;
+    max-width: 90%;
+    min-height: 330px;
+    padding: 16px;
+    border: 1px solid #c8c8d3;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: white;
+}
