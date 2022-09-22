@@ -37,7 +37,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Stock',
-    'version': '12.0.0.0.2',
+    'version': '12.0.0.1.3',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -48,6 +48,7 @@
     # always loaded
     'data': [
         'views/stock_picking_views.xml',
+        'wizard/picking_edit_lines_wizard.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
