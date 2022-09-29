@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="view_partner_form_extend_overvue" model="ir.ui.view">
-        <field name="name">res.partner.form.extend.overvue</field>
+    <record id="view_partner_form_extend_customer_credit" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.customer.credit</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="partner_views_summary.view_partner_form_extend_common_summary"/>
         <field name="arch" type="xml">
@@ -26,8 +26,8 @@
         </field>
     </record>
 
-    <record id="view_partner_property_form_overvue" model="ir.ui.view">
-        <field name="name">res.partner.form.extend.overvue</field>
+    <record id="view_partner_property_form_customer_credit" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.customer.credit</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="account.view_partner_property_form"/>
         <field name="arch" type="xml">

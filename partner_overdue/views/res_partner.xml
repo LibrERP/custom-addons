@@ -44,7 +44,7 @@
                             <field name="journal_id" />
                             <field name="debit" sum="Total debit"/>
                             <field name="credit" sum="Total credit"/>
-                            <field name="residual" sum="Total residual"/>
+                            <field name="amount_residual" sum="Total residual"/>
                             <field name="state" width="60"/>
                         </tree>
                         </field>
