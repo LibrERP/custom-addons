@@ -50,7 +50,7 @@ class AccountMoveLineGroup(models.Model):
 
     partner_id = fields.Many2one('res.partner', 'Partner', select=1, ondelete='restrict')
     account_id = fields.Many2one('account.account', 'Account', required=True, ondelete="cascade")
-    date_maturity_group = fields.Date('Due date', select=True)
+    date_maturity_group = fields.Date('Data scadenza', select=True)
     balance = fields.Float(string='Saldo')
     payment_type = fields.Char('Tipo')
     state = fields.Char('State')

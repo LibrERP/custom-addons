@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    def _view_ids(self):
+    def view_ids(self):
         account_ids = list()
 
         if self.customer and self.property_account_receivable_id:
@@ -33,27 +33,28 @@ class ResPartner(models.Model):
             account_ids.append(receivable_id.id)
             if self.property_account_position_id:
                 dest_id = self.property_account_position_id.map_account(receivable_id)
-                if dest_id:
+                if dest_id and dest_id.id not in account_ids:
                     account_ids.append(dest_id.id)
         if self.supplier and self.property_account_payable_id:
             payable_id = self.property_account_payable_id
             account_ids.append(payable_id.id)
             if self.property_account_position_id:
                 dest_id = self.property_account_position_id.map_account(payable_id)
-                if dest_id:
+                if dest_id and dest_id.id not in account_ids:
                     account_ids.append(dest_id.id)
         return account_ids
 
     def _default_payments(self):
-        account_ids = self._view_ids()
-        domain = list()
-        domain.append(('partner_id', '=', self.id))
-        if account_ids:
-            domain.append(('account_id', 'in', account_ids))
-        domain.append(('reconciled', '=', False))
+        for partner in self:
+            account_ids = partner.view_ids()
+            domain = list()
+            domain.append(('partner_id', '=', partner.id))
+            if account_ids:
+                domain.append(('account_id', 'in', account_ids))
+            domain.append(('reconciled', '=', False))
 
-        lines = self.env['account.move.line'].search(domain)
-        return lines
+            lines = self.env['account.move.line'].search(domain)
+            partner.payment_ids = lines
 
     @api.multi
     def _get_pos_order_invoice_group(self):
@@ -64,7 +65,7 @@ class ResPartner(models.Model):
     def _get_riba_sdd_payment(self):
         due_date = (datetime.now() - timedelta(days=2)).strftime(DEFAULT_SERVER_DATE_FORMAT)
         for partner in self:
-            account_view_ids = self._view_ids()
+            account_view_ids = partner.view_ids()
             partner.payment_riba_ids = self.env['account.move.line.group'].search([
                     ('account_id', 'in', account_view_ids),
                     ('partner_id', '=', partner.id), ('date_maturity_group', '>', due_date)],
@@ -81,12 +82,12 @@ class ResPartner(models.Model):
         string='Pagamenti aperti',
         comodel_name='account.move.line',
         inverse_name='partner_id',
-        default=_default_payments,
+        compute=_default_payments,
     )
 
     payment_riba_ids = fields.One2many(
         string='Righe Pagamenti',
         comodel_name='account.move.line.group',
         inverse_name='partner_id',
-        compute=_default_payments,
+        compute=_get_riba_sdd_payment,
     )
