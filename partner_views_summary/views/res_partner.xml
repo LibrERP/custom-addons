@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_extend_common_summary" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.common.summary</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page name="riepilogo_pagamenti" string="Riepilogo pagamenti">
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
+ 
