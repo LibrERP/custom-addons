@@ -68,4 +68,8 @@ class SaleOrder(models.Model):
         default="Attenzione: Il fido è stato superato",
     )
 
-
+    @api.onchange('partner_id')
+    def onchange_partner_id(self):
+        super().onchange_partner_id()
+        self._compute_limit()
+        # self.order_credit_limit = self.partner_id.fido_residuo - self.amount_total
