@@ -33,7 +33,7 @@
                     </field>
                 </group>
                  <group string="Scadenzario Pagamenti" >
-                    <group >
+                    <group string="Pagamenti aperti">
                         <field name="payment_ids" nolabel="1" readonly="1" colspan="4" >
                         <tree create="false" edit="false" delete="false">
                             <field name="move_id" required="False" readonly="1"/>
@@ -46,11 +46,25 @@
                             <field name="credit" sum="Total credit"/>
                             <field name="amount_residual" sum="Total residual"/>
                             <field name="state" width="60"/>
+                            <field name="reconciled" />
+                            <field name="running_balance"/>
                         </tree>
                         </field>
                     </group>
-                    <group >
-                        <h2>pagamenti riba</h2>
+                    <group string="RIBA / SDD">
+                        <field name="payment_riba_ids" nolabel="1" readonly="1" >
+                            <tree string="Payment Line"
+                              decoration-bf="row_color == 'black'"
+                              decoration-success="row_color == 'green'"
+                              decoration-danger="row_color == 'red'"
+                            >
+                                <field name="row_color" invisible="1"/>
+                                <field name="date_maturity_group"/>
+                                <field name="balance" sum="Total residual"/>
+                                <field name="running_balance"/>
+                                <field name="payment_type" />
+                            </tree>
+                        </field>
                     </group>
                 </group>
             </xpath>

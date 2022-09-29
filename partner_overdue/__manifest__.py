@@ -29,10 +29,11 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'depends': [
         'base',
         'account',
+        'account_duedates',
         'partner_views_summary',
     ],
     'data': [

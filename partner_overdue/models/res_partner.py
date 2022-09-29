@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    def _default_payments(self):
+    def _view_ids(self):
         account_ids = list()
 
         if self.customer and self.property_account_receivable_id:
@@ -42,7 +42,10 @@ class ResPartner(models.Model):
                 dest_id = self.property_account_position_id.map_account(payable_id)
                 if dest_id:
                     account_ids.append(dest_id.id)
+        return account_ids
 
+    def _default_payments(self):
+        account_ids = self._view_ids()
         domain = list()
         domain.append(('partner_id', '=', self.id))
         if account_ids:
@@ -58,6 +61,15 @@ class ResPartner(models.Model):
             invoice_ids = self.env['pos.order.invoice.group'].search([('partner_id', '=', partner.id)], limit=4)
             partner.pos_order_invoice_group_ids = invoice_ids
 
+    def _get_riba_sdd_payment(self):
+        due_date = (datetime.now() - timedelta(days=2)).strftime(DEFAULT_SERVER_DATE_FORMAT)
+        for partner in self:
+            account_view_ids = self._view_ids()
+            partner.payment_riba_ids = self.env['account.move.line.group'].search([
+                    ('account_id', 'in', account_view_ids),
+                    ('partner_id', '=', partner.id), ('date_maturity_group', '>', due_date)],
+                                                                            order='date_maturity_group asc')
+
     pos_order_invoice_group_ids = fields.One2many(
         compute=_get_pos_order_invoice_group,
         comodel_name='pos.order.invoice.group',
@@ -72,3 +84,9 @@ class ResPartner(models.Model):
         default=_default_payments,
     )
 
+    payment_riba_ids = fields.One2many(
+        string='Righe Pagamenti',
+        comodel_name='account.move.line.group',
+        inverse_name='partner_id',
+        compute=_default_payments,
+    )
