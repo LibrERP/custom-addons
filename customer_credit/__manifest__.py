@@ -18,9 +18,9 @@
 #
 ##############################################################################
 {
-    'name': "Partner Overdue",
+    'name': "Customer Partner Credit",
 
-    'summary': "Partner overdue and duedates",
+    'summary': "Customer credit",
 
     'description': """
         Extends Partner entities and views.
@@ -32,12 +32,13 @@
     'version': '12.0.1.0.0',
     'depends': [
         'base',
-        'account',
+        'sale',
+        'sale_order_type',
         'partner_views_summary',
     ],
     'data': [
-        "security/ir.model.access.csv",
         "views/res_partner.xml",
+        "views/sale_view.xml",
     ],
     'installable': True,
     'application': False,

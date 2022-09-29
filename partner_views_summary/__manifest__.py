@@ -18,9 +18,9 @@
 #
 ##############################################################################
 {
-    'name': "Partner Overdue",
+    'name': "Partner Common Summary",
 
-    'summary': "Partner overdue and duedates",
+    'summary': "Partner payments summary",
 
     'description': """
         Extends Partner entities and views.
@@ -32,11 +32,8 @@
     'version': '12.0.1.0.0',
     'depends': [
         'base',
-        'account',
-        'partner_views_summary',
     ],
     'data': [
-        "security/ir.model.access.csv",
         "views/res_partner.xml",
     ],
     'installable': True,
