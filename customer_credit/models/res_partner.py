@@ -39,7 +39,7 @@ class ResPartner(models.Model):
             # note di carico pagate
             domain = list()
             domain.append(('partner_id', '=', record.id))
-            domain.append(('type', '=', 'shopping'))
+            # domain.append(('type', '=', 'shopping'))
             domain.append(('amount_paid', '>', 0))
             # domain.append(('invoice_ids', '=', False)) # ??
             shopping_orders = record.env['sale.order'].search(domain)
