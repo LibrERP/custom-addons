@@ -35,6 +35,7 @@
         'sale',
         'sale_order_type',
         'partner_views_summary',
+        'extend_invoice_from_td',
     ],
     'data': [
         "views/res_partner.xml",
