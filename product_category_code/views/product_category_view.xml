@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_product_category_code_form" model="ir.ui.view">
+        <field name="name">product.category.code.form</field>
+        <field name="model">product.category</field>
+        <field name="type">form</field>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_category_code_tree" model="ir.ui.view">
+        <field name="name">product.category.code.tree</field>
+        <field name="model">product.category</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="product.product_category_list_view"/>
+        <field name="arch" type="xml">
+            <field name="display_name" position="after">
+                <field name="code"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_category_search" model="ir.ui.view">
+        <field name="name">view.product.category.code.filter</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_search_view"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name='code' string="Category Code"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

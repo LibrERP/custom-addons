@@ -16,6 +16,9 @@
                         >
                 </button>
             </div>
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <button name="prepare_validation" string="Prepare validation" attrs="{'invisible': [('state', '=', 'done')]}" type="object" groups="stock.group_stock_user"/>
+            </xpath>
         </field>
     </record>
 </odoo>

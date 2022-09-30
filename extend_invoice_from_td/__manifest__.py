@@ -1,14 +1,9 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
-#    (<http://www.didotech.com/>).
-#
-#    Created on : 2021-00-11
-#    Author : Fabio Colognesi
+#    Copyright (C) 2022 Didotech SRL
 #
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
+#    it under the terms of the GNU Affero General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
@@ -22,40 +17,34 @@
 #
 ##############################################################################
 {
-    'name': "Enhance Stock Picking",
+    'name': "Feature for invoice generation from Transport Documents",
 
-    'summary': 
-        """
-            Stock picking extensions
-        """,
+    'summary': """
+         Wizard which handles invoices and credite notes. """,
 
-    'description': 
-        """
-            Stock picking extensions referring to TD.
-        """,
+    'description': """
+        Wizard which handles invoices and credite notes.
+    """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Stock',
-    'version': '12.0.0.2.4',
+    'category': 'Customization',
+    'version': '12.0.1.0.1',
 
-    # any module necessary for this one to work correctly
     'depends': [
-       'stock',
-       'l10n_it_ddt',  # OCA l10n_italy
+        'base',
+        'stock',
+        'l10n_it_ddt',
     ],
 
-    # always loaded
     'data': [
-        'views/stock_picking_views.xml',
-        'wizard/picking_edit_lines_wizard.xml'
+        'wizard/wizard_invoice_from_ddt.xml',
+        'views/stock_picking_view.xml',
+        'views/menuitem.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
+    'demo': [],
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'LGPL-3',
+    'license': 'AGPL-3',
 }

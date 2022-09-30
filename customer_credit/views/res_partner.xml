@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_extend_customer_credit" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.customer.credit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_views_summary.view_partner_form_extend_common_summary"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='riepilogo_pagamenti']" position="inside">
+                <group string="Esposizione Fido" >
+                    <group >
+                        <field name="saldo_contabile"/>
+                        <field name="fatture_draft"/>
+                        <field name="fido_utilizzato" />
+                        <field name="collections_out" />
+                    </group>
+                    <group >
+                        <field name="esposizione_sbf"/>
+                        <field name="ddt_to_invoice"/>
+                        <field name="overdue_credit" />
+                        <field name="excluding_recall" />
+                    </group>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_partner_property_form_customer_credit" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.customer.credit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[last()]" position="after">
+                <separator string="Fido cliente" colspan="4"/>
+                <group colspan="4">
+                    <field name="credit" attrs="{'invisible': [('customer', '=', False)]}"/>
+                    <field name="debit" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                    <field name="credit_limit" />
+                    <field name="fido_utilizzato" />
+                    <field name="fido_residuo" />
+                    <field name="limit_note" />
+                    <field name="last_time_entries_checked" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+ 

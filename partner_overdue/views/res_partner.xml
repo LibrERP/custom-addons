@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_extend_overvue" model="ir.ui.view">
+        <field name="name">res.partner.form.extend.overvue</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_views_summary.view_partner_form_extend_common_summary"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='riepilogo_pagamenti']" position="inside">
+                <group string="Fatturato Mensile" colspan="4" >
+                    <field name="pos_order_invoice_group_ids" nolabel="1" readonly="1" colspan="4" >
+                        <tree create="false" edit="false" delete="false">
+                            <field name="position" />
+                            <field name="partner_id" />
+                            <field name="property_customer_ref" />
+                            <field name="year" />
+                            <field name="jan" widget="monetary" sum="Totale"/>
+                            <field name="feb" widget="monetary" sum="Totale"/>
+                            <field name="mar" widget="monetary" sum="Totale"/>
+                            <field name="apr" widget="monetary" sum="Totale"/>
+                            <field name="may" widget="monetary" sum="Totale"/>
+                            <field name="jun" widget="monetary" sum="Totale"/>
+                            <field name="jul" widget="monetary" sum="Totale"/>
+                            <field name="aug" widget="monetary" sum="Totale"/>
+                            <field name="sep" widget="monetary" sum="Totale"/>
+                            <field name="oct" widget="monetary" sum="Totale"/>
+                            <field name="nov" widget="monetary" sum="Totale"/>
+                            <field name="dec" widget="monetary" sum="Totale"/>
+                            <field name="year_amount" widget="monetary" sum="Totale"/>
+                            <field name="overdue" />
+                            <field name="pareto" />
+                        </tree>
+                    </field>
+                </group>
+                 <group string="Scadenzario Pagamenti" >
+                    <group string="Pagamenti aperti">
+                        <field name="payment_ids" nolabel="1" readonly="1" colspan="4" >
+                        <tree create="false" edit="false" delete="false">
+                            <field name="move_id" required="False" readonly="1"/>
+                            <field name="date" readonly="1"/>
+                            <field name="account_id"/>
+                            <field name="name"/>
+                            <field name="date_maturity"/>
+                            <field name="journal_id" />
+                            <field name="debit" sum="Total debit"/>
+                            <field name="credit" sum="Total credit"/>
+                            <field name="amount_residual" sum="Total residual"/>
+                            <field name="state" width="60"/>
+                            <field name="reconciled" />
+                            <field name="running_balance"/>
+                        </tree>
+                        </field>
+                    </group>
+                    <group string="RIBA / SDD">
+                        <field name="payment_riba_ids" nolabel="1" readonly="1" >
+                            <tree string="Payment Line"
+                              decoration-bf="row_color == 'black'"
+                              decoration-success="row_color == 'green'"
+                              decoration-danger="row_color == 'red'"
+                            >
+                                <field name="row_color" invisible="1"/>
+                                <field name="date_maturity_group"/>
+                                <field name="balance" sum="Total residual"/>
+                                <field name="running_balance"/>
+                                <field name="payment_type" />
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
+ 

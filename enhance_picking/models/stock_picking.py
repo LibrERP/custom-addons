@@ -57,4 +57,24 @@ class StockPicking(models.Model):
             }
         return ret
 
+    @api.multi
+    def prepare_validation(self):
+        picking_edit = self.env['stock.picking.edit']
+        picking_edit_line = self.env['stock.picking.edit.line']
+        values = {}
+        picking_edit_id = picking_edit.create({})
+        for move in self.move_lines:
+            values.update({
+                'product_id': move.product_id.id,
+                'product_uom_qty': move.product_uom_qty,
+                'reserved_availability': move.reserved_availability,
+                'quantity_done': move.reserved_availability,
+                'product_uom': move.product_uom.id,
+                'picking_edit_id': picking_edit_id.id,
+                'move_id': move.id
+            })
+            picking_edit_line.create(values)
 
+        action = self.env.ref('enhance_picking.action_stock_picking_edit_form').read()[0]
+        action['res_id'] = picking_edit_id.id
+        return action

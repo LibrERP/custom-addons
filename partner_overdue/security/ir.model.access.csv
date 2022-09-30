@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pos_order_invoice_group,access_pos_order_invoice_group,model_pos_order_invoice_group,base.group_user,1,0,0,0
+access_account_move_line_group,access_account_move_line_group,model_account_move_line_group,base.group_user,1,0,0,0
+

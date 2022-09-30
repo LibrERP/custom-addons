@@ -1,11 +1,7 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
+#    Copyright (C) 2020-2022 Didotech srl
 #    (<http://www.didotech.com/>).
-#
-#    Created on : 2021-00-11
-#    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -21,6 +17,31 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+{
+    'name': "Partner Overdue",
 
-from . import models
-from . import wizard
+    'summary': "Partner overdue and duedates",
+
+    'description': """
+        Extends Partner entities and views.
+    """,
+
+    'author': "Didotech srl",
+    'website': "http://www.didotech.com",
+    'category': 'Customization',
+    'version': '12.0.1.0.1',
+    'depends': [
+        'base',
+        'account',
+        'account_duedates',
+        'partner_views_summary',
+    ],
+    'data': [
+        "security/ir.model.access.csv",
+        "views/res_partner.xml",
+    ],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

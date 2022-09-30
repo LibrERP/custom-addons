@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="l10n_it_ddt.menu_ddt_invoicing"
+              active="False"/>
+
+</odoo>
