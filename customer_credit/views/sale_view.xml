@@ -8,12 +8,11 @@
 
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_shipping_id']" position="after" >
-                <field name="type" invisible="1" />
                 <field name="sale_warn" invisible="1" />
                 <separator />
-                <field name="order_credit_limit" attrs="{'invisible': [('type', '!=', 'shopping')]}" />
-                <field name="order_advance_remaining" attrs="{'invisible': [('type', '!=', 'shopping')]}" />
-                <field name="credit_warn" attrs="{'invisible': ['|', ('type', '!=', 'shopping'), ('sale_warn', '=', False)]}" />
+                <field name="order_credit_limit" />
+                <field name="order_advance_remaining" />
+                <field name="credit_warn" attrs="{'invisible': [('sale_warn', '=', False)]}" />
             </xpath>
         </field>
     </record>

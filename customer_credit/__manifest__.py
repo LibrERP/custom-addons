@@ -29,12 +29,13 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.2',
     'depends': [
         'base',
         'sale',
         'sale_order_type',
         'partner_views_summary',
+        'extend_invoice_from_td',
     ],
     'data': [
         "views/res_partner.xml",
