@@ -34,13 +34,13 @@ class AccountInvoice(models.Model):
             new_invoice_line = []
             for line in self.invoice_line_ids:
                 if line.id in product_charges_ids:
-                    line.unlink()
+                    continue
                 else:
                     new_invoice_line.append(line)
 
-            # if spese_incasso and spese_incasso.spese_incasso_id:
-            #     vals = self._spese_incasso_vals(spese_incasso.spese_incasso_id)
-            #     new_invoice_line.append([0, 0, vals])
+            if spese_incasso and spese_incasso.spese_incasso_id:
+                vals = self._spese_incasso_vals(spese_incasso.spese_incasso_id)
+                new_invoice_line.append([0, 0, vals])
 
             self.invoice_line_ids = new_invoice_line
 
