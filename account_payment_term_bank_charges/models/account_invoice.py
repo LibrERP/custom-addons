@@ -58,15 +58,27 @@ class AccountInvoice(models.Model):
             'quantity': 1.0,
             'uom_id': product.uom_id.id,
             'price_unit': product.lst_price,
-            'invoice_line_tax_ids': [(4, tax_id, 0)],
+            'invoice_line_tax_ids': [(6, 0, [tax_id])],
         }
         return account_invoice_line_vals
 
-    @api.multi
-    def invoice_validate(self):
-        for invoice in self:
-            pass
+    @api.model
+    def create(self, vals):
+        """
+        check on charges from payment term
+        """
+        res_id = super().create(vals)
+        if res_id.type == 'out_invoice' and res_id.state == 'draft' and res_id.payment_term_id:
+            payment_term_model = self.env['account.payment.term']
+            spese_incasso = payment_term_model.browse(res_id.payment_term_id.id)
+            product_charges_ids = res_id._product_charges_ids()
+            if res_id.invoice_line_ids:
+                for line in res_id.invoice_line_ids:
+                    if line.product_id.id in product_charges_ids:
+                        res_id.invoice_line_ids -= line
 
-        # end for
-        return super().invoice_validate()
-    # end invoice_validate
+            vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id)
+            spese = self.env['account.invoice.line'].new(vals)
+            res_id.invoice_line_ids += spese
+
+        return res_id
