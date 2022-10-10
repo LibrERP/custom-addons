@@ -68,7 +68,8 @@ class AccountInvoice(models.Model):
         check on charges from payment term
         """
         res_id = super().create(vals)
-        if res_id.type == 'out_invoice' and res_id.state == 'draft' and res_id.payment_term_id:
+        if res_id.type == 'out_invoice' and res_id.state == 'draft' and res_id.payment_term_id and (
+                res_id.payment_term_id.spese_incasso_id):
             payment_term_model = self.env['account.payment.term']
             spese_incasso = payment_term_model.browse(res_id.payment_term_id.id)
             product_charges_ids = res_id._product_charges_ids()
