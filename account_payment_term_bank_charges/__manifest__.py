@@ -1,11 +1,7 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2021 Didotech srl
+#    Copyright (C) 2020-2022 Didotech srl
 #    (<http://www.didotech.com/>).
-#
-#    Created on : 2021-00-11
-#    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,37 +18,24 @@
 #
 ##############################################################################
 {
-    'name': "Enhance Stock Picking",
+    'name': "Account payment term extension",
 
-    'summary': 
-        """
-            Stock picking extensions
-        """,
+    'summary': "Account payment term with bank charges",
 
-    'description': 
-        """
-            Stock picking extensions referring to TD.
-        """,
+    'description': """
+        Account payment term with bank charges.
+    """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Stock',
-    'version': '12.0.0.3.4',
-
-    # any module necessary for this one to work correctly
+    'category': 'Customization',
+    'version': '12.0.1.0.2',
     'depends': [
-       'stock',
-       'l10n_it_ddt',  # OCA l10n_italy
+        'base',
+        'account',
     ],
-
-    # always loaded
     'data': [
-        'views/stock_picking_views.xml',
-        'wizard/picking_edit_lines_wizard.xml'
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
+        "views/account_view.xml",
     ],
     'installable': True,
     'application': False,
