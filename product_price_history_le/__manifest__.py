@@ -3,7 +3,7 @@
 
 {
     "name": "Product Price History",
-    "version": "12.0.1.1",
+    "version": "12.0.1.2",
     'author': 'Didotech srl, Moltis Technologies',
     'website': 'http://www.didotech.com',
     "license": "AGPL-3",
