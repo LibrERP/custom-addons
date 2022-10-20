@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_from_pickings" model="ir.ui.view">
+        <field name="name">TD from Pickings</field>
+        <field name="model">invoice.from.pickings</field>
+        <field name="arch" type="xml">
+            <form string="Invoice from Pickings">
+                <group>
+                    <group>
+                        <field name="journal_id" />
+                        <field name="date_invoice" />
+                    </group>
+                </group>
+
+                <separator string="Picking" />
+                <field string="Pickings" name="picking_ids">
+<!--                    <tree edit="false" delete="true" create="false">-->
+<!--                        <field name="name"/>-->
+<!--                        <field name="ddt_ids"/>-->
+<!--                        <field name="ddt_type"/>-->
+<!--                        <field name="location_dest_id"/>-->
+<!--                        <field name="partner_id"/>-->
+<!--                        <field name="origin"/>-->
+<!--                        <field name="backorder_id"/>-->
+<!--                        <field name="state"/>-->
+<!--                    </tree>-->
+                </field>
+                <footer>
+                    <button name="create_invoice" string="Create" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_invoice_from_pickings" model="ir.actions.act_window">
+        <field name="name">Invoice from Pickings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">invoice.from.pickings</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_invoice_from_pickings"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+    </record>
+
+</odoo>
