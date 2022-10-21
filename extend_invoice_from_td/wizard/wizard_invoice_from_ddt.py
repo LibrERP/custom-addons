@@ -72,15 +72,7 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
         # elenco ddt del periodo per fatture di vendita
         return_ids = list()
-        domain = list()
-        domain.append(('to_be_invoiced', '=', True))
-        domain.append(('invoice_id', '=', False))
-        domain.append(('state', '=', 'done'))
-        if self.date_from:
-            domain.append(('date', '>=', self.date_from))
-        if self.date_to:
-            domain.append(('date', '<=', self.date_to))
-
+        domain = self.domain_x_invoice()
         ddt = self.env['stock.picking.package.preparation'].search(domain)
         if ddt:
             cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id}
@@ -90,6 +82,29 @@ class WizardInvoiceFromDdt(models.TransientModel):
             # print(return_ids)
 
         # elenco movimenti per note di credito
+        sp_domain = self.domain_x_credit_note()
+        sp_in = self.env['stock.picking'].search(sp_domain)
+        if sp_in:
+            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
+            if group is False:
+                cntx.update({'group': False})
+            return_ids += sp_in.with_context(cntx).action_invoice_refund()
+            
+        return {'type': 'ir.actions.act_window_close'}
+
+    def domain_x_invoice(self):
+        domain = list()
+        domain.append(('to_be_invoiced', '=', True))
+        domain.append(('invoice_id', '=', False))
+        domain.append(('state', '=', 'done'))
+        if self.date_from:
+            domain.append(('date', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('date', '<=', self.date_to))
+
+        return domain
+
+    def domain_x_credit_note(self):
         sp_domain = list()
         sp_domain.append(('returned_by', '=', True))
         sp_domain.append(('state', '=', 'done'))
@@ -99,11 +114,6 @@ class WizardInvoiceFromDdt(models.TransientModel):
         if self.date_to:
             sp_domain.append(('date', '<=', self.date_to))
 
-        sp_in = self.env['stock.picking'].search(sp_domain)
-        if sp_in:
-            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
-            if group is False:
-                cntx.update({'group': False})
-            return_ids += sp_in.with_context(cntx).action_invoice_refund()
-            
-        return {'type': 'ir.actions.act_window_close'}
+        return sp_domain
+
+
