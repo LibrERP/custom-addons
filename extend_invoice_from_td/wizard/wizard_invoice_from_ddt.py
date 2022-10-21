@@ -68,10 +68,35 @@ class WizardInvoiceFromDdt(models.TransientModel):
         if self.date_from > self.date_to:
             raise UserError('Attenzione!\nVerificare l\'intervallo delle date del periodo.')
 
-        group = self.group_by_partner
-
         # elenco ddt del periodo per fatture di vendita
-        return_ids = list()
+        self.create_from_ddt()
+
+        # elenco movimenti per note di credito
+        self.create_from_stock_picking()
+
+        return {'type': 'ir.actions.act_window_close'}
+
+    def create_from_ddt(self):
+        domain = self.domain_x_invoice()
+        ddt = self.env['stock.picking.package.preparation'].search(domain)
+        if ddt:
+            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id}
+            if self.group_by_partner is False:
+                cntx.update({'group': False})
+            return_ids = ddt.with_context(cntx).action_invoice_create()
+            # print(return_ids)
+
+    def create_from_stock_picking(self):
+        sp_domain = self.domain_x_credit_note()
+        sp_in = self.env['stock.picking'].search(sp_domain)
+        if sp_in:
+            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
+            if self.group_by_partner is False:
+                cntx.update({'group': False})
+            return_ids = sp_in.with_context(cntx).action_invoice_refund()
+            # print(return_ids)
+
+    def domain_x_invoice(self, other_conditions=[]):
         domain = list()
         domain.append(('to_be_invoiced', '=', True))
         domain.append(('invoice_id', '=', False))
@@ -80,16 +105,13 @@ class WizardInvoiceFromDdt(models.TransientModel):
             domain.append(('date', '>=', self.date_from))
         if self.date_to:
             domain.append(('date', '<=', self.date_to))
+        if other_conditions:
+            for tpl in other_conditions:
+                domain.append(tpl)
 
-        ddt = self.env['stock.picking.package.preparation'].search(domain)
-        if ddt:
-            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id}
-            if group is False:
-                cntx.update({'group': False})
-            return_ids = ddt.with_context(cntx).action_invoice_create()
-            # print(return_ids)
+        return domain
 
-        # elenco movimenti per note di credito
+    def domain_x_credit_note(self, other_conditions=[]):
         sp_domain = list()
         sp_domain.append(('returned_by', '=', True))
         sp_domain.append(('state', '=', 'done'))
@@ -98,12 +120,9 @@ class WizardInvoiceFromDdt(models.TransientModel):
             sp_domain.append(('date', '>=', self.date_from))
         if self.date_to:
             sp_domain.append(('date', '<=', self.date_to))
+        if other_conditions:
+            for tpl in other_conditions:
+                domain.append(tpl)
 
-        sp_in = self.env['stock.picking'].search(sp_domain)
-        if sp_in:
-            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
-            if group is False:
-                cntx.update({'group': False})
-            return_ids += sp_in.with_context(cntx).action_invoice_refund()
-            
-        return {'type': 'ir.actions.act_window_close'}
+        return sp_domain
+
