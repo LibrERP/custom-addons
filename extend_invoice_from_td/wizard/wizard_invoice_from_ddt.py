@@ -68,28 +68,12 @@ class WizardInvoiceFromDdt(models.TransientModel):
         if self.date_from > self.date_to:
             raise UserError('Attenzione!\nVerificare l\'intervallo delle date del periodo.')
 
-        group = self.group_by_partner
-
         # elenco ddt del periodo per fatture di vendita
-        return_ids = list()
-        domain = self.domain_x_invoice()
-        ddt = self.env['stock.picking.package.preparation'].search(domain)
-        if ddt:
-            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id}
-            if group is False:
-                cntx.update({'group': False})
-            return_ids = ddt.with_context(cntx).action_invoice_create()
-            # print(return_ids)
+        self.create_from_ddt()
 
         # elenco movimenti per note di credito
-        sp_domain = self.domain_x_credit_note()
-        sp_in = self.env['stock.picking'].search(sp_domain)
-        if sp_in:
-            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
-            if group is False:
-                cntx.update({'group': False})
-            return_ids += sp_in.with_context(cntx).action_invoice_refund()
-            
+        self.create_from_stock_picking()
+
         return {'type': 'ir.actions.act_window_close'}
 
     def domain_x_invoice(self):
@@ -116,4 +100,23 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
         return sp_domain
 
+    def create_from_ddt(self):
+        domain = self.domain_x_invoice()
+        ddt = self.env['stock.picking.package.preparation'].search(domain)
+        if ddt:
+            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id}
+            if self.group_by_partner is False:
+                cntx.update({'group': False})
+            return_ids = ddt.with_context(cntx).action_invoice_create()
+            # print(return_ids)
+
+    def create_from_stock_picking(self):
+        sp_domain = self.domain_x_credit_note()
+        sp_in = self.env['stock.picking'].search(sp_domain)
+        if sp_in:
+            cntx = {'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id_refund.id}
+            if self.group_by_partner is False:
+                cntx.update({'group': False})
+            return_ids = sp_in.with_context(cntx).action_invoice_refund()
+            # print(return_ids)
 
