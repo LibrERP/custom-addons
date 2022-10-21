@@ -76,30 +76,6 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
         return {'type': 'ir.actions.act_window_close'}
 
-    def domain_x_invoice(self):
-        domain = list()
-        domain.append(('to_be_invoiced', '=', True))
-        domain.append(('invoice_id', '=', False))
-        domain.append(('state', '=', 'done'))
-        if self.date_from:
-            domain.append(('date', '>=', self.date_from))
-        if self.date_to:
-            domain.append(('date', '<=', self.date_to))
-
-        return domain
-
-    def domain_x_credit_note(self):
-        sp_domain = list()
-        sp_domain.append(('returned_by', '=', True))
-        sp_domain.append(('state', '=', 'done'))
-        sp_domain.append(('credit_note', '=', False))
-        if self.date_from:
-            sp_domain.append(('date', '>=', self.date_from))
-        if self.date_to:
-            sp_domain.append(('date', '<=', self.date_to))
-
-        return sp_domain
-
     def create_from_ddt(self):
         domain = self.domain_x_invoice()
         ddt = self.env['stock.picking.package.preparation'].search(domain)
@@ -119,4 +95,34 @@ class WizardInvoiceFromDdt(models.TransientModel):
                 cntx.update({'group': False})
             return_ids = sp_in.with_context(cntx).action_invoice_refund()
             # print(return_ids)
+
+    def domain_x_invoice(self, other_conditions=[]):
+        domain = list()
+        domain.append(('to_be_invoiced', '=', True))
+        domain.append(('invoice_id', '=', False))
+        domain.append(('state', '=', 'done'))
+        if self.date_from:
+            domain.append(('date', '>=', self.date_from))
+        if self.date_to:
+            domain.append(('date', '<=', self.date_to))
+        if other_conditions:
+            for tpl in other_conditions:
+                domain.append(tpl)
+
+        return domain
+
+    def domain_x_credit_note(self, other_conditions=[]):
+        sp_domain = list()
+        sp_domain.append(('returned_by', '=', True))
+        sp_domain.append(('state', '=', 'done'))
+        sp_domain.append(('credit_note', '=', False))
+        if self.date_from:
+            sp_domain.append(('date', '>=', self.date_from))
+        if self.date_to:
+            sp_domain.append(('date', '<=', self.date_to))
+        if other_conditions:
+            for tpl in other_conditions:
+                domain.append(tpl)
+
+        return sp_domain
 
