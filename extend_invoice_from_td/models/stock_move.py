@@ -58,8 +58,11 @@ class StockMove(models.Model):
 
         if not account and self.product_id:
             raise UserError(
-                'Please define income account for this product: "%s" (id:%d) - or for its category: "%s".' %
-                self.product_id.name, self.product_id.id, self.product_id.categ_id.name)
+                'Please define income account for this product: {prod} (id:{id}) - or for its category: {cat}.'.format(
+                    prod=self.product_id.name,
+                    id=self.product_id.id,
+                    cat=self.product_id.categ_id.name
+                ))
 
         rslt = product.partner_ref
         if product.description_sale:
