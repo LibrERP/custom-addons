@@ -1,0 +1,153 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* extend_invoice_from_td
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-21 07:24+0000\n"
+"PO-Revision-Date: 2022-10-21 07:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: extend_invoice_from_td
+#: model_terms:ir.ui.view,arch_db:extend_invoice_from_td.wizard_invoice_from_ddt_form
+msgid "Cancel"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model_terms:ir.ui.view,arch_db:extend_invoice_from_td.wizard_invoice_from_ddt_form
+msgid "Create invoice"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_stock_picking__credit_note
+msgid "Credit note"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__date_from
+msgid "Date from"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__date_invoice
+msgid "Date invoice"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__date_to
+msgid "Date to"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.actions.act_window,name:extend_invoice_from_td.action_invoice_from_ddt
+msgid "Fatturazione da DDT"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model,name:extend_invoice_from_td.model_wizard_invoice_from_ddt
+msgid "Fatture da DDT"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__group_by_partner
+msgid "Group by Partner"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__id
+msgid "ID"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.ui.menu,name:extend_invoice_from_td.menu_action_invoice_from_ddt
+msgid "Invoice from DDT"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__journal_id
+msgid "Invoice journal"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model,name:extend_invoice_from_td.model_stock_picking_package_preparation
+msgid "Package Preparation"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model_terms:ir.ui.view,arch_db:extend_invoice_from_td.wizard_invoice_from_ddt_form
+msgid "Period"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_wizard_invoice_from_ddt__journal_id_refund
+msgid "Refund journal"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model.fields,field_description:extend_invoice_from_td.field_stock_picking__returned_by
+msgid "Returned by customer"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model_terms:ir.ui.view,arch_db:extend_invoice_from_td.wizard_invoice_from_ddt_form
+msgid "Sample Data"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model,name:extend_invoice_from_td.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: code:addons/extend_invoice_from_td/models/stock_picking.py:47
+#, python-format
+msgid "There is no invoiceable line."
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model:ir.model,name:extend_invoice_from_td.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: extend_invoice_from_td
+#: model_terms:ir.ui.view,arch_db:extend_invoice_from_td.wizard_invoice_from_ddt_form
+msgid "or"
+msgstr ""
+
