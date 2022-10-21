@@ -3,7 +3,7 @@
 
 {
     "name": "Add Code in Product Category",
-    "version": "12.0.0.1",
+    "version": "12.0.0.2",
     "category": "Sales Management",
     "description": """
         This module adds Code on Product Category.
@@ -14,6 +14,7 @@
     ],
     "data": [
         "views/product_category_view.xml",
+        "views/product.xml"
     ],
     "auto_install": False,
     "installable": True,

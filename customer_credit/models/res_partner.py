@@ -102,7 +102,8 @@ class ResPartner(models.Model):
                         continue
                     order = pick.sale_id
                     if order:
-                        approved_pos_amount += order['amount_total']
+                        # 19/10/2022 `sudo()` added to prevent access error if user has only Own Documents perm on sales
+                        approved_pos_amount += order.sudo()['amount_total']
 
             record.fido_utilizzato = record.credit + draft_invoices_amount + orders_amount + riba_amount
             record.fido_residuo = record.credit_limit - (

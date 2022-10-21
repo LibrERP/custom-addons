@@ -120,27 +120,13 @@ class StockPicking(models.Model):
             'origin': self.name,
             'date_invoice': self._context.get('invoice_date', False),
             'account_id': (
-                invoice_partner.property_account_payable_id.id),
+                invoice_partner.property_account_receivable_id.id),
             'partner_id': invoice_partner_id,
             'journal_id': journal_id,
             'currency_id': currency_id,
             'fiscal_position_id': fiscal_position_id,
             'payment_term_id': payment_term_id
         })
-        # # Now the rest of the fields dedicated to DDT
-        # res.update({
-        #     'carriage_condition_id': self.carriage_condition_id.id,
-        #     'goods_description_id': self.goods_description_id.id,
-        #     'transportation_reason_id': self.transportation_reason_id.id,
-        #     'transportation_method_id': self.transportation_method_id.id,
-        #     'carrier_id': self.carrier_id.id,
-        #     'carrier_tracking_ref': self.carrier_tracking_ref,
-        #     'dimension': self.dimension,
-        #     'parcels': self.parcels,
-        #     'weight': self.weight,
-        #     'gross_weight': self.gross_weight,
-        #     'volume': self.volume,
-        # })
         return res
 
     @api.multi
