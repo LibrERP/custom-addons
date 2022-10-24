@@ -191,6 +191,7 @@ class ResPartner(models.Model):
     overdue_credit = fields.Float(
         string='Totale Scaduto',
         compute=_compute_overview_credit,
+        store=True,
     )
 
     collections_out = fields.Boolean(
