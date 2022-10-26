@@ -25,6 +25,55 @@ from datetime import datetime, timedelta
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    def _search_overdue_credit(self, operator, value):
+        if not value:
+            value = 0
+        current_date = time.strftime(DEFAULT_SERVER_DATE_FORMAT)
+        sql = """
+            SELECT partner_id
+            FROM 
+            (
+                  SELECT 
+                        account_move_line.partner_id,
+                        SUM(account_move_line.debit) - SUM(account_move_line.credit) as overdue
+        
+                  FROM 
+                      account_account, 
+                      account_move,
+                      account_move_line,
+                      res_partner
+                  WHERE 
+                      account_move_line.account_id = account_account.id AND
+                      account_move_line.partner_id = res_partner.id AND
+                      (res_partner.collections_out != 'True' OR res_partner.collections_out IS NULL) AND
+                      account_move_line.move_id = account_move.id AND
+                      account_move.state != 'draft' AND 
+                      account_account.user_type_id IN (
+                      SELECT id FROM account_account_type WHERE type  = 'receivable') AND 
+                      account_move_line.reconciled IS NULL AND
+                      account_move_line.date_maturity <= '{dat}' 
+                  GROUP BY
+                      account_move_line.partner_id
+            ) AS scaduto
+            WHERE 
+                scaduto.overdue {ope} {val}
+                          
+          """.format(
+            dat=current_date,
+            ope=operator,
+            val=value
+        )
+        self.env.cr.execute(sql)
+
+        res = self.env.cr.fetchall()
+        partner_ids = []
+        if res:
+            partner_ids = [x[0] for x in res]
+
+        if not partner_ids:
+            return [('id', '=', 0)]
+        return [('id', 'in', list(set(partner_ids)))]
+
     @api.depends('credit_limit')
     def _compute_fido(self):
 
@@ -113,7 +162,7 @@ class ResPartner(models.Model):
             record.esposizione_sbf = riba_amount
             record.ddt_to_invoice = approved_pos_amount
 
-    def _compute_overview_credit(self):
+    def _compute_overdue_credit(self):
         current_date = time.strftime(DEFAULT_SERVER_DATE_FORMAT)
         for partner in self:
             self.env.cr.execute("""SELECT
@@ -190,7 +239,9 @@ class ResPartner(models.Model):
 
     overdue_credit = fields.Float(
         string='Totale Scaduto',
-        compute=_compute_overview_credit,
+        compute=_compute_overdue_credit,
+        search=_search_overdue_credit,
+        # store=True,
     )
 
     collections_out = fields.Boolean(
