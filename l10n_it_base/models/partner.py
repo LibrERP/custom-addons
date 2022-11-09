@@ -53,10 +53,9 @@ class ResPartner(models.Model):
                 if not self.zip:
                     self.zip = city_row.zip_ids[0].name
 
-                self.state_id = city_ids.state_id
-                self.city = city_ids.name.title()
+                self.state_id = city_row.state_id
+                self.city = city_row.name.title()
                 self.country_id = self.state_id.country_id
-
 
     @api.onchange('state_id')
     def on_change_state_id(self):
