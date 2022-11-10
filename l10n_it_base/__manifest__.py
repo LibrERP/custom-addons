@@ -1,7 +1,8 @@
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2022 Didotech srl
-#    (<http://www.didotech.com/>).
+#    Created on : 2022-10-28
+#    Copyright: Didotech srl 2022
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,28 +19,28 @@
 #
 ##############################################################################
 {
-    'name': "Customer Partner Credit",
+    'name': "Italian Localisation - Base",
 
-    'summary': "Customer credit",
+    'summary': """
+        Italian Localization module - Base version""",
 
     'description': """
-        Extends Partner entities and views.
+        Italian Localization module - Base version
     """,
 
     'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.1.1.0',
+    'website': "https://www.didotech.com",
+    'category': 'Localisation/Italy',
+    'version': '12.0.1.2.1',
+
+    # any module necessary for this one to work correctly
     'depends': [
         'base',
-        'sale',
-        'sale_order_type',
-        'partner_views_summary',
-        'extend_invoice_from_td',
+        'base_location_geonames_import'
     ],
+
+    # always loaded
     'data': [
-        "views/res_partner.xml",
-        "views/sale_view.xml",
     ],
     'installable': True,
     'application': False,

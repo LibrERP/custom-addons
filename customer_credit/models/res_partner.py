@@ -76,68 +76,128 @@ class ResPartner(models.Model):
 
     @api.depends('credit_limit')
     def _compute_fido(self):
-
         for record in self:
             draft_invoices_amount = 0.0
             orders_amount = 0.0
             riba_amount = 0.0
-            # credit = impostato - impegnato
-            # impostato = credit_limit
-            # impegnato
 
             # note di carico pagate
-            domain = list()
-            domain.append(('partner_id', '=', record.id))
-            domain.append(('amount_paid', '>', 0))
-            shopping_orders = record.env['sale.order'].search(domain)
+            # domain = [
+            #     ('partner_id', '=', record.id),
+            #     ('amount_paid', '>', 0)
+            # ]
+            # shopping_orders = record.env['sale.order'].search(domain)
+            # for order in shopping_orders:
+            #     orders_amount += order.amount_total
 
-            for order in shopping_orders:
-                orders_amount += order.amount_total
+            sql = f"""SELECT amount_total
+            FROM sale_order
+            WHERE
+                partner_id = {record.id} AND
+                amount_paid > 0
+            """
+            self.env.cr.execute(sql)
+            res = self.env.cr.dictfetchall()
+            if res:
+                orders_amount += sum(order['amount_total'] for order in res)
 
             # resi ?
-            domain = list()
-            domain.append(('partner_id', '=', record.id))
-            domain.append(('returned_by', '=', True))
-            domain.append(('credit_note', '!=', False))
-            # domain.append(('invoice_ids', '=', False)) # ??
-            pickings = record.env['stock.picking'].search(domain)
+            # domain = [
+            #     ('partner_id', '=', record.id),
+            #     ('returned_by', '=', True),
+            #     ('credit_note', '!=', False)
+            # ]
+            # # domain.append(('invoice_ids', '=', False)) # ??
+            # pickings = record.env['stock.picking'].search(domain)
+            # for picking in pickings:
+            #     credit_note = picking.credit_note
+            #     orders_amount -= credit_note.amount_total
 
-            for picking in pickings:
-                credit_note = picking.credit_note
-                orders_amount -= credit_note.amount_total
+            sql = f"""SELECT cn.amount_total as amount_total
+            FROM stock_picking AS sp
+                LEFT JOIN account_invoice as cn
+                ON sp.credit_note = cn.id
+            WHERE
+                sp.partner_id = {record.id} AND
+                sp.returned_by = true AND
+                sp.credit_note IS NOT NULL
+            """
+            self.env.cr.execute(sql)
+            orders_amount -= sum(line['amount_total'] for line in self.env.cr.dictfetchall())
 
-            # fatture in bozza
-            domain = list()
-            domain.append(('partner_id', '=', record.id))
-            domain.append(('type', '=', 'out_invoice'))
-            domain.append(('state', '=', 'draft'))
-            draft_out_invoices_ids = record.env['account.invoice'].search(domain)
+            # fatture in bozza and note di credito in bozza
+            # domain = [
+            #     ('partner_id', '=', record.id),
+            #     ('type', 'in', ('out_invoice', 'out_refund')),
+            #     ('state', '=', 'draft')
+            # ]
+            # for invoice in record.env['account.invoice'].search(domain):
+            #     if invoice.type == 'out_invoice':
+            #         draft_invoices_amount += invoice.amount_total
+            #     else:
+            #         # 'out_refund'
+            #         draft_invoices_amount -= invoice.amount_total
 
-            for invoice in draft_out_invoices_ids:
-                draft_invoices_amount += invoice.amount_total
+            sql = f"""SELECT amount_total, type
+            FROM account_invoice
+            WHERE
+                partner_id = {record.id} AND
+                type in ('out_invoice', 'out_refund') AND
+                state = 'draft'
+            """
+            self.env.cr.execute(sql)
+            for invoice in self.env.cr.dictfetchall():
+                if invoice['type'] == 'out_invoice':
+                    draft_invoices_amount += invoice['amount_total']
+                else:
+                    # 'out_refund'
+                    draft_invoices_amount -= invoice['amount_total']
 
-            # note di credito in bozza
-            domain = list()
-            domain.append(('partner_id', '=', record.id))
-            domain.append(('type', '=', 'out_refund'))
-            domain.append(('state', '=', 'draft'))
-            draft_refound_invoices_ids = record.env['account.invoice'].search(domain)
-
-            for invoice in draft_refound_invoices_ids:
-                draft_invoices_amount -= invoice.amount_total
+            # # note di credito in bozza
+            # domain = list()
+            # domain.append(('partner_id', '=', record.id))
+            # domain.append(('type', '=', 'out_refund'))
+            # domain.append(('state', '=', 'draft'))
+            # draft_refound_invoices_ids = record.env['account.invoice'].search(domain)
+            #
+            # for invoice in draft_refound_invoices_ids:
+            #     draft_invoices_amount -= invoice.amount_total
 
             # riba
             filter_date = (datetime.now() - timedelta(days=2)).strftime(DEFAULT_SERVER_DATE_FORMAT)
-            domain = list()
-            domain.append(('partner_id', '=', record.id))
-            domain.append(('reconciled', '=', True))
-            domain.append(('payment_method.code', '=', 'riba_cbi'))
-            domain.append(('date_maturity', '>', filter_date))
-            aml_riba = record.env['account.move.line'].search(domain)
+            # domain = [
+            #     ('partner_id', '=', record.id),
+            #     ('reconciled', '=', True),
+            #     ('payment_method.code', '=', 'riba_cbi'),
+            #     ('date_maturity', '>', filter_date)
+            # ]
+            # aml_riba = record.env['account.move.line'].search(domain)
+            # for line in aml_riba:
+            #     riba_amount += line.balance
 
-            for line in aml_riba:
-                riba_amount += line.balance
+            sql = f"""SELECT aml.balance as balance
+            FROM account_move_line AS aml
+                LEFT JOIN account_payment_method AS apm
+                ON aml.payment_method = apm.id
+            WHERE
+                aml.partner_id = {record.id} AND
+                aml.reconciled = true AND
+                apm.code IS NOT NULL AND
+                apm.code = 'riba_cbi' AND
+                aml.date_maturity > '{filter_date}'
+            """
+            self.env.cr.execute(sql)
+            riba_amount += sum(line['balance'] for line in self.env.cr.dictfetchall())
 
+            record.fido_utilizzato = record.credit + draft_invoices_amount + orders_amount + riba_amount
+            record.fido_residuo = record.credit_limit - (
+                    record.credit + draft_invoices_amount + orders_amount + riba_amount)
+            record.esposizione_sbf = riba_amount
+            record.fatture_draft = draft_invoices_amount
+            record.saldo_contabile = record.debit - record.credit
+
+    def _compute_ddt_to_invoice(self):
+        for record in self:
             approved_pos_amount = 0.0
             domain = list()
             domain.append(('partner_id', '=', record.id))
@@ -153,13 +213,6 @@ class ResPartner(models.Model):
                     if order:
                         # 19/10/2022 `sudo()` added to prevent access error if user has only Own Documents perm on sales
                         approved_pos_amount += order.sudo()['amount_total']
-
-            record.fido_utilizzato = record.credit + draft_invoices_amount + orders_amount + riba_amount
-            record.fido_residuo = record.credit_limit - (
-                    record.credit + draft_invoices_amount + orders_amount + riba_amount)
-            record.fatture_draft = draft_invoices_amount
-            record.saldo_contabile = record.debit - record.credit
-            record.esposizione_sbf = riba_amount
             record.ddt_to_invoice = approved_pos_amount
 
     def _compute_overdue_credit(self):
@@ -234,7 +287,7 @@ class ResPartner(models.Model):
 
     ddt_to_invoice = fields.Float(
         string='DDT da fatturare',
-        compute=_compute_fido,
+        compute=_compute_ddt_to_invoice,
     )
 
     overdue_credit = fields.Float(
