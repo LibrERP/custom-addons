@@ -2,11 +2,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api
-# import time
-# from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+import time
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 
-class product_template(models.Model):
+class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     product_history = fields.One2many(
@@ -50,10 +50,37 @@ class product_template(models.Model):
                     })
                 self.env['product.price.history'].create(history_values)
 
-        return super(product_template, self).write(values)
+        return super(ProductTemplate, self).write(values)
+
+class ProductSupplierInfo(models.Model):
+    _inherit = 'product.supplierinfo'
+
+    @api.multi
+    def write(self, values):
+        for partner_info in self:
+            if 'price' in values and partner_info.price != values['price']:
+                product_tmpl_id = partner_info.product_tmpl_id
+                supplier_id = partner_info.name.id
+                history_values = {
+                    'user_id': self.env.uid,
+                    'product_id': product_tmpl_id.product_variant_id.id,
+                    'product_tmpl_id': product_tmpl_id.id,
+                    'date_to': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
+                    'supplier_id': supplier_id
+                }
+
+                if values.get('price', False):
+                    history_values.update({
+                        'standard_price': partner_info.price,
+                        'new_standard_price': values['price'],
+
+                    })
+                self.env['product.price.history'].create(history_values)
+
+        return super(ProductSupplierInfo, self).write(values)
 
 
-class product_product(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.multi
@@ -64,4 +91,4 @@ class product_product(models.Model):
         default.update({
             'product_history': []
         })
-        return super(product_product, self).copy(default)
+        return super(ProductProduct, self).copy(default)
