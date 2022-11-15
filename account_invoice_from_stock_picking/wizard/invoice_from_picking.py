@@ -18,12 +18,22 @@ class InvoiceFromPickings(models.TransientModel):
         'stock.picking', default=_get_picking_ids
     )
     date_invoice = fields.Date(string='Bill Date', required=True)
-    journal_id = fields.Many2one('account.journal', string='Journal')
+    journal_id = fields.Many2one('account.journal', string='Journal', required=True)
+    type = fields.Selection(string='Type', selection=[
+        ('sale', 'Refund'),
+        ('purchase', 'Purchase')
+    ], readonly=True)
 
     @api.model
     def default_get(self, defaults):
         results = super().default_get(defaults)
-        results['journal_id'] = self.env.user.company_id.get_purchase_journal().id
+        picking = self.env['stock.picking'].browse(self._context['active_ids'][0])
+        if picking.returned_by:
+            results['type'] = 'sale'
+        else:
+            results['type'] = 'purchase'
+            results['journal_id'] = self.env.user.company_id.get_purchase_journal().id
+
         return results
 
     @api.multi
@@ -35,7 +45,15 @@ class InvoiceFromPickings(models.TransientModel):
         moves_to_invoice = False
         names = []
 
-        for picking in self.picking_ids:
+        for count, picking in enumerate(self.picking_ids, start=1):
+            if count == 1 and picking.returned_by:
+                invoice_type = 'out_refund'
+            elif count == 1:
+                invoice_type = 'in_invoice'
+            elif picking.returned_by and invoice_type == 'in_invoice' or invoice_type == 'out_refund':
+                raise Warning(
+                    _("All selected transfers should be of the same type Mixing of Refunds and Invoices is not permitted"))
+
             current_partner = picking.partner_id
             if partner and partner.id != current_partner.id:
                 raise Warning(
@@ -57,12 +75,21 @@ class InvoiceFromPickings(models.TransientModel):
         if moves_to_invoice:
             addr = partner.address_get(['delivery', 'invoice'])
 
-            credit_account = self.journal_id.default_credit_account_id
+            credit_account = False
+            debit_account = False
+            if invoice_type == 'in_invoice':
+                credit_account = self.journal_id.default_credit_account_id
+                if not credit_account:
+                    raise Warning(_(f'Default credit account is not set for Journal "{self.journal_id.name}".'))
+            elif invoice_type == 'out_refund':
+                debit_account = self.journal_id.default_debit_account_id
+                if not debit_account:
+                    raise Warning(_(f'Default debit account is not set for Journal "{self.journal_id.name}".'))
 
             invoice = invoice_model.create({
                 'name': name,
                 'date_invoice': self.date_invoice,
-                'type': 'in_invoice',
+                'type': invoice_type,
                 'account_id': partner.property_account_payable_id.id,
                 'journal_id': self.journal_id.id,
                 'partner_id': addr['invoice'] or partner.id,
@@ -73,19 +100,26 @@ class InvoiceFromPickings(models.TransientModel):
 
             for picking in self.picking_ids:
                 for move in picking.move_ids_without_package.filtered(lambda row: not row.invoiced):
-                    invoice_line = invoice_line_model.create({
+                    values = {
                         'invoice_id': invoice.id,
                         'name': move.product_id.name,
                         'origin': picking.name,
-                        'account_id': credit_account.id,
                         'quantity': move.quantity_done,
-                        'invoice_line_tax_ids': [(6, 0, move.purchase_line_id.taxes_id.ids)],
                         'uom_id': move.product_uom.id,
-                        'price_unit': move.purchase_line_id.price_unit or 0.0,
                         'product_id': move.product_id and move.product_id.id or False
-                    })
+                    }
+                    if invoice_type == 'in_invoice':
+                        values['price_unit'] = move.purchase_line_id.price_unit or 0.0
+                        values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
+                        values['account_id'] = credit_account.id
+                    elif invoice_type == 'out_refund':
+                        values['price_unit'] = move.sale_line_id.price_unit or 0.0
+                        values['invoice_line_tax_ids'] = [(6, 0, move.sale_line_id.tax_id.ids)]
+                        values['account_id'] = debit_account.id
 
-                    if not move.purchase_line_id:
+                    invoice_line = invoice_line_model.create(values)
+
+                    if (invoice_type == 'in_invoice' and not move.purchase_line_id) or (invoice_type == 'out_refund' and not move.sale_line_id):
                         # Update price & taxes
                         invoice_line._compute_tax_id()
                         invoice_line.set_price_unit()
@@ -93,6 +127,7 @@ class InvoiceFromPickings(models.TransientModel):
                     move.qty_invoiced += move.quantity_done
                     if move.qty_invoiced == move.product_uom_qty:
                         move.invoiced = True
+
                     move.invoice_line_ids = [(4, invoice_line.id)]
 
             invoice.compute_taxes()
