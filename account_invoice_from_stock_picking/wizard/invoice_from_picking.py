@@ -32,7 +32,7 @@ class InvoiceFromPickings(models.TransientModel):
             results['type'] = 'sale'
         else:
             results['type'] = 'purchase'
-            results['journal_id'] = self.env.user.company_id.get_purchase_journal().id
+            # results['journal_id'] = self.env.user.company_id.get_purchase_journal().id
 
         return results
 

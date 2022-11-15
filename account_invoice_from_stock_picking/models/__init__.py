@@ -1,3 +1,3 @@
 from . import stock_move
-from . import res_company
+# from . import res_company
 from . import account_invoice_line
