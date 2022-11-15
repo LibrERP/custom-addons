@@ -54,6 +54,9 @@ class SaleReport(models.Model):
                                          readonly=True, index=True)
     is_foreign = fields.Boolean(readonly=True)
 
+    amount_untaxed_to_deliver = fields.Float("Untaxed Amount To Deliver", digits=(16, 2), readonly=True, group_operator="sum")
+    amount_untaxed_delivered = fields.Float("Untaxed Amount Delivered", digits=(16, 2), readonly=True, group_operator="sum")
+
     def _select(self, other_select=""):
         select_str = """
             min(l.id) as id,
@@ -67,6 +70,8 @@ class SaleReport(models.Model):
             sum(l.price_subtotal / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as price_subtotal,
             sum(l.untaxed_amount_to_invoice / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as untaxed_amount_to_invoice,
             sum(l.untaxed_amount_invoiced / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as untaxed_amount_invoiced,
+            sum((l.product_uom_qty - l.qty_delivered) * l.price_unit * (1 - (l.discount) / 100.0) / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as amount_untaxed_to_deliver,
+            sum(l.qty_delivered * l.price_unit * (1 - (l.discount) / 100.0) / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as amount_untaxed_delivered,
             count(*) as nbr,
             s.name as name,
             s.date_order as date,
