@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models, api, _
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, RedirectWarning
 
 
 class InvoiceFromPickings(models.TransientModel):
@@ -44,6 +44,7 @@ class InvoiceFromPickings(models.TransientModel):
         partner = False
         moves_to_invoice = False
         names = []
+        origin = []
 
         for count, picking in enumerate(self.picking_ids, start=1):
             if count == 1 and picking.returned_by:
@@ -67,6 +68,10 @@ class InvoiceFromPickings(models.TransientModel):
             if picking.ddt_supplier_number:
                 names.append(picking.ddt_supplier_number)
 
+            origin.append(picking.name)
+
+        origin = ', '.join(origin)
+
         if not partner.property_account_receivable_id:
             raise Warning(_('No account defined for partner "%s".') % partner.name)
 
@@ -80,11 +85,15 @@ class InvoiceFromPickings(models.TransientModel):
             if invoice_type == 'in_invoice':
                 credit_account = self.journal_id.default_credit_account_id
                 if not credit_account:
-                    raise Warning(_(f'Default credit account is not set for Journal "{self.journal_id.name}".'))
+                    msg = _(f'Default credit account is not set for Journal "{self.journal_id.name}".')
+                    action = self.env.ref('account.action_account_journal_form')
+                    raise RedirectWarning(msg, action.id, _("Go to the journal configuration"))
             elif invoice_type == 'out_refund':
                 debit_account = self.journal_id.default_debit_account_id
                 if not debit_account:
-                    raise Warning(_(f'Default debit account is not set for Journal "{self.journal_id.name}".'))
+                    action = self.env.ref('account.action_account_journal_form')
+                    msg = _(f'Default debit account is not set for Journal "{self.journal_id.name}".')
+                    raise RedirectWarning(msg, action.id, _("Go to the journal configuration"))
 
             invoice = invoice_model.create({
                 'name': name,
@@ -95,7 +104,8 @@ class InvoiceFromPickings(models.TransientModel):
                 'partner_id': addr['invoice'] or partner.id,
                 'currency_id': partner.currency_id.id,
                 'fiscal_position_id': partner.property_account_position_id.id or False,
-                'payment_term_id': partner.property_supplier_payment_term_id.id
+                'payment_term_id': partner.property_supplier_payment_term_id.id,
+                'origin': origin
             })
 
             for picking in self.picking_ids:
@@ -139,15 +149,25 @@ class InvoiceFromPickings(models.TransientModel):
     @api.multi
     def create_invoice(self):
         invoice = self.invoice_create_from_picking()
-
         ir_model_data = self.env['ir.model.data']
-        form_res = ir_model_data.get_object_reference(
-            'account',
-            'invoice_supplier_form')
+
+        if invoice.type == 'in_invoice':
+            form_res = ir_model_data.get_object_reference(
+                'account',
+                'invoice_supplier_form')
+            tree_res = ir_model_data.get_object_reference(
+                'account',
+                'invoice_supplier_tree')
+
+        elif invoice.type == 'out_refund':
+            form_res = ir_model_data.get_object_reference(
+                'account',
+                'invoice_form')
+            tree_res = ir_model_data.get_object_reference(
+                'account',
+                'invoice_tree')
+
         form_id = form_res and form_res[1] or False
-        tree_res = ir_model_data.get_object_reference(
-            'account',
-            'invoice_supplier_tree')
         tree_id = tree_res and tree_res[1] or False
         return {
             'name': _('INV'),
