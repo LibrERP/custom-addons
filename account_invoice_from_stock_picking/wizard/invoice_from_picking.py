@@ -96,6 +96,7 @@ class InvoiceFromPickings(models.TransientModel):
                 invoice_values['account_id'] = partner.property_account_payable_id.id
             elif invoice_type == 'out_refund':
                 invoice_values['account_id'] = partner.property_account_receivable_id.id
+                invoice_values['payment_term_id'] = picking.sale_id and picking.sale_id.payment_term_id.id or False
 
             invoice = invoice_model.create(invoice_values)
 
@@ -120,8 +121,9 @@ class InvoiceFromPickings(models.TransientModel):
                         values['price_unit'] = move.purchase_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
                     elif invoice_type == 'out_refund':
-                        values['price_unit'] = move.sale_line_id.price_unit or 0.0
-                        values['invoice_line_tax_ids'] = [(6, 0, move.sale_line_id.tax_id.ids)]
+                        values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price
+                        values['invoice_line_tax_ids'] = move.sale_line_id and [(6, 0, move.sale_line_id.tax_id.ids)]
+                        values['discount'] = move.sale_line_id and move.sale_line_id.discount or 0
 
                     invoice_line = invoice_line_model.create(values)
 
