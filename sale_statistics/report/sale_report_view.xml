@@ -164,6 +164,7 @@
                     <filter string="Product" name="product" context="{'group_by':'product_id'}"/>
                     <filter string="Product Template" name="template" context="{'group_by':'product_tmpl_id',}"/>
                     <filter string="Sale Order" name="saleorder" context="{'group_by':'order_id'}"/>
+                    <filter string="Warehouse" name="warehouse" context="{'group_by':'warehouse_id'}"/>
                 </group>
             </search>
         </field>
