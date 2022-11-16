@@ -23,13 +23,13 @@
 ############################################################################
 {
     'name': 'Sale Statistics',
-    'version': '12.0.4.0',
+    'version': '12.0.6.0',
     'category': 'Business Analisys',
     'author': 'powERP enterprise network',
     'website': 'https://www.powerp.it',
     'development_status': 'Alpha',
     'license': 'LGPL-3',
-    'depends': ['sale'],
+    'depends': ['sale', 'sale_stock', 'sale_margin'],
     'data': [
         'security/sale_statistics.xml',
         'security/account_security.xml',

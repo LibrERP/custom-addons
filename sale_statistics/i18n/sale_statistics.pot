@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-29 15:31+0000\n"
-"PO-Revision-Date: 2020-11-29 15:31+0000\n"
+"POT-Creation-Date: 2022-11-16 09:48+0000\n"
+"PO-Revision-Date: 2022-11-16 09:48+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -252,9 +252,9 @@ msgid "Graphic Sales Analysis by Month"
 msgstr ""
 
 #. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_quarter
 #: model:ir.actions.act_window,name:sale_statistics.action_order_graph_quarterly_all
 #: model:ir.ui.menu,name:sale_statistics.menu_graph_product_quarterlly_all
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_graph_quarter
 msgid "Graphic Sales Analysis by Quarter"
 msgstr ""
 
@@ -330,6 +330,11 @@ msgstr ""
 #. module: sale_statistics
 #: model:res.country.region,name:sale_statistics.it-ma
 msgid "Marche"
+msgstr ""
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__margin
+msgid "Margin"
 msgstr ""
 
 #. module: sale_statistics
@@ -561,6 +566,11 @@ msgid "Sales Order"
 msgstr ""
 
 #. module: sale_statistics
+#: model:ir.model,name:sale_statistics.model_sale_order_line
+msgid "Sales Order Line"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.model,name:sale_statistics.model_sale_stat_report
 msgid "Sales Orders Statistics"
 msgstr ""
@@ -671,8 +681,18 @@ msgid "Unit of Measure"
 msgstr ""
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__amount_untaxed_delivered
+msgid "Untaxed Amount Delivered"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__untaxed_amount_invoiced
 msgid "Untaxed Amount Invoiced"
+msgstr ""
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__amount_untaxed_to_deliver
+msgid "Untaxed Amount To Deliver"
 msgstr ""
 
 #. module: sale_statistics
@@ -701,6 +721,11 @@ msgid "Volume"
 msgstr ""
 
 #. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__warehouse_id
+msgid "Warehouse"
+msgstr ""
+
+#. module: sale_statistics
 #: selection:board.temporary,date_represent:0
 msgid "Weekly"
 msgstr ""
@@ -716,31 +741,31 @@ msgid "Yearly"
 msgstr ""
 
 #. module: sale_statistics
-#: code:addons/sale_statistics/models/board.py:122
+#: code:addons/sale_statistics/models/board.py:120
 #, python-format
 msgid "by Customer"
 msgstr ""
 
 #. module: sale_statistics
-#: code:addons/sale_statistics/models/board.py:125
+#: code:addons/sale_statistics/models/board.py:123
 #, python-format
 msgid "by Order"
 msgstr ""
 
 #. module: sale_statistics
-#: code:addons/sale_statistics/models/board.py:131
+#: code:addons/sale_statistics/models/board.py:129
 #, python-format
 msgid "by Product"
 msgstr ""
 
 #. module: sale_statistics
-#: code:addons/sale_statistics/models/board.py:134
+#: code:addons/sale_statistics/models/board.py:132
 #, python-format
 msgid "by Product Template"
 msgstr ""
 
 #. module: sale_statistics
-#: code:addons/sale_statistics/models/board.py:119
+#: code:addons/sale_statistics/models/board.py:117
 #, python-format
 msgid "by Salesman"
 msgstr ""
@@ -749,102 +774,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_advanced_sale_report
 msgid "or"
 msgstr ""
-
-
-##### Inherited by sale.view_order_product_search
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "My Year"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "This Year"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "This Month"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Quotations"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Sales"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "National Sales"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Foreign Sales"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "My Sales"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Salesperson"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Customer"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Customer Country"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Customer Region"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Customer State"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Region Group"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Country Group"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Category of Product"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Product"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Product Template"
-msgstr ""
-
-#. module: sale_statistics
-#: model_terms:ir.ui.view,arch_db:sale.view_order_product_search
-msgid "Sale Order"
-msgstr ""
-
 
