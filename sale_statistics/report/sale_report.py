@@ -56,6 +56,8 @@ class SaleReport(models.Model):
 
     amount_untaxed_to_deliver = fields.Float("Untaxed Amount To Deliver", digits=(16, 2), readonly=True, group_operator="sum")
     amount_untaxed_delivered = fields.Float("Untaxed Amount Delivered", digits=(16, 2), readonly=True, group_operator="sum")
+    warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', readonly=True)
+    margin = fields.Float('Margin')
 
     def _select(self, other_select=""):
         select_str = """
@@ -72,6 +74,7 @@ class SaleReport(models.Model):
             sum(l.untaxed_amount_invoiced / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as untaxed_amount_invoiced,
             sum((l.product_uom_qty - l.qty_delivered) * l.price_unit * (1 - (l.discount) / 100.0) / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as amount_untaxed_to_deliver,
             sum(l.qty_delivered * l.price_unit * (1 - (l.discount) / 100.0) / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as amount_untaxed_delivered,
+            SUM(l.margin / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) AS margin,
             count(*) as nbr,
             s.name as name,
             s.date_order as date,
@@ -79,6 +82,7 @@ class SaleReport(models.Model):
             s.state as state,
             s.partner_id as partner_id,
             s.user_id as user_id,
+            s.warehouse_id as warehouse_id,
             company.id as company_id,
             partner_company.id as partner_company_id,
             extract(epoch from avg(date_trunc('day',s.date_order)-date_trunc('day',s.create_date)))/(24*60*60)::decimal(16,2) as delay,
@@ -138,6 +142,7 @@ class SaleReport(models.Model):
             s.partner_id,
             s.user_id,
             s.state,
+            s.warehouse_id,
             company.id,
             s.pricelist_id,
             s.analytic_account_id,
@@ -172,6 +177,7 @@ class SaleReport(models.Model):
             'state',
             'categ_id',
             'pricelist_id',
+            'warehouse_id',
             'analytic_account_id',
             'team_id',
             'state_id',
