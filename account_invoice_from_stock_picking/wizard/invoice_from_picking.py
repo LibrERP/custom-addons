@@ -80,52 +80,48 @@ class InvoiceFromPickings(models.TransientModel):
         if moves_to_invoice:
             addr = partner.address_get(['delivery', 'invoice'])
 
-            credit_account = False
-            debit_account = False
-            if invoice_type == 'in_invoice':
-                credit_account = self.journal_id.default_credit_account_id
-                if not credit_account:
-                    msg = _(f'Default credit account is not set for Journal "{self.journal_id.name}".')
-                    action = self.env.ref('account.action_account_journal_form')
-                    raise RedirectWarning(msg, action.id, _("Go to the journal configuration"))
-            elif invoice_type == 'out_refund':
-                debit_account = self.journal_id.default_debit_account_id
-                if not debit_account:
-                    action = self.env.ref('account.action_account_journal_form')
-                    msg = _(f'Default debit account is not set for Journal "{self.journal_id.name}".')
-                    raise RedirectWarning(msg, action.id, _("Go to the journal configuration"))
-
-            invoice = invoice_model.create({
+            invoice_values = {
                 'name': name,
                 'date_invoice': self.date_invoice,
                 'type': invoice_type,
-                'account_id': partner.property_account_payable_id.id,
                 'journal_id': self.journal_id.id,
                 'partner_id': addr['invoice'] or partner.id,
                 'currency_id': partner.currency_id.id,
                 'fiscal_position_id': partner.property_account_position_id.id or False,
                 'payment_term_id': partner.property_supplier_payment_term_id.id,
                 'origin': origin
-            })
+            }
+
+            if invoice_type == 'in_invoice':
+                invoice_values['account_id'] = partner.property_account_payable_id.id
+            elif invoice_type == 'out_refund':
+                invoice_values['account_id'] = partner.property_account_receivable_id.id
+
+            invoice = invoice_model.create(invoice_values)
 
             for picking in self.picking_ids:
                 for move in picking.move_ids_without_package.filtered(lambda row: not row.invoiced):
+                    credit_account = move.product_id.property_account_income_id
+                    if not credit_account:
+                        msg = _(f'Default credit account is not set for Product "{move.product_id.name}".')
+                        action = self.env.ref('product.template')
+                        raise RedirectWarning(msg, action.id, _("Go to the Product configuration"))
+
                     values = {
                         'invoice_id': invoice.id,
                         'name': move.product_id.name,
                         'origin': picking.name,
                         'quantity': move.quantity_done,
                         'uom_id': move.product_uom.id,
-                        'product_id': move.product_id and move.product_id.id or False
+                        'product_id': move.product_id and move.product_id.id or False,
+                        'account_id': credit_account.id
                     }
                     if invoice_type == 'in_invoice':
                         values['price_unit'] = move.purchase_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
-                        values['account_id'] = credit_account.id
                     elif invoice_type == 'out_refund':
                         values['price_unit'] = move.sale_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.sale_line_id.tax_id.ids)]
-                        values['account_id'] = debit_account.id
 
                     invoice_line = invoice_line_model.create(values)
 
@@ -134,13 +130,17 @@ class InvoiceFromPickings(models.TransientModel):
                         invoice_line._compute_tax_id()
                         invoice_line.set_price_unit()
 
-                    move.qty_invoiced += move.quantity_done
-                    if move.qty_invoiced == move.product_uom_qty:
-                        move.invoiced = True
+                    # move.qty_invoiced += move.quantity_done
+                    # if move.qty_invoiced == move.product_uom_qty:
+                    move.invoiced = True
 
                     move.invoice_line_ids = [(4, invoice_line.id)]
 
             invoice.compute_taxes()
+
+            if invoice_type == 'out_refund':
+                for picking in self.picking_ids:
+                    picking.credit_note = invoice.id
 
             return invoice
         else:
