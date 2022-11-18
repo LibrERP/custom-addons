@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models, api, _
-from odoo.exceptions import Warning, RedirectWarning
+from odoo.exceptions import Warning
 
 
 class InvoiceFromPickings(models.TransientModel):
@@ -102,11 +102,16 @@ class InvoiceFromPickings(models.TransientModel):
 
             for picking in self.picking_ids:
                 for move in picking.move_ids_without_package.filtered(lambda row: not row.invoiced):
-                    credit_account = move.product_id.property_account_income_id
-                    if not credit_account:
-                        msg = _(f'Default credit account is not set for Product "{move.product_id.name}".')
-                        action = self.env.ref('product.template')
-                        raise RedirectWarning(msg, action.id, _("Go to the Product configuration"))
+                    if invoice_type == 'out_refund':
+                        credit_account = move.product_id.property_account_income_id
+                        if not credit_account:
+                            msg = _('Default credit account is not set for the Product "{}".').format(move.product_id.name)
+                            raise Warning(msg)
+                    elif invoice_type == 'in_invoice':
+                        debit_account = move.product_id.property_account_expense_id
+                        if not debit_account:
+                            msg = _('Default debit account is not set for the Product "{}".').format(move.product_id.name)
+                            raise Warning(msg)
 
                     values = {
                         'invoice_id': invoice.id,
@@ -114,16 +119,17 @@ class InvoiceFromPickings(models.TransientModel):
                         'origin': picking.name,
                         'quantity': move.quantity_done,
                         'uom_id': move.product_uom.id,
-                        'product_id': move.product_id and move.product_id.id or False,
-                        'account_id': credit_account.id
+                        'product_id': move.product_id and move.product_id.id or False
                     }
                     if invoice_type == 'in_invoice':
                         values['price_unit'] = move.purchase_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
+                        values['account_id'] = debit_account.id
                     elif invoice_type == 'out_refund':
                         values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price
                         values['invoice_line_tax_ids'] = move.sale_line_id and [(6, 0, move.sale_line_id.tax_id.ids)]
                         values['discount'] = move.sale_line_id and move.sale_line_id.discount or 0
+                        values['account_id'] = credit_account.id
 
                     invoice_line = invoice_line_model.create(values)
 
@@ -135,8 +141,31 @@ class InvoiceFromPickings(models.TransientModel):
                     # move.qty_invoiced += move.quantity_done
                     # if move.qty_invoiced == move.product_uom_qty:
                     move.invoiced = True
+                    move.purchase_line_id.invoiced = True
 
                     move.invoice_line_ids = [(4, invoice_line.id)]
+
+                if invoice_type == 'in_invoice':
+                    for line in picking.purchase_id.order_line.filtered(lambda x: x.product_id.type == 'service' and not x.invoiced):
+                        debit_account = line.product_id.property_account_expense_id
+                        if not debit_account:
+                            msg = _('Default debit account is not set for the Product "{}".').format(line.product_id.name)
+                            raise Warning(msg)
+
+                        values = {
+                            'invoice_id': invoice.id,
+                            'name': line.product_id.name,
+                            'origin': picking.name,
+                            'quantity': line.product_uom_qty,
+                            'uom_id': line.product_uom.id,
+                            'product_id': line.product_id and line.product_id.id or False,
+                            'price_unit': line.price_unit or 0.0,
+                            'invoice_line_tax_ids': [(6, 0, line.taxes_id.ids)],
+                            'account_id': debit_account.id
+                        }
+
+                        invoice_line = invoice_line_model.create(values)
+                        line.invoiced = True
 
             invoice.compute_taxes()
 
