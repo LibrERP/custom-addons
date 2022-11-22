@@ -13,14 +13,17 @@ class ResPartner(models.Model):
     @api.model
     def create(self, values):
         if values.get('customer'):
-            if not values.get('contact_origin_ids'):
-                # raise Warning(_('Per favore seleziona Provenienza Contatto'))
-                raise Warning(_('Please set Contact Origin'))
-            elif values.get('contact_origin_ids'):
-                origin_ids = [contact[2] for contact in values['contact_origin_ids'] if contact[2]]
-                if not origin_ids:
+            if not values.get('parent_id'):
+                if not values.get('contact_origin_ids'):
+                    # raise Warning(_('Per favore seleziona Provenienza Contatto'))
                     raise Warning(_('Please set Contact Origin'))
-
+                elif values.get('contact_origin_ids'):
+                    origin_ids = [contact[2] for contact in values['contact_origin_ids'] if contact[2]]
+                    if not origin_ids:
+                        raise Warning(_('Please set Contact Origin'))
+            else:
+                parent = self.browse(values['parent_id'])
+                values['contact_origin_ids'] = [[4, corig.id] for corig in parent.contact_origin_ids]
         return super().create(values)
 
     def write(self, values):
