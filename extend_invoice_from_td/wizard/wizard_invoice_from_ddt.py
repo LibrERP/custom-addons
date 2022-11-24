@@ -296,20 +296,21 @@ class WizardInvoiceFromDdt(models.TransientModel):
                                             sec=duration_seconds - duration_seconds / 60 * 60)
         _logger.info(u'Fatture Execution time in: {0}'.format(duration))
 
-        # start_time = datetime.datetime.now()
-        # # elenco movimenti per note di credito
-        # _logger.info('Create credit notes ......')
-        # refund_ids = self.create_from_stock_picking()
-        # end_time = datetime.datetime.now()
-        # duration_seconds = (end_time - start_time).seconds
-        # duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
-        #                                     sec=duration_seconds - duration_seconds / 60 * 60)
-        # _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
+        start_time = datetime.datetime.now()
+        # elenco movimenti per note di credito
+        _logger.info('Create credit notes ......')
+        refund_ids = self.create_from_stock_picking()
+        end_time = datetime.datetime.now()
+        duration_seconds = (end_time - start_time).seconds
+        duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
+                                            sec=duration_seconds - duration_seconds / 60 * 60)
+        _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
 
         return {'type': 'ir.actions.act_window_close'}
 
     def create_from_ddt(self):
-        domain = self.domain_x_invoice([('partner_id', '=', 104610)])
+        # domain = self.domain_x_invoice([('partner_id', '=', 104610)])
+        domain = self.domain_x_invoice()
         dbname = self.env.cr.dbname
         uid = self.env.uid
         context = dict(self._context)
