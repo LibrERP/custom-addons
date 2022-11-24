@@ -136,7 +136,7 @@ class StockPicking(models.Model):
         """
         self.ensure_one()
         if self._context.get('group', True):
-            group_key = 'billing_partner'
+            group_key = super().get_td_group_key()
         else:
             group_key = self.id
 

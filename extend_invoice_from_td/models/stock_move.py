@@ -53,7 +53,6 @@ class StockMove(models.Model):
         """
         self.ensure_one()
         product = self.product_id.with_context(force_company=self.company_id.id)
-        # account = invoice_id.journal_id.default_debit_account_id
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
 
         if not account and self.product_id:
