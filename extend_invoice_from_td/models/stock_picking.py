@@ -225,8 +225,8 @@ class StockPicking(models.Model):
 
     def _get_sale_order_ref(self):
         sale_order = False
-        if self.move_lines and self.move_lines[0] and self.move_lines[0].sale_id:
-            sale_order = self.move_lines[0].sale_id
+        if self.move_lines and self.move_lines[0] and self.move_lines[0].sale_line_id:
+            sale_order = self.move_lines[0].sale_line_id.order_id
 
         return sale_order
 
