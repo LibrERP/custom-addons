@@ -39,6 +39,30 @@ class StockPicking(models.Model):
         default=False,
     )
 
+    main_partner = fields.Many2one(
+        'res.partner',
+        string='Partner principale',
+        compute='_compute_main_partner',
+        store=True,
+    )
+
+    @api.depends('partner_id')
+    def _compute_main_partner(self):
+        for sp in self:
+            if sp.returned_by and sp.move_lines and sp.move_lines.filtered(lambda l: l.sale_line_id):
+                line_ids = sp.move_lines.filtered(lambda l: l.sale_line_id)
+                order = line_ids[0].sale_line_id.order_id
+                if order.partner_invoice_id.id != order.partner_id.id:
+                    partner = order.partner_invoice_id
+                else:
+                    partner = order.partner_id
+            elif sp.partner_id.parent_id:
+                partner = sp.partner_id.parent_id
+            else:
+                partner = sp.partner_id
+
+            sp.main_partner = partner
+
     @api.multi
     def action_invoice_refund(self):
         #
@@ -105,13 +129,13 @@ class StockPicking(models.Model):
             )
         journal = self.env['account.journal'].browse(journal_id)
 
-        invoice_partner_id = self.partner_id.id
-        invoice_partner = self.partner_id
+        invoice_partner_id = self.main_partner.id
+        invoice_partner = self.main_partner
 
         invoice_description = '' # self._prepare_invoice_description()
         currency_id = journal.currency_id.id or journal.company_id.currency_id.id
 
-        payment_term_id = self.partner_id.property_payment_term_id.id
+        payment_term_id = self.main_partner.property_payment_term_id.id
 
         fiscal_position_id = None
 
@@ -129,18 +153,82 @@ class StockPicking(models.Model):
         })
         return res
 
-    @api.multi
+    # def get_td_group_key(self):
+    #     """
+    #     if group into context is False group_key is the TD id
+    #     which makes one invoice per td
+    #     """
+    #
+    #     self.ensure_one()
+    #
+    #     has_group = self._context.get('group', True)
+    #
+    #     if has_group is True:
+    #         partner = self._get_partner()
+    #         billing_partner = self._get_billing_partner()
+    #         shipping_partner = self._get_shipping_partner()
+    #
+    #         if partner.ddt_invoicing_group and partner.ddt_invoicing_group == 'shipping_partner':
+    #             group_method = 'shipping_partner'
+    #         else:
+    #             group_method = 'billing_partner'
+    #
+    #         group_key = ''
+    #         if group_method == 'billing_partner':
+    #             group_key = (billing_partner.id,
+    #                          billing_partner_id.currency_id.id)
+    #         elif group_method == 'shipping_partner':
+    #             group_key = (shipping_partner.id,
+    #                          shipping_partner.currency_id.id)
+    #         elif group_method == 'nothing':
+    #             group_key = self.id
+    #         return group_key
+    #     else:
+    #         group_key = self.id
+    #     # end if
+    #
+    #     return group_key
+
     def get_td_group_key(self):
-        """
-        Get the grouping key for current SP.
-        """
-        self.ensure_one()
-        if self._context.get('group', True):
-            group_key = super().get_td_group_key()
+
+        has_group = self._context.get('group', True)
+
+        if has_group is True:
+
+            order = self._get_sale_order_ref()
+            if order:
+                group_method = order.ddt_invoicing_group or 'shipping_partner'
+                group_partner_invoice_id = order.partner_invoice_id.id
+                group_currency_id = order.currency_id.id
+            else:
+                group_method = self.partner_id.parent_id.ddt_invoicing_group or self.partner_id.ddt_invoicing_group
+                group_partner_invoice_id = self.partner_id.id
+                group_currency_id = self.partner_id.currency_id.id
+
+            group_key = ''
+            if group_method == 'billing_partner':
+                group_key = (group_partner_invoice_id,
+                             group_currency_id)
+            elif group_method == 'shipping_partner':
+                group_key = (self.partner_id.id,
+                             self.company_id.currency_id.id)
+            elif group_method == 'code_group':
+                partner = self.partner_id.parent_id or self.partner_id
+                group_key = (self.partner_id.ddt_code_group,
+                             group_partner_invoice_id)
+            elif group_method == 'nothing':
+                group_key = self.id
         else:
             group_key = self.id
 
         return group_key
+
+    def _get_sale_order_ref(self):
+        sale_order = False
+        if self.move_lines and self.move_lines[0] and self.move_lines[0].sale_id:
+            sale_order = self.move_lines[0].sale_id
+
+        return sale_order
 
 
 class StockPickingPackagePreparation(models.Model):
@@ -175,4 +263,6 @@ class StockPickingPackagePreparation(models.Model):
         })
 
         return res
+
+
 

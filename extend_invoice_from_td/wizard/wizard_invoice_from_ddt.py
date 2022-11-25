@@ -170,9 +170,9 @@ class WaitCreditNoteProcess(threading.Thread):
                         threads = []
                         stock_model = current_env['stock.picking']
                         res = stock_model.read_group(domain,
-                                                     fields=['partner_id', 'id'],
-                                                     groupby=['partner_id'],
-                                                     orderby='partner_id',
+                                                     fields=['main_partner', 'id'],
+                                                     groupby=['main_partner'],
+                                                     orderby='main_partner',
                                                      lazy=False)
 
                         with multiprocessing.Manager() as manager:
@@ -286,7 +286,8 @@ class WizardInvoiceFromDdt(models.TransientModel):
         if self.date_from > self.date_to:
             raise UserError('Attenzione!\nVerificare l\'intervallo delle date del periodo.')
 
-        # elenco ddt del periodo per fatture di vendita
+        _logger.info('Create invoices ......')
+
         invoice_ids = self.create_from_ddt()
 
         _logger.info('Invoices created')
@@ -299,14 +300,19 @@ class WizardInvoiceFromDdt(models.TransientModel):
         start_time = datetime.datetime.now()
         # elenco movimenti per note di credito
         _logger.info('Create credit notes ......')
+
         refund_ids = self.create_from_stock_picking()
+
         end_time = datetime.datetime.now()
         duration_seconds = (end_time - start_time).seconds
         duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
                                             sec=duration_seconds - duration_seconds / 60 * 60)
         _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
 
-        return {'type': 'ir.actions.act_window_close'}
+        # return {'type': 'ir.actions.act_window_close'}
+        return {
+            "type": "ir.action.do_nothing",
+        }
 
     def create_from_ddt(self):
         # domain = self.domain_x_invoice([('partner_id', '=', 104610)])
@@ -369,14 +375,4 @@ class WizardInvoiceFromDdt(models.TransientModel):
                 domain.append(tpl)
 
         return sp_domain
-
-#
-# def print_from_wizard(env):
-#     print(time.time())
-#     with api.Environment.manage():
-#         with registry(env[1]).cursor() as new_cr:
-#             new_env = api.Environment(new_cr, env[2], env[3])
-#             print(new_env)
-#             print('processing id {id}'.format(id=env[0]))
-#     time.sleep(20)
 

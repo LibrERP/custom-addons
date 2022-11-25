@@ -86,6 +86,7 @@ class StockMove(models.Model):
             'price_subtotal': taxes['total_excluded'],
             'quantity': qty,
             'invoice_id': invoice_id.id,
+            'partner_id': invoice_id.partner_id.id,
             'origin': self.picking_id.name,
             'account_id': account.id,
             'uom_id': product.uom_id.id,
