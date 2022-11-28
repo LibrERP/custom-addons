@@ -54,11 +54,13 @@ class WaitInvoiceProcess(threading.Thread):
                     return newseq
 
                 ddt_ids = self.ddt_ids
+
                 domain = self.wizard_domain + [('id', 'in', ddt_ids)]
+
                 while ddt_ids:
 
                     try:
-                        cpus_available = multiprocessing.cpu_count() - 2 or 1
+                        cpus_available = multiprocessing.cpu_count() - 1 or 1
                         i = 0
                         threads = []
                         stock_model = current_env['stock.picking.package.preparation']
@@ -165,7 +167,7 @@ class WaitCreditNoteProcess(threading.Thread):
                 while ddt_ids:
 
                     try:
-                        cpus_available = multiprocessing.cpu_count() - 2 or 1
+                        cpus_available = multiprocessing.cpu_count() - 1 or 1
                         i = 0
                         threads = []
                         stock_model = current_env['stock.picking']
@@ -372,7 +374,7 @@ class WizardInvoiceFromDdt(models.TransientModel):
             sp_domain.append(('date', '<=', self.date_to))
         if other_conditions:
             for tpl in other_conditions:
-                domain.append(tpl)
+                sp_domain.append(tpl)
 
         return sp_domain
 
