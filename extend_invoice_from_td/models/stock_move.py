@@ -62,6 +62,8 @@ class StockMove(models.Model):
                     id=self.product_id.id,
                     cat=self.product_id.categ_id.name
                 ))
+        if self.sale_line_id:
+            res = self.sale_line_id._prepare_invoice_line(qty)
 
         rslt = product.partner_ref
         if product.description_sale:

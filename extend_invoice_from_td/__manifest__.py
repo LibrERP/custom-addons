@@ -35,6 +35,7 @@
         'base',
         'stock',
         'l10n_it_ddt',
+        'l10n_it_ddt_invoice_extension',
     ],
 
     'data': [

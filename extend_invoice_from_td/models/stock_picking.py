@@ -16,13 +16,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import odoo.addons.decimal_precision as dp
-
-from odoo.fields import first
-from odoo.tools import float_is_zero
-from odoo.tools.misc import formatLang, format_date
 
 
 class StockPicking(models.Model):
