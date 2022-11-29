@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_ddt_invoice_values_choice" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.ddt.invoice.values.choice</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='analytic']" position="after">
+                    <t groups="account.group_account_user" id="res_config_settings_view_form_ddt_invoice_values_choice_t">
+                        <h2>Fattura da DDT</h2>
+                        <div class="row mt16 o_settings_container" id="riba_cbi">
+                            <div class="col-xs-18 col-md-12 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <div class="content-group">
+                                        <label for="invoice_from_ddt_product_values_source" class="col-md-4 o_light_label"/>
+                                        <field name="invoice_from_ddt_product_values_source"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
