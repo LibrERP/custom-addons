@@ -28,6 +28,7 @@ class StockPickingPackagePreparationLine(models.Model):
             res.update({
                 'discount': so_line.discount,
                 'price_unit': so_line.price_unit,
+                'invoice_line_tax_ids': [(6, 0, [so_line.tax_id.id])],
             })
 
         elif values_source == 'td.line':
