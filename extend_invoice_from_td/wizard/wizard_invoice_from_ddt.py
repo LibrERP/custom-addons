@@ -281,6 +281,16 @@ class WizardInvoiceFromDdt(models.TransientModel):
         default=True,
     )
 
+    finished_invoices = fields.Boolean(
+        string='',
+        default=False,
+    )
+
+    finished_invoices_message = fields.Text(
+        string='',
+        default='La generazione delle fatture è terminata con successo.',
+    )
+
     @api.multi
     def create_invoice(self):
         if self.date_from > self.date_to:
@@ -318,7 +328,6 @@ class WizardInvoiceFromDdt(models.TransientModel):
         }
 
     def create_from_ddt(self):
-        # domain = self.domain_x_invoice([('partner_id', '=', 104610)])
         domain = self.domain_x_invoice()
         dbname = self.env.cr.dbname
         uid = self.env.uid
