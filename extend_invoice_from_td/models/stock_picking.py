@@ -107,7 +107,7 @@ class StockPicking(models.Model):
             else:
                 references[invoice] |= sp
 
-            for line in sp.move_ids_without_package:
+            for line in sp.move_lines:
                 if line.product_uom_qty > 0:
                     line.invoice_line_create(invoice, line.product_uom_qty)
 

@@ -62,13 +62,11 @@ class StockMove(models.Model):
                     id=self.product_id.id,
                     cat=self.product_id.categ_id.name
                 ))
-
         rslt = product.partner_ref
         if product.description_sale:
             rslt += '\n' + product.description_sale
 
         price_unit = product.lst_price or 0.0
-
         tax_ids = product.taxes_id
         taxes = False
         if tax_ids:
@@ -79,18 +77,29 @@ class StockMove(models.Model):
                 product=product,
                 partner=invoice_id.partner_id)
         # print(taxes)
-        res = {
-            'name': rslt,
-            'price_unit': price_unit,
-            'price_total': taxes['total_included'],
-            'price_subtotal': taxes['total_excluded'],
-            'quantity': qty,
-            'invoice_id': invoice_id.id,
-            'partner_id': invoice_id.partner_id.id,
-            'origin': self.picking_id.name,
-            'account_id': account.id,
-            'uom_id': product.uom_id.id,
-            'product_id': product.id or False,
-            'invoice_line_tax_ids': [(6, 0, tax_ids.ids)],
-        }
+        if self.sale_line_id:
+            res = self.sale_line_id._prepare_invoice_line(qty)
+            res.update({
+                'name': rslt,
+                'price_unit': self.sale_line_id.price_unit,
+                'discount': self.sale_line_id.discount,
+                'origin': self.picking_id.name,
+                'invoice_id': invoice_id.id,
+                'invoice_line_tax_ids': [(6, 0, [self.sale_line_id.tax_id.id])],
+            })
+        else:
+            res = {
+                'name': rslt,
+                'price_unit': price_unit,
+                'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+                'quantity': qty,
+                'invoice_id': invoice_id.id,
+                'partner_id': invoice_id.partner_id.id,
+                'origin': self.picking_id.name,
+                'account_id': account.id,
+                'uom_id': product.uom_id.id,
+                'product_id': product.id or False,
+                'invoice_line_tax_ids': [(6, 0, tax_ids.ids)],
+            }
         return res

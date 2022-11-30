@@ -283,10 +283,11 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
     @api.multi
     def create_invoice(self):
-        _logger.info('Creating invoices......')
-        start_time = datetime.datetime.now()
         if self.date_from > self.date_to:
             raise UserError('Attenzione!\nVerificare l\'intervallo delle date del periodo.')
+
+        _logger.info('Creating invoices......')
+        start_time = datetime.datetime.now()
 
         _logger.info('Create invoices ......')
 
