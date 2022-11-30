@@ -1,6 +1,6 @@
 {
     'name': 'Fattturazione da DDT: controlli avanzati',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'category': 'Localization/Italy',
     'summary': (
         'Al momento della fatturazione da DDT è possibile scegliere se'
@@ -14,6 +14,7 @@
         'l10n_it_ddt',
     ],
     'data': [
+        'data/res_config_settings.xml',
         'views/res_config_settings.xml',
     ],
     'installable': True
