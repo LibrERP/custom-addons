@@ -18,7 +18,7 @@ class StockPickingPackagePreparationLine(models.Model):
 
         res = super()._prepare_invoice_line(qty, invoice_id=invoice_id)
 
-        system_settings = self.env['res.config.settings'].search([])[0]
+        system_settings = self.env['res.config.settings'].sudo().search([], order='create_date desc, id desc')[0]
         values_source = system_settings.invoice_from_ddt_product_values_source
 
         if values_source == 'sale.order.line':
