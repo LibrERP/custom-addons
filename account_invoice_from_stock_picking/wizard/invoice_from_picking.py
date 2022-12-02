@@ -103,12 +103,12 @@ class InvoiceFromPickings(models.TransientModel):
             for picking in self.picking_ids:
                 for move in picking.move_ids_without_package.filtered(lambda row: not row.invoiced):
                     if invoice_type == 'out_refund':
-                        credit_account = move.product_id.property_account_income_id
+                        credit_account = move.product_id.property_account_income_id or move.product_id.categ_id.property_account_income_categ_id
                         if not credit_account:
                             msg = _('Default credit account is not set for the Product "{}".').format(move.product_id.name)
                             raise Warning(msg)
                     elif invoice_type == 'in_invoice':
-                        debit_account = move.product_id.property_account_expense_id
+                        debit_account = move.product_id.property_account_expense_id or move.product_id.categ_id.property_account_expense_categ_id
                         if not debit_account:
                             msg = _('Default debit account is not set for the Product "{}".').format(move.product_id.name)
                             raise Warning(msg)
@@ -141,7 +141,9 @@ class InvoiceFromPickings(models.TransientModel):
                     # move.qty_invoiced += move.quantity_done
                     # if move.qty_invoiced == move.product_uom_qty:
                     move.invoiced = True
-                    move.purchase_line_id.invoiced = True
+                    if move.purchase_line_id:  # Note di credito non hanno purchase lines
+                        move.purchase_line_id.invoiced = True
+                    # end if
 
                     move.invoice_line_ids = [(4, invoice_line.id)]
 
