@@ -8,8 +8,9 @@
             <form string="Invoice from Pickings">
                 <group>
                     <group>
-                        <field name="journal_id" />
+                        <field name="journal_id" domain="[('type', '=', type)]" />
                         <field name="date_invoice" />
+                        <field name="type" invisible="True"/>
                     </group>
                 </group>
 
