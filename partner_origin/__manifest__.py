@@ -5,7 +5,7 @@
     'author': "librERP enterprise network",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Sales',
-    'version': '12.0.0.0.2',
+    'version': '12.0.0.0.3',
     'depends': [
         'base',
         'contacts'
