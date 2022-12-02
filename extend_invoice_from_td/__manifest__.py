@@ -29,12 +29,13 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.1.0.7',
+    'version': '12.0.1.0.9',
 
     'depends': [
         'base',
         'stock',
         'l10n_it_ddt',
+        'l10n_it_ddt_invoice_extension',
     ],
 
     'data': [
