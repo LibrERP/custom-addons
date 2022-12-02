@@ -141,7 +141,9 @@ class InvoiceFromPickings(models.TransientModel):
                     # move.qty_invoiced += move.quantity_done
                     # if move.qty_invoiced == move.product_uom_qty:
                     move.invoiced = True
-                    move.purchase_line_id.invoiced = True
+                    if move.purchase_line_id:  # Note di credito non hanno purchase lines
+                        move.purchase_line_id.invoiced = True
+                    # end if
 
                     move.invoice_line_ids = [(4, invoice_line.id)]
 
