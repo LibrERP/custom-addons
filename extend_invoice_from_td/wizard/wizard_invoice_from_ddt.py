@@ -281,15 +281,15 @@ class WizardInvoiceFromDdt(models.TransientModel):
         default=True,
     )
 
-    finished_invoices = fields.Boolean(
-        string='',
-        default=False,
-    )
-
-    finished_invoices_message = fields.Text(
-        string='',
-        default='La generazione delle fatture è terminata con successo.',
-    )
+    # finished_invoices = fields.Boolean(
+    #     string='',
+    #     default=False,
+    # )
+    #
+    # finished_invoices_message = fields.Text(
+    #     string='',
+    #     default='La generazione delle fatture è terminata con successo.',
+    # )
 
     @api.multi
     def create_invoice(self):
@@ -347,7 +347,8 @@ class WizardInvoiceFromDdt(models.TransientModel):
         dbname = self.env.cr.dbname
         uid = self.env.uid
         context = dict(self._context)
-        context.update({'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id})
+        context.update({'invoice_date': self.date_invoice,
+                        'refund_journal_id': self.journal_id_refund.id})
         if self.group_by_partner is False:
             context.update({'group': False})
 

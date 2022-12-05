@@ -16,12 +16,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import odoo.addons.decimal_precision as dp
 
 from odoo.fields import first
-from odoo.tools import float_is_zero
+from odoo.tools.float_utils import float_is_zero
 from odoo.tools.misc import formatLang, format_date
 
 
@@ -70,11 +70,16 @@ class StockPicking(models.Model):
         if not grouped_invoices:
             raise UserError(_('There is no invoiceable line.'))
 
+        journal_id = self._context.get('refund_journal_id', False)
         for invoice in list(grouped_invoices.values()):
             if not invoice.name:
                 invoice.update({
                     'name': invoice.origin,
                 })
+
+            invoice.update({
+                'journal_id': journal_id
+            })
 
         return [inv.id for inv in list(grouped_invoices.values())]
 
@@ -121,7 +126,7 @@ class StockPicking(models.Model):
             'type': 'out_refund',
             'company_id': self.company_id.id
         }
-        journal_id = self._context.get('invoice_journal_id', False)
+        journal_id = self._context.get('refund_journal_id', False)
 
         if not journal_id:
             raise UserError(
@@ -264,5 +269,22 @@ class StockPickingPackagePreparation(models.Model):
 
         return res
 
+    @api.multi
+    def create_td_grouped_invoices(self):
+        """
+        Create the invoices, grouped by `group_key` (see `get_td_group_key`).
+        :return: (
+            dictionary group_key -> invoice record-set,
+            dictionary invoice -> TD record-set,
+            )
+        """
+        grouped_invoices, references = super().create_td_grouped_invoices()
+        if grouped_invoices:
+            journal_id = self._context.get('invoice_journal_id', False)
+            for invoice in list(grouped_invoices.values()):
+                invoice.write({
+                    'journal_id': journal_id
+                })
+        return grouped_invoices, references
 
 
