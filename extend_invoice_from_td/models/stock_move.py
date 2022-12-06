@@ -88,6 +88,11 @@ class StockMove(models.Model):
                 'invoice_line_tax_ids': [(6, 0, [self.sale_line_id.tax_id.id])],
             })
         else:
+            if tax_ids and tax_ids.ids:
+                taxes_ids = [(6, 0, tax_ids.ids)]
+            else:
+                taxes_ids = False
+
             res = {
                 'name': rslt,
                 'price_unit': price_unit,
@@ -100,6 +105,6 @@ class StockMove(models.Model):
                 'account_id': account.id,
                 'uom_id': product.uom_id.id,
                 'product_id': product.id or False,
-                'invoice_line_tax_ids': [(6, 0, tax_ids.ids)],
+                'invoice_line_tax_ids': taxes_ids,
             }
         return res
