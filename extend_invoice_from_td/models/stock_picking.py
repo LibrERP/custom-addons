@@ -77,9 +77,10 @@ class StockPicking(models.Model):
                     'name': invoice.origin,
                 })
 
-            invoice.update({
-                'journal_id': journal_id
-            })
+            if journal_id:
+                invoice.update({
+                    'journal_id': journal_id
+                })
 
         return [inv.id for inv in list(grouped_invoices.values())]
 
@@ -263,9 +264,10 @@ class StockPickingPackagePreparation(models.Model):
         res = super()._prepare_invoice()
 
         journal_id = self._context.get('invoice_journal_id', res['journal_id'])
-        res.update({
-            'journal_id': journal_id,
-        })
+        if journal_id:
+            res.update({
+                'journal_id': journal_id,
+            })
 
         return res
 
@@ -281,10 +283,11 @@ class StockPickingPackagePreparation(models.Model):
         grouped_invoices, references = super().create_td_grouped_invoices()
         if grouped_invoices:
             journal_id = self._context.get('invoice_journal_id', False)
-            for invoice in list(grouped_invoices.values()):
-                invoice.write({
-                    'journal_id': journal_id
-                })
+            if journal_id:
+                for invoice in list(grouped_invoices.values()):
+                    invoice.write({
+                        'journal_id': journal_id
+                    })
         return grouped_invoices, references
 
 

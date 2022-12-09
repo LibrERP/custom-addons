@@ -380,9 +380,9 @@ class WizardInvoiceFromDdt(models.TransientModel):
         sp_domain.append(('state', '=', 'done'))
         sp_domain.append(('credit_note', '=', False))
         if self.date_from:
-            sp_domain.append(('date', '>=', self.date_from))
+            sp_domain.append(('date_done', '>=', self.date_from))
         if self.date_to:
-            sp_domain.append(('date', '<=', self.date_to))
+            sp_domain.append(('date_done', '<=', self.date_to))
         if other_conditions:
             for tpl in other_conditions:
                 sp_domain.append(tpl)
