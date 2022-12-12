@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import MissingError
 
 
 class StockPickingPackagePreparationLine(models.Model):
@@ -23,6 +24,19 @@ class StockPickingPackagePreparationLine(models.Model):
         if values_source == 'sale.order.line':
             # Get price and discount from related sale order line
             so_line = self.sale_line_id
+
+            if not so_line:
+
+                ddt_id = self.package_preparation_id
+                ddt_number = self.package_preparation_id.ddt_number
+
+                raise MissingError(
+                    f'Manca riferimento alla riga dell\'ordine di vendita (sale.order.line) nella riga del DDT. '
+                    f'DDT numero: {ddt_number} (id: {ddt_id})'
+                    ' - '
+                    f'Riga: {self.name} (id: {self.id})'
+                )
+            # end if
 
             res.update({
                 'discount': so_line.discount,
