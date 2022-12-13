@@ -172,12 +172,6 @@ class InvoiceFromPickings(models.TransientModel):
             invoice.compute_taxes()
 
             if invoice_type == 'out_refund':
-                if invoice.payment_term_id and picking.returned_by:
-                    for duedate_line in invoice.duedate_line_ids:
-                        duedate_line.payment_method_id = picking.sale_id.payment_term_id.line_ids and \
-                                                         picking.sale_id.payment_term_id.line_ids[
-                                                             0].payment_method_credit.id
-
                 for picking in self.picking_ids:
                     picking.credit_note = invoice.id
 
