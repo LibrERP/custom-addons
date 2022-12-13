@@ -1,6 +1,6 @@
 {
     'name': 'Fattturazione da DDT: controlli avanzati',
-    'version': '12.0.2.1.2',
+    'version': '12.0.3.1.2',
     'category': 'Localization/Italy',
     'summary': (
         'Al momento della fatturazione da DDT è possibile scegliere se'
