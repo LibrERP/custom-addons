@@ -9,37 +9,28 @@ class FatturapaAttachmentIn(models.Model):
 
     ddt_refs = fields.Text(string='Riferimenti DDT', defulat='')
 
-    @api.model
-    def create(self, values):
-        new_fatturapa_attachment_in = super().create(values)
-        new_fatturapa_attachment_in.load_ddt_data()
-        return new_fatturapa_attachment_in
-    # end create
+    def load_extra_data_single(self, e_invoice_obj):
+        """Extends load_extra_data_single() method to load data about DDT"""
+        super().load_extra_data_single(e_invoice_obj)
+        self.load_ddt_data_single(e_invoice_obj)
+    # end load_extra_data_single
 
-    @api.multi
-    def load_ddt_data(self):
+    def load_ddt_data_single(self, e_invoice_obj):
+        self.ensure_one()  # Just in case the method gets called from outside load_extra_data_single method
 
-        for fatturapa_att_in in self:
+        # Lettura dati relativi ai DDT
+        ddt_data = e_invoice_obj.FatturaElettronicaBody[0].DatiGenerali.DatiDDT
 
-            # Lettura file XML e creazione automatica classi da XML
-            wiz_obj = self.env['wizard.import.fatturapa'].with_context(from_attachment=fatturapa_att_in)
-            e_invoice = wiz_obj.get_invoice_obj(fatturapa_att_in)
+        # Lettura numeri DDT e ordinamento
+        ddts_list = list({str(ddt_info.NumeroDDT).strip() for ddt_info in ddt_data})
+        ddts_list.sort()
 
-            # Lettura dati relativi ai DDT
-            ddt_data = e_invoice.FatturaElettronicaBody[0].DatiGenerali.DatiDDT
+        # Fusione numeri DDT in un unica stringa
+        ddt_string = '\n'.join(ddts_list)
 
-            # Lettura numeri DDT e ordinamento
-            ddts_list = list({str(ddt_info.NumeroDDT).strip() for ddt_info in ddt_data})
-            ddts_list.sort()
-
-            # Fusione numeri DDT in un unica stringa
-            ddt_string = '\n'.join(ddts_list)
-
-            # Scritturra stringa DDT
-            fatturapa_att_in.ddt_refs = ddt_string
-        # end for
-
-    # end load_ddt_data
+        # Scritturra stringa DDT
+        self.ddt_refs = ddt_string
+    # end load_ddt_data_single
 
     @api.multi
     def action_show_related_stock_pickings(self):

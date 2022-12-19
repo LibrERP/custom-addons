@@ -1,7 +1,7 @@
 # License OPL-1.0 or later (https://www.odoo.com/documentation/12.0/legal/licenses/licenses.html).
 {
     'name': 'Fattura Elettronica In - DDT collegati',
-    'version': '12.0.4.0.2',
+    'version': '12.0.5.0.2',
     'category': 'Generic Modules/Accounting',
     'summary': '',
     'author': 'powERP enterprise network',
