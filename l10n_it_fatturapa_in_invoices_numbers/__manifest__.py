@@ -12,7 +12,7 @@
     'depends': [
         'base',
         'l10n_it_fatturapa_in',
-        'l10n_it_efattura_in_extra_data_loading_infra',
+        'l10n_it_fatturapa_in_extra_data_loading_infra',
     ],
     'data': [
         'views/fatturapa_attachment_in.xml',
