@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Add new search criterias to l10n_it_fatturapa_in',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.1.2',
     'category': 'Localisation/Italy',
     'summary': 'New searches: invoice number, VAT number, Fiscal Code',
     'author': 'LibrERP enterprise network',
@@ -15,7 +15,7 @@
         'l10n_it_efattura_in_extra_data_loading_infra',
     ],
     'data': [
-        'views/fatturapa_attachment_in_search.xml',
+        'views/fatturapa_attachment_in.xml',
     ],
     'demo': [
     ],

@@ -7,21 +7,24 @@ class FatturapaAttachmentIn(models.Model):
     _inherit = 'fatturapa.attachment.in'
 
     xml_invoices_numbers = fields.Char(
-        string='Numeri fatture da XML',
+        string='Numeri fatture (da XML)',
         help='Numeri delle fatture fornitore contenute nel documento XML caricato',
         readonly=True,
+        indexed=True,
     )
 
     xml_supplier_vat = fields.Char(
-        string='Partita IVA fornitore da XML',
+        string='Partita IVA (da XML)',
         help='Partita IVA del fornitore come riportata nel documento XML caricato',
         readonly=True,
+        indexed=True,
     )
 
     xml_supplier_fiscal_code = fields.Char(
-        string='Codice fiscale fornitore da XML',
+        string='Codice fiscale (da XML)',
         help='Codice fiscale del fornitore come riportata nel documento XML caricato',
         readonly=True,
+        indexed=True,
     )
 
     def load_extra_data_single(self, e_invoice_obj):
@@ -35,21 +38,26 @@ class FatturapaAttachmentIn(models.Model):
     def load_invoice_numbers(self, e_invoice_obj):
         self.ensure_one()  # Just in case the method gets called from outside load_extra_data_single method
 
-        invoices_numbers_list = []
+        invoices_numbers_list = [
+            str(e_invoice.DatiGenerali.DatiGeneraliDocumento.Numero)
+            for e_invoice in e_invoice_obj.FatturaElettronicaBody
+        ]
         self.xml_invoices_numbers = ','.join(invoices_numbers_list)
     # end _load_invoice_numbers
 
     def load_supplier_vat(self, e_invoice_obj):
         self.ensure_one()  # Just in case the method gets called from outside load_extra_data_single method
 
-        supplier_vat = ''
+        vat_obj = e_invoice_obj.FatturaElettronicaHeader.CedentePrestatore.DatiAnagrafici.IdFiscaleIVA
+
+        supplier_vat = str(vat_obj.IdPaese) + str(vat_obj.IdCodice)
         self.xml_supplier_vat = supplier_vat
     # end _load_supplier_vat
 
     def load_supplier_fiscal_code(self, e_invoice_obj):
         self.ensure_one()  # Just in case the method gets called from outside load_extra_data_single method
 
-        supplier_fiscal_code = ''
+        supplier_fiscal_code = str(e_invoice_obj.FatturaElettronicaHeader.CedentePrestatore.DatiAnagrafici.CodiceFiscale)
         self.xml_supplier_fiscal_code = supplier_fiscal_code
     # end _load_supplier_fiscal_code
 
