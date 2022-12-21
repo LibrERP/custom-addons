@@ -10,3 +10,9 @@ class ProductProduct(models.Model):
     code39 = fields.Char(
         'Code39', copy=False,
         help="EAN39 Article Number used for product identification.")
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    code39 = fields.Char('Code39', related='product_variant_ids.code39', readonly=False)

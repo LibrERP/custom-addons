@@ -1,11 +1,11 @@
-# © 2021 Andrei Levin - Didotech srl (www.didotech.com)
+# © 2021-2022 Andrei Levin - Didotech srl (www.didotech.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Barcode Code 39',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Sales',
-    'author': 'powERP enterprise network',
-    'website': 'https://www.powerp.it',
+    'author': 'LibrERP enterprise network',
+    'website': 'https://www.librerp.it',
     'development_status': 'Alpha',
     'license': 'LGPL-3',
     'depends': [
