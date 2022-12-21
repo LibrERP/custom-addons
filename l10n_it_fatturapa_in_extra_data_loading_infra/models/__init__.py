@@ -1,1 +1,1 @@
-from . import efattura_attachment_in
+from . import fatturapa_attachment_in
