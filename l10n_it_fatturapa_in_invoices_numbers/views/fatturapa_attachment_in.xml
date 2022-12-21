@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in form view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_form_invoices_numbers">
+        <field name="name">fatturapa_attachment_in.form.invoices_numbersn</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Show the name (aka number) of each invoice in the XML -->
+            <field name="invoices_number" position="after">
+                <field name="xml_invoices_numbers"/>
+            </field>
+
+        </field>
+    </record>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in tree view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_tree_invoices_numbers">
+        <field name="name">fatturapa_attachment_in.tree.invoices_numbers</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_tree"/>
+        <field name="arch" type="xml">
+
+            <!-- Show the name (aka number) of each invoice in the XML -->
+            <field name="invoices_number" position="after">
+                <field name="xml_invoices_numbers"/>
+            </field>
+
+        </field>
+    </record>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Add search criteria                                     -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record id="view_fatturapa_attachment_in_search_invoices_numbers" model="ir.ui.view">
+        <field name="name">fatturapa.attachment.in.search.invoices_numbers</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="xml_invoices_numbers" string="Numero Fattura" filter_domain="[('xml_invoices_numbers', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
