@@ -22,13 +22,19 @@ class FatturapaAttachmentIn(models.Model):
     odoo_ddt_count = fields.Integer(
         string='Num. DDT trovati',
         help='Numero dei DDT trovati nel sistema',
-        compute='_compute_odoo_ddt_count',
+        compute='_compute_ddt_stuff',
     )
 
     ddt_status_display = fields.Char(
         string='DDT trovati',
         help='Numero dei DDT trovati nel sistema rispetto a quelli presenti nel DDT',
-        compute='_compute_ddt_status_display',
+        compute='_compute_ddt_stuff',
+    )
+
+    ddt_value = fields.Float(
+        string='Totale DDT',
+        help='Totale valore dei DDT registrati',
+        compute='_compute_ddt_stuff',
     )
 
     def load_extra_data_single(self, e_invoice_obj):
@@ -93,7 +99,7 @@ class FatturapaAttachmentIn(models.Model):
             # TODO: COMPLETARE CHIAMANDO I METODI
             attachment._compute_odoo_ddt_count(stock_pickings_list)
             attachment._compute_ddt_status_display()
-            attachment._compute_value_from_ddt(stock_pickings_list)
+            attachment._compute_value_from_pickings(stock_pickings_list)
         # end for
     # end _compute_ddt_stuff
 
@@ -114,14 +120,21 @@ class FatturapaAttachmentIn(models.Model):
 
     def _compute_ddt_status_display(self):
         self.ensure_one()
-        self.ddt_found_status = f'{self.odoo_ddt_count} / {self.xml_ddt_count}'
+        status = f'{self.odoo_ddt_count} / {self.xml_ddt_count}'
+        self.ddt_status_display = status
     # end _compute_ddt_status_display
 
-    def _compute_value_from_ddt(self):
+    def _compute_value_from_pickings(self, stock_pickings_list):
         self.ensure_one()
 
-        # TODO: completare calcolando valore merci da DDTdidoech
-    # end _compute_ddt_status_display
+        total_value: int = 0
+
+        # TODO: completare calcolando valore merci da DDT
+        # 1 - Recuperare tutti gli stock pickings relativi a questo attachment
+        #     Già fatto, viene passato come parametro
+
+        # 2 - Per ogni stock.picking recuperare il valore
+    # end _compute_value_from_pickings
 
     def _get_pickings_domain(self):
         self.ensure_one()
@@ -135,12 +148,12 @@ class FatturapaAttachmentIn(models.Model):
         ]
 
         return pickings_domain
-    # end _get_ddt_domain
+    # end _get_pickings_domain
 
     def _get_related_pickings(self):
         self.ensure_one()
 
-        domain = self._get_ddt_domain()
+        domain = self._get_pickings_domain()
         ddt_list = self.env['stock.picking'].search(domain)
 
         return ddt_list
