@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in form view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_form_vat_fiscode">
+        <field name="name">fatturapa_attachment_in.form.vat_fiscode</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Show the name (aka number) of each invoice in the XML -->
+            <field name="invoices_number" position="after">
+                <field name="xml_doc_type_td"/>
+                <field name="xml_doc_type_description"/>
+            </field>
+
+        </field>
+    </record>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in tree view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_tree_vat_fiscode">
+        <field name="name">fatturapa_attachment_in.tree.vat_fiscode</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_tree"/>
+        <field name="arch" type="xml">
+
+            <!-- Show the name (aka number) of each invoice in the XML -->
+            <field name="invoices_number" position="after">
+                <field name="xml_doc_type_td"/>
+                <field name="xml_doc_type_description"/>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>
