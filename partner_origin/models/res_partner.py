@@ -12,7 +12,7 @@ class ResPartner(models.Model):
 
     @api.model
     def create(self, values):
-        if values.get('customer'):
+        if values.get('customer') and not values.get('parent_id'):
             if not values.get('contact_origin_ids'):
                 # raise Warning(_('Per favore seleziona Provenienza Contatto'))
                 raise Warning(_('Please set Contact Origin'))
