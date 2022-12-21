@@ -1,10 +1,13 @@
 # © 2022 Marco Tosato - Didotech srl (www.didotech.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
-    'name': 'Add new search criterias to l10n_it_fatturapa_in',
-    'version': '12.0.1.1.2',
+    'name': 'E-Fattura In: creditor VAT and Fiscal Code from XML',
+    'version': '12.0.1.1.3',
     'category': 'Localisation/Italy',
-    'summary': 'New searches: invoice number, VAT number, Fiscal Code',
+    'summary': (
+        'Load creditor VAR and Fiscal Code numbers from XML, show them '
+        'in form and tree view and enables searches by invoice number'
+    ),
     'author': 'LibrERP enterprise network',
     'website': 'https://www.librerp.it',
     'development_status': 'Alpha',
