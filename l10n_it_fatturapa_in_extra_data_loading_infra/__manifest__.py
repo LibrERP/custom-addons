@@ -1,6 +1,6 @@
 # License OPL-1.0 or later (https://www.odoo.com/documentation/12.0/legal/licenses/licenses.html).
 {
-    'name': 'Fattura Elettronica In - Infrastruttura caricamento dati extra',
+    'name': 'E-Fattura In: Infrastruttura caricamento dati extra',
     'version': '12.0.1.0.1',
     'category': 'Generic Modules/Accounting',
     'summary': (
