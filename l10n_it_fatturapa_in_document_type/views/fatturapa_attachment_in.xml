@@ -12,7 +12,8 @@
 
             <!-- Show the name (aka number) of each invoice in the XML -->
             <field name="invoices_number" position="after">
-                <field name="xml_type_description"/>
+                <field name="xml_doc_type_td"/>
+                <field name="xml_doc_type_description"/>
             </field>
 
         </field>
@@ -29,7 +30,8 @@
 
             <!-- Show the name (aka number) of each invoice in the XML -->
             <field name="invoices_number" position="after">
-                <field name="xml_type_description"/>
+                <field name="xml_doc_type_td"/>
+                <field name="xml_doc_type_description"/>
             </field>
 
         </field>

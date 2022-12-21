@@ -6,15 +6,15 @@ from odoo import models, fields, api
 class FatturapaAttachmentIn(models.Model):
     _inherit = 'fatturapa.attachment.in'
 
-    xml_type_td = fields.Char(
-        string='Tipo documento (TD)',
+    xml_doc_type_td = fields.Char(
+        string='TD',
         readonly=True,
     )
 
-    xml_type_description = fields.Char(
+    xml_doc_type_description = fields.Char(
         string='Tipo Documento',
         readonly=True,
-        compute='_compute_xml_type_description',
+        compute='_compute_xml_doc_type_description',
     )
 
     def load_extra_data_single(self, e_invoice_obj):
@@ -28,25 +28,41 @@ class FatturapaAttachmentIn(models.Model):
 
         type_td_obj = e_invoice_obj.FatturaElettronicaBody[0].DatiGenerali.DatiGeneraliDocumento.TipoDocumento
 
-        self.xml_type_td = str(type_td_obj)
+        self.xml_doc_type_td = str(type_td_obj)
     # end load_doc_type_td
 
-    def _compute_xml_type_description(self):
+    def _compute_xml_doc_type_description(self):
 
         for attachment in self:
 
             # Search for a description matching the TD code
-            descr = self.env['fatturapa.document_type'].search([('code', '=', attachment.xml_type_td)])
+            description_record = self.env['fiscal.document.type'].search([('code', '=', attachment.xml_doc_type_td)])
 
-            if descr:
+            if description_record:
                 # Description found: show it
-                description = descr['name']
+                description = description_record['name']
+
+                # Shorten the description
+                descr_len = len(description)
+
+                if description.lower().startswith('fattura'):
+                    max_chars = 15
+                elif description.lower().startswith('nota di'):
+                    max_chars = 20
+                else:
+                    max_chars = descr_len
+                # end if
+
+                limit = min(descr_len, max_chars)
+                description = description[:min(len(description), limit)]
+
             else:
                 # No matching description: show an empty string
                 description = ''
             # end if
 
-            attachment.xml_type_description = description
+            # Assign the value to the record
+            attachment.xml_doc_type_description = description
         # end for
-    # end _compute_xml_type_description
+    # end _compute_xml_doc_type_description
 # end FatturapaAttachmentIn

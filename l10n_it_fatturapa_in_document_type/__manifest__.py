@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'E-Fattura In: document type',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.1.2',
     'category': 'Localisation/Italy',
     'summary': 'Show document type from XML in the tree view',
     'author': 'LibrERP enterprise network',
