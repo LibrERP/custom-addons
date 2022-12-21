@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record model="ir.ui.view" id="view_fatturapa_in_attachment_form_ddt_refs">
-        <field name="name">fatturapa.attachment.in.form.ddt_refs</field>
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in form view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_form_ddt_data">
+        <field name="name">fatturapa.attachment.in.form.ddt_data</field>
         <field name="model">fatturapa.attachment.in</field>
         <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_form"/>
         <field name="arch" type="xml">
@@ -12,7 +15,8 @@
                 <group string="DDT" id="ddt_info_grp">
 
                     <!-- Add field to show the codes of the DDT referenced in the E-Invoice -->
-                    <field name="ddt_refs" readonly="True"/>
+                    <field name="xml_ddt_refs" readonly="True"/>
+                    <field name="ddt_found_status" readonly="True"/>
 
                     <!-- Add button to open stock.picking related to the DDT in the E-Invoice -->
                     <button
@@ -29,4 +33,41 @@
        </field>
     </record>
 
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Show new fields in tree view                            -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record model="ir.ui.view" id="view_fatturapa_attachment_in_tree_ddt_data">
+        <field name="name">fatturapa.attachment.in.tree.ddt_data</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='invoices_total']" position="after">
+                <field name="xml_ddt_refs" readonly="True"/>
+                <field name="odoo_ddt_count" readonly="True"/>
+                <field name="xml_ddt_count" readonly="True"/>
+                <button
+                    string="Vai ai DDT"
+                    name="action_show_related_stock_pickings"
+                    type="object"
+                    class="btn-primary"
+                />
+            </xpath>
+
+       </field>
+    </record>
+
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <!-- Add search criteria                                     -->
+    <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <record id="view_fatturapa_attachment_in_search_invoices_numbers" model="ir.ui.view">
+        <field name="name">fatturapa.attachment.in.search.invoices_numbers</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="xml_ddt_refs" string="Numero DDT" filter_domain="[('xml_ddt_refs', 'ilike', self)]"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

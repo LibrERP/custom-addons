@@ -7,7 +7,29 @@ from odoo.exceptions import UserError
 class FatturapaAttachmentIn(models.Model):
     _inherit = "fatturapa.attachment.in"
 
-    ddt_refs = fields.Text(string='Riferimenti DDT', defulat='')
+    xml_ddt_refs = fields.Text(
+        string='Riferimenti DDT in XML',
+        help='Numeri identificativi dei DDT contenuti nell\'XML',
+        defulat=''
+    )
+
+    xml_ddt_count = fields.Integer(
+        string='Num. DDT in XML',
+        help='Numero dei DDT rilevati nel documento XML',
+        default=0,
+    )
+
+    odoo_ddt_count = fields.Integer(
+        string='Num. DDT trovati',
+        help='Numero dei DDT trovati nel sistema',
+        compute='_compute_odoo_ddt_count',
+    )
+
+    ddt_status_display = fields.Char(
+        string='DDT trovati',
+        help='Numero dei DDT trovati nel sistema rispetto a quelli presenti nel DDT',
+        compute='_compute_ddt_status_display',
+    )
 
     def load_extra_data_single(self, e_invoice_obj):
         """Extends load_extra_data_single() method to load data about DDT"""
@@ -29,7 +51,8 @@ class FatturapaAttachmentIn(models.Model):
         ddt_string = '\n'.join(ddts_list)
 
         # Scritturra stringa DDT
-        self.ddt_refs = ddt_string
+        self.xml_ddt_refs = ddt_string
+        self.xml_ddt_count = len(ddts_list)
     # end load_ddt_data_single
 
     @api.multi
@@ -43,8 +66,7 @@ class FatturapaAttachmentIn(models.Model):
 
         self.ensure_one()
 
-        if self.ddt_refs:
-            my_ddts = self.ddt_refs.split('\n')
+        if self.xml_ddt_refs:
 
             action = {
                 'name': 'DDT Fattura elettronica',
@@ -52,10 +74,7 @@ class FatturapaAttachmentIn(models.Model):
                 'res_model': 'stock.picking',
                 'view_type': 'list',
                 'view_mode': 'list',
-                'domain': [
-                    ('partner_id', '=', self.xml_supplier_id.id),
-                    ('ddt_supplier_number', 'in', my_ddts),
-                ],
+                'domain': self._get_pickings_domain(),
             }
 
             return action
@@ -63,4 +82,67 @@ class FatturapaAttachmentIn(models.Model):
             raise UserError('Nessun DDT collegato alla fattura attuale')
         # end if
     # end action_show_ddt_in_stock_pickings
+
+    @api.multi
+    def _compute_ddt_stuff(self):
+        for attachment in self:
+            # 1 - caricare i DDT
+            stock_pickings_list = attachment._get_related_pickings()
+
+            # 2 - chiamare le varie funzioni che usano i DDT per calcolare i campi
+            # TODO: COMPLETARE CHIAMANDO I METODI
+            attachment._compute_odoo_ddt_count(stock_pickings_list)
+            attachment._compute_ddt_status_display()
+            attachment._compute_value_from_ddt(stock_pickings_list)
+        # end for
+    # end _compute_ddt_stuff
+
+    def _compute_odoo_ddt_count(self, stock_pickings_list):
+        self.ensure_one()
+
+        # There could be more than one picking for each DDT, so the picking must
+        detected_ddts = set([stock_pick['ddt_supplier_number'] for stock_pick in stock_pickings_list])
+        self.odoo_ddt_count = len(detected_ddts)
+
+        if self.odoo_ddt_count > self.xml_ddt_count:
+            print(
+                f'Something strange in fatturapa.attachment.in id '
+                f'{self.id}: count of DDT in odoo > count DDT in XML'
+            )
+        # end if
+    # end _compute_odoo_ddt_count
+
+    def _compute_ddt_status_display(self):
+        self.ensure_one()
+        self.ddt_found_status = f'{self.odoo_ddt_count} / {self.xml_ddt_count}'
+    # end _compute_ddt_status_display
+
+    def _compute_value_from_ddt(self):
+        self.ensure_one()
+
+        # TODO: completare calcolando valore merci da DDTdidoech
+    # end _compute_ddt_status_display
+
+    def _get_pickings_domain(self):
+        self.ensure_one()
+
+        my_ddts = self.xml_ddt_refs.split('\n')
+
+        pickings_domain = [
+            ('partner_id', '=', self.xml_supplier_id.id),
+            ('ddt_supplier_number', 'in', my_ddts),
+            ('state', '=', 'done'),
+        ]
+
+        return pickings_domain
+    # end _get_ddt_domain
+
+    def _get_related_pickings(self):
+        self.ensure_one()
+
+        domain = self._get_ddt_domain()
+        ddt_list = self.env['stock.picking'].search(domain)
+
+        return ddt_list
+    # end _get_my_ddt
 # end FatturapaAttachmentIn
