@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-       <record id="wizard_invoice_from_ddt_form" model="ir.ui.view" >
-            <field name="name">wizard.invoice.from.ddt.form</field>
-            <field name="model">wizard.invoice.from.ddt</field>
+       <record id="wizard_credit_note_from_picking_form" model="ir.ui.view" >
+            <field name="name">wizard.credit.note.from.picking.form</field>
+            <field name="model">wizard.credit.note.from.picking</field>
             <field name="arch" type="xml">
-                <form string="DDT Data">
+                <form string="Picking Data">
                     <group col="2">
+
                         <group >
-                            <field name="journal_id" widget="selection"/>
+                            <field name="journal_id_refund" widget="selection"/>
                         </group>
-<!--                        <group >-->
-<!--                            <field name="journal_id_refund" widget="selection"/>-->
-<!--                        </group>-->
                         <group >
                             <field name="date_invoice"/>
                         </group>
@@ -25,7 +23,7 @@
                         </group>
                     </group>
                     <footer>
-                        <button name="create_invoice" type="object" string="Create invoice" class="oe_highlight"/>
+                        <button name="create_credit_note" type="object" string="Create invoice" class="oe_highlight"/>
                         or
                         <button special="cancel" string="Cancel"/>
                     </footer>
@@ -33,18 +31,18 @@
             </field>
         </record>
 
-        <record id="action_invoice_from_ddt" model="ir.actions.act_window">
-            <field name="name">Fatturazione da DDT</field>
-            <field name="res_model">wizard.invoice.from.ddt</field>
+        <record id="action_credite_note_from_picking" model="ir.actions.act_window">
+            <field name="name">Note di credito da resi</field>
+            <field name="res_model">wizard.credit.note.from.picking</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="wizard_invoice_from_ddt_form"/>
+            <field name="view_id" ref="wizard_credit_note_from_picking_form"/>
              <field name="target">new</field>
         </record>
 
-        <menuitem action="action_invoice_from_ddt"
-                  id="menu_action_invoice_from_ddt"
+        <menuitem action="action_credite_note_from_picking"
+                  id="menu_action_credite_note_from_picking"
                   sequence="200"
-                  name="Invoice from DDT"
+                  name="Note di credito da resi"
                   parent="stock.menu_stock_warehouse_mgmt"/>
 
 
