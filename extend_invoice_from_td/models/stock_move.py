@@ -68,15 +68,7 @@ class StockMove(models.Model):
 
         price_unit = product.lst_price or 0.0
         tax_ids = product.taxes_id
-        taxes = False
-        if tax_ids:
-            taxes = tax_ids.compute_all(
-                price_unit,
-                invoice_id.currency_id,
-                qty,
-                product=product,
-                partner=invoice_id.partner_id)
-        # print(taxes)
+
         if self.sale_line_id:
             res = self.sale_line_id._prepare_invoice_line(qty)
             res.update({
@@ -88,6 +80,22 @@ class StockMove(models.Model):
                 'invoice_line_tax_ids': [(6, 0, [self.sale_line_id.tax_id.id])],
             })
         else:
+            if invoice_id.partner_id.discount_class_id:
+                discount = invoice_id.partner_id.discount_class_id.percent
+                discount_on_price = discount * price_unit / 100
+                price_unit = price_unit - discount_on_price
+            else:
+                discount = False
+
+            taxes = False
+            if tax_ids:
+                taxes = tax_ids.compute_all(
+                    price_unit,
+                    invoice_id.currency_id,
+                    qty,
+                    product=product,
+                    partner=invoice_id.partner_id)
+
             if tax_ids and tax_ids.ids:
                 taxes_ids = [(6, 0, tax_ids.ids)]
             else:
@@ -107,4 +115,7 @@ class StockMove(models.Model):
                 'product_id': product.id or False,
                 'invoice_line_tax_ids': taxes_ids,
             }
+            if discount:
+                res.update({'discount': discount})
+
         return res
