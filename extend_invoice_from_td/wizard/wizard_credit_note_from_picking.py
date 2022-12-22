@@ -122,10 +122,20 @@ class CreateCreditNoteProcess(multiprocessing.Process):
                             partner_group.get('__domain'))
                         pterm = {}
                         for sp in stock_picking_to_invoice_ids:
-                            if sp.sale_id and sp.sale_id.payment_term_id and sp.sale_id.payment_term_id.id not in pterm:
-                                pterm[sp.sale_id.payment_term_id.id] = current_env['stock.picking']
-                            if sp.sale_id and sp.sale_id.payment_term_id and sp.sale_id.payment_term_id:
-                                pterm[sp.sale_id.payment_term_id.id] |= sp
+                            order = sp.move_lines and sp.move_lines[0].sale_line_id and sp.move_lines[0].sale_line_id.order_id or False
+                            if order:
+                                pti_id = order.payment_term_id and order.payment_term_id.id or False
+                            else:
+                                if sp.partner_id.property_payment_term_id:
+                                    pti_id = sp.partner_id.property_payment_term_id.id
+                                else:
+                                    pti_id = False
+                            if pti_id:
+                                if pti_id not in pterm:
+                                    pterm[pti_id] = current_env['stock.picking']
+                                    pterm[pti_id] |= sp
+                                else:
+                                    pterm[pti_id] |= sp
                             else:
                                 if 'ZZZZ' not in pterm:
                                     pterm['ZZZZ'] = current_env['stock.picking']
@@ -138,6 +148,7 @@ class CreateCreditNoteProcess(multiprocessing.Process):
                         except Exception as e:
                             # Annulla le modifiche fatte
                             _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+                            _logger.error(u'Error: {error}'.format(error=pterm.keys()))
                             cursor.rollback()
                         finally:
                             cursor.commit()
@@ -219,6 +230,7 @@ class WizardCreditNoteFromPicking(models.TransientModel):
         processes = self.env.user.company_id.sudo().number_of_processes
         context = dict(self._context)
         context.update({'invoice_date': self.date_invoice,
+                        'wizard_id': self.id,
                         'refund_journal_id': self.journal_id_refund.id})
         if self.group_by_partner is False:
             context.update({'group': False})

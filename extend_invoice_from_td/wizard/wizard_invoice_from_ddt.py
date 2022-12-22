@@ -355,7 +355,10 @@ class WizardInvoiceFromDdt(models.TransientModel):
         uid = self.env.uid
         processes = self.env.user.company_id.sudo().number_of_processes
         context = dict(self._context)
-        context.update({'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id})
+        context.update({
+            'invoice_date': self.date_invoice,
+            'wizard_id': self.id,
+            'invoice_journal_id': self.journal_id.id})
         if self.group_by_partner is False:
             context.update({'group': False})
 
