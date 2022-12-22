@@ -28,11 +28,12 @@ _logger = logging.getLogger(__name__)
 
 
 class WaitInvoiceProcess(threading.Thread):
-    def __init__(self, env, ddt_ids, wizard_domain):
+    def __init__(self, env, ddt_ids, wizard_domain, processes):
         threading.Thread.__init__(self)
         self.ddt_ids = ddt_ids
         self.wizard_domain = wizard_domain
         self.data_env = env
+        self.number_of_processes = processes
         with api.Environment.manage():
             with registry(env[0]).cursor() as new_cr:
                 self.new_env = api.Environment(new_cr, env[1], env[2])
@@ -60,7 +61,10 @@ class WaitInvoiceProcess(threading.Thread):
                 while ddt_ids:
 
                     try:
-                        cpus_available = multiprocessing.cpu_count() - 1 or 1
+                        number_of_processes = self.number_of_processes
+                        if number_of_processes <= 0:
+                            number_of_processes = multiprocessing.cpu_count() // 2
+                        cpus_available = number_of_processes or 1
                         i = 0
                         threads = []
                         stock_model = current_env['stock.picking.package.preparation']
@@ -116,18 +120,26 @@ class CreateInvoiceProcess(multiprocessing.Process):
                 try:
                     cntx = self.data_env[2]
                     for partner_group in self.partner_list:
-                        stock_picking_to_invoice_ids = current_env['stock.picking.package.preparation'].search(
-                            partner_group.get('__domain'))
-                        try:
+                        pterm = {}
+                        dmn = partner_group.get('__domain')
+                        payment_terms = current_env['stock.picking.package.preparation'].sudo().search(dmn)
+                        for td in payment_terms:
+                            if td.payment_term_id.id not in pterm:
+                                pterm[td.payment_term_id.id] = current_env['stock.picking.package.preparation']
+                            pterm[td.payment_term_id.id] |= td
 
-                            create_invoice_res = stock_picking_to_invoice_ids.with_context(cntx).action_invoice_create()
-                            # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
-                        except Exception as e:
-                            # Annulla le modifiche fatte
-                            _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                            cursor.rollback()
-                        finally:
-                            cursor.commit()
+                        # stock_picking_to_invoice_ids = current_env['stock.picking.package.preparation'].sudo().search(
+                        #     partner_group.get('__domain'))
+                        for key, value in pterm.items():
+                            try:
+                                create_invoice_res = value.with_context(cntx).action_invoice_create()
+                                # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
+                            except Exception as e:
+                                # Annulla le modifiche fatte
+                                _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+                                cursor.rollback()
+                            finally:
+                                cursor.commit()
                     cursor.commit()
                 except Exception as e:
                     # Annulla le modifiche fatte
@@ -136,111 +148,114 @@ class CreateInvoiceProcess(multiprocessing.Process):
                 _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
 
 
-class WaitCreditNoteProcess(threading.Thread):
-    def __init__(self, env, ddt_ids, wizard_domain):
-        threading.Thread.__init__(self)
-        self.ddt_ids = ddt_ids
-        self.wizard_domain = wizard_domain
-        self.data_env = env
-        with api.Environment.manage():
-            with registry(env[0]).cursor() as new_cr:
-                self.new_env = api.Environment(new_cr, env[1], env[2])
-        self.cr = self.new_env.cr
+# class WaitCreditNoteProcess(threading.Thread):
+#     def __init__(self, env, ddt_ids, wizard_domain):
+#         threading.Thread.__init__(self)
+#         self.ddt_ids = ddt_ids
+#         self.wizard_domain = wizard_domain
+#         self.data_env = env
+#         with api.Environment.manage():
+#             with registry(env[0]).cursor() as new_cr:
+#                 self.new_env = api.Environment(new_cr, env[1], env[2])
+#         self.cr = self.new_env.cr
+#
+#     def run(self):
+#         _logger.info(f'WaitCreditNoteProcess running..{self.wizard_domain}')
+#
+#         with api.Environment.manage():
+#             with registry(self.data_env[0]).cursor() as new_cr:
+#                 current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
+#                 cursor = current_env.cr
+#
+#                 def _chunkIt(seq, size):
+#                     newseq = []
+#                     splitsize = 1.0 / size * len(seq)
+#                     for line in range(size):
+#                         newseq.append(seq[int(round(line * splitsize)):int(round((line + 1) * splitsize))])
+#                     return newseq
+#
+#                 ddt_ids = self.ddt_ids
+#                 domain = self.wizard_domain + [('id', 'in', ddt_ids)]
+#                 while ddt_ids:
+#
+#                     try:
+#                         number_of_processes = self.env.user.company_id.sudo().number_of_processes
+#                         if number_of_processes <= 0:
+#                             number_of_processes = multiprocessing.cpu_count() // 2
+#                         cpus_available = number_of_processes or 1
+#                         i = 0
+#                         threads = []
+#                         stock_model = current_env['stock.picking']
+#                         res = stock_model.read_group(domain,
+#                                                      fields=['main_partner', 'id'],
+#                                                      groupby=['main_partner'],
+#                                                      orderby='main_partner',
+#                                                      lazy=False)
+#
+#                         with multiprocessing.Manager() as manager:
+#                             invoice_ids = manager.list()
+#                             for split in _chunkIt(res, cpus_available):
+#                                 if split:
+#                                     thread = CreateCreditNoteProcess(self.data_env, split, i, invoice_ids)
+#                                     thread.daemon = True
+#                                     thread.start()
+#                                     threads.append(thread)
+#                                     i += 1
+#                             # wait for invoice created
+#                             for job in threads:
+#                                 job.join()
+#
+#                     except Exception as e:
+#                         # Annulla le modifiche fatte
+#                         _logger.error(u'Error: {error}'.format(error=e))
+#                         cursor.rollback()
+#                         raise
+#                     finally:
+#                         ddt_ids = list()
 
-    def run(self):
-        _logger.info(f'WaitCreditNoteProcess running..{self.wizard_domain}')
 
-        with api.Environment.manage():
-            with registry(self.data_env[0]).cursor() as new_cr:
-                current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-                cursor = current_env.cr
-
-                def _chunkIt(seq, size):
-                    newseq = []
-                    splitsize = 1.0 / size * len(seq)
-                    for line in range(size):
-                        newseq.append(seq[int(round(line * splitsize)):int(round((line + 1) * splitsize))])
-                    return newseq
-
-                ddt_ids = self.ddt_ids
-                domain = self.wizard_domain + [('id', 'in', ddt_ids)]
-                while ddt_ids:
-
-                    try:
-                        cpus_available = multiprocessing.cpu_count() - 1 or 1
-                        i = 0
-                        threads = []
-                        stock_model = current_env['stock.picking']
-                        res = stock_model.read_group(domain,
-                                                     fields=['main_partner', 'id'],
-                                                     groupby=['main_partner'],
-                                                     orderby='main_partner',
-                                                     lazy=False)
-
-                        with multiprocessing.Manager() as manager:
-                            invoice_ids = manager.list()
-                            for split in _chunkIt(res, cpus_available):
-                                if split:
-                                    thread = CreateCreditNoteProcess(self.data_env, split, i, invoice_ids)
-                                    thread.daemon = True
-                                    thread.start()
-                                    threads.append(thread)
-                                    i += 1
-                            # wait for invoice created
-                            for job in threads:
-                                job.join()
-
-                    except Exception as e:
-                        # Annulla le modifiche fatte
-                        _logger.error(u'Error: {error}'.format(error=e))
-                        cursor.rollback()
-                        raise
-                    finally:
-                        ddt_ids = list()
-
-
-class CreateCreditNoteProcess(multiprocessing.Process):
-
-    def __init__(self, env, partner_list, name_process, invoice_ids):
-        # Inizializzazione superclasse
-        multiprocessing.Process.__init__(self)
-        self.partner_list = partner_list
-        self.name_process = name_process
-        self.invoice_ids = invoice_ids
-        self.data_env = env
-        with api.Environment.manage():
-            with registry(env[0]).cursor() as new_cr:
-                self.new_env = api.Environment(new_cr, env[1], env[2])
-        self.cr = self.new_env.cr
-
-    def run(self):
-        _logger.info(f'CreateCreditNoteProcess running..{self.name_process}')
-
-        with api.Environment.manage():
-            with registry(self.data_env[0]).cursor() as new_cr:
-                current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-                cursor = current_env.cr
-                try:
-                    cntx = self.data_env[2]
-                    for partner_group in self.partner_list:
-                        stock_picking_to_invoice_ids = current_env['stock.picking'].search(
-                            partner_group.get('__domain'))
-                        try:
-
-                            create_invoice_res = stock_picking_to_invoice_ids.with_context(cntx).action_invoice_refund()
-                            # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
-                        except Exception as e:
-                            # Annulla le modifiche fatte
-                            _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                            cursor.rollback()
-                        finally:
-                            cursor.commit()
-                    cursor.commit()
-                except Exception as e:
-                    # Annulla le modifiche fatte
-                    _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                    cursor.rollback()
-                _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
+# class CreateCreditNoteProcess(multiprocessing.Process):
+#
+#     def __init__(self, env, partner_list, name_process, invoice_ids):
+#         # Inizializzazione superclasse
+#         multiprocessing.Process.__init__(self)
+#         self.partner_list = partner_list
+#         self.name_process = name_process
+#         self.invoice_ids = invoice_ids
+#         self.data_env = env
+#         with api.Environment.manage():
+#             with registry(env[0]).cursor() as new_cr:
+#                 self.new_env = api.Environment(new_cr, env[1], env[2])
+#         self.cr = self.new_env.cr
+#
+#     def run(self):
+#         _logger.info(f'CreateCreditNoteProcess running..{self.name_process}')
+#
+#         with api.Environment.manage():
+#             with registry(self.data_env[0]).cursor() as new_cr:
+#                 current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
+#                 cursor = current_env.cr
+#                 try:
+#                     cntx = self.data_env[2]
+#                     for partner_group in self.partner_list:
+#                         stock_picking_to_invoice_ids = current_env['stock.picking'].search(
+#                             partner_group.get('__domain'))
+#                         try:
+#
+#                             create_invoice_res = stock_picking_to_invoice_ids.with_context(cntx).action_invoice_refund()
+#                             # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
+#                         except Exception as e:
+#                             # Annulla le modifiche fatte
+#                             _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+#                             cursor.rollback()
+#                         finally:
+#                             cursor.commit()
+#                     cursor.commit()
+#                 except Exception as e:
+#                     # Annulla le modifiche fatte
+#                     _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+#                     cursor.rollback()
+#                 _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
 
 
 class WizardInvoiceFromDdt(models.TransientModel):
@@ -269,12 +284,12 @@ class WizardInvoiceFromDdt(models.TransientModel):
         required=True,
     )
 
-    journal_id_refund = fields.Many2one(
-        'account.journal',
-        string='Refund journal',
-        domain=[('type', '=', 'sale')],
-        required=True,
-    )
+    # journal_id_refund = fields.Many2one(
+    #     'account.journal',
+    #     string='Refund journal',
+    #     domain=[('type', '=', 'sale')],
+    #     required=True,
+    # )
 
     group_by_partner = fields.Boolean(
         string='Group by Partner',
@@ -298,10 +313,12 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
         _logger.info('Creating invoices......')
         start_time = datetime.datetime.now()
-
+        # lock = multiprocessing.Lock()
         _logger.info('Create invoices ......')
 
         invoice_ids = self.create_from_ddt()
+        # if lock.locked():
+        #     lock.release()
 
         _logger.info('Invoices created')
         end_time = datetime.datetime.now()
@@ -310,17 +327,22 @@ class WizardInvoiceFromDdt(models.TransientModel):
                                             sec=duration_seconds - duration_seconds / 60 * 60)
         _logger.info(u'Fatture Execution time in: {0}'.format(duration))
 
-        start_time = datetime.datetime.now()
-        # elenco movimenti per note di credito
-        _logger.info('Create credit notes ......')
+        # start_time = datetime.datetime.now()
+        # # elenco movimenti per note di credito
+        # _logger.info('Create credit notes ......')
+        #
+        # refund_ids = self.create_from_stock_picking()
+        #
+        # end_time = datetime.datetime.now()
+        # duration_seconds = (end_time - start_time).seconds
+        # duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
+        #                                     sec=duration_seconds - duration_seconds / 60 * 60)
+        # _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
 
-        refund_ids = self.create_from_stock_picking()
-
-        end_time = datetime.datetime.now()
-        duration_seconds = (end_time - start_time).seconds
-        duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
-                                            sec=duration_seconds - duration_seconds / 60 * 60)
-        _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
+        # if lock.locked():
+        #     lock.release()
+        # else:
+        #     return {'type': 'ir.actions.act_window_close'}
 
         # return {'type': 'ir.actions.act_window_close'}
         return {
@@ -331,33 +353,37 @@ class WizardInvoiceFromDdt(models.TransientModel):
         domain = self.domain_x_invoice()
         dbname = self.env.cr.dbname
         uid = self.env.uid
+        processes = self.env.user.company_id.sudo().number_of_processes
         context = dict(self._context)
-        context.update({'invoice_date': self.date_invoice, 'invoice_journal_id': self.journal_id.id})
+        context.update({
+            'invoice_date': self.date_invoice,
+            'wizard_id': self.id,
+            'invoice_journal_id': self.journal_id.id})
         if self.group_by_partner is False:
             context.update({'group': False})
 
         env = (dbname, uid, context)
         ddts = self.env['stock.picking.package.preparation'].search(domain)
-        final_process = WaitInvoiceProcess(env, ddts.ids, domain)
+        final_process = WaitInvoiceProcess(env, ddts.ids, domain, processes)
         final_process.start()
         return domain
 
-    def create_from_stock_picking(self):
-        sp_domain = self.domain_x_credit_note()
-        dbname = self.env.cr.dbname
-        uid = self.env.uid
-        context = dict(self._context)
-        context.update({'invoice_date': self.date_invoice,
-                        'refund_journal_id': self.journal_id_refund.id})
-        if self.group_by_partner is False:
-            context.update({'group': False})
-
-        env = (dbname, uid, context)
-        pickings = self.env['stock.picking'].search(sp_domain)
-        final_process = WaitCreditNoteProcess(env, pickings.ids, sp_domain)
-        final_process.start()
-
-        return sp_domain
+    # def create_from_stock_picking(self):
+    #     sp_domain = self.domain_x_credit_note()
+    #     dbname = self.env.cr.dbname
+    #     uid = self.env.uid
+    #     context = dict(self._context)
+    #     context.update({'invoice_date': self.date_invoice,
+    #                     'refund_journal_id': self.journal_id_refund.id})
+    #     if self.group_by_partner is False:
+    #         context.update({'group': False})
+    #
+    #     env = (dbname, uid, context)
+    #     pickings = self.env['stock.picking'].search(sp_domain)
+    #     final_process = WaitCreditNoteProcess(env, pickings.ids, sp_domain)
+    #     final_process.start()
+    #
+    #     return sp_domain
 
     def domain_x_invoice(self, other_conditions=[]):
         domain = list()
@@ -374,18 +400,18 @@ class WizardInvoiceFromDdt(models.TransientModel):
 
         return domain
 
-    def domain_x_credit_note(self, other_conditions=[]):
-        sp_domain = list()
-        sp_domain.append(('returned_by', '=', True))
-        sp_domain.append(('state', '=', 'done'))
-        sp_domain.append(('credit_note', '=', False))
-        if self.date_from:
-            sp_domain.append(('date_done', '>=', self.date_from))
-        if self.date_to:
-            sp_domain.append(('date_done', '<=', self.date_to))
-        if other_conditions:
-            for tpl in other_conditions:
-                sp_domain.append(tpl)
-
-        return sp_domain
-
+    # def domain_x_credit_note(self, other_conditions=[]):
+    #     sp_domain = list()
+    #     sp_domain.append(('returned_by', '=', True))
+    #     sp_domain.append(('state', '=', 'done'))
+    #     sp_domain.append(('credit_note', '=', False))
+    #     if self.date_from:
+    #         sp_domain.append(('date_done', '>=', self.date_from))
+    #     if self.date_to:
+    #         sp_domain.append(('date_done', '<=', self.date_to))
+    #     if other_conditions:
+    #         for tpl in other_conditions:
+    #             sp_domain.append(tpl)
+    #
+    #     return sp_domain
+    #
