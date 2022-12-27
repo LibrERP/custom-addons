@@ -40,6 +40,12 @@ class FatturapaAttachmentIn(models.Model):
         compute='_compute_ddt_stuff',
     )
 
+    value_difference_invoice_ddt = fields.Float(
+        string='Differenza',
+        help='Differenza tra totale fattura e totale valore calcolato da DDT',
+        compute='_compute_ddt_stuff',
+    )
+
     def load_extra_data_single(self, e_invoice_obj):
         """Extends load_extra_data_single() method to load data about DDT"""
         super().load_extra_data_single(e_invoice_obj)
@@ -102,6 +108,7 @@ class FatturapaAttachmentIn(models.Model):
             attachment._compute_odoo_ddt_count(stock_pickings_list)
             attachment._compute_ddt_status_display()
             attachment._compute_value_from_pickings(stock_pickings_list)
+            attachment._compute_value_difference_invoice_ddt()
         # end for
     # end _compute_ddt_stuff
 
@@ -164,16 +171,14 @@ class FatturapaAttachmentIn(models.Model):
                 total_value += group_value
             # end for
 
-            # 4 - calcolare il valore di ogni gruppo
-            # 4.1 - sommare le quantità degli stock.move
-            # 4.2 - prendere il prezzo totale dalla purchase.order.line e
-            #       calcolarne la quota relativa alla quantità presente nel gruppo
-
-            # 5 - Sommare il valore dei gruppi
         # end if
 
         self.ddt_value = total_value
     # end _compute_value_from_pickings
+
+    def _compute_value_difference_invoice_ddt(self):
+        self.value_difference_invoice_ddt = self.invoices_total - self.ddt_value
+    # end _compute_value_difference_invoice_ddt
 
     def _get_pickings_domain(self):
         self.ensure_one()
