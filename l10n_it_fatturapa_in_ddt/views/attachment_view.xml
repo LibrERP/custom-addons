@@ -10,6 +10,10 @@
         <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//field[@name='invoices_total']" position="after">
+                <field name="ddt_value" readonly="True"/>
+            </xpath>
+
             <xpath expr="//form/div/group/group[last()]" position="after">
 
                 <group string="DDT" id="ddt_info_grp">
