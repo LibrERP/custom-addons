@@ -29,7 +29,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.2.0.12',
+    'version': '12.0.2.1.0',
 
     'depends': [
         'base',
@@ -42,7 +42,8 @@
         'wizard/wizard_invoice_from_ddt.xml',
         'views/stock_picking_view.xml',
         'views/menuitem.xml',
-        # 'views/res_config.xml',
+        'views/res_config.xml',
+        'wizard/wizard_credit_note_from_picking.xml',
     ],
     'demo': [],
     'installable': True,
