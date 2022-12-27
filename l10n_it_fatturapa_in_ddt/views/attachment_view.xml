@@ -12,6 +12,7 @@
 
             <xpath expr="//field[@name='invoices_total']" position="after">
                 <field name="ddt_value" readonly="True"/>
+                <field name="value_difference_invoice_ddt" readonly="True"/>
             </xpath>
 
             <xpath expr="//form/div/group/group[last()]" position="after">
@@ -48,6 +49,7 @@
 
             <xpath expr="//field[@name='invoices_total']" position="after">
                 <field name="ddt_value" readonly="True"/>
+                <field name="value_difference_invoice_ddt" readonly="True"/>
                 <field name="xml_ddt_refs" readonly="True"/>
                 <field name="ddt_status_display" readonly="True"/>
                 <button
