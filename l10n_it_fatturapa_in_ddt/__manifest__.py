@@ -1,7 +1,7 @@
 # License OPL-1.0 or later (https://www.odoo.com/documentation/12.0/legal/licenses/licenses.html).
 {
     'name': 'E-Fattura In: DDT collegati',
-    'version': '12.0.6.4.7',
+    'version': '12.0.6.4.8',
     'category': 'Generic Modules/Accounting',
     'summary': '',
     'author': 'LibrERP enterprise network',
