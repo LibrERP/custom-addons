@@ -46,6 +46,12 @@ class FatturapaAttachmentIn(models.Model):
         compute='_compute_ddt_stuff',
     )
 
+    ready_for_invoicing = fields.Boolean(
+        string='Pronto per la fatturazione',
+        help='Tutti i DDT indicati nell\'XML sono stati trovati in Odoo ed è possibile procedere alla fatturazione',
+        compute='_compute_ddt_stuff',
+    )
+
     def load_extra_data_single(self, e_invoice_obj):
         """Extends load_extra_data_single() method to load data about DDT"""
         super().load_extra_data_single(e_invoice_obj)
@@ -98,6 +104,43 @@ class FatturapaAttachmentIn(models.Model):
         # end if
     # end action_show_ddt_in_stock_pickings
 
+    def action_invoice_from_pickings(self):
+        self.ensure_one()
+
+        if self.ready_for_invoicing:
+
+            # Get the list of related pickings ids
+            pickings_list = self._get_related_pickings()
+            pickings_ids_list = [picking.id for picking in pickings_list]
+
+            # Open the invoice creation wizard
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'invoice.from.pickings',
+                'context': {'active_ids': pickings_ids_list},
+                'view_mode': 'form',
+                'view_mtype': 'form',
+                'views': [(False, 'form')],
+                'target': 'new',
+            }
+
+        else:
+
+            if self.xml_ddt_count == 0:
+                raise UserError(
+                    f'Impssibile procedere: nessun DDT associato alla fattura eletronica.'
+                )
+
+            else:
+                missing_ddt_count = self.xml_ddt_count - self.odoo_ddt_count
+                raise UserError(
+                    f'Impssibile procedere: vi sono {missing_ddt_count} DDT associati '
+                    f'alla fattura elettronica non ancora caricati nel sistema.'
+                )
+            # end if
+        # end if
+    # end action_invoice_from_pickings
+
     @api.multi
     def _compute_ddt_stuff(self):
         for attachment in self:
@@ -107,6 +150,7 @@ class FatturapaAttachmentIn(models.Model):
             # 2 - chiamare le varie funzioni che usano i DDT per calcolare i campi
             attachment._compute_odoo_ddt_count(stock_pickings_list)
             attachment._compute_ddt_status_display()
+            attachment._compute_ready_for_invoicing()
             attachment._compute_value_from_pickings(stock_pickings_list)
             attachment._compute_value_difference_invoice_ddt()
         # end for
@@ -132,6 +176,11 @@ class FatturapaAttachmentIn(models.Model):
         status = f'{self.odoo_ddt_count} / {self.xml_ddt_count}'
         self.ddt_status_display = status
     # end _compute_ddt_status_display
+
+    def _compute_ready_for_invoicing(self):
+        self.ensure_one()
+        self.ready_for_invoicing = self.odoo_ddt_count > 0 and self.odoo_ddt_count == self.xml_ddt_count
+    # end _compute_ready_for_invoicing
 
     def _compute_value_from_pickings(self, stock_pickings_list):
         self.ensure_one()
