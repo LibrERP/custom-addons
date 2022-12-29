@@ -1,4 +1,7 @@
 # © 2019-2022 Marco Tosato - Didotech srl (www.didotech.com)
+# License OPL-1.0 or later (https://www.odoo.com/documentation/12.0/legal/licenses/licenses.html).
+
+from collections import defaultdict
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
@@ -34,6 +37,18 @@ class FatturapaAttachmentIn(models.Model):
     ddt_value = fields.Float(
         string='Totale DDT',
         help='Totale valore dei DDT registrati',
+        compute='_compute_ddt_stuff',
+    )
+
+    value_difference_invoice_ddt = fields.Float(
+        string='Differenza',
+        help='Differenza tra totale fattura e totale valore calcolato da DDT',
+        compute='_compute_ddt_stuff',
+    )
+
+    ready_for_invoicing = fields.Boolean(
+        string='Pronto per la fatturazione',
+        help='Tutti i DDT indicati nell\'XML sono stati trovati in Odoo ed è possibile procedere alla fatturazione',
         compute='_compute_ddt_stuff',
     )
 
@@ -89,6 +104,43 @@ class FatturapaAttachmentIn(models.Model):
         # end if
     # end action_show_ddt_in_stock_pickings
 
+    def action_invoice_from_pickings(self):
+        self.ensure_one()
+
+        if self.ready_for_invoicing:
+
+            # Get the list of related pickings ids
+            pickings_list = self._get_related_pickings()
+            pickings_ids_list = [picking.id for picking in pickings_list]
+
+            # Open the invoice creation wizard
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'invoice.from.pickings',
+                'context': {'active_ids': pickings_ids_list},
+                'view_mode': 'form',
+                'view_mtype': 'form',
+                'views': [(False, 'form')],
+                'target': 'new',
+            }
+
+        else:
+
+            if self.xml_ddt_count == 0:
+                raise UserError(
+                    f'Impssibile procedere: nessun DDT associato alla fattura eletronica.'
+                )
+
+            else:
+                missing_ddt_count = self.xml_ddt_count - self.odoo_ddt_count
+                raise UserError(
+                    f'Impssibile procedere: vi sono {missing_ddt_count} DDT associati '
+                    f'alla fattura elettronica non ancora caricati nel sistema.'
+                )
+            # end if
+        # end if
+    # end action_invoice_from_pickings
+
     @api.multi
     def _compute_ddt_stuff(self):
         for attachment in self:
@@ -96,10 +148,11 @@ class FatturapaAttachmentIn(models.Model):
             stock_pickings_list = attachment._get_related_pickings()
 
             # 2 - chiamare le varie funzioni che usano i DDT per calcolare i campi
-            # TODO: COMPLETARE CHIAMANDO I METODI
             attachment._compute_odoo_ddt_count(stock_pickings_list)
             attachment._compute_ddt_status_display()
+            attachment._compute_ready_for_invoicing()
             attachment._compute_value_from_pickings(stock_pickings_list)
+            attachment._compute_value_difference_invoice_ddt()
         # end for
     # end _compute_ddt_stuff
 
@@ -124,17 +177,57 @@ class FatturapaAttachmentIn(models.Model):
         self.ddt_status_display = status
     # end _compute_ddt_status_display
 
+    def _compute_ready_for_invoicing(self):
+        self.ensure_one()
+        self.ready_for_invoicing = self.odoo_ddt_count > 0 and self.odoo_ddt_count == self.xml_ddt_count
+    # end _compute_ready_for_invoicing
+
     def _compute_value_from_pickings(self, stock_pickings_list):
         self.ensure_one()
 
         total_value: int = 0
+        pickings_by_id = {pick['id']: pick for pick in stock_pickings_list}
+        po_lines_by_id = dict()
+        moves_groups = defaultdict(list)  # stock.move grouped by purchase.order.line
 
-        # TODO: completare calcolando valore merci da DDT
-        # 1 - Recuperare tutti gli stock pickings relativi a questo attachment
-        #     Già fatto, viene passato come parametro
+        if stock_pickings_list:
 
-        # 2 - Per ogni stock.picking recuperare il valore
+            # 1 - Recuperare tutti gli stock pickings relativi a questo attachment
+            #     Già fatto, viene passato come parametro
+
+            # 2 - Estrarre tutti gli stock.move relativi ai picking
+            moves_recordset = self.env['stock.move'].search([
+                ('picking_id', 'in', list(pickings_by_id.keys())),
+                ('state', '=', 'done'),
+            ])
+
+            # Raggruppare gli stock.move per purchase.order.line
+            # Impostare accesso alle purchase.order.line tramite il loro id
+            for sm in moves_recordset:
+                po_line = sm.purchase_line_id
+                po_lines_by_id[po_line.id] = po_line  # po lines by id
+                moves_groups[po_line.id].append(sm)  # move lines groups
+            # end for
+
+            # Compute total quantity e total value for each group
+            for po_line_id, moves_list in moves_groups.items():
+
+                po_line = po_lines_by_id[po_line_id]
+
+                group_qty = sum([m.qty_moved for m in moves_list])
+                group_value = group_qty/po_line.product_qty * po_line.price_total
+
+                total_value += group_value
+            # end for
+
+        # end if
+
+        self.ddt_value = total_value
     # end _compute_value_from_pickings
+
+    def _compute_value_difference_invoice_ddt(self):
+        self.value_difference_invoice_ddt = self.invoices_total - self.ddt_value
+    # end _compute_value_difference_invoice_ddt
 
     def _get_pickings_domain(self):
         self.ensure_one()
@@ -146,6 +239,7 @@ class FatturapaAttachmentIn(models.Model):
                 ('partner_id', '=', self.xml_supplier_id.id),
                 ('ddt_supplier_number', 'in', my_ddts),
                 ('state', '=', 'done'),
+                ('picking_type_code', '=', 'incoming')
             ]
 
         else:

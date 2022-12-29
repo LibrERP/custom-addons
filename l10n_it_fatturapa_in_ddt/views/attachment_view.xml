@@ -10,6 +10,11 @@
         <field name="inherit_id" ref="l10n_it_fatturapa_in.view_fatturapa_in_attachment_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//field[@name='invoices_total']" position="after">
+                <field name="ddt_value" readonly="True"/>
+                <field name="value_difference_invoice_ddt" readonly="True"/>
+            </xpath>
+
             <xpath expr="//form/div/group/group[last()]" position="after">
 
                 <group string="DDT" id="ddt_info_grp">
@@ -44,6 +49,15 @@
 
             <xpath expr="//field[@name='invoices_total']" position="after">
                 <field name="ddt_value" readonly="True"/>
+                <field name="value_difference_invoice_ddt" readonly="True"/>
+                <field name="ready_for_invoicing" readonly="True" invisible="True"/>  <!-- This field is only used to control the visibility of "Fattura DDT" button, so it's invisible -->
+                <button
+                    string="Fattura da DDT"
+                    name="action_invoice_from_pickings"
+                    type="object"
+                    class="btn-primary"
+                    attrs="{'invisible': [('ready_for_invoicing', '=', False)]}"
+                />
                 <field name="xml_ddt_refs" readonly="True"/>
                 <field name="ddt_status_display" readonly="True"/>
                 <button
