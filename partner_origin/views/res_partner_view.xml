@@ -8,8 +8,8 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <notebook position="inside">
-                <page string="Cusomer Origin" attrs="{'invisible': [('customer', '=', False)]}">
-                    <separator name="p" colspan="4" string="Cusomer Origin"/>
+                <page string="Customer Origin" attrs="{'invisible': [('customer', '=', False)]}">
+                    <separator name="p" colspan="4" string="Customer Origin"/>
                     <field colspan="4" name="contact_origin_ids" nolabel="1"  widget="many2many_checkboxes" />
                 </page>
             </notebook>
