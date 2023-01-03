@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_invoice_from_stock_picking" model="ir.ui.view">
+        <field name="name">stock.picking.form.invoice.from.stock.picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="returned_by" />
+            </xpath>
+            <xpath expr="//field[@name='date_done']" position="attributes">
+                <attribute name="attrs" operation="python_dict" key="readonly">
+                    [('returned_by', '=', False)]
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
