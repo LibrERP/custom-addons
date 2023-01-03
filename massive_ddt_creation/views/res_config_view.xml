@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <record id="res_config_settings_view_form_stock_ddt_extend" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.stock.ddt_extend</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h2[@id='schedule_info']" position="before">
+                <h2 id="ddt_defaults">Massive DDT Creation Document Defaults</h2>
+                <div class="row mt16 o_settings_container" id="ddt_info">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                   			<label for="hide_lines_not_ready"/>
+                   			<field name="hide_lines_not_ready" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                   			<label for="massive_ddt_same_term"/>
+                   			<field name="massive_ddt_same_term" />
+                        </div>
+                    </div>
+
+            	</div>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
