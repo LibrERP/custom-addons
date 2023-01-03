@@ -138,6 +138,8 @@ class InvoiceFromPickings(models.TransientModel):
                         invoice_line._compute_tax_id()
                         invoice_line.set_price_unit()
 
+                    invoice_line._set_rc_flag(invoice)
+
                     # move.qty_invoiced += move.quantity_done
                     # if move.qty_invoiced == move.product_uom_qty:
                     move.invoiced = True
@@ -167,6 +169,7 @@ class InvoiceFromPickings(models.TransientModel):
                         }
 
                         invoice_line = invoice_line_model.create(values)
+                        invoice_line._set_rc_flag(invoice)
                         line.invoiced = True
 
             invoice.compute_taxes()

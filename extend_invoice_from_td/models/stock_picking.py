@@ -34,10 +34,10 @@ class StockPicking(models.Model):
         readonly=True
     )
 
-    returned_by = fields.Boolean(
-        string='Returned by customer',
-        default=False,
-    )
+    # returned_by = fields.Boolean(
+    #     string='Returned by customer',
+    #     default=False,
+    # )
 
     main_partner = fields.Many2one(
         'res.partner',
