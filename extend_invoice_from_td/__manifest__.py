@@ -29,7 +29,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.2.1.1',
+    'version': '12.0.2.1.2',
 
     'depends': [
         'base',
