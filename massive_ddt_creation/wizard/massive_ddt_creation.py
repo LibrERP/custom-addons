@@ -3,7 +3,7 @@
 from odoo import models, fields, api, _
 from odoo.addons import decimal_precision as dp
 from odoo.tools import float_compare
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 import itertools
 
@@ -78,13 +78,16 @@ class MassiveDdtCreation(models.TransientModel):
         # order by planned date
         lines = self.line_ids.sorted(key=lambda p: p.picking_id.scheduled_date)
         pickings_to_include = []
+        allow_more_qty = self.env['ir.config_parameter'].sudo().get_param(
+            'massive_ddt_creation.allow_more_qty')
         # process pickings and validate
         for picking_id, moves in itertools.groupby(lines, lambda p: p.picking_id.id):
             moves_list = list(moves)
             for line in moves_list:
                 if line.quantity_done > line.product_uom_qty:
-                    raise UserError(_(
-                        f'Inputted amount of quantity done for {line.product_id.name} is greater than requested quantity'))
+                    if not allow_more_qty:
+                        raise UserError(_(
+                            f'Inputted amount of quantity done for {line.product_id.name} is greater than requested quantity'))
                 # manipulate move lines
                 move_line_vals = line.move_id._prepare_move_line_vals()
                 # search for any move lines already present in there
