@@ -21,5 +21,17 @@
             </xpath>
         </field>
     </record>
+
+    <record id="l10n_it_ddt.stock_picking_tree_ddt" model="ir.ui.view">
+        <field name="name">stock.picking.tree.ddt</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                    <field name="ddt_ids" string="TD" widget="many2many_tags" />
+            </field>
+        </field>
+    </record>
+
 </odoo>
     
