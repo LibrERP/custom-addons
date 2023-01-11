@@ -11,6 +11,11 @@ import itertools
 class MassiveDdtCreation(models.TransientModel):
     _name = 'wizard.massive.ddt.creation'
 
+    type_ddt = fields.Many2one(
+        'stock.ddt.type',
+        string='Required TD Type',
+        required=True
+    )
     line_ids = fields.One2many('wizard.massive.ddt.creation.line', 'parent_id')
 
     def open_wizard(self):
@@ -52,6 +57,9 @@ class MassiveDdtCreation(models.TransientModel):
             raise ValidationError('Not supported')  # should never happen, only fixes python linter
 
         for picking in pickings:
+            # We don't want pickings that already have a ddt attached
+            if picking.ddt_ids:
+                continue
             for move in picking.move_lines:
                 available_quantity_quant = move.product_id._compute_quantities_dict(None, None, None)[
                     move.product_id.id].get('qty_available')
@@ -73,11 +81,10 @@ class MassiveDdtCreation(models.TransientModel):
         return {'line_ids': ddt_lines}
 
     @api.multi
-    def validate(self):
-
+    def pre_validate(self):
         # order by planned date
         lines = self.line_ids.sorted(key=lambda p: p.picking_id.scheduled_date)
-        pickings_to_include = []
+        pickings_to_include = self.env['stock.picking']
         allow_more_qty = self.env['ir.config_parameter'].sudo().get_param(
             'massive_ddt_creation.allow_more_qty')
         # process pickings and validate
@@ -106,18 +113,22 @@ class MassiveDdtCreation(models.TransientModel):
             pick_id = self.env['stock.picking'].browse(picking_id)
             # This will create a backorder for move lines that haven't been completed
             pick_id.action_done()
-            pickings_to_include.append(picking_id)
+            pickings_to_include += pick_id
+        return pickings_to_include
 
+    @api.multi
+    def validate(self):
+        pickings_to_include = self.pre_validate()
         # Create ddt using sale order data
         if pickings_to_include:
             ddt_wizard = self.env['ddt.from.pickings'].create(
-                {'picking_ids': [(6, 0, pickings_to_include)]})
+                {'picking_ids': [(6, 0, pickings_to_include.ids)], 'ddt_type_id': self.type_ddt.id})
             ddt_action = ddt_wizard.create_ddt()
             ddt_id = self.env['stock.picking.package.preparation'].browse(ddt_action.get('res_id'))
             ddt_id.set_done()
             return ddt_action
 
-        return {'type': 'ir.actions.act_window_close'}
+        return {'type': 'ir.actions.act_window_close'} # If no picking was processed just close wizard
 
 
 class MassiveDdtCreationLine(models.TransientModel):

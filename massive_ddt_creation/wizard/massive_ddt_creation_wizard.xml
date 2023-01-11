@@ -6,7 +6,12 @@
         <field name="model">wizard.massive.ddt.creation</field>
         <field name="arch" type="xml">
             <form edit="false" create="false">
-                <field name="line_ids"/>
+                <group>
+                    <field name="type_ddt"/>
+                </group>
+                <group>
+                    <field name="line_ids" nolabel="1"/>
+                </group>
                 <footer>
                     <button name="validate" string="Validate" type="object" class="btn-primary"/>
                     <button special="cancel" string="Cancel" class="btn-secondary"/>
