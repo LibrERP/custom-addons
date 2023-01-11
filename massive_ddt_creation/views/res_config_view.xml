@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//h2[@id='schedule_info']" position="before">
                 <h2 id="ddt_defaults">Massive DDT Creation Document Defaults</h2>
-                <div class="row mt16 o_settings_container" id="ddt_info">
+                <div class="row mt16 o_settings_container" id="massive_ddt_info">
                     <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">
