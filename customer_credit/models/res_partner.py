@@ -36,7 +36,6 @@ class ResPartner(models.Model):
                   SELECT 
                         account_move_line.partner_id,
                         SUM(account_move_line.debit) - SUM(account_move_line.credit) as overdue
-
                   FROM 
                       account_account, 
                       account_move,
@@ -50,7 +49,7 @@ class ResPartner(models.Model):
                       account_move.state != 'draft' AND 
                       account_account.user_type_id IN (
                       SELECT id FROM account_account_type WHERE type  = 'receivable') AND 
-                      account_move_line.reconciled IS NULL AND
+                      account_move_line.reconciled = 'false' AND
                       account_move_line.date_maturity <= '{dat}' 
                   GROUP BY
                       account_move_line.partner_id
