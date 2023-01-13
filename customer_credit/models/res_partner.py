@@ -36,7 +36,6 @@ class ResPartner(models.Model):
                   SELECT 
                         account_move_line.partner_id,
                         SUM(account_move_line.debit) - SUM(account_move_line.credit) as overdue
-
                   FROM 
                       account_account, 
                       account_move,
@@ -50,7 +49,7 @@ class ResPartner(models.Model):
                       account_move.state != 'draft' AND 
                       account_account.user_type_id IN (
                       SELECT id FROM account_account_type WHERE type  = 'receivable') AND 
-                      account_move_line.reconciled IS NULL AND
+                      account_move_line.reconciled = 'false' AND
                       account_move_line.date_maturity <= '{dat}' 
                   GROUP BY
                       account_move_line.partner_id
@@ -218,7 +217,7 @@ class ResPartner(models.Model):
     def _compute_overdue_credit(self):
         current_date = time.strftime(DEFAULT_SERVER_DATE_FORMAT)
         for partner in self:
-            self.env.cr.execute("""SELECT
+            sql = """SELECT
                                        account_move_line.partner_id,
                                        SUM(account_move_line.debit) - SUM(account_move_line.credit) as overdue
                                    FROM
@@ -232,15 +231,17 @@ class ResPartner(models.Model):
                                        account_move_line.move_id = account_move.id AND
                                        account_move.state != 'draft' AND
                                        account_account_type.type = 'receivable' AND
-                                       account_move_line.reconciled IS NULL AND
-                                       account_move_line.partner_id = %s AND
-                                       (account_move_line.date_maturity <= %s 
+                                       account_move_line.reconciled = 'false' AND
+                                       account_move_line.partner_id = {partner} AND
+                                       (account_move_line.date_maturity <= '{data}' 
                                            OR
-                                       account_move_line.date <= %s AND account_move_line.date_maturity IS NULL)
-
+                                       account_move_line.date <= '{data}' AND account_move_line.date_maturity IS NULL)
                                    GROUP BY
                                        account_move_line.partner_id;
-                               """, (partner.id, current_date, current_date))
+                                    
+                               """.format(partner=partner.id, data=current_date)
+            self.env.cr.execute(sql)
+
             res_sql = self.env.cr.fetchall()
 
             for res_id in res_sql:

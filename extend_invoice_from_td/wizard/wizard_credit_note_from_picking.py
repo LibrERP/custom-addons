@@ -117,9 +117,16 @@ class CreateCreditNoteProcess(multiprocessing.Process):
                 cursor = current_env.cr
                 try:
                     cntx = self.data_env[2]
+                    wiz_id = cntx['wizard_id']
+                    wizard = current_env['wizard.credit.note.from.picking'].browse(cntx['wizard_id'])
                     for partner_group in self.partner_list:
-                        stock_picking_to_invoice_ids = current_env['stock.picking'].sudo().search(
-                            partner_group.get('__domain'))
+                        domain = wizard.domain_x_credit_note()
+                        main_partner_id = partner_group['main_partner'][0]
+                        domain.append(('main_partner', '=', main_partner_id))
+                        stock_picking_to_invoice_ids = current_env['stock.picking'].sudo().search(domain)
+                        #
+                        # stock_picking_to_invoice_ids = current_env['stock.picking'].sudo().search(
+                        #     partner_group.get('__domain'))
                         pterm = {}
                         for sp in stock_picking_to_invoice_ids:
                             order = sp.move_lines and sp.move_lines[0].sale_line_id and sp.move_lines[0].sale_line_id.order_id or False
