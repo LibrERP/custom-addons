@@ -122,7 +122,7 @@ class MassiveDdtCreation(models.TransientModel):
         # Create ddt using sale order data
         if pickings_to_include:
             ddt_wizard = self.env['ddt.from.pickings'].create(
-                {'picking_ids': [(6, 0, pickings_to_include.ids)], 'ddt_type_id': self.type_ddt.id})
+                {'picking_ids': [(6, 0, pickings_to_include.ids)], 'type_ddt': self.type_ddt.id})
             ddt_action = ddt_wizard.create_ddt()
             ddt_id = self.env['stock.picking.package.preparation'].browse(ddt_action.get('res_id'))
             ddt_id.set_done()

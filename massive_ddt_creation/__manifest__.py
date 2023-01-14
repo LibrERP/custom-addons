@@ -12,7 +12,7 @@
     'author': "Didotech Srl",
     'website': "http://www.didotech.com",
     'category': 'Accounting',
-    'version': '12.0.0.1.3',
+    'version': '12.0.0.2.0',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'stock', 'l10n_it_ddt'],
