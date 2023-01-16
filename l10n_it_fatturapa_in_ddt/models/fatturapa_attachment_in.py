@@ -214,7 +214,7 @@ class FatturapaAttachmentIn(models.Model):
 
                 po_line = po_lines_by_id[po_line_id]
 
-                group_qty = sum([m.qty_moved for m in moves_list])
+                group_qty = sum([m.product_uom_qty for m in moves_list])
                 group_value = group_qty/po_line.product_qty * po_line.price_total
 
                 total_value += group_value
