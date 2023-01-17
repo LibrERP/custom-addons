@@ -47,6 +47,7 @@
 
     # always loaded
     'data': [
+        'data/scheduled_action.xml',
         'views/stock_picking_views.xml',
         'wizard/picking_edit_lines_wizard.xml'
     ],
