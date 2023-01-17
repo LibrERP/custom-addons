@@ -13,7 +13,7 @@
         'account',
         'stock',
         'base_view_inheritance_extension',
-        'stock_picking_invoice_link'
+        'stock_picking_invoice_link'  # OCA: stock-logistics-workflow
     ],
     'data': [
         'views/stock_picking.xml',
