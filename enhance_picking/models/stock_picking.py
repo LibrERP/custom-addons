@@ -78,3 +78,13 @@ class StockPicking(models.Model):
         action = self.env.ref('enhance_picking.action_stock_picking_edit_form').read()[0]
         action['res_id'] = picking_edit_id.id
         return action
+
+    @api.model
+    def check_availability(self):
+        """
+            Re-evaluates ram materials availability on stock.picking
+        """
+        criteria = [('state', 'in', ['confirmed','waiting'])]
+        picking_ids = self.search(criteria)
+        for picking_id in picking_ids:
+            picking_id.action_assign()

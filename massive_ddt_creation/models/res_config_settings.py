@@ -13,3 +13,6 @@ class ResConfigSettings(models.TransientModel):
     massive_ddt_same_term = fields.Boolean(
         "Selected massive DDTs must have same payment term",
         config_parameter='massive_ddt_creation.massive_ddt_same_term')
+    allow_more_qty = fields.Boolean(
+        "Allows more quantity than reserved availability.",
+        config_parameter='massive_ddt_creation.allow_more_qty')
