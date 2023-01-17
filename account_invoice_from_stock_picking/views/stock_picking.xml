@@ -13,6 +13,9 @@
                     [('returned_by', '=', False)]
                 </attribute>
             </xpath>
+            <field name="backorder_id" position="before">
+                <field name="invoice_state"/>
+            </field>
         </field>
     </record>
 </odoo>

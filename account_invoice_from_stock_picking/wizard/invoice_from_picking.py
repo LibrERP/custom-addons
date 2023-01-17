@@ -1,4 +1,4 @@
-# © 2022 Andrei Levin <andrei.levin@didotech.com>
+# © 2022-2023 Andrei Levin <andrei.levin@didotech.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models, api, _
@@ -177,6 +177,11 @@ class InvoiceFromPickings(models.TransientModel):
             if invoice_type == 'out_refund':
                 for picking in self.picking_ids:
                     picking.credit_note = invoice.id
+
+            invoice.picking_ids = [(6, False, self.picking_ids.ids)]
+
+            for picking_id in self.picking_ids:
+                picking_id.invoice_state = 'invoiced'
 
             return invoice
         else:
