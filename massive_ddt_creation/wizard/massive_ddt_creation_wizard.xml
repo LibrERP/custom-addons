@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_massive_ddt_creation" model="ir.ui.view">
+        <field name="name">view.wizard.massive.ddt.creation</field>
+        <field name="model">wizard.massive.ddt.creation</field>
+        <field name="arch" type="xml">
+            <form edit="false" create="false">
+                <group>
+                    <field name="type_ddt"/>
+                </group>
+                <group>
+                    <field name="line_ids" nolabel="1"/>
+                </group>
+                <footer>
+                    <button name="validate" string="Validate" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_massive_ddt_creation_line" model="ir.ui.view">
+        <field name="name">view.wizard.massive.ddt.creation.line</field>
+        <field name="model">wizard.massive.ddt.creation.line</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" delete="false" create="false" decoration-danger="reserved_availability==0">
+
+                <field name="picking_id"/>
+                <field name="move_id" invisible="1"/>
+                <field name="product_id" readonly="1" force_save="1"/>
+                <field name="product_uom_qty" readonly="1" force_save="1"/>
+                <field name="reserved_availability" readonly="1" force_save="1" sum="Total Reserved"/>
+                <field name="quantity_done" sum="Total Quantity Done"/>
+                <field name="qty_in_stock" readonly="1" force_save="1"/>
+                <field name="product_uom" readonly="1" force_save="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="massive_ddt_creation_search" model="ir.ui.view">
+        <field name="model">wizard.massive.ddt.creation</field>
+        <field name="arch" type="xml">
+            <search string="Sub State Type">
+                <filter name="group_picking_id" string="Picking" context="{'group_by':'picking_id'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="action_massive_ddt_creation_wizard">
+        <field name="name">Massive DDT creation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.massive.ddt.creation</field>
+        <field name="view_id" ref="view_massive_ddt_creation"/>
+        <field name="search_view_id" ref="massive_ddt_creation_search"/>
+        <field name="target">new</field>
+        <field name="context">{'search_default_group_picking_id': 1}</field>
+    </record>
+
+    <record id="action_server_massive_ddt_creation_wizard" model="ir.actions.server">
+        <field name="name">Massive DDT creation</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_wizard_massive_ddt_creation"/>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">action = model.open_wizard()</field>
+    </record>
+
+    <record id="action_server_order_massive_ddt_creation_wizard" model="ir.actions.server">
+        <field name="name">Massive DDT creation from orders</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_wizard_massive_ddt_creation"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">action = model.open_wizard()</field>
+    </record>
+
+</odoo>
