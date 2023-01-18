@@ -21,3 +21,14 @@ class StockPicking(models.Model):
     def action_done(self):
         self.invoice_state = '2binvoiced'
         return super().action_done()
+
+
+class StockPickingPackagePreparation(models.Model):
+    _inherit = 'stock.picking.package.preparation'
+
+    @api.multi
+    def action_invoice_create(self):
+        self.picking_ids.write({'invoice_state': 'invoiced'})
+        invoice_ids = super().action_invoice_create()
+        self.invoice_id.picking_ids = [(6, False, self.picking_ids.ids)]
+        return invoice_ids
