@@ -18,4 +18,17 @@
             </field>
         </field>
     </record>
+
+    <record id="view_picking_state_search" model="ir.ui.view">
+        <field name="name">stock.picking.state.search</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <filter name="picking_type" position="after">
+                <filter name="invoiced" string="Invoiced" domain="[('invoice_state','=', 'invoiced')]"/>
+                <filter name="2binvoiced" string="To be Invoiced" domain="[('invoice_state','=', '2binvoiced')]"/>
+            </filter>
+        </field>
+    </record>
+
 </odoo>
