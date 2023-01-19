@@ -30,3 +30,8 @@ class Partner(models.Model):
     _inherit = "res.partner"
 
     region_id = fields.Many2one("res.country.region", string='Region', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
+
+    @api.onchange('state_id')
+    def on_change_state_id(self):
+        if self.state_id:
+            self.region_id = self.state_id.region_id
