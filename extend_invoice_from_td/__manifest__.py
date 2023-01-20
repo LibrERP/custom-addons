@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    Copyright (C) 2022 Didotech SRL
+#    Copyright (C) 2022-2023 Didotech SRL
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published by
@@ -29,7 +29,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.2.1.2',
+    'version': '12.0.2.1.3',
 
     'depends': [
         'base',
