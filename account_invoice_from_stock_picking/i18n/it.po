@@ -186,3 +186,12 @@ msgstr "Tipo"
 msgid "or"
 msgstr "oppure"
 
+#. module: account_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_state_search
+msgid "Invoiced"
+msgstr "Fatturato"
+
+#. module: account_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_state_search
+msgid "To be Invoiced"
+msgstr "Da Fatturare"
