@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='picking_type_id']" position="after">
-<!--                <field name="returned_by" />-->
+                <field name="returned_by" invisible="1" />
                 <field name="credit_note" attrs="{'invisible': [('returned_by', '=', False)]}"/>
             </xpath>
         </field>
