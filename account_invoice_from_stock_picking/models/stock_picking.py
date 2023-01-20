@@ -22,6 +22,25 @@ class StockPicking(models.Model):
         self.invoice_state = '2binvoiced'
         return super().action_done()
 
+    @api.multi
+    def action_view_invoice(self):
+        result = super().action_view_invoice()
+
+        if result['type'] == 'ir.actions.server':
+            action_name = 'account.action_invoice_tree1'
+            form_view_name = 'account.invoice_form'
+
+            action = self.env.ref(action_name)
+            result = action.read()[0]
+            if len(self.invoice_ids) > 1:
+                result['domain'] = "[('id', 'in', %s)]" % self.invoice_ids.ids
+            else:
+                form_view = self.env.ref(form_view_name)
+                result['views'] = [(form_view.id, 'form')]
+                result['res_id'] = self.invoice_ids.id
+
+        return result
+
 
 class StockPickingPackagePreparation(models.Model):
     _inherit = 'stock.picking.package.preparation'
