@@ -40,6 +40,7 @@
         'report/sale_report_view.xml',
         'data/scheduled_action.xml',
         'views/board_view.xml',
+        'views/partner_view.xml',
     ],
     'installable': True,
     'auto_install': False,
