@@ -188,10 +188,21 @@ msgstr "oppure"
 
 #. module: account_invoice_from_stock_picking
 #: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_state_search
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_form_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_invoice_state_tree
 msgid "Invoiced"
 msgstr "Fatturato"
 
 #. module: account_invoice_from_stock_picking
 #: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_state_search
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_form_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_invoice_state_tree
 msgid "To be Invoiced"
 msgstr "Da Fatturare"
+
+#. module: account_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_state_search
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_form_invoice_from_stock_picking
+#: model_terms:ir.ui.view,arch_db:account_invoice_from_stock_picking.view_picking_invoice_state_tree
+msgid "Not Applicable"
+msgstr "Non Definito"
