@@ -47,7 +47,13 @@ class StockPickingPackagePreparation(models.Model):
 
     @api.multi
     def action_invoice_create(self):
-        self.picking_ids.write({'invoice_state': 'invoiced'})
+        picking_ids = []
+        for package in self:
+            package.picking_ids.write({'invoice_state': 'invoiced'})
+            picking_ids += package.picking_ids.ids
+
         invoice_ids = super().action_invoice_create()
-        self.invoice_id.picking_ids = [(6, False, self.picking_ids.ids)]
+
+        self[0].invoice_id.picking_ids = [(6, False, picking_ids)]
+
         return invoice_ids
