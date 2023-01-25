@@ -1,4 +1,4 @@
-# © 2022 Andrei Levin <andrei.levin@didotech.com>
+# © 2022-2023 Andrei Levin <andrei.levin@didotech.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
@@ -16,5 +16,8 @@ class AccountInvoice(models.Model):
                     if picking:
                         for move in picking.move_ids_without_package:
                             move.invoiced = False
+
+            for picking in invoice.picking_ids:
+                picking.invoice_state = '2binvoiced'
 
         return super().unlink()

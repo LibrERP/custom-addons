@@ -1,4 +1,4 @@
-# © 2022 Andrei Levin <andrei.levin@didotech.com>
+# © 2022-2023 Andrei Levin <andrei.levin@didotech.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models, api, _
@@ -124,6 +124,7 @@ class InvoiceFromPickings(models.TransientModel):
                     if invoice_type == 'in_invoice':
                         values['price_unit'] = move.purchase_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
+                        values['discount'] = move.purchase_line_id and move.purchase_line_id.discount or 0
                         values['account_id'] = debit_account.id
                     elif invoice_type == 'out_refund':
                         values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price
@@ -177,6 +178,11 @@ class InvoiceFromPickings(models.TransientModel):
             if invoice_type == 'out_refund':
                 for picking in self.picking_ids:
                     picking.credit_note = invoice.id
+
+            invoice.picking_ids = [(6, False, self.picking_ids.ids)]
+
+            for picking_id in self.picking_ids:
+                picking_id.invoice_state = 'invoiced'
 
             return invoice
         else:
