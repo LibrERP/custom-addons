@@ -3,19 +3,25 @@
     'name': "Massive DDT creation",
 
     'summary': """
-        Create DDT from picking or orders selection""",
+        Create DDT from stock picking or sale orders selection""",
 
     'description': """
-        Create DDT from picking or orders selection
+        Create DDT from stock picking or sale orders selection.
+        Helps to save stock picking elaboration about quantities.
+        Reduce errors creating DDT working directly from sale orders.
     """,
 
     'author': "Didotech Srl",
     'website': "http://www.didotech.com",
-    'category': 'Accounting',
-    'version': '12.0.0.2.0',
+    'category': 'Stock',
+    'version': '12.0.3.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'stock', 'l10n_it_ddt'],
+    'depends': [
+        'base',
+        'stock', 
+        'l10n_it_ddt',
+    ],
 
     # always loaded
     'data': [
