@@ -35,8 +35,10 @@ class NewInvoices(models.Model):
                 body += f'''<p>Nome fornitore: <strong>{invoice.partner_id.name}</strong></p>
                     <p>Numero fattura: {invoice.reference}</p>
                     <p>Data: {invoice.date_invoice}</p>
-                    <p>Importo: <strong>{invoice.amount_total}</strong></p>
+                    <p>Importo imponibile: <strong>{invoice.amount_untaxed}</strong></p>
                     <p>Numero registrazione: {invoice.number}</p><br>\n\n'''
+
+                # <p>Importo: <strong>{invoice.amount_total}</strong></p>
 
             company = self.env.user.company_id
             body += f'{company.name}'
