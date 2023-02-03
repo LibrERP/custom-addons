@@ -15,17 +15,26 @@
                 </group>
 
                 <separator string="Picking" />
-                <field string="Pickings" name="picking_ids">
-<!--                    <tree edit="false" delete="true" create="false">-->
-<!--                        <field name="name"/>-->
-<!--                        <field name="ddt_ids"/>-->
-<!--                        <field name="ddt_type"/>-->
-<!--                        <field name="location_dest_id"/>-->
-<!--                        <field name="partner_id"/>-->
-<!--                        <field name="origin"/>-->
-<!--                        <field name="backorder_id"/>-->
-<!--                        <field name="state"/>-->
-<!--                    </tree>-->
+<!--                <field string="Pickings" name="picking_ids">-->
+<!--&lt;!&ndash;                    <tree edit="false" delete="true" create="false">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="name"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="ddt_ids"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="ddt_type"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="location_dest_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="partner_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="origin"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="backorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="state"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </tree>&ndash;&gt;-->
+<!--                </field>-->
+                <field string="Invoice_Lines" name="future_invoice_line_ids">
+                    <tree edit="false" delete="true" create="false">
+                        <field name="product_id" />
+                        <field name="product_qty" />
+                        <field name="unit_price" />
+                        <field name="discount" />
+<!--                        <field name="total_amount" />-->
+                    </tree>
                 </field>
                 <footer>
                     <button name="create_invoice" string="Create" type="object" class="oe_highlight"/>

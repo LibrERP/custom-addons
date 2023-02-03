@@ -3,6 +3,7 @@
 
 from odoo import fields, models, api, _
 from odoo.exceptions import Warning
+from odoo.addons import decimal_precision as dp
 
 
 class InvoiceFromPickings(models.TransientModel):
@@ -14,8 +15,45 @@ class InvoiceFromPickings(models.TransientModel):
             self.env.context['active_ids']
         ).filtered(lambda row: row.picking_type_id.code == 'incoming')
 
+    def _get_future_lines(self):
+        stock_moves = self.env['stock.move'].search([
+            ('picking_id', 'in', self.env.context['active_ids']),
+            ('invoiced', '=', False)
+        ])
+
+        # invoice_lines = []
+        invoice_lines = self.env['invoice.from.picking.line']
+        for move in stock_moves:
+            # invoice_lines.append({
+            #     'picking_line_id': move['id'],
+            #     'unit_price': 128
+            # })
+            # invoice_lines.append([0, False, {
+            #     'picking_line_id': move['id'],
+            #     'unit_price': 128
+            # }])
+            values = {
+                'picking_line_id': move.id,
+                'unit_price': move.purchase_line_id and move.purchase_line_id.price_unit or 0.0,
+            }
+            if move.purchase_line_id and hasattr(move.purchase_line_id, 'discount'):
+                values['discount'] = move.purchase_line_id and move.purchase_line_id.discount or 0
+
+            invoice_line = self.env['invoice.from.picking.line'].create(values)
+            # invoice_lines.append(invoice_line)
+            invoice_lines += invoice_line
+        return invoice_lines
+
     picking_ids = fields.Many2many(
         'stock.picking', default=_get_picking_ids
+    )
+    future_invoice_line_ids = fields.One2many(
+        comodel_name="invoice.from.picking.line",
+        string="Invoice Lines",
+        required=False,
+        readonly=True,
+        default=_get_future_lines,
+        inverse_name="wizard_id"
     )
     date_invoice = fields.Date(string='Bill Date', required=True)
     journal_id = fields.Many2one('account.journal', string='Journal', required=True)
@@ -221,3 +259,16 @@ class InvoiceFromPickings(models.TransientModel):
             'views': [(form_id, 'form'), (tree_id, 'tree')],
             'type': 'ir.actions.act_window',
         }
+
+
+class InvoiceFromPickingLine(models.TransientModel):
+    _name = "invoice.from.picking.line"
+    _description = 'Invoice from picking line'
+
+    wizard_id = fields.Many2one(comodel_name='invoice.from.pickings', string="Wizard", required=False)
+    picking_line_id = fields.Many2one(comodel_name='stock.move', string="Invoice Lines", required=False)
+    product_id = fields.Many2one(related='picking_line_id.product_id', string='Product', readonly=True)
+    product_qty = fields.Float(related='picking_line_id.quantity_done', string='Quantity', readonly=True)
+    unit_price = fields.Float("Unit Price", digits=dp.get_precision('Purchase Price'))
+    discount = fields.Float("Discount")
+    total_amount = fields.Float(digits=2, string="Total Price")
