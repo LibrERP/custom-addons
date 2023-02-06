@@ -8,13 +8,19 @@
             <form string="Invoice from Pickings">
                 <group>
                     <group>
+                        <field name="partner_id" />
+                        <field name="invoice_id"
+                               domain="[('partner_id', '=', partner_id), ('state', '=', 'draft'), ('type', '=', 'in_invoice')]"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               context="{'from_picking': True}"
+                        />
                         <field name="journal_id" domain="[('type', '=', type)]" />
                         <field name="date_invoice" />
                         <field name="type" invisible="True"/>
                     </group>
                 </group>
 
-                <separator string="Picking" />
+                <separator string="Invoice Lines" />
 <!--                <field string="Pickings" name="picking_ids">-->
 <!--&lt;!&ndash;                    <tree edit="false" delete="true" create="false">&ndash;&gt;-->
 <!--&lt;!&ndash;                        <field name="name"/>&ndash;&gt;-->
@@ -27,13 +33,13 @@
 <!--&lt;!&ndash;                        <field name="state"/>&ndash;&gt;-->
 <!--&lt;!&ndash;                    </tree>&ndash;&gt;-->
 <!--                </field>-->
-                <field string="Invoice_Lines" name="future_invoice_line_ids">
-                    <tree edit="false" delete="true" create="false">
+                <field name="future_invoice_line_ids">
+                    <tree string="Invoice_Lines" create="false" editable="bottom">
                         <field name="product_id" />
                         <field name="product_qty" />
                         <field name="unit_price" />
                         <field name="discount" />
-<!--                        <field name="total_amount" />-->
+                        <field name="total_amount" />
                     </tree>
                 </field>
                 <footer>
