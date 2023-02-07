@@ -25,7 +25,7 @@
         <field name="model">wizard.massive.ddt.creation.line</field>
         <field name="arch" type="xml">
             <tree editable="bottom" delete="false" create="false" 
-            	decoration-danger="reserved_availability==0" 
+            	decoration-danger="reserved_availability==0 or qty_in_stock &lt; quantity_done" 
             	decoration-info="reserved_availability &lt; quantity_done">
 
                 <field name="picking_id"/>
