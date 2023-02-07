@@ -20,7 +20,7 @@ class MassiveDdtCreation(models.TransientModel):
 
     def open_wizard(self):
         return {
-            'name': 'Massive DDT creation',
+            'name': _('Massive DDT creation'),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             "view_type": "form",
