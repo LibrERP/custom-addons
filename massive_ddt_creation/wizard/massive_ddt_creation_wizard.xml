@@ -24,7 +24,9 @@
         <field name="name">view.wizard.massive.ddt.creation.line</field>
         <field name="model">wizard.massive.ddt.creation.line</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" delete="false" create="false" decoration-danger="reserved_availability==0">
+            <tree editable="bottom" delete="false" create="false" 
+            	decoration-danger="reserved_availability==0" 
+            	decoration-info="reserved_availability &lt; quantity_done">
 
                 <field name="picking_id"/>
                 <field name="move_id" invisible="1"/>
