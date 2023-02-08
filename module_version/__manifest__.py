@@ -14,7 +14,7 @@
         "views/module_view.xml"
     ],
     'test': [],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'application': True,
 }
