@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_from_pickings" model="ir.ui.view">
+        <field name="name">TD from Pickings</field>
+        <field name="model">invoice.from.pickings</field>
+        <field name="arch" type="xml">
+            <form string="Invoice from Pickings">
+                <group>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="invoice_id"
+                               domain="[('partner_id', '=', partner_id), ('state', '=', 'draft'), ('type', '=', 'in_invoice')]"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               context="{'from_picking': True}"
+                        />
+                        <field name="journal_id" domain="[('type', '=', type)]" />
+                        <field name="date_invoice" />
+                        <field name="type" invisible="True"/>
+                    </group>
+                </group>
+
+                <separator string="Invoice Lines" />
+<!--                <field string="Pickings" name="picking_ids">-->
+<!--&lt;!&ndash;                    <tree edit="false" delete="true" create="false">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="name"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="ddt_ids"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="ddt_type"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="location_dest_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="partner_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="origin"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="backorder_id"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <field name="state"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </tree>&ndash;&gt;-->
+<!--                </field>-->
+                <field name="future_invoice_line_ids">
+                    <tree string="Invoice_Lines" create="false" editable="bottom">
+                        <field name="product_id" />
+                        <field name="product_qty" />
+                        <field name="unit_price" />
+                        <field name="discount" />
+                        <field name="total_amount" />
+                    </tree>
+                </field>
+                <footer>
+                    <button name="create_invoice" string="Create" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_invoice_from_pickings" model="ir.actions.act_window">
+        <field name="name">Invoice from Pickings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">invoice.from.pickings</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_invoice_from_pickings"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+    </record>
+
+</odoo>
