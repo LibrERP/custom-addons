@@ -23,7 +23,7 @@ class AccountInvoice(models.Model):
         return super().unlink()
 
     def name_get(self):
-        if 'from_picking' in self._context and self._context['from_picking'] and self[0].type == 'in_invoice':
+        if self and 'from_picking' in self._context and self._context['from_picking'] and self[0].type == 'in_invoice':
             return [(invoice.id, invoice.reference or invoice.name) for invoice in self]
         else:
             return super().name_get()

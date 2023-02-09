@@ -78,7 +78,7 @@ class InvoiceFromPickings(models.TransientModel):
         ('purchase', 'Purchase')
     ], readonly=True)
     invoice_id = fields.Many2one('account.invoice', string='Invoice')
-    partner_id = fields.Many2one('res.partner', string='Partner', required=False, default=_get_partner, readonly=True)
+    partner_id = fields.Many2one('res.partner', string='Partner', required=False, default=_get_partner, readonly=False)
 
     @api.model
     def default_get(self, defaults):
