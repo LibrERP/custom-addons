@@ -3,6 +3,7 @@
 
 import re
 from odoo.addons.report_aeroo.extra_functions import aeroo_util
+from odoo.tools.misc import format_date as fd
 # from odoo import _
 
 
@@ -41,6 +42,11 @@ def italian_number(report, number, precision=2, no_zero=False):
         return sign + before
     else:
         return sign + before + ',' + after
+
+
+@aeroo_util('formatDate')
+def formatDate(report, object, value, lang_code=False, date_format=False):
+    return fd(object.env, value, lang_code, date_format)
 
 
 @aeroo_util('utente')
