@@ -20,7 +20,7 @@ class MassiveDdtCreation(models.TransientModel):
 
     def open_wizard(self):
         return {
-            'name': 'Massive DDT creation',
+            'name': _('Massive DDT creation'),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             "view_type": "form",
@@ -121,11 +121,21 @@ class MassiveDdtCreation(models.TransientModel):
         pickings_to_include = self.pre_validate()
         # Create ddt using sale order data
         if pickings_to_include:
+            ddtType = self.env['stock.picking.package.preparation']
             ddt_wizard = self.env['ddt.from.pickings'].create(
                 {'picking_ids': [(6, 0, pickings_to_include.ids)], 'type_ddt': self.type_ddt.id})
             ddt_action = ddt_wizard.create_ddt()
-            ddt_id = self.env['stock.picking.package.preparation'].browse(ddt_action.get('res_id'))
-            ddt_id.set_done()
+            ddt_id = ddtType.browse(ddt_action.get('res_id'))
+            if ddt_id:
+                if self.type_ddt:
+                    values={
+                        'carriage_condition_id': self.type_ddt.default_carriage_condition_id.id or False,
+                        'goods_description_id': self.type_ddt.default_goods_description_id.id or False,
+                        'transportation_reason_id': self.type_ddt.default_transportation_reason_id.id or False,
+                        'transportation_method_id': self.type_ddt.default_transportation_method_id.id or False,
+                    }
+                    ddt_id.write(values)
+                ddt_id.set_done()
             return ddt_action
 
         return {'type': 'ir.actions.act_window_close'} # If no picking was processed just close wizard
