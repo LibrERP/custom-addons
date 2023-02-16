@@ -124,7 +124,7 @@ class InvoiceFromPickings(models.TransientModel):
                     if invoice_type == 'in_invoice':
                         values['price_unit'] = move.purchase_line_id.price_unit or 0.0
                         values['invoice_line_tax_ids'] = [(6, 0, move.purchase_line_id.taxes_id.ids)]
-                        values['discount'] = move.purchase_line_id and move.purchase_line_id.discount or 0
+                        values['discount'] = move.purchase_line_id and hasattr(move.purchase_line_id, 'discount') and move.purchase_line_id.discount or 0
                         values['account_id'] = debit_account.id
                     elif invoice_type == 'out_refund':
                         values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price

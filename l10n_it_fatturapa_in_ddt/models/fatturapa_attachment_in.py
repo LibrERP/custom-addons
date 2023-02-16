@@ -1,4 +1,4 @@
-# © 2019-2022 Marco Tosato - Didotech srl (www.didotech.com)
+# © 2019-2023 Marco Tosato - Didotech srl (www.didotech.com)
 # License OPL-1.0 or later (https://www.odoo.com/documentation/12.0/legal/licenses/licenses.html).
 
 from collections import defaultdict
@@ -215,7 +215,10 @@ class FatturapaAttachmentIn(models.Model):
                 po_line = po_lines_by_id[po_line_id]
 
                 group_qty = sum([m.product_uom_qty for m in moves_list])
-                group_value = group_qty/po_line.product_qty * po_line.price_total
+                if po_line.product_qty == 0 or po_line.price_total == 0:
+                    group_value = 0
+                else:
+                    group_value = group_qty/po_line.product_qty * po_line.price_total
 
                 total_value += group_value
             # end for

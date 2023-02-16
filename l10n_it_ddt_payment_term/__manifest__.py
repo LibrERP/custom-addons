@@ -1,6 +1,6 @@
 {
     'name': 'Termini di pagamento in DDT',
-    'version': '12.0.0.0.0',
+    'version': '12.0.1.0.1',
     'category': 'Localization/Italy',
     'summary': (
         'Il modulo aggiunge nei DDT i Termini di Pagamento'

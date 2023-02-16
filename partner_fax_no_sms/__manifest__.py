@@ -1,9 +1,9 @@
 # Copyright 2018 Apruzzese Francesco <f.apruzzese@apuliasoftware.it>
-# Copyright 2020 Andrei Levin <andrei.levin@didotech.com>
+# Copyright 2020-2023 Andrei Levin <andrei.levin@didotech.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Partner fax',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'category': 'Extra Tools',
     'summary': 'Add fax number on partner',
     'author': 'powERP enterprise network',

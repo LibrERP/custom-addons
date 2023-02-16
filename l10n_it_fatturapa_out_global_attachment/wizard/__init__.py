@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2020 Didotech srl
+#    Copyright (C) 2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
-#    Created on : 2020-11-27
-#    Author : Fabio Colognesi
+#    Created on : 2023-01-17
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,16 +21,4 @@
 #
 ##############################################################################
 
-
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
-
-
-class Partner(models.Model):
-    _inherit = "res.partner"
-
-    region_id = fields.Many2one("res.country.region", string='Region', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
-
-    @api.onchange('state_id')
-    def on_change_state_id(self):
-        if self.state_id:
-            self.region_id = self.state_id.region_id
+from . import wizard_export_fatturapa

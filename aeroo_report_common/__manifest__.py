@@ -1,14 +1,9 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2020 Didotech srl
-#    (<http://www.didotech.com/>).
-#
-#    Created on : 2020-11-27
-#    Author : Fabio Colognesi
+#    Copyright (C) 2022-2023 Didotech SRL
 #
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
+#    it under the terms of the GNU Affero General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
@@ -21,17 +16,31 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+{
+    'name': "Aeroo report common",
 
+    'summary': """
+        Aeroo report common functions""",
 
-from odoo import api, fields, models, tools, SUPERUSER_ID, _
+    'description': """
+         Aeroo report common functions
+    """,
 
+    'author': "Didotech srl",
+    'website': "https://www.didotech.com",
+    'category': 'Customization',
+    'version': '12.0.1.0.2',
 
-class Partner(models.Model):
-    _inherit = "res.partner"
-
-    region_id = fields.Many2one("res.country.region", string='Region', ondelete='restrict', domain="[('country_id', '=?', country_id)]")
-
-    @api.onchange('state_id')
-    def on_change_state_id(self):
-        if self.state_id:
-            self.region_id = self.state_id.region_id
+    'depends': [
+        'base',
+        'report_aeroo',
+        'report_aeroo_invoice',
+        'report_aeroo_replace_qweb',
+    ],
+    'data': [],
+    'demo': [],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'AGPL-3',
+}
