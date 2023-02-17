@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Account Invoice From Stock Picking II',
-    'version': '12.0.2.20',
+    'version': '12.0.2.21',
     'category': 'Accounting',
     'summary': """Create Invoice from received Stock Pickings.
     Set existing invoice where new lines should be added or create a new one.
