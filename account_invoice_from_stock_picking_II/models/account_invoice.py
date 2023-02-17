@@ -11,14 +11,15 @@ class AccountInvoice(models.Model):
     def unlink(self):
         for invoice in self:
             if invoice.type in ('out_refund', 'in_invoice') and invoice.origin:
-                for origin in invoice.origin.split(','):
-                    picking = self.env['stock.picking'].search([('name', '=', origin.strip())])
-                    if picking:
-                        for move in picking.move_ids_without_package:
-                            move.invoiced = False
+                for invoice_line in invoice.invoice_line_ids:
+                    for stock_move in invoice_line.move_line_ids:
+                        stock_move.invoiced = False
 
             for picking in invoice.picking_ids:
-                picking.invoice_state = '2binvoiced'
+                if not picking.move_ids_without_package.filtered(
+                    lambda r: r.invoiced == True
+                ):
+                    picking.invoice_state = '2binvoiced'
 
         return super().unlink()
 

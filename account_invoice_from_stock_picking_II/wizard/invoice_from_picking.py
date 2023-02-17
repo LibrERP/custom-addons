@@ -140,14 +140,14 @@ class InvoiceFromPickings(models.TransientModel):
                 origin = list(set(origin))
                 invoice.origin = ', '.join(origin)
             else:
-                addr = partner.address_get(['delivery', 'invoice'])
+                addr = self.partner_id.address_get(['delivery', 'invoice'])
 
                 invoice_values = {
                     'name': name,
                     'date_invoice': self.date_invoice,
                     'type': invoice_type,
                     'journal_id': self.journal_id.id,
-                    'partner_id': addr['invoice'] or partner.id,
+                    'partner_id': addr['invoice'] or self.partner_id.id,
                     'currency_id': partner.currency_id.id,
                     'fiscal_position_id': partner.property_account_position_id.id or False,
                     'payment_term_id': partner.property_supplier_payment_term_id.id,
