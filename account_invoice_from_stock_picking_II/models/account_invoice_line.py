@@ -1,4 +1,4 @@
-# © 2022-2022 Andrei Levin <andrei.levin@didotech.com>
+# © 2022-2023 Andrei Levin <andrei.levin@didotech.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import fields, models, api
@@ -32,3 +32,14 @@ class AccountInvoiceLine(models.Model):
             price_unit = seller.product_uom._compute_price(price_unit, self.uom_id)
 
         self.price_unit = price_unit
+
+    def unlink(self):
+        for invoice_line in self:
+            for stock_move in invoice_line.move_line_ids:
+                stock_move.invoiced = False
+                if not stock_move.picking_id.move_ids_without_package.filtered(
+                    lambda r: r.invoiced == True
+                ):
+                    stock_move.picking_id.invoice_state = '2binvoiced'
+
+        return super().unlink()

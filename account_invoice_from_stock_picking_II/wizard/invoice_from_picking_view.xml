@@ -8,14 +8,14 @@
             <form string="Invoice from Pickings">
                 <group>
                     <group>
-                        <field name="partner_id" />
                         <field name="invoice_id"
                                domain="[('partner_id', '=', partner_id), ('state', '=', 'draft'), ('type', '=', 'in_invoice')]"
                                options="{'no_create': True, 'no_create_edit':True}"
                                context="{'from_picking': True}"
                         />
-                        <field name="journal_id" domain="[('type', '=', type)]" />
-                        <field name="date_invoice" />
+                        <field name="partner_id" attrs="{'readonly': [('invoice_id', '!=', False)]}" force_save="1" />
+                        <field name="journal_id" domain="[('type', '=', type)]" attrs="{'readonly': [('invoice_id', '!=', False)]}" force_save="1" />
+                        <field name="date_invoice" attrs="{'readonly': [('invoice_id', '!=', False)]}" force_save="1" />
                         <field name="type" invisible="True"/>
                     </group>
                 </group>
