@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='late']" position="after">
                 <separator/>
-                <filter name="partner_person" string="Person"
+                <filter name="partner_person" string="Persons"
                         domain="[('partner_id.is_company', '=', False)]"/>
-                <filter name="partner_company" string="Company"
+                <filter name="partner_company" string="Companies"
                         domain="[('partner_id.is_company', '=', True)]"/>
                 <filter name="partner_pa" string="Public Administration"
                         domain="[('partner_id.is_pa', '=', True)]"/>
