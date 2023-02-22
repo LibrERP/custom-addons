@@ -81,9 +81,11 @@ class AccountInvoice(models.Model):
                 for line in res_id.invoice_line_ids:
                     if line.product_id.id in product_charges_ids:
                         res_id.invoice_line_ids -= line
-
-            vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id)
-            spese = self.env['account.invoice.line'].new(vals)
-            res_id.invoice_line_ids += spese
+            if spese_incasso:
+                lines = spese_incasso.line_ids.filtered(lambda l: l.payment_method_credit)
+                qty = len(lines)
+                vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id, qty)
+                spese = self.env['account.invoice.line'].new(vals)
+                res_id.invoice_line_ids += spese
 
         return res_id
