@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_invoice_type_filter_inherit" model="ir.ui.view">
+        <field name="name">account.invoice.type.filter</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='late']" position="after">
+                <separator/>
+                <filter name="partner_person" string="Persons"
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_company', '=', False), ('partner_id.parent_id.is_company', '=', False)]"/>
+                <filter name="partner_company" string="Companies"
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_company', '=', True), ('partner_id.parent_id.is_company', '=', True)]"/>
+                <filter name="partner_pa" string="Public Administration"
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_pa', '=', True), ('partner_id.parent_id.is_pa', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
