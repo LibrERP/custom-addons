@@ -29,6 +29,8 @@ class AccountInvoice(models.Model):
             payment_term_model = self.env['account.payment.term']
             spese_incasso = payment_term_model.browse(self.payment_term_id.id)
             product_charges_ids = self._product_charges_ids()
+            if product_charges_ids:
+                product_charges_ids = set(product_charges_ids)
             if self.payment_term_id:
                 if self.invoice_line_ids:
                     for line in self.invoice_line_ids:
@@ -36,7 +38,9 @@ class AccountInvoice(models.Model):
                             self.invoice_line_ids -= line
 
             if spese_incasso and spese_incasso.spese_incasso_id:
-                vals = self._spese_incasso_vals(spese_incasso.spese_incasso_id)
+                lines = spese_incasso.line_ids.filtered(lambda l: l.payment_method_credit)
+                qty = len(lines)
+                vals = self._spese_incasso_vals(spese_incasso.spese_incasso_id, qty)
                 spese = self.env['account.invoice.line'].new(vals)
 
     def _payment_term_charges_ids(self):
@@ -48,14 +52,14 @@ class AccountInvoice(models.Model):
         products = [item.spese_incasso_id for item in records]
         return [product.id for product in products]
 
-    def _spese_incasso_vals(self, product):
+    def _spese_incasso_vals(self, product, qty):
         tax_id = product.taxes_id.id
         account_invoice_line_vals = {
             'invoice_id': self.id,
             'product_id': product.id,
             'name': product.name,
             'account_id': product.property_account_income_id.id,
-            'quantity': 1.0,
+            'quantity': qty,
             'uom_id': product.uom_id.id,
             'price_unit': product.lst_price,
             'invoice_line_tax_ids': [(6, 0, [tax_id])],
@@ -77,9 +81,11 @@ class AccountInvoice(models.Model):
                 for line in res_id.invoice_line_ids:
                     if line.product_id.id in product_charges_ids:
                         res_id.invoice_line_ids -= line
-
-            vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id)
-            spese = self.env['account.invoice.line'].new(vals)
-            res_id.invoice_line_ids += spese
+            if spese_incasso:
+                lines = spese_incasso.line_ids.filtered(lambda l: l.payment_method_credit)
+                qty = len(lines)
+                vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id, qty)
+                spese = self.env['account.invoice.line'].new(vals)
+                res_id.invoice_line_ids += spese
 
         return res_id
