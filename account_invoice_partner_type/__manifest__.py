@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Account Invoice Partner Filter',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Accounting',
     'summary': 'Filter Account Invoice by partner type',
     'author': 'Didotech s.r.l.',

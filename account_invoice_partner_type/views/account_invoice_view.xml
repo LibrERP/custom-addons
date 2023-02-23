@@ -8,11 +8,11 @@
             <xpath expr="//filter[@name='late']" position="after">
                 <separator/>
                 <filter name="partner_person" string="Persons"
-                        domain="[('partner_id.is_company', '=', False)]"/>
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_company', '=', False), ('partner_id.parent_id.is_company', '=', False)]"/>
                 <filter name="partner_company" string="Companies"
-                        domain="[('partner_id.is_company', '=', True)]"/>
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_company', '=', True), ('partner_id.parent_id.is_company', '=', True)]"/>
                 <filter name="partner_pa" string="Public Administration"
-                        domain="[('partner_id.is_pa', '=', True)]"/>
+                        domain="['|', '&amp;', ('partner_id.parent_id', '=', False), ('partner_id.is_pa', '=', True), ('partner_id.parent_id.is_pa', '=', True)]"/>
             </xpath>
         </field>
     </record>
