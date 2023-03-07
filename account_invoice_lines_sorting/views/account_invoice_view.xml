@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_invoice_form_sorted" model="ir.ui.view">
+        <field name="name">view.account.invoice.form.sorted</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree/field[@name='sequence']" position="after">
+                 <field name="order_sequence" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_form_sorted_field" model="ir.ui.view">
+        <field name="name">view.account.invoice.form.sorted.field</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[1]/field[@name='invoice_line_ids']/tree" position="attributes">
+                 <attribute name="default_order">order_sequence</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
