@@ -54,6 +54,13 @@ class AccountInvoice(models.Model):
 
     def _spese_incasso_vals(self, product, qty):
         tax_id = product.taxes_id.id
+        spese_seq = 0
+        sequences = self.invoice_line_ids.mapped(lambda x: x.sequence)
+        if sequences:
+            seq = max(sequences)
+            if seq:
+                spese_seq = seq + 1
+
         account_invoice_line_vals = {
             'invoice_id': self.id,
             'product_id': product.id,
@@ -63,6 +70,7 @@ class AccountInvoice(models.Model):
             'uom_id': product.uom_id.id,
             'price_unit': product.lst_price,
             'invoice_line_tax_ids': [(6, 0, [tax_id])],
+            'sequence': spese_seq,
         }
         return account_invoice_line_vals
 
@@ -85,7 +93,29 @@ class AccountInvoice(models.Model):
                 lines = spese_incasso.line_ids.filtered(lambda l: l.payment_method_credit)
                 qty = len(lines)
                 vals = res_id._spese_incasso_vals(spese_incasso.spese_incasso_id, qty)
-                spese = self.env['account.invoice.line'].new(vals)
-                res_id.invoice_line_ids += spese
+                if vals:
+                    spese = self.env['account.invoice.line'].new(vals)
+                    res_id.invoice_line_ids += spese
+                    res_id.invoice_line_ids.sorted(key=lambda r: r.sequence)
 
         return res_id
+
+    def write(self, vals):
+        res = super().write(vals)
+        self.update_charges_sequence()
+        return res
+
+    def update_charges_sequence(self):
+        if self and self.invoice_line_ids:
+            spese_seq = 0
+            sequences = self.invoice_line_ids.mapped(lambda x: x.order_sequence)
+            if sequences:
+                seq = max(sequences)
+                if seq:
+                    spese_seq = seq + 1
+            not_set = self.invoice_line_ids.filtered(lambda x: x.order_sequence == 0)
+            if not_set:
+                not_set.order_sequence = spese_seq
+        # print(self)
+
+
