@@ -16,3 +16,6 @@ class ResConfigSettings(models.TransientModel):
     allow_more_qty = fields.Boolean(
         "Allows more quantity than reserved availability.",
         config_parameter='massive_ddt_creation.allow_more_qty')
+    allow_over_stock = fields.Boolean(
+        "Allows more quantity than in stock availability.",
+        config_parameter='massive_ddt_creation.allow_over_stock')

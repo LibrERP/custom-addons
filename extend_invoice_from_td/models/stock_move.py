@@ -83,7 +83,8 @@ class StockMove(models.Model):
             if invoice_id.partner_id.discount_class_id:
                 discount = invoice_id.partner_id.discount_class_id.percent
                 discount_on_price = discount * price_unit / 100
-                price_unit = price_unit - discount_on_price
+                # price_unit = price_unit - discount_on_price
+                price_unit = price_unit
             else:
                 discount = False
 
