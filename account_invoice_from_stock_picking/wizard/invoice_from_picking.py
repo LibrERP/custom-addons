@@ -130,6 +130,8 @@ class InvoiceFromPickings(models.TransientModel):
                         values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price
                         values['invoice_line_tax_ids'] = move.sale_line_id and [(6, 0, move.sale_line_id.tax_id.ids)]
                         values['discount'] = move.sale_line_id and move.sale_line_id.discount or 0
+                        if hasattr(partner, 'discount_class_id') and not values['discount']:
+                            values['discount'] = partner.discount_class_id.percent or 0
                         values['account_id'] = credit_account.id
 
                     invoice_line = invoice_line_model.create(values)
