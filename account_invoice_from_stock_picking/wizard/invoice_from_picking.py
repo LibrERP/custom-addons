@@ -96,7 +96,12 @@ class InvoiceFromPickings(models.TransientModel):
                 invoice_values['account_id'] = partner.property_account_payable_id.id
             elif invoice_type == 'out_refund':
                 invoice_values['account_id'] = partner.property_account_receivable_id.id
-                invoice_values['payment_term_id'] = picking.sale_id and picking.sale_id.payment_term_id.id or False
+                if picking.sale_id:
+                    invoice_values['payment_term_id'] = picking.sale_id.payment_term_id.id
+                elif partner.property_payment_term_id:
+                    invoice_values['payment_term_id'] = partner.property_payment_term_id.id
+                else:
+                    invoice_values['payment_term_id'] = False
 
             invoice = invoice_model.create(invoice_values)
 
