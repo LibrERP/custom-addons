@@ -96,7 +96,12 @@ class InvoiceFromPickings(models.TransientModel):
                 invoice_values['account_id'] = partner.property_account_payable_id.id
             elif invoice_type == 'out_refund':
                 invoice_values['account_id'] = partner.property_account_receivable_id.id
-                invoice_values['payment_term_id'] = picking.sale_id and picking.sale_id.payment_term_id.id or False
+                if picking.sale_id:
+                    invoice_values['payment_term_id'] = picking.sale_id.payment_term_id.id
+                elif partner.property_payment_term_id:
+                    invoice_values['payment_term_id'] = partner.property_payment_term_id.id
+                else:
+                    invoice_values['payment_term_id'] = False
 
             invoice = invoice_model.create(invoice_values)
 
@@ -130,6 +135,8 @@ class InvoiceFromPickings(models.TransientModel):
                         values['price_unit'] = move.sale_line_id and move.sale_line_id.price_unit or move.product_id.lst_price
                         values['invoice_line_tax_ids'] = move.sale_line_id and [(6, 0, move.sale_line_id.tax_id.ids)]
                         values['discount'] = move.sale_line_id and move.sale_line_id.discount or 0
+                        if hasattr(partner, 'discount_class_id') and not values['discount']:
+                            values['discount'] = partner.discount_class_id.percent or 0
                         values['account_id'] = credit_account.id
 
                     invoice_line = invoice_line_model.create(values)
