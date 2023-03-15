@@ -199,7 +199,8 @@ class InvoiceFromPickings(models.TransientModel):
 
                 invoice_line = invoice_line_model.create(values)
 
-                if (invoice_type == 'in_invoice' and not move.purchase_line_id) or (invoice_type == 'out_refund' and not move.sale_line_id):
+                if (invoice_type == 'in_invoice' and not move.purchase_line_id) or (
+                        invoice_type == 'out_refund' and not move.sale_line_id):
                     # Update price & taxes
                     invoice_line._compute_tax_id()
                     invoice_line.set_price_unit()
@@ -217,10 +218,12 @@ class InvoiceFromPickings(models.TransientModel):
 
             for picking in self.picking_ids:
                 if invoice_type == 'in_invoice':
-                    for line in picking.purchase_id.order_line.filtered(lambda x: x.product_id.type == 'service' and not x.invoiced):
+                    for line in picking.purchase_id.order_line.filtered(
+                            lambda x: x.product_id.type == 'service' and not x.invoiced):
                         debit_account = line.product_id.property_account_expense_id
                         if not debit_account:
-                            msg = _('Default debit account is not set for the Product "{}".').format(line.product_id.name)
+                            msg = _('Default debit account is not set for the Product "{}".').format(
+                                line.product_id.name)
                             raise Warning(msg)
 
                         values = {
