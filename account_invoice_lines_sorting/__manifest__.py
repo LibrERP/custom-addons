@@ -7,7 +7,7 @@
     'author': "Didotech s.r.l.",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Accounting',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'depends': [
         'base',
         'account',
@@ -17,6 +17,6 @@
         # 'enhance_l10n_it_ddt',
     ],
     'data': [
-        'views/account_invoice_view.xml',
+        # 'views/account_invoice_view.xml',
     ],
 }
