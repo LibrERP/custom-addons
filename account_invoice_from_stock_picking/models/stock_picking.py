@@ -41,6 +41,14 @@ class StockPicking(models.Model):
 
         return result
 
+    @api.onchange('invoice_state')
+    def onchange_invoice_state(self):
+        for picking in self:
+            if picking.invoice_state in ('2binvoiced', 'none'):
+                picking.with_context(do_not_propagate=True, skip_update_line_ids=True).move_ids_without_package.write({'invoiced': False})
+            elif picking.invoice_state == "invoiced":
+                picking.with_context(do_not_propagate=True, skip_update_line_ids=True).move_ids_without_package.write({'invoiced': True})
+
 
 class StockPickingPackagePreparation(models.Model):
     _inherit = 'stock.picking.package.preparation'
