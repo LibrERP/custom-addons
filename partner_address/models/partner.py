@@ -11,4 +11,5 @@ class ResPartner(models.Model):
 
     def get_partner_address(self):
         for partner in self:
-            partner.address =  f"{partner.city or ''}, {partner.street or ''}"
+            if partner.city or partner.street:
+                partner.address =  f"{partner.city or ''}, {partner.street or ''}"
