@@ -7,7 +7,7 @@
     'author': "Didotech s.r.l.",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Accounting',
-    'version': '12.0.1.0.2',
+    'version': '12.0.1.0.3',
     'depends': [
         'base',
         'account',
