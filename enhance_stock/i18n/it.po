@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-27 09:47+0000\n"
-"PO-Revision-Date: 2022-07-27 09:47+0000\n"
+"POT-Creation-Date: 2023-03-14 09:56+0000\n"
+"PO-Revision-Date: 2023-03-14 09:56+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,47 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: enhance_stock
+#: model_terms:ir.ui.view,arch_db:enhance_stock.quant_search_view_enhance
+msgid "Category"
+msgstr "Categoria"
+
+#. module: enhance_stock
+#: model:ir.model.fields,help:enhance_stock.field_stock_quant__product_uom_id
+msgid "Default unit of measure used for all stock operations."
+msgstr "Unità di misura predefinita per ogni operazione di stoccaggio."
+
+#. module: enhance_stock
 #: model:ir.model,name:enhance_stock.model_stock_location
 msgid "Inventory Locations"
 msgstr "Ubicazioni di magazzino"
 
 #. module: enhance_stock
+#: model:ir.model.fields,field_description:enhance_stock.field_stock_quant__categ_id
+msgid "Product Category"
+msgstr "Categoria prodotto"
+
+#. module: enhance_stock
+#: model:ir.model.fields,field_description:enhance_stock.field_stock_quant__product_tmpl_id
+msgid "Product Template"
+msgstr "Modello prodotto"
+
+#. module: enhance_stock
 #: model_terms:ir.ui.view,arch_db:enhance_stock.view_location_form_extend
 msgid "Products"
 msgstr "Prodotti"
+
+#. module: enhance_stock
+#: model:ir.model,name:enhance_stock.model_stock_quant
+msgid "Quants"
+msgstr "Quanti"
+
+#. module: enhance_stock
+#: model:ir.model.fields,help:enhance_stock.field_stock_quant__categ_id
+msgid "Select category for the current product"
+msgstr "Selezionare categoria per il prodotto corrente"
+
+#. module: enhance_stock
+#: model:ir.model.fields,field_description:enhance_stock.field_stock_quant__product_uom_id
+msgid "Unit of Measure"
+msgstr "Unità di misura"
 

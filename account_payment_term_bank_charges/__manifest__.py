@@ -29,10 +29,11 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.1.0.3',
+    'version': '12.0.1.0.5',
     'depends': [
         'base',
         'account',
+        'l10n_it_ddt',
     ],
     'data': [
         "views/account_view.xml",

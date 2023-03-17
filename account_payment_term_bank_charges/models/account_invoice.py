@@ -18,6 +18,8 @@
 ##############################################################################
 from odoo import models, fields, api
 
+CHARGES_SEQUENCE = 1000
+
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
@@ -89,3 +91,28 @@ class AccountInvoice(models.Model):
                 res_id.invoice_line_ids += spese
 
         return res_id
+
+    def write(self, vals):
+        res = super().write(vals)
+        self.update_charges_sequence()
+        return res
+
+    def update_charges_sequence(self):
+        product_sp_inc = self.get_spese_incasso()
+        if product_sp_inc and self.invoice_line_ids:
+            sequences = self.invoice_line_ids.mapped(lambda x: x.sequence)
+            if sequences and len(sequences) > 1:
+                seq = max(sequences)
+                line_product = self.invoice_line_ids.filtered(lambda x: x.product_id.id == product_sp_inc.id)
+
+                if line_product:
+                    line_product.sequence = CHARGES_SEQUENCE
+
+    def get_spese_incasso(self):
+        payment_term_model = self.env['account.payment.term']
+        if self.payment_term_id:
+            payment_term = payment_term_model.browse(self.payment_term_id.id)
+            if payment_term.spese_incasso_id:
+                return payment_term.spese_incasso_id
+        return False
+

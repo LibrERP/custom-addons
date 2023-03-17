@@ -1,7 +1,10 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Created on : 2022-07-27
+#    Copyright (C) 2020-2023 Didotech srl
+#    (<http://www.didotech.com/>).
+#
+#    Created on : 2023-03-14
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,34 +21,36 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Enhance Stock",
 
-    'summary': """
-        Stock extensions""",
+from odoo import api, models, fields, _
 
-    'description': """
-        Extends Stock entity adding action to show products
-         contained into current location.
-    """,
 
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Stock',
-    'version': '12.0.1.0',
+class StockQuant(models.Model):
+    _inherit = 'stock.quant'
 
-    'depends': [
-        'product',
-        'stock',
-    ],
+    categ_id = fields.Many2one(
+        comodel_name='product.category',
+        string='Product Category',
+        related='product_id.categ_id',
+        index=True,
+        store=True,
+        )
 
-    'data': [
-        'views/stock_location_views.xml',
-        'views/stock_quant_views.xml',
-    ],
-    'demo': [],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'AGPL-3',
-}
+#### OVERRIDDEN ORIGINAL FIELDS
+
+    product_tmpl_id = fields.Many2one(
+        comodel_name='product.template',
+        string='Product Template',
+        related='product_id.product_tmpl_id',
+        index=True,
+        readonly=False
+        )
+    product_uom_id = fields.Many2one(
+        comodel_name='uom.uom',
+        string='Unit of Measure',
+        related='product_id.uom_id',
+        index=True,
+        readonly=True, 
+        )
+#### OVERRIDDEN ORIGINAL FIELDS
+
