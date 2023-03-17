@@ -10,7 +10,7 @@ class DdtCreateInvoice(models.TransientModel):
     @api.multi
     def create_invoice(self):
         if self.ddt_ids:
-            self.ddt_ids.sorted(key=lambda stock: stock.date, reverse=True)
+            self.ddt_ids = self.ddt_ids.sorted(key=lambda x: x.date)
             return super().create_invoice()
 
 # class StockPickingPackagePreparation(models.Model):
