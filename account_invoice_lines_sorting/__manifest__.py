@@ -12,11 +12,8 @@
         'base',
         'account',
         'sale',
-        # 'stock',
-        # 'l10n_it_ddt',
-        # 'enhance_l10n_it_ddt',
+        'l10n_it_ddt',
     ],
     'data': [
-        # 'views/account_invoice_view.xml',
     ],
 }
