@@ -7,6 +7,7 @@ from odoo import api, fields, models
 class Sale(models.Model):
     _inherit = "sale.order"
 
+    @api.model
     def create(self, vals):
         order = super().create(vals)
         if order.order_line:
