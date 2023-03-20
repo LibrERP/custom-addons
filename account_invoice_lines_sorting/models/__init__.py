@@ -1,5 +1,5 @@
 from . import sale
-from . import account_invoice_line
+from . import stock_picking_package_preparation
 
 
 
