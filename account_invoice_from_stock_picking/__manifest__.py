@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Account Invoice From Stock Picking',
-    'version': '12.0.2.19',
+    'version': '12.0.2.20',
     'category': 'Accounting',
     'summary': 'Create Invoice from received Stock Pickings',
     'author': 'LibrERP',
