@@ -3,7 +3,7 @@
 
 {
     'name': 'Modules to upgrade',
-    'version': '14.0.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Tools',
     "author": "Didotech srl",
     'website': 'http://www.didotech.com',
@@ -14,7 +14,7 @@
         "views/module_view.xml"
     ],
     'test': [],
-    'installable': False,
-    'auto_install': True,
+    'installable': True,
+    'auto_install': False,
     'application': True,
 }
