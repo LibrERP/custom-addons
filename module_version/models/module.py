@@ -72,7 +72,7 @@ class Module(models.Model):
                 "domain": [('id', 'in', modules.ids)]
             }
         else:
-            raise exceptions.Warning(_('There are no modules that should be updated'))
+            raise exceptions.UserError(_('There are no modules that should be updated'))
 
     def _button_immediate_function(self, function):
         super(Module, self)._button_immediate_function(function)
