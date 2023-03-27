@@ -116,6 +116,9 @@ class MassiveDdtCreation(models.TransientModel):
             # This will create a backorder for move lines that haven't been completed
             if not allow_manual_complete_td:
                 pick_id.action_done()
+            else:
+                pick_id.action_assign()
+                pick_id.state = 'assigned'
             pickings_to_include += pick_id
         return pickings_to_include
 
