@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    LibrERP, Open Source Product Enterprise Management System    
-#    Copyright (C) 2020-2023 Didotech srl (<http://didotech.com>). All Rights Reserved
+#    Copyright (C) 2020-2023 Didotech srl
+#    (<http://www.didotech.com/>).
 #
-#    Created on : 2023-03-26
+#    Created on : 2023-03-27
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -21,35 +21,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Enhance Manufacturing",
 
-    'summary': """
-        Manufacturing extensions""",
+from odoo import api, fields, models, _
 
-    'description': """
-        Manufacturing extensions adding fixes and improvements.
-    """,
 
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Manufacturing',
-    'version': '12.0.0.1.0',
+class MrpWorkorder(models.Model):
+    _inherit = 'mrp.workorder'
 
-    # any module necessary for this one to work correctly
-    'depends': [
-        'mrp',
-    ],
-
-    # always loaded
-    'data': [
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        # 'demo/demo.xml',
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
+    @api.multi
+    def button_done(self):
+        super(MrpWorkorder, self).button_done()
+        for order_id in self:
+            if order_id.production_id and order_id.production_id.workorder_ids:
+                if all([x.state in ('done', 'cancel') for x in order_id.production_id.workorder_ids]):
+                    order_id.production_id.button_done()
