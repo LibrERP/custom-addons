@@ -29,9 +29,9 @@ class MrpWorkorder(models.Model):
     _inherit = 'mrp.workorder'
 
     @api.multi
-    def button_done(self):
-        super(MrpWorkorder, self).button_done()
+    def record_production(self):
+        super(MrpWorkorder, self).record_production()
         for order_id in self:
             if order_id.production_id and order_id.production_id.workorder_ids:
                 if all([x.state in ('done', 'cancel') for x in order_id.production_id.workorder_ids]):
-                    order_id.production_id.button_done()
+                    order_id.production_id.button_mark_done()
