@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    Copyright (C) 2022 Didotech srl
+#    Copyright (C) 2022-2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -32,17 +32,20 @@ class SaleOrder(models.Model):
             order.sale_warn = False
             # ha un fido
             if order.partner_id.credit_limit:
-                order.order_credit_limit = order.partner_id.fido_residuo - order.amount_total
+                order.order_credit_limit = order.partner_id.fido_residuo
+                if order.state == 'draft':
+                     order.order_credit_limit -= order.amount_total
+
                 if order.order_credit_limit < 0:
                     order.sale_warn = True
                     # res = {}
 
             if order.partner_id:
                 amount = 0
-                fiscal_doc_type = self.env['fiscal.document.type'].search([('code', '=', 'TD02')])
+                fiscal_doc_type = self.env['fiscal.document.type'].search_read([('code', '=', 'TD02')], ('id', 'code'))
                 if fiscal_doc_type:
                     invoices = order.invoice_ids.filtered(
-                        lambda i: i.state == 'paid' and i.fiscal_document_type_id.id == fiscal_doc_type.id)
+                        lambda i: i.state == 'paid' and i.fiscal_document_type_id.id == fiscal_doc_type[0]['id'])
                     if invoices:
                         for invoice in invoices:
                             amount += invoice.amount_total

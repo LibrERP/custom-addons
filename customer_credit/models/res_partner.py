@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    Copyright (C) 2022 Didotech SRL
+#    Copyright (C) 2022-2023 Didotech SRL
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published by
@@ -89,16 +89,30 @@ class ResPartner(models.Model):
                 # for order in shopping_orders:
                 #     orders_amount += order.amount_total
 
-                sql = f"""SELECT amount_total
-                FROM sale_order
-                WHERE
-                    partner_id = {record.id} AND
-                    amount_paid > 0
+                # sql = f"""SELECT amount_total
+                # FROM sale_order
+                # WHERE
+                #     partner_id = {record.id} AND
+                #     amount_paid > 0
+                # """
+                # self.env.cr.execute(sql)
+                # res = self.env.cr.dictfetchall()
+                # if res:
+                #     orders_amount += sum(order['amount_total'] for order in res)
+
+                sql = f"""SELECT ol.invoice_status, o.partner_id, ol.price_total, o.state, o.id, o."type" 
+                    FROM sale_order_line AS ol
+                    LEFT JOIN sale_order AS o 
+                    ON o.id = ol.order_id 
+                    WHERE 
+                    ol.invoice_status != 'invoiced' 
+                    AND o.state in ('sale', 'done')
+                    AND o.partner_id = {record.id} 
                 """
                 self.env.cr.execute(sql)
                 res = self.env.cr.dictfetchall()
                 if res:
-                    orders_amount += sum(order['amount_total'] for order in res)
+                    orders_amount += sum(order['price_total'] for order in res)
 
                 # resi ?
                 # domain = [
@@ -189,8 +203,7 @@ class ResPartner(models.Model):
                 riba_amount += sum(line['balance'] for line in self.env.cr.dictfetchall())
 
                 record.fido_utilizzato = record.credit + draft_invoices_amount + orders_amount + riba_amount
-                record.fido_residuo = record.credit_limit - (
-                        record.credit + draft_invoices_amount + orders_amount + riba_amount)
+                record.fido_residuo = record.credit_limit - record.fido_utilizzato
                 record.esposizione_sbf = riba_amount
                 record.fatture_draft = draft_invoices_amount
                 record.saldo_contabile = record.debit - record.credit
@@ -249,27 +262,28 @@ class ResPartner(models.Model):
 
     fido_utilizzato = fields.Float(
         string='Fido utilizzato',
-        compute=_compute_fido,
+        compute='_compute_fido',
+        help="Credito + Fatture Draft + Ordini + RiBa"
     )
 
     fido_residuo = fields.Float(
         string='Fido residuo',
-        compute=_compute_fido,
+        compute='_compute_fido',
     )
 
     saldo_contabile = fields.Float(
         string='Saldo Contabile',
-        compute=_compute_fido,
+        compute='_compute_fido',
     )
 
     fatture_draft = fields.Float(
         string='Fatture da Registrare',
-        compute=_compute_fido,
+        compute='_compute_fido',
     )
 
     esposizione_sbf = fields.Float(
         string='Esposizione SBF',
-        compute=_compute_fido,
+        compute='_compute_fido',
     )
 
     limit_note = fields.Text(
@@ -293,8 +307,8 @@ class ResPartner(models.Model):
 
     overdue_credit = fields.Float(
         string='Totale Scaduto',
-        compute=_compute_overdue_credit,
-        search=_search_overdue_credit,
+        compute='_compute_overdue_credit',
+        search='_search_overdue_credit',
         # store=True,
     )
 

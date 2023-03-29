@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    Copyright (C) 2020-2022 Didotech srl
+#    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
 #    This program is free software: you can redistribute it and/or modify
