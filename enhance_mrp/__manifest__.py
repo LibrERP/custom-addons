@@ -34,7 +34,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Manufacturing',
-    'version': '12.0.0.2.0',
+    'version': '12.0.0.3.1',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -43,6 +43,7 @@
 
     # always loaded
     'data': [
+        'data/scheduled_action.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
