@@ -43,6 +43,7 @@
 
     # always loaded
     'data': [
+        'data/scheduled_action.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
