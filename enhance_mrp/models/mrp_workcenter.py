@@ -1,7 +1,11 @@
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
+#
+#    Created on : 2023-03-27
+#    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,32 +21,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Customer Partner Credit",
 
-    'summary': "Customer credit",
+from odoo import api, exceptions, fields, models, _
 
-    'description': """
-        Extends Partner entities and views.
-    """,
 
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.1.1.3',
-    'depends': [
-        'base',
-        'sale',
-        'sale_order_type',
-        'partner_views_summary',
-        'extend_invoice_from_td',
-    ],
-    'data': [
-        "views/res_partner.xml",
-        "views/sale_view.xml",
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
+class MrpWorkcenter(models.Model):
+    _inherit = 'mrp.workcenter'
+
+### Overrides standard methods
+    @api.depends('blocked_time', 'productive_time')
+    def _compute_oee(self):
+        for order in self:
+            if order.productive_time:
+                prod_time = order.productive_time + order.blocked_time if (order.productive_time + order.blocked_time)>1e-6 else 1 
+                order.oee = round(order.productive_time * 100.0 / (prod_time), 2)
+            else:
+                order.oee = 0.0
+### Overrides standard methods

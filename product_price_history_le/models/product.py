@@ -63,7 +63,7 @@ class ProductSupplierInfo(models.Model):
                 supplier_id = partner_info.name.id
                 history_values = {
                     'user_id': self.env.uid,
-                    'product_id': product_tmpl_id.product_variant_id.id,
+                    'product_id': product_tmpl_id.product_variant_id.id or product_tmpl_id.with_context(active_test=False).product_variant_id.id,
                     'product_tmpl_id': product_tmpl_id.id,
                     'date_to': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT),
                     'supplier_id': supplier_id

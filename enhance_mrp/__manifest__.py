@@ -1,7 +1,11 @@
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2023 Didotech srl
-#    (<http://www.didotech.com/>).
+#    LibrERP, Open Source Product Enterprise Management System    
+#    Copyright (C) 2020-2023 Didotech srl (<http://didotech.com>). All Rights Reserved
+#
+#    Created on : 2023-03-26
+#    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,28 +22,32 @@
 #
 ##############################################################################
 {
-    'name': "Customer Partner Credit",
+    'name': "Enhance Manufacturing",
 
-    'summary': "Customer credit",
+    'summary': """
+        Manufacturing extensions""",
 
     'description': """
-        Extends Partner entities and views.
+        Manufacturing extensions adding fixes and improvements.
     """,
 
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.1.1.3',
+    'category': 'Manufacturing',
+    'version': '12.0.0.3.1',
+
+    # any module necessary for this one to work correctly
     'depends': [
-        'base',
-        'sale',
-        'sale_order_type',
-        'partner_views_summary',
-        'extend_invoice_from_td',
+        'mrp',
     ],
+
+    # always loaded
     'data': [
-        "views/res_partner.xml",
-        "views/sale_view.xml",
+        'data/scheduled_action.xml',
+    ],
+    # only loaded in demonstration mode
+    'demo': [
+        # 'demo/demo.xml',
     ],
     'installable': True,
     'application': False,

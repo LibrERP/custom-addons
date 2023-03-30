@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-27 09:26+0000\n"
-"PO-Revision-Date: 2023-02-27 09:26+0000\n"
+"POT-Creation-Date: 2023-03-27 09:00+0000\n"
+"PO-Revision-Date: 2023-03-27 09:00+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,12 +17,17 @@ msgstr ""
 
 #. module: massive_ddt_creation
 #: model:ir.model.fields,field_description:massive_ddt_creation.field_res_config_settings__allow_over_stock
-msgid "Allows more quantity than in stock availability."
+msgid "Allows more quantity than in stock availability"
 msgstr ""
 
 #. module: massive_ddt_creation
 #: model:ir.model.fields,field_description:massive_ddt_creation.field_res_config_settings__allow_more_qty
 msgid "Allows more quantity than reserved availability."
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,field_description:massive_ddt_creation.field_res_config_settings__allow_manual_complete_td
+msgid "Allows to complete manually TDs"
 msgstr ""
 
 #. module: massive_ddt_creation
@@ -54,8 +59,18 @@ msgid "Display Name"
 msgstr ""
 
 #. module: massive_ddt_creation
+#: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
+msgid "Force TD to be applied on same payment terms flag"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
+msgid "Hide lines without available quantity flag"
+msgstr ""
+
+#. module: massive_ddt_creation
 #: model:ir.model.fields,field_description:massive_ddt_creation.field_res_config_settings__hide_lines_not_ready
-msgid "Hides lines that have reserved availability equal 0"
+msgid "Hides lines that have no reserved quantity"
 msgstr ""
 
 #. module: massive_ddt_creation
@@ -89,6 +104,11 @@ msgstr ""
 
 #. module: massive_ddt_creation
 #: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
+msgid "Manual TD completion flag"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
 msgid "Massive DDT Creation Document Defaults"
 msgstr ""
 
@@ -108,6 +128,21 @@ msgstr ""
 #. module: massive_ddt_creation
 #: model:ir.model.fields,field_description:massive_ddt_creation.field_wizard_massive_ddt_creation_line__move_id
 msgid "Move"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
+msgid "Override reserved quantity availability flag"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model_terms:ir.ui.view,arch_db:massive_ddt_creation.res_config_settings_view_form_stock_ddt_extend
+msgid "Override stock availability flag"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model,name:massive_ddt_creation.model_stock_picking_package_preparation
+msgid "Package Preparation"
 msgstr ""
 
 #. module: massive_ddt_creation
@@ -166,13 +201,38 @@ msgstr ""
 
 #. module: massive_ddt_creation
 #: model:ir.model.fields,field_description:massive_ddt_creation.field_res_config_settings__massive_ddt_same_term
-msgid "Selected massive DDTs must have same payment term"
+msgid "Selected TDs must have same payment term"
 msgstr ""
 
 #. module: massive_ddt_creation
 #: code:addons/massive_ddt_creation/wizard/massive_ddt_creation.py:55
 #, python-format
 msgid "Selected orders must have the same payment term!"
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,help:massive_ddt_creation.field_res_config_settings__allow_manual_complete_td
+msgid "Setting to True TD will be left 'in pack' condition, waiting for manual completion, so to be managed manually. Default False."
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,help:massive_ddt_creation.field_res_config_settings__hide_lines_not_ready
+msgid "Setting to True pickings having no reserved quantity will be hidden. Default False."
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,help:massive_ddt_creation.field_res_config_settings__allow_more_qty
+msgid "Setting to True pickings will be able to override its reserved quantity availability. Default False."
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,help:massive_ddt_creation.field_res_config_settings__allow_over_stock
+msgid "Setting to True pickings will be able to override stock quantity availability. Default False."
+msgstr ""
+
+#. module: massive_ddt_creation
+#: model:ir.model.fields,help:massive_ddt_creation.field_res_config_settings__massive_ddt_same_term
+msgid "Setting to True pickings will be forced to respect the same payment terms. Default False."
 msgstr ""
 
 #. module: massive_ddt_creation

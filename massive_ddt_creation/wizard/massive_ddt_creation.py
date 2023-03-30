@@ -87,6 +87,8 @@ class MassiveDdtCreation(models.TransientModel):
         pickings_to_include = self.env['stock.picking']
         allow_more_qty = self.env['ir.config_parameter'].sudo().get_param(
             'massive_ddt_creation.allow_more_qty')
+        allow_manual_complete_td = self.env['ir.config_parameter'].sudo().get_param(
+            'massive_ddt_creation.allow_manual_complete_td')
         # process pickings and validate
         for picking_id, moves in itertools.groupby(lines, lambda p: p.picking_id.id):
             moves_list = list(moves)
@@ -112,7 +114,11 @@ class MassiveDdtCreation(models.TransientModel):
 
             pick_id = self.env['stock.picking'].browse(picking_id)
             # This will create a backorder for move lines that haven't been completed
-            pick_id.action_done()
+            if not allow_manual_complete_td:
+                pick_id.action_done()
+            else:
+                pick_id.action_assign()
+                pick_id.state = 'assigned'
             pickings_to_include += pick_id
         return pickings_to_include
 
@@ -121,6 +127,8 @@ class MassiveDdtCreation(models.TransientModel):
         pickings_to_include = self.pre_validate()
         # Create ddt using sale order data
         if pickings_to_include:
+            allow_manual_complete_td = self.env['ir.config_parameter'].sudo().get_param(
+                'massive_ddt_creation.allow_manual_complete_td')
             ddtType = self.env['stock.picking.package.preparation']
             ddt_wizard = self.env['ddt.from.pickings'].create(
                 {'picking_ids': [(6, 0, pickings_to_include.ids)], 'type_ddt': self.type_ddt.id})
@@ -135,7 +143,10 @@ class MassiveDdtCreation(models.TransientModel):
                         'transportation_method_id': self.type_ddt.default_transportation_method_id.id or False,
                     }
                     ddt_id.write(values)
-                ddt_id.set_done()
+                if not allow_manual_complete_td:
+                    ddt_id.set_done()
+                else:
+                    ddt_id.action_put_in_pack()
             return ddt_action
 
         return {'type': 'ir.actions.act_window_close'} # If no picking was processed just close wizard

@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_order_destination
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-17 10:02+0000\n"
+"PO-Revision-Date: 2023-03-17 10:02+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_order_destination
+#: model:ir.model.fields,field_description:sale_order_destination.field_sale_order__partner_shipping_name
+#: model_terms:ir.ui.view,arch_db:sale_order_destination.sale_order_destination_search_inherit_quotation
+#: model_terms:ir.ui.view,arch_db:sale_order_destination.sale_order_destination_search_inherit_sale
+msgid "Destination"
+msgstr "Destinazione"
+
+#. module: sale_order_destination
+#: model:ir.model,name:sale_order_destination.model_sale_order
+msgid "Sale Order"
+msgstr "Ordine di Vendita"

@@ -9,31 +9,58 @@
                 <h2 id="ddt_defaults">Massive DDT Creation Document Defaults</h2>
                 <div class="row mt16 o_settings_container" id="massive_ddt_info">
                     <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane"/>
-                        <div class="o_setting_right_pane">
-                   			<label for="hide_lines_not_ready"/>
+                        <div class="o_setting_left_pane">
                    			<field name="hide_lines_not_ready" />
                         </div>
+                        <div class="o_setting_right_pane">
+                   			<label for="hide_lines_not_ready"/>
+                             <div class="text-muted">
+                                Hide lines without available quantity flag
+                            </div>
+                        </div>
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_left_pane">
+                  			<field name="massive_ddt_same_term" />
+                        </div>
                         <div class="o_setting_right_pane">
                    			<label for="massive_ddt_same_term"/>
-                   			<field name="massive_ddt_same_term" />
+                             <div class="text-muted">
+                                Force TD to be applied on same payment terms flag
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane"/>
-                        <div class="o_setting_right_pane">
-                   			<label for="allow_more_qty"/>
+                        <div class="o_setting_left_pane">
                    			<field name="allow_more_qty" />
                         </div>
+                        <div class="o_setting_right_pane">
+                   			<label for="allow_more_qty"/>
+                            <div class="text-muted">
+                                Override reserved quantity availability flag
+                            </div>
+                        </div>
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_left_pane">
+                   			<field name="allow_over_stock" />
+                        </div>
                         <div class="o_setting_right_pane">
                    			<label for="allow_over_stock"/>
-                   			<field name="allow_over_stock" />
+                             <div class="text-muted">
+                                Override stock availability flag
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                   			<field name="allow_manual_complete_td" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                   			<label for="allow_manual_complete_td"/>
+                            <div class="text-muted">
+                                Manual TD completion flag
+                            </div>
                         </div>
                     </div>
             	</div>

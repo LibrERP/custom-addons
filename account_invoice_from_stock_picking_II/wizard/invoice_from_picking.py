@@ -107,7 +107,8 @@ class InvoiceFromPickings(models.TransientModel):
                 invoice_type = 'out_refund'
             elif count == 1:
                 invoice_type = 'in_invoice'
-            elif picking.returned_by and invoice_type == 'in_invoice' or invoice_type == 'out_refund':
+            elif (picking.returned_by and invoice_type == 'in_invoice') \
+                 or (not picking.returned_by and invoice_type == 'out_refund'):
                 raise Warning(
                     _("All selected transfers should be of the same type Mixing of Refunds and Invoices is not permitted"))
 
