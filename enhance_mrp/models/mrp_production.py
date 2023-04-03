@@ -59,3 +59,18 @@ class MrpProduction(models.Model):
         for production_id in production_ids:
             production_id.action_assign()
 
+    @api.model
+    def recursive_cancel(self):
+        """
+            Applies recursive Cancel on mrp orders
+        """
+        if self:
+            criteria = [
+                ('origin', '=', self.name),
+                ('state', 'in', ['confirmed', 'planned'])
+                ]
+            for mfg_order_id in self.search(criteria):
+                mfg_order_id.recursive_cancel()
+            if (self.state in ['confirmed', 'planned']):
+                self.action_cancel()
+
