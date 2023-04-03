@@ -21,7 +21,8 @@ import time
 import datetime
 import multiprocessing
 import threading
-from odoo import models, fields, api, registry
+from odoo import models, fields, api, registry, sql_db
+from odoo.modules.registry import Registry
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -105,18 +106,24 @@ class CreateInvoiceProcess(multiprocessing.Process):
         self.name_process = name_process
         self.invoice_ids = invoice_ids
         self.data_env = env
-        with api.Environment.manage():
-            with registry(env[0]).cursor() as new_cr:
-                self.new_env = api.Environment(new_cr, env[1], env[2])
-        self.cr = self.new_env.cr
+        # with api.Environment.manage():
+        #     with registry(env[0]).cursor() as new_cr:
+        #         self.new_env = api.Environment(new_cr, env[1], env[2])
+        # self.new_connection = sql_db.db_connect(env[0])
+        # self.cr = self.new_connection.cursor()
 
     def run(self):
         _logger.info(f'CreateInvoiceProcess running..{self.name_process}')
 
+        registry = Registry.new(self.data_env[0])
         with api.Environment.manage():
-            with registry(self.data_env[0]).cursor() as new_cr:
-                current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-                cursor = current_env.cr
+            with registry.cursor() as cr:
+                _logger.info('cursore {cr}'.format(cr=cr))
+
+                current_env = api.Environment(cr, self.data_env[1], self.data_env[2])
+
+                _logger.info('env {env}'.format(env=current_env))
+
                 try:
                     cntx = self.data_env[2]
                     for partner_group in self.partner_list:
@@ -137,15 +144,51 @@ class CreateInvoiceProcess(multiprocessing.Process):
                             except Exception as e:
                                 # Annulla le modifiche fatte
                                 _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                                cursor.rollback()
+                                cr.rollback()
                             finally:
-                                cursor.commit()
-                    cursor.commit()
+                                cr.commit()
+                    cr.commit()
                 except Exception as e:
                     # Annulla le modifiche fatte
                     _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                    cursor.rollback()
+                    cr.rollback()
                 _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
+
+            #
+            # with registry(self.data_env[0]).cursor() as new_cr:
+            #     # current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
+            #     current_env = api.Environment(self.cr, self.data_env[1], self.data_env[2])
+            #     # cursor = current_env.cr
+            #     cursor = self.cr
+            #     try:
+            #         cntx = self.data_env[2]
+            #         for partner_group in self.partner_list:
+            #             pterm = {}
+            #             dmn = partner_group.get('__domain')
+            #             payment_terms = current_env['stock.picking.package.preparation'].sudo().search(dmn)
+            #             for td in payment_terms:
+            #                 if td.payment_term_id.id not in pterm:
+            #                     pterm[td.payment_term_id.id] = current_env['stock.picking.package.preparation']
+            #                 pterm[td.payment_term_id.id] |= td
+            #
+            #             # stock_picking_to_invoice_ids = current_env['stock.picking.package.preparation'].sudo().search(
+            #             #     partner_group.get('__domain'))
+            #             for key, value in pterm.items():
+            #                 try:
+            #                     create_invoice_res = value.with_context(cntx).action_invoice_create()
+            #                     # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
+            #                 except Exception as e:
+            #                     # Annulla le modifiche fatte
+            #                     _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+            #                     cursor.rollback()
+            #                 finally:
+            #                     cursor.commit()
+            #         cursor.commit()
+            #     except Exception as e:
+            #         # Annulla le modifiche fatte
+            #         _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
+            #         cursor.rollback()
+            #     _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
 
 
 # class WaitCreditNoteProcess(threading.Thread):
