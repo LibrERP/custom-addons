@@ -45,7 +45,8 @@ class IrActionsReport(models.Model):
             run_subprocess(cmd, timeout)
         except Exception as exc:
             os.remove(temp_file.name)
-            _logger.info('Eccezione {nome}'.format(nome=exec))
+            print(exc.args)
+            _logger.info('Eccezione {nome}'.format(nome=exc))
             raise ValidationError(
                 _('Could not generate the report %(report)s '
                   'using the format %(output_format)s. '
