@@ -6,7 +6,7 @@
 
 {
     'name': 'Aeroo Reports Subprocess Fix',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'category': 'Generic Modules/Aeroo Reports',
     'summary': 'Fix subprocess handling',
     'author': 'Didotech s.r.l.',

@@ -4,11 +4,14 @@
 # © 2022 Didotech srl (https://www.didotech.com)
 # License GPL-3.0 or later (http://www.gnu.org/licenses/gpl).
 import os
+import logging
 from odoo import models, fields, api, tools, _
 from odoo.exceptions import ValidationError
 from tempfile import NamedTemporaryFile
 from .subprocess import run_subprocess
 from odoo.addons.report_aeroo.models.ir_actions_report import IrActionsReport as OriginelIrActionsReport
+
+_logger = logging.getLogger(__name__)
 
 
 class IrActionsReport(models.Model):
@@ -42,6 +45,7 @@ class IrActionsReport(models.Model):
             run_subprocess(cmd, timeout)
         except Exception as exc:
             os.remove(temp_file.name)
+            _logger.info('Eccezione {nome}'.format(nome=exec))
             raise ValidationError(
                 _('Could not generate the report %(report)s '
                   'using the format %(output_format)s. '
@@ -72,6 +76,7 @@ def generate_temporary_file(format, data=None):
     if data is not None:
         with open(temp_file.name, 'wb') as f:
             f.write(data)
+    _logger.info('file generato {nome}'.format(nome=temp_file))
     return temp_file
 
 
