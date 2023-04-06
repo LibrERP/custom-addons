@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import models, fields, api
-from odoo.addons.account_financial_report.report.aged_partner_balance import AgedPartnerBalanceReportCompute as OriginalAgedPartnerBalanceReportCompute
+# from odoo.addons.account_financial_report.report.aged_partner_balance import AgedPartnerBalanceReportCompute as OriginalAgedPartnerBalanceReportCompute
 
 
 class AgedPartnerBalanceReport(models.TransientModel):
@@ -65,7 +65,18 @@ SELECT
     rp.id AS report_partner_id,
     %s AS create_uid,
     NOW() AS create_date,
-    rp.name,
+      """
+        if self.env.context.get('export_cribis'):
+            query_inject_line += """
+        rp.partner_id,
+            """
+        else:
+            query_inject_line += """
+            rp.name,
+            """
+
+        query_inject_line += """
+    
     SUM(rlo.amount_residual) AS amount_residual,
     SUM(
         CASE
@@ -140,7 +151,7 @@ WHERE
 AND ra.report_id = %s """
         if self.hide_account_at_0:
             query_inject_line += """
-AND SUM(rlo.amount_residual) != 0.00
+AND amount_residual != 0.00
 """
 
         query_inject_line += """
@@ -155,6 +166,6 @@ GROUP BY
         )
         self.env.cr.execute(query_inject_line, query_inject_line_params)
 
-OriginalAgedPartnerBalanceReportCompute._inject_line_values = AgedPartnerBalanceReportCompute._inject_line_values
+# OriginalAgedPartnerBalanceReportCompute._inject_line_values = AgedPartnerBalanceReportCompute._inject_line_values
 
 
