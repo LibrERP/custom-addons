@@ -6,10 +6,13 @@ import psutil
 import signal
 import subprocess
 import time
+import logging
 
 from odoo import _
 from odoo.exceptions import ValidationError
 from typing import List
+
+_logger = logging.getLogger(__name__)
 
 
 def run_subprocess(command: List[str], timeout):
@@ -29,6 +32,7 @@ def run_subprocess(command: List[str], timeout):
         if status is 0:
             break
         elif status is not None:
+            _logger.info('Errore validazione {errore}'.format(errore=error))
             raise ValidationError(
                 _('Command {command} exited with status {status} and error {error}.').format(
                     command=command,

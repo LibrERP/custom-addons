@@ -76,7 +76,7 @@ def generate_temporary_file(format, data=None):
     if data is not None:
         with open(temp_file.name, 'wb') as f:
             f.write(data)
-    _logger.info('file generato {nome}'.format(nome=temp_file))
+    # _logger.info('file generato {nome}'.format(nome=temp_file))
     return temp_file
 
 
