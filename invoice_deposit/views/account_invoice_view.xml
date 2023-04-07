@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_invoice_form_deposit" model="ir.ui.view">
+        <field name="name">view.account.invoice.form.deposit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='other_info']/group/group[1]/field[@name='account_id']" position="after">
+                    <field name="has_deposit" />
+                    <field name="deposit" attrs="{'invisible': [('has_deposit','=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>
