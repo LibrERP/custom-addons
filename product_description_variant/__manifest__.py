@@ -1,8 +1,8 @@
-# © 2016-2022 Andrei Levin - Didotech srl (www.didotech.com)
+# © 2016-2023 Andrei Levin - Didotech srl (www.didotech.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Product description per variant',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'author': 'Didotech srl',
     'category': 'Product Management',
     'depends': [
