@@ -98,22 +98,29 @@ class AccountInvoice(models.Model):
         return res
 
     def update_charges_sequence(self):
-        product_sp_inc = self.get_spese_incasso()
-        if product_sp_inc and self.invoice_line_ids:
-            sequences = self.invoice_line_ids.mapped(lambda x: x.sequence)
-            if sequences and len(sequences) > 1:
-                seq = max(sequences)
-                line_product = self.invoice_line_ids.filtered(lambda x: x.product_id.id == product_sp_inc.id)
 
-                if line_product and not line_product.invoice_line_tax_ids:
-                    # line_product.sequence = CHARGES_SEQUENCE
-                    tax_id = product_sp_inc.taxes_id.id
-                    line_product.write({
-                        'invoice_line_tax_ids': [(6, 0, [tax_id])],
-                        'sequence': CHARGES_SEQUENCE,
-                    })
+        for invoice in self:
+
+            product_sp_inc = invoice.get_spese_incasso()
+
+            if product_sp_inc and invoice.invoice_line_ids:
+                sequences = invoice.invoice_line_ids.mapped(lambda x: x.sequence)
+                if sequences and len(sequences) > 1:
+                    seq = max(sequences)
+                    line_product = invoice.invoice_line_ids.filtered(lambda x: x.product_id.id == product_sp_inc.id)
+
+                    if line_product and not line_product.invoice_line_tax_ids:
+                        # line_product.sequence = CHARGES_SEQUENCE
+                        tax_id = product_sp_inc.taxes_id.id
+                        line_product.write({
+                            'invoice_line_tax_ids': [(6, 0, [tax_id])],
+                            'sequence': CHARGES_SEQUENCE,
+                        })
 
     def get_spese_incasso(self):
+
+        self.ensure_one()
+
         payment_term_model = self.env['account.payment.term']
         if self.payment_term_id:
             payment_term = payment_term_model.browse(self.payment_term_id.id)
