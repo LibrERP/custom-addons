@@ -84,9 +84,12 @@ class AccountInvoice(models.Model):
 
         if self.has_deposit and residual > 0:
             self.residual = abs(residual - self.deposit)
+            self.residual_company_signed = abs(residual_company_signed - self.deposit) * sign
+            self.residual_signed = abs(residual - self.deposit) * sign
+        else:
+            self.residual_company_signed = abs(residual_company_signed) * sign
+            self.residual_signed = abs(residual) * sign
 
-        self.residual_company_signed = abs(residual_company_signed - self.deposit) * sign
-        self.residual_signed = abs(residual  - self.deposit) * sign
         digits_rounding_precision = self.currency_id.rounding
         if float_is_zero(self.residual, precision_rounding=digits_rounding_precision):
             self.reconciled = True
