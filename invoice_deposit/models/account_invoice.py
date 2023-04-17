@@ -82,7 +82,7 @@ class AccountInvoice(models.Model):
                 else:
                     residual += line.company_id.currency_id._convert(line.amount_residual, self.currency_id, line.company_id, line.date or fields.Date.today())
 
-        if self.has_deposit:
+        if self.has_deposit and residual > 0:
             self.residual = abs(residual - self.deposit)
 
         self.residual_company_signed = abs(residual_company_signed - self.deposit) * sign
