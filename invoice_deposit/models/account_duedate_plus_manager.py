@@ -40,10 +40,11 @@ class DueDateManager(models.Model):
         row = {}
         row = super().__extra_line(inv_date, payment_method_id, types)
         if types['deposit']:
+            payment_method_tax = self.env['account.payment.method'].search([('code', '=', 'tax')])
             row['due_amount'] = self.invoice_id.deposit
             row['duedate_manager_id'] = self.id
             row['due_date'] = inv_date
-            row['payment_method_id'] = payment_method_id
+            row['payment_method_id'] = payment_method_tax
 
         return row
 
@@ -59,10 +60,12 @@ class DueDateManager(models.Model):
             param_cm['invoice_date'].strftime('%Y-%m-%d'),
         )
         if 'deposit' in types_amount and bool(types_amount['deposit']):
+            payment_method_tax = self.env['account.payment.method'].search([('code', '=', 'tax')])
+
             line['duedate_manager_id'] = self.id
             line['due_amount'] = self.invoice_id.deposit
             line['due_date'] = split_date
-            line['payment_method_id'] = payment_method_id
+            line['payment_method_id'] = payment_method_tax
         # end if
 
         return line
