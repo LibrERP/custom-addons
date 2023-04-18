@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- equiment.request : views -->
+    <record id="hr_equipment_request_view_search_enhance" model="ir.ui.view">
+        <field name="name">equipment.request.search.enhance</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+            	<field name="owner_id"/>
+            	<field name="serial_no"/>
+            </field>
+             <xpath expr="//filter[@name='assigned']" position="before">
+            	<filter string='Customer' name="owner" domain="[]" context="{'group_by': 'owner_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_equipment_request_view_form_enhance" model="ir.ui.view">
+        <field name="name">equipment.request.form.enhance</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='oe_right']" position="before">
+                     <div class="oe_button_box" name="button_box">
+                        <button name="open_view_invoice"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-pencil-square-o"
+                            attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                            <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                        </button>
+                        <button name="open_view_sale"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-th-list"
+                            attrs="{'invisible': [('sales_count', '=', 0)]}">
+                            <field name="sales_count" widget="statinfo" string="Sale Orders"/>
+                        </button>
+                    </div>
+            </xpath>
+            <field name="equipment_id" position="after">
+            	<field name="owner_id"/>
+           		<field name="editable" invisible="1"/>
+            </field>
+            <field name="description" position="replace">
+                <notebook>
+                    <page string="Description">
+                        <field name="description" nolabel="1"/>
+                    </page>
+                    <page string="Spare Products" name="spare_lines">
+                        <field name="spare_ids" nolabel="1" mode="tree" attrs="{'readonly': [('editable', '=', False)]}">
+                             <tree string="Sales Order Lines" editable="bottom">
+                                 <field name="maint_sale_line_id" invisible="1"/>
+                             	 <field name="sequence" widget="handle" />
+                                 <field name="product_id" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_note"/>
+                                 <field name="product_uom_qty" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_uom"/>
+                                 <field name="product_price" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                             </tree>
+                        </field>
+                         <group class="oe_subtotal_footer oe_right" name="spare_prices">
+                            <field name="spare_price" 
+                                   widget="monetary"
+                                   class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </page>
+                    <page string="Timesheets" name="timesheet_lines">
+                        <field name="timesheet_ids" mode="tree" attrs="{'readonly': [('editable', '=', False)]}">
+                            <tree editable="bottom" string="Timesheet Activities" default_order="date">
+                                <field name="maint_sale_line_id" invisible="1"/>
+                                <field name="date" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="user_id" invisible="1"/>
+                                <field name="employee_id" required="1" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="name"/>
+                                <field name="unit_amount"
+                                       widget="float_time"
+                                       attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="maintenance_id" invisible="1"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" name="maintenance_hours">
+                            <field name="effective_hours" widget="float_time" />
+                            <field name="remaining_hours" widget="float_time" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </page>
+                    <page string="Expenses" name="expense_lines">
+                        <field name="expense_ids" mode="tree" attrs="{'readonly': [('editable', '=', False)]}">
+                            <tree editable="bottom" string="Expenses" default_order="date">
+                                <field name="maint_sale_line_id" invisible="1"/>
+                                <field name="date" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="state" invisible="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="employee_id" required="1" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="name"/>
+                                <field name="product_id" invisible="1"/>
+                                <field name="unit_amount" invisible="1"/>
+                                <field name="is_acceptable"
+                                       groups="hr_expense.group_hr_expense_manager"
+                                       attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="unit_amount_line"
+                                       widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"
+                                       attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                <field name="maintenance_id" invisible="1"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right" name="maintenance_expenses">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="refused_expenses"
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"/>
+                            <field name="effective_expenses" 
+                                   widget="monetary"
+                                   options="{'currency_field': 'currency_id'}"
+                                   class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_equipment_request_view_tree_enhance" model="ir.ui.view">
+        <field name="name">equipment.request.tree.enhance</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+            	<field name="equipment_id"/>
+            	<field name="owner_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_equipment_request_view_kanban_enhance" model="ir.ui.view">
+        <field name="name">equipment.request.kanban.enhance</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_kanban"/>
+        <field name="arch" type="xml">
+            <field name="equipment_id" position="after">
+            	<field name="owner_id"/>
+            </field>
+            <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+            	<span t-if="record.owner_id.raw_value"><br/>Customer : <field name="owner_id"/></span>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="equipment_request_sale_orders_action" model="ir.actions.server">
+            <field name="name">Create / Queue Sale Order</field>
+            <field name="model_id" ref="model_maintenance_request"/>
+            <field name="binding_model_id" ref="model_maintenance_request"/>
+            <field name="state">code</field>
+            <field name="code">records.action_create_sale_orders()</field>
+        </record>
+
+    <!-- equiment : views -->
+    <record id="hr_equipment_view_form_enhance" model="ir.ui.view">
+        <field name="name">equipment.form.enhance</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="before">
+            	<field name="owner_id"/>
+            </field>
+            <xpath expr="//field[@name='warranty_date']" position="before">
+            	<field name="sales_date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_equipment_view_kanban_enhance" model="ir.ui.view">
+        <field name="name">equipment.kanban.enhance</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+            	<field name="owner_id"/>
+            </field>
+            <xpath expr="//div[@class='o_kanban_record_top']" position="replace">
+            	<span t-if="record.category_id.raw_value"><field name="category_id"/><br/></span>
+            	<b class="o_kanban_record_title"><field name="name"/> </b>
+            	<t t-if="record.model.raw_value">
+            		<t t-if="record.partner_id.raw_value">
+            			<b><small><span> (<field name="partner_id"/> <field name="model"/>)</span></small></b>
+            		</t>
+            		<t t-else="record.partner_id.raw_value">
+             			<b><small><span> (<field name="model"/>)</span></small></b>
+            		</t>
+            	</t>
+            </xpath>
+            <xpath expr="//div[@class='o_kanban_record_body']" position="inside">
+            	<span t-if="record.owner_id.raw_value"><br/>Customer : <field name="owner_id"/></span>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_equipment_view_tree_enhance" model="ir.ui.view">
+        <field name="name">equipment.tree.enhance</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+            	<field name="owner_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_equipment_view_search_enhance" model="ir.ui.view">
+        <field name="name">equipment.search.enhance</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+            	<field name="owner_id"/>
+           		<field name="serial_no"/>
+            </field>
+            <xpath expr="//filter[@name='vendor']" position="after">
+            	<filter string='Customer' name="owner" domain="[]" context="{'group_by': 'owner_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
