@@ -62,37 +62,31 @@ class AccountInvoice(models.Model):
                 raise UserError('Attenzione\nLa caparra deve essere minore dell\'importo totale della fattura.')
         return res
 
-    @api.one
-    @api.depends(
-        'state', 'currency_id', 'invoice_line_ids.price_subtotal',
-        'move_id.line_ids.amount_residual',
-        'move_id.line_ids.currency_id')
-    def _compute_residual(self):
-        res = super()._compute_residual()
-        residual = 0.0
-        residual_company_signed = 0.0
-        sign = self.type in ['in_refund', 'out_refund'] and -1 or 1
-        for line in self._get_aml_for_amount_residual():
-            residual_company_signed += line.amount_residual
-            if line.currency_id == self.currency_id:
-                residual += line.amount_residual_currency if line.currency_id else line.amount_residual
+    def _get_aml_for_amount_residual(self):
+        """ Get the aml to consider to compute the amount residual of invoices """
+        self.ensure_one()
+        res = super()._get_aml_for_amount_residual()
+        if self.has_deposit:
+            return self.sudo().move_id.line_ids.filtered(lambda l: l.account_id == self.account_id and l.payment_method.code != 'tax')
+        else:
+            return res
+    #
+    @api.multi
+    def _get_aml_caparra_for_register_payment(self):
+        """ Get the aml caparra to consider to reconcile in register payment """
+        self.ensure_one()
+        res = super()._get_aml_for_register_payment()
+        return self.sudo().move_id.line_ids.filtered(lambda l: l.account_id == self.account_id and l.payment_method.code == 'tax')
+
+    @api.multi
+    def register_payment(self, payment_line, writeoff_acc_id=False, writeoff_journal_id=False):
+        """ Reconcile payable/receivable lines from the invoice with payment_line """
+        line_to_reconcile = self.env['account.move.line']
+        for inv in self:
+            if inv.has_deposit and payment_line.credit == inv.deposit:
+                line_to_reconcile += inv._get_aml_caparra_for_register_payment()
             else:
-                if line.currency_id:
-                    residual += line.currency_id._convert(line.amount_residual_currency, self.currency_id, line.company_id, line.date or fields.Date.today())
-                else:
-                    residual += line.company_id.currency_id._convert(line.amount_residual, self.currency_id, line.company_id, line.date or fields.Date.today())
-
-        if self.has_deposit and residual > 0:
-            self.residual = abs(residual - self.deposit)
-            self.residual_company_signed = abs(residual_company_signed - self.deposit) * sign
-            self.residual_signed = abs(residual - self.deposit) * sign
-        else:
-            self.residual_company_signed = abs(residual_company_signed) * sign
-            self.residual_signed = abs(residual) * sign
-
-        digits_rounding_precision = self.currency_id.rounding
-        if float_is_zero(self.residual, precision_rounding=digits_rounding_precision):
-            self.reconciled = True
-        else:
-            self.reconciled = False
+                line_to_reconcile += inv._get_aml_for_register_payment()
+        # return super().register_payment(payment_line, writeoff_acc_id, writeoff_journal_id)
+        return (line_to_reconcile + payment_line).reconcile(writeoff_acc_id, writeoff_journal_id)
 
