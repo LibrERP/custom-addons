@@ -83,8 +83,10 @@ class AccountInvoice(models.Model):
         """ Reconcile payable/receivable lines from the invoice with payment_line """
         line_to_reconcile = self.env['account.move.line']
         for inv in self:
-            if inv.has_deposit and payment_line.credit == inv.deposit:
-                line_to_reconcile += inv._get_aml_caparra_for_register_payment()
+            # se ha una caparra e non è stata riconciliata
+            line = inv._get_aml_caparra_for_register_payment()
+            if inv.has_deposit and payment_line.credit == inv.deposit and line and line.reconciled is False:
+                line_to_reconcile += line
             else:
                 line_to_reconcile += inv._get_aml_for_register_payment()
         # return super().register_payment(payment_line, writeoff_acc_id, writeoff_journal_id)
