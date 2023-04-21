@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_invoice_form_deposit" model="ir.ui.view">
+        <field name="name">view.account.invoice.form.deposit</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='other_info']/group/group[1]/field[@name='account_id']" position="after">
+                    <field name="has_deposit" />
+                    <field name="deposit" attrs="{'invisible': [('has_deposit','=', False)]}"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+        <!--
+        INVOICE CUSTOMER
+        -->
+        <record id="view_invoice_form_deposit_totals"  model="ir.ui.view" >
+            <field name="name">view.amount.invoice.form.deposit.totals</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/sheet/group/group[2]" position="inside">
+                    <field name="has_deposit" invisible="1" />
+                    <field name="deposit" widget="monetary" class="oe_subtotal_footer_separator"
+                        attrs="{'invisible': [('has_deposit', '=', False)]}"/>
+                </xpath>
+
+
+                <xpath expr="//group[hasclass('oe_subtotal_footer', 'oe_right')]/field[@name='amount_total']" position="after">
+                    <field name="has_deposit" invisible="1" />
+                    <field name="deposit" widget="monetary" class="oe_subtotal_footer_separator"
+                        attrs="{'invisible': [('has_deposit', '=', False)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--
+        INVOICE SUPPLIER
+        -->
+        <record id="view_amount_supplier_form_deposit_totals" model="ir.ui.view">
+            <field name="name">view.amount.invoice.supplier.form.deposit.totals</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[hasclass('oe_subtotal_footer', 'oe_right')]/field[@name='amount_total']" position="after">
+                    <field name="has_deposit" invisible="1" />
+                    <field name="deposit" widget="monetary" class="oe_subtotal_footer_separator"
+                        attrs="{'invisible': [('has_deposit', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+</odoo>
