@@ -27,6 +27,9 @@ from odoo import api, models, fields, _
 # from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
+import logging
+_logger = logging.getLogger(__name__)
+
 
 PAYMENT_STATUSES = [
     ('no', "Nothing to pay"),
@@ -86,8 +89,9 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_invoice_status(self):
+        total_count = len(self)
         for count, order in enumerate(self, start=1):
-            # print(count)
+            _logger.info(f"Updating Invoice Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to invoice' if order.order_line else 'no'
