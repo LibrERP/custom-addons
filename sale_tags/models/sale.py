@@ -58,7 +58,9 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_delivery_status(self):
-        for order in self:
+        total_count = len(self)
+        for count, order in enumerate(self, start=1):
+            _logger.info(f"Updating Delivery Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to deliver' if order.order_line else 'no'
@@ -73,7 +75,9 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_payment_status(self):
-        for order in self:
+        total_count = len(self)
+        for count, order in enumerate(self, start=1):
+            _logger.info(f"Updating Payment Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to pay' if order.order_line else 'no'
