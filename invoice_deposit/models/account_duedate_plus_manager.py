@@ -37,8 +37,7 @@ class DueDateManager(models.Model):
 
     @api.model
     def _extra_line(self, inv_date, payment_method_id, types):
-        row = {}
-        row = super().__extra_line(inv_date, payment_method_id, types)
+        row = super()._extra_line(inv_date, payment_method_id, types)
         if types['deposit']:
             payment_method_tax = self.env['account.payment.method'].search([('code', '=', 'tax')])
             row['due_amount'] = self.invoice_id.deposit
