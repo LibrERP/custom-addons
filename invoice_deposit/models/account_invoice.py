@@ -62,7 +62,7 @@ class AccountInvoice(models.Model):
     @api.model
     def create(self, vals):
         res = super().create(vals)
-        if 'has_deposit' in vals and 'deposit' in vals:
+        if 'has_deposit' in vals and vals['has_deposit'] is True and 'deposit' in vals:
             if vals['deposit'] > res.amount_total:
                 raise UserError('Attenzione\nLa caparra deve essere minore dell\'importo totale della fattura.')
             self.update_duedates()
