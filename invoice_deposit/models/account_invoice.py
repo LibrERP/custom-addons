@@ -46,7 +46,12 @@ class AccountInvoice(models.Model):
                         if values['deposit'] > invoice.amount_total:
                             raise UserError(
                                 'Attenzione\nLa caparra deve essere minore dell\'importo totale della fattura.')
-                    invoice.update_duedates()
+
+                        # end if
+                    # end if
+
+                    if 'has_deposit' in values and values['has_deposit'] is True or invoice.has_deposit:
+                        invoice.action_update_duedates_and_move_lines()
                 # end if
 
             # end for
@@ -57,9 +62,10 @@ class AccountInvoice(models.Model):
     @api.model
     def create(self, vals):
         res = super().create(vals)
-        if 'has_deposit' in vals and 'deposit' in vals:
+        if 'has_deposit' in vals and vals['has_deposit'] is True and 'deposit' in vals:
             if vals['deposit'] > res.amount_total:
                 raise UserError('Attenzione\nLa caparra deve essere minore dell\'importo totale della fattura.')
+            self.update_duedates()
         return res
 
     def _get_aml_for_amount_residual(self):
