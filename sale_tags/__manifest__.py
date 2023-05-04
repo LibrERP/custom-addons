@@ -1,7 +1,4 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    Copyright (C) 2020-2021 Didotech srl
+#    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
 #    Created on : 2021-07-05
@@ -37,7 +34,7 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Sales',
-    'version': '12.0.0.3.1',
+    'version': '12.0.0.3.4',
 
     # any module necessary for this one to work correctly
     'depends': [

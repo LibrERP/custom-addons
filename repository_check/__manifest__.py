@@ -1,4 +1,4 @@
-# © 2020 Didotech srl (www.didotech.com)
+# © 2020-2023 Didotech srl (www.didotech.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
@@ -22,7 +22,7 @@ And to verify 'git' executable is in the PATH
     "author": "Didotech SRL",
     'website': 'http://www.didotech.com',
     'category': 'Tools',
-    'version': '1.12.8',
+    'version': '1.12.9',
 
     # any module necessary for this one to work correctly
     'depends': [

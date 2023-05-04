@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_spare_line_user,maintenance.spare.line.user,model_maintenance_spare_line,base.group_user,1,1,1,1
+access_expense_user,maintenance.expense.user,model_hr_expense,base.group_user,1,1,1,1
+access_maintenance_sale_rel,maintenance.sale.rel,model_maintenance_sale_rel,base.group_user,1,1,1,1
+access_invoice_sale_rel,maintenance.invoice.rel,model_maintenance_invoice_rel,base.group_user,1,1,1,1
