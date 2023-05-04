@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!--    <template id="report_quotation_inherit_demo" inherit_id="sale.report_saleorder_document">-->
-<!--    </template>-->
-
-    <template id="report_general_ledger_qweb">
+    <template id="report_general_ledger_qweb_by_move" inherit_id="account_financial_report.report_general_ledger_qweb">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="account_financial_report.internal_layout">
-                    <t t-call="account_financial_report.report_general_ledger_base"/>
+                    <t t-call="account_financial_report_ledger_by_move.report_general_ledger_base_by_move"/>
                 </t>
             </t>
         </t>
     </template>
 
-    <template id="report_general_ledger_base">
+    <template id="report_general_ledger_base_by_move" inherit_id="account_financial_report.report_general_ledger_base">
         <!-- Saved flag fields into variables, used to define columns display -->
         <t t-set="show_analytic_tags" t-value="o.show_analytic_tags"/>
         <t t-set="show_cost_center" t-value="o.show_cost_center"/>
@@ -28,6 +25,7 @@
             </div>
             <!-- Display filters -->
             <t t-call="account_financial_report.report_general_ledger_filters"/>
+            <t t-set="group_by_move" t-value="o.group_by_move"/>
             <t t-foreach="o.account_ids" t-as="account">
                 <div class="page_break">
                     <!-- Display account header -->
@@ -40,9 +38,17 @@
                     <t t-if="not account.partner_ids">
                         <!-- Display account move lines without partner regroup -->
                         <t t-set="type" t-value='"account_type"'/>
-                        <t t-call="account_financial_report.report_general_ledger_lines">
-                            <t t-set="account_or_partner_object" t-value="account"/>
+                        <t t-if="group_by_move">
+                            <t t-call="account_financial_report.report_general_ledger_moves">
+                                <t t-set="account_or_partner_object" t-value="account"/>
+                            </t>
                         </t>
+                        <t t-if="not group_by_move">
+                            <t t-call="account_financial_report.report_general_ledger_lines">
+                                <t t-set="account_or_partner_object" t-value="account"/>
+                            </t>
+                        </t>
+
                     </t>
 
                     <t t-if="account.partner_ids">
@@ -55,10 +61,21 @@
                                     <span t-field="partner.name"/>
                                 </div>
 
-                                <!-- Display partner move lines -->
+                            <t t-if="group_by_move">
+                                <t t-call="account_financial_report.report_general_ledger_moves">
+                                    <t t-set="account_or_partner_object" t-value="partner"/>
+                                </t>
+                            </t>
+                            <t t-if="not group_by_move">
                                 <t t-call="account_financial_report.report_general_ledger_lines">
                                     <t t-set="account_or_partner_object" t-value="partner"/>
                                 </t>
+                            </t>
+
+                                <!-- Display partner move lines -->
+<!--                                <t t-call="account_financial_report.report_general_ledger_lines">-->
+<!--                                    <t t-set="account_or_partner_object" t-value="partner"/>-->
+<!--                                </t>-->
 
                                 <!-- Display partner footer -->
                                 <t t-call="account_financial_report.report_general_ledger_ending_cumul">
@@ -79,44 +96,22 @@
         </div>
     </template>
 
-    <template id="account_financial_report.report_general_ledger_filters">
-        <xpath expr="//div/div[@class='act_as_row labels']"></xpath>
-        <div class="act_as_table data_table" style="width: 100%;">
-            <div class="act_as_row labels">
-                <div class="act_as_cell">Date range filter</div>
-                <div class="act_as_cell">Target moves filter</div>
-                <div class="act_as_cell">Account balance at 0 filter</div>
-                <div class="act_as_cell">Centralize filter</div>
-                <div class="act_as_cell">Show analytic tags</div>
+    <template  id="account_financial_report_ledger_by_move.report_general_ledger_filters_by_move" inherit_id="account_financial_report.report_general_ledger_filters">
+        <xpath expr="//div/div[@class='act_as_row labels']" position="inside">
+            <div class="act_as_cell">Group by Move</div>
+        </xpath>
+        <xpath expr="//div[@class='act_as_table data_table']/div[@class='act_as_row']" position="inside">
+            <div class="act_as_cell">
+                    <t t-if="o.group_by_move">Yes</t>
+                    <t t-if="not o.group_by_move">No</t>
             </div>
-            <div class="act_as_row">
-                <div class="act_as_cell">
-                    From: <span t-field="o.date_from"/> To: <span t-field="o.date_to"/>
-                </div>
-                <div class="act_as_cell">
-                    <t t-if="o.only_posted_moves">All posted entries</t>
-                    <t t-if="not o.only_posted_moves">All entries</t>
-                </div>
-                <div class="act_as_cell">
-                    <t t-if="o.hide_account_at_0">Hide</t>
-                    <t t-if="not o.hide_account_at_0">Show</t>
-                </div>
-                <div class="act_as_cell">
-                    <t t-if="o.centralize">Yes</t>
-                    <t t-if="not o.centralize">No</t>
-                </div>
-                <div class="act_as_cell">
-                    <t t-if="o.show_analytic_tags">Yes</t>
-                    <t t-if="not o.show_analytic_tags">No</t>
-                </div>
-            </div>
-        </div>
+        </xpath>
     </template>
 
-    <template id="account_financial_report.report_general_ledger_lines">
+    <template id="account_financial_report_ledger_by_move.report_general_ledger_moves">
         <div class="act_as_table data_table" style="width: 100%;">
 
-            <!-- Display table headers for lines -->
+            <!-- Display table headers for move -->
             <div class="act_as_thead">
                 <div class="act_as_row labels">
                     <!--## date-->
@@ -146,7 +141,7 @@
                         <div class="act_as_cell" style="width: 4.75%;">Tags</div>
                     </t>
                     <!--## matching_number-->
-                    <div class="act_as_cell" style="width: 2.41%;">Rec.</div>
+<!--                    <div class="act_as_cell" style="width: 2.41%;">Rec.</div>-->
                     <!--## debit-->
                     <div class="act_as_cell amount" style="width: 6.02%;">Debit</div>
                     <!--## credit-->
@@ -187,7 +182,7 @@
                     <div class="act_as_cell"></div>
                 </t>
                 <!--## matching_number-->
-                <div class="act_as_cell"/>
+<!--                <div class="act_as_cell"/>-->
                 <!--## debit-->
                 <div class="act_as_cell amount">
                     <t t-if="type == 'account_type'">
@@ -475,87 +470,6 @@
                     </t>
                 </div>
             </t>
-        </div>
-    </template>
-
-    <template id="account_financial_report.report_general_ledger_ending_cumul">
-        <!-- Display ending balance line for account or partner -->
-        <div class="act_as_table list_table" style="width: 100%;">
-            <div class="act_as_row labels" style="font-weight: bold;">
-                <!--## date-->
-                <t t-if='type == "account_type"'>
-                    <div class="act_as_cell first_column"
-                         style="width: 41.32%;"><span
-                            t-field="account_or_partner_object.code"/> - <span t-field="account_or_partner_object.name"/></div>
-                    <div class="act_as_cell right"
-                         style="width: 22.9%;">Ending balance</div>
-                </t>
-                <t t-if='type == "partner_type"'>
-                    <div class="act_as_cell first_column" style="width: 41.32%;"/>
-                    <div class="act_as_cell right" style="width: 22.9%;">Partner ending balance</div>
-                </t>
-                <t t-if="show_cost_center">
-                    <!--## cost_center-->
-                    <div class="act_as_cell" style="width: 8.03%"/>
-                </t>
-                <t t-if="show_analytic_tags">
-                    <!--## analytic tags-->
-                    <div class="act_as_cell" style="width: 4.75%;"></div>
-                </t>
-                <!--## matching_number-->
-                <div class="act_as_cell" style="width: 2.41%;"/>
-                <!--## debit-->
-                <div class="act_as_cell amount" style="width: 6.02%;">
-                    <span t-field="account_or_partner_object.final_debit" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                </div>
-                <!--## credit-->
-                <div class="act_as_cell amount" style="width: 6.02%;">
-                    <span t-field="account_or_partner_object.final_credit" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                </div>
-                <!--## balance cumulated-->
-                <div class="act_as_cell amount" style="width: 6.02%;">
-                    <span t-field="account_or_partner_object.final_balance" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
-                </div>
-                <!--## currency_name + amount_currency-->
-                <t t-if="foreign_currency">
-                    <t t-if="account.account_id.currency_id.id">
-                        <div class="act_as_cell amount" style="width: 2.08%;">
-                            <span t-field="account.account_id.currency_id.display_name"/>
-                        </div>
-                        <div class="act_as_cell amount" style="width: 5.19%;">
-                            <t t-if="type == 'account_type'">
-                                <t t-set="domain"
-                                   t-value="[('account_id', '=', account_or_partner_object.account_id.id),
-                                             ('date', '&lt;', o.date_from)]"/>
-                                <span>
-                                    <a t-att-data-domain="domain"
-                                       t-att-data-res-model="'account.move.line'"
-                                       class="o_account_financial_reports_web_action_monetary_multi"
-                                       style="color: black;">
-                                    <t t-raw="account_or_partner_object.final_balance_foreign_currency" t-options="{'widget': 'monetary', 'display_currency': account_or_partner_object.account_id.currency_id}"/></a>
-                                </span>
-                            </t>
-                            <t t-if="type == 'partner_type'">
-                                <t t-set="domain"
-                                   t-value="[('account_id', '=', account_or_partner_object.report_account_id.account_id.id),
-                                             ('partner_id', '=', account_or_partner_object.partner_id.id),
-                                             ('date', '&lt;', o.date_from)]"/>
-                                <span>
-                                    <a t-att-data-domain="domain"
-                                       t-att-data-res-model="'account.move.line'"
-                                       class="o_account_financial_reports_web_action_monetary_multi"
-                                       style="color: black;">
-                                    <t t-raw="account_or_partner_object.final_balance_foreign_currency" t-options="{'widget': 'monetary', 'display_currency': account_or_partner_object.report_account_id.currency_id}"/></a>
-                                </span>
-                            </t>
-                        </div>
-                    </t>
-                    <t t-if="not account.account_id.currency_id ">
-                        <div class="act_as_cell amount" style="width: 2.08%;"/>
-                        <div class="act_as_cell amount" style="width: 5.19%;"/>
-                    </t>
-                </t>
-            </div>
         </div>
     </template>
 

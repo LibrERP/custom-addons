@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Account Financial Reports General Ledger By Move',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'category': 'Reporting',
     'summary': 'Financial Reports extensions',
     'author': 'Didotech s.r.l.',
@@ -17,7 +17,7 @@
     'data': [
         'wizard/general_ledger_wizard_view.xml',
         'report/templates/general_ledger.xml',
-        # 'view/report_general_ledger.xml',
+        'views/report_general_ledger.xml',
     ],
     'installable': True,
     'application': True,
