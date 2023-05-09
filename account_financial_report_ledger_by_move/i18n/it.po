@@ -177,3 +177,18 @@ msgstr "report_general_ledger"
 #: model:ir.model,name:account_financial_report_ledger_by_move.model_report_general_ledger_move
 msgid "report_general_ledger_move"
 msgstr "report_general_ledger_move"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Cumul. Bal."
+msgstr "Saldo prog."
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Cur."
+msgstr "Valuta"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Taxes"
+msgstr "Imposte"
