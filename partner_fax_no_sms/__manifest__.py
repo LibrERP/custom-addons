@@ -3,11 +3,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     'name': 'Partner fax',
-    'version': '12.0.1.0.1',
+    'version': '12.0.1.0.2',
     'category': 'Extra Tools',
     'summary': 'Add fax number on partner',
     'author': 'powERP enterprise network',
-    'website': 'https://www.powerp.it',
+    'website': 'https://www.librerp.it',
     'development_status': 'Alpha',
     'license': 'LGPL-3',
     'depends': [
