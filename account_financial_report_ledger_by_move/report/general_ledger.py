@@ -123,14 +123,14 @@ class GeneralLedgerReport(models.TransientModel):
                                 entries[account.code]['partner'][rep_line.partner][rep_line.entry][
                                     'cumul_balance'] = cumul_balance
 
-        print("len(entries)")
-        print(len(entries))
+        # print("len(entries)")
+        # print(len(entries))
         for k, line in entries.items():
-
+            vals = {}
             if 'account' in line:
                 # print(list(line['account'].values()))
-                data = list(line['account'].values())
-                for ent in data:
+                data_account = list(line['account'].values())
+                for ent in data_account:
                     vals = {
                         'report_account_id': ent['report_account_id'],
                         'report_partner_id': ent['report_partner_id'],
@@ -158,10 +158,11 @@ class GeneralLedgerReport(models.TransientModel):
             elif 'partner' in line:
                 # print(list(line['partner'].values()))
                 tdata = list(line['partner'].values())
+                data_partner = []
                 for el in tdata:
                     for kv, valuee in el.items():
-                        data.append(valuee)
-                for ent in data:
+                        data_partner.append(valuee)
+                for ent in data_partner:
                     # print(ent)
                     vals = {
                         'report_account_id': ent['report_account_id'],
