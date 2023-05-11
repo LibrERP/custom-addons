@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- GENERAL LEDGER ADD FLAG -->
+    <record id="general_ledger_wizard_by_move" model="ir.ui.view">
+        <field name="name">General Ledger</field>
+        <field name="model">general.ledger.report.wizard</field>
+        <field name="inherit_id" ref="account_financial_report.general_ledger_wizard"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/div/group[@name='filters']/group[@name='other_filters']" position="inside">
+                    <label string=" " for="group_by_move"/>
+                    <div>
+                        <field name="group_by_move" nolabel="1" class="oe_inline"/>
+                        <label for="group_by_move" class="oe_inline"/>
+                    </div>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

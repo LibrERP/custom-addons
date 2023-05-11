@@ -1,0 +1,194 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_financial_report_ledger_by_move
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-03 10:59+0000\n"
+"PO-Revision-Date: 2023-05-03 14:59+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__account
+msgid "Account"
+msgstr "Conto"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__amount_currency
+msgid "Amount Currency"
+msgstr "Importo valuta"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__cost_center
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__create_date
+msgid "Created on"
+msgstr "Creato il "
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__credit
+msgid "Credit"
+msgstr "Avere"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__cumul_balance
+msgid "Cumul Balance"
+msgstr "Saldo progr"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__date
+msgid "Date"
+msgstr "Data"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__debit
+msgid "Debit"
+msgstr "Dare"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__entry
+msgid "Entry"
+msgstr "Registrazione"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model,name:account_financial_report_ledger_by_move.model_general_ledger_report_wizard
+msgid "General Ledger Report Wizard"
+msgstr "Procedura rendiconto libro mastro"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_filters_by_move
+msgid "Group by Move"
+msgstr "Raggruppa per registrazione"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__id
+msgid "ID"
+msgstr "ID"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__journal
+msgid "Journal"
+msgstr "Registro"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__label
+msgid "Label"
+msgstr "Etichetta"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__matching_number
+msgid "Matching Number"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__move_id
+msgid "Move"
+msgstr "Movimento"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_filters_by_move
+msgid "No"
+msgstr "No"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__partner
+msgid "Partner"
+msgstr "Partner"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_general_ledger_report_wizard__group_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger__group_by_move
+msgid "Raggruppato per Registrazione"
+msgstr "Raggruppato per Registrazione"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__report_account_id
+msgid "Report Account"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__report_partner_id
+msgid "Report Partner"
+msgstr ""
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__tags
+msgid "Tags"
+msgstr "Etichette"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model.fields,field_description:account_financial_report_ledger_by_move.field_report_general_ledger_move__taxes_description
+msgid "Taxes Description"
+msgstr "Descrizione imposte"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_filters_by_move
+msgid "Yes"
+msgstr "Si"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model,name:account_financial_report_ledger_by_move.model_report_general_ledger
+msgid "report_general_ledger"
+msgstr "report_general_ledger"
+
+#. module: account_financial_report_ledger_by_move
+#: model:ir.model,name:account_financial_report_ledger_by_move.model_report_general_ledger_move
+msgid "report_general_ledger_move"
+msgstr "report_general_ledger_move"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Cumul. Bal."
+msgstr "Saldo prog."
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Cur."
+msgstr "Valuta"
+
+#. module: account_financial_report_ledger_by_move
+#: model_terms:ir.ui.view,arch_db:account_financial_report_ledger_by_move.report_general_ledger_moves
+msgid "Taxes"
+msgstr "Imposte"
