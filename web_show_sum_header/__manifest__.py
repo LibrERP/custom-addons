@@ -3,7 +3,7 @@
 
 {
     'name': 'web_show_sum_header',
-    'version': '12.0.0.1.0',
+    'version': '12.0.0.1.1',
     'category': "Tools",
     'description': """Show sum in list header
     """,
