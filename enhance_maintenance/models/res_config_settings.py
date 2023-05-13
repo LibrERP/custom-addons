@@ -38,3 +38,8 @@ class ResConfigSettings(models.TransientModel):
         default=False,
         config_parameter='enhance_maintenance.show_expense_name',
     )
+    show_away_name = fields.Boolean(
+        'Show away names',
+        default=False,
+        config_parameter='enhance_maintenance.show_away_name',
+    )

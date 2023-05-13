@@ -51,7 +51,7 @@
                     </page>
                     <page string="Spare Products" name="spare_lines">
                         <field name="spare_ids" nolabel="1" mode="tree" attrs="{'readonly': [('editable', '=', False)]}">
-                             <tree string="Sales Order Lines" editable="bottom">
+                             <tree string="Spare Lines" editable="bottom">
                                  <field name="maint_sale_line_id" invisible="1"/>
                              	 <field name="sequence" widget="handle" />
                                  <field name="product_id" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
@@ -115,6 +115,27 @@
                             <field name="effective_expenses" 
                                    widget="monetary"
                                    options="{'currency_field': 'currency_id'}"
+                                   class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </page>
+                    <page string="Aways" name="away_lines">
+                        <field name="away_ids" nolabel="1" mode="tree" attrs="{'readonly': [('editable', '=', False)]}">
+                             <tree string="Away Lines" editable="bottom">
+                             	 <field name="sequence" widget="handle" />
+                                 <field name="maint_sale_line_id" invisible="1"/>
+                                 <field name="date" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="name" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_id" invisible="1"/>
+                                 <field name="product_note"/>
+                                 <field name="product_uom_qty" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_uom"/>
+                                 <field name="product_unit_price" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_price" readonly="1" force_save="1"/>
+                             </tree>
+                        </field>
+                         <group class="oe_subtotal_footer oe_right" name="away_prices">
+                            <field name="away_price" 
+                                   widget="monetary"
                                    class="oe_subtotal_footer_separator"/>
                         </group>
                     </page>

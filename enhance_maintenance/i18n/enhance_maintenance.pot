@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 15:38+0000\n"
-"PO-Revision-Date: 2023-04-18 15:38+0000\n"
+"POT-Creation-Date: 2023-05-13 10:54+0000\n"
+"PO-Revision-Date: 2023-05-13 10:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_kanban_enhance
 #: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_view_kanban_enhance
 msgid "<br/>Customer :"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+msgid "Allows to show away name activity instead a generic string."
 msgstr ""
 
 #. module: enhance_maintenance
@@ -48,6 +53,37 @@ msgid "Approved"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_id
+msgid "Away"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__away_ids
+msgid "Away Costs"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:product.product,name:enhance_maintenance.away_base_product
+#: model:product.template,name:enhance_maintenance.away_base_product_product_template
+msgid "Away Entry"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model,name:enhance_maintenance.model_maintenance_away_line
+msgid "Away Line"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_form_enhance
+msgid "Away Lines"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_form_enhance
+msgid "Aways"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,help:enhance_maintenance.field_maintenance_request__effective_expenses
 msgid "Computed using the sum of all maintenance expenses done."
 msgstr ""
@@ -68,11 +104,23 @@ msgid "Config Settings"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_price
+msgid "Cost"
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+#: model:uom.category,name:enhance_maintenance.product_uom_categ_cost_km
+msgid "Cost per km"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.actions.server,name:enhance_maintenance.equipment_request_sale_orders_action
 msgid "Create / Queue Sale Order"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__create_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__create_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__create_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__create_uid
@@ -80,6 +128,7 @@ msgid "Created by"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__create_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__create_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__create_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__create_date
@@ -100,12 +149,18 @@ msgid "Customer"
 msgstr ""
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:318
+#: code:addons/enhance_maintenance/models/maintenance.py:339
 #, python-format
 msgid "Customer is not set."
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__date
+msgid "Date"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,help:enhance_maintenance.field_maintenance_away_line__product_uom
 #: model:ir.model.fields,help:enhance_maintenance.field_maintenance_spare_line__product_uom
 msgid "Default unit of measure used for all stock operations."
 msgstr ""
@@ -116,6 +171,7 @@ msgid "Description"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__display_name
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__display_name
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__display_name
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__display_name
@@ -154,6 +210,7 @@ msgid "Hours Spent"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__id
@@ -178,18 +235,21 @@ msgid "Invoices"
 msgstr ""
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:287
+#: code:addons/enhance_maintenance/models/maintenance.py:307
 #, python-format
 msgid "Invoices Related"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:product.product,weight_uom_name:enhance_maintenance.away_base_product
 #: model:product.product,weight_uom_name:enhance_maintenance.timesheet_base_product
+#: model:product.template,weight_uom_name:enhance_maintenance.away_base_product_product_template
 #: model:product.template,weight_uom_name:enhance_maintenance.timesheet_base_product_product_template
 msgid "KG"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line____last_update
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel____last_update
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel____last_update
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line____last_update
@@ -197,6 +257,7 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__write_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__write_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__write_uid
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__write_uid
@@ -204,10 +265,16 @@ msgid "Last Updated by"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__write_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__write_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__write_date
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Length"
 msgstr ""
 
 #. module: enhance_maintenance
@@ -225,7 +292,7 @@ msgid "Maintenance"
 msgstr ""
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:274
+#: code:addons/enhance_maintenance/models/maintenance.py:294
 #, python-format
 msgid "Maintenance Analytic Account"
 msgstr ""
@@ -252,6 +319,7 @@ msgstr ""
 
 #. module: enhance_maintenance
 #: model:ir.model,name:enhance_maintenance.model_maintenance_request
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__maintenance_id
 msgid "Maintenance Request"
 msgstr ""
@@ -269,6 +337,16 @@ msgstr ""
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_account__maintenance_ids
 msgid "Maintenances"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__name
+msgid "Name"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_note
+msgid "Note"
 msgstr ""
 
 #. module: enhance_maintenance
@@ -306,6 +384,16 @@ msgid "Product Price"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model,name:enhance_maintenance.model_uom_category
+msgid "Product UoM Categories"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_uom_qty
+msgid "Quantity"
+msgstr ""
+
+#. module: enhance_maintenance
 #: selection:hr.expense,state:0
 msgid "Refused"
 msgstr ""
@@ -328,6 +416,7 @@ msgstr ""
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__maint_sale_line_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_hr_expense__maint_sale_line_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__maint_sale_line_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__maint_sale_line_id
 msgid "Sale Order Line"
 msgstr ""
@@ -339,7 +428,7 @@ msgid "Sale Orders"
 msgstr ""
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:301
+#: code:addons/enhance_maintenance/models/maintenance.py:321
 #, python-format
 msgid "Sale Orders Related"
 msgstr ""
@@ -355,11 +444,7 @@ msgid "Sales Order Line"
 msgstr ""
 
 #. module: enhance_maintenance
-#: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_form_enhance
-msgid "Sales Order Lines"
-msgstr ""
-
-#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__sequence
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__sequence
 msgid "Sequence"
 msgstr ""
@@ -370,6 +455,11 @@ msgid "Serial Number / Plate"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_res_config_settings__show_away_name
+msgid "Show away names"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_res_config_settings__show_expense_name
 msgid "Show expense names"
 msgstr ""
@@ -377,6 +467,11 @@ msgstr ""
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_res_config_settings__show_timesheet_name
 msgid "Show timesheet names"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_form_enhance
+msgid "Spare Lines"
 msgstr ""
 
 #. module: enhance_maintenance
@@ -412,13 +507,24 @@ msgid "Submitted"
 msgstr ""
 
 #. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Surface"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__employee_id
 msgid "Technician"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,help:enhance_maintenance.field_maintenance_away_line__product_unit_price
 #: model:ir.model.fields,help:enhance_maintenance.field_maintenance_spare_line__product_price
 msgid "The sale price is managed from the product template. Click on the 'Configure Variants' button to set the extra attribute prices."
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Time"
 msgstr ""
 
 #. module: enhance_maintenance
@@ -444,6 +550,16 @@ msgid "To Submit"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,help:enhance_maintenance.field_maintenance_request__away_price
+msgid "Total Aways Costs."
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__away_price
+msgid "Total Costs"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__spare_price
 msgid "Total Price"
 msgstr ""
@@ -459,12 +575,55 @@ msgid "Total remaining time [hours]."
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_uom_category__measure_type
+msgid "Type of Measure"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_unit_price
+msgid "Unit Cost"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_hr_expense__unit_amount_line
 msgid "Unit Price"
 msgstr ""
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__product_uom
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__product_uom
 msgid "Unit of Measure"
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Units"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,help:enhance_maintenance.field_maintenance_away_line__product_note
+msgid "Usable for internal knowledge."
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model.fields,help:enhance_maintenance.field_maintenance_away_line__name
+msgid "Usable in Sale Order & Invoice lines."
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Volume"
+msgstr ""
+
+#. module: enhance_maintenance
+#: selection:uom.category,measure_type:0
+msgid "Weight"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:product.product,uom_name:enhance_maintenance.away_base_product
+#: model:product.template,uom_name:enhance_maintenance.away_base_product_product_template
+#: model:uom.uom,name:enhance_maintenance.product_uom_cost_km
+msgid "€/km"
 msgstr ""
 
