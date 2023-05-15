@@ -1,7 +1,11 @@
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2022 Didotech srl
+#    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
+#
+#    Created on : 2023-04-03
+#    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,29 +21,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': "Account payment term extension",
 
-    'summary': "Account payment term with bank charges",
+from odoo import api, fields, models, _
 
-    'description': """
-        Account payment term with bank charges.
-    """,
 
-    'author': "Didotech srl",
-    'website': "http://www.didotech.com",
-    'category': 'Customization',
-    'version': '12.0.2.0.6',
-    'depends': [
-        'base',
-        'account',
-        'l10n_it_ddt',
-    ],
-    'data': [
-        "views/account_view.xml",
-    ],
-    'installable': True,
-    'application': False,
-    'auto_install': False,
-    'license': 'LGPL-3',
-}
+class AccountAnalyticAccount(models.Model):
+    _inherit = 'account.analytic.account'
+    _description = 'Analytic Account'
+
+    maintenance_ids = fields.One2many(
+        'maintenance.request',
+        'analytic_account_id',
+        string='Maintenances',
+    )

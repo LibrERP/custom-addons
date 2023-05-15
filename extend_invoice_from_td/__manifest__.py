@@ -29,14 +29,16 @@
     'author': "Didotech srl",
     'website': "http://www.didotech.com",
     'category': 'Customization',
-    'version': '12.0.2.2.0',
+    'version': '12.0.3.1.5',
 
     'depends': [
         'base',
         'stock',
         'l10n_it_ddt',
         'l10n_it_ddt_invoice_extension',
-        'account_invoice_from_stock_picking'
+        'account_invoice_from_stock_picking',
+        'queue_job',
+
     ],
 
     'data': [

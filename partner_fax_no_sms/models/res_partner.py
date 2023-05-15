@@ -16,7 +16,7 @@ class ResPartner(models.Model):
 # This code should be in the end of the file
 result = http.request.cr.execute("SELECT name FROM ir_module_module WHERE state IN ('installed', 'to upgrade')")
 modules = http.request.cr.dictfetchall()
-modules = [module['name'] for module in modules if 'sms' in module['name'] and not module['name'] == 'partner_fax_no_sms']
+modules = [module['name'] for module in modules if 'sms' in module['name'] and module['name'] == 'sms']
 if 'sms' in modules:
-    raise Warning("""module 'partner_fax_no_sms is incompatible with module 'SMS gateway'
+    raise Warning(f"""module 'partner_fax_no_sms is incompatible with some modules {modules}
     Use module 'partner_fax' instead or uninstall 'sms' module""")

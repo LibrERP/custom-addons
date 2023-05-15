@@ -16,289 +16,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+import collections
 import logging
 import time
-import datetime
-import multiprocessing
-import threading
-from odoo import models, fields, api, registry, sql_db
-from odoo.modules.registry import Registry
+
+from odoo import models, fields, api, registry
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
-
-class WaitInvoiceProcess(threading.Thread):
-    def __init__(self, env, ddt_ids, wizard_domain, processes):
-        threading.Thread.__init__(self)
-        self.ddt_ids = ddt_ids
-        self.wizard_domain = wizard_domain
-        self.data_env = env
-        self.number_of_processes = processes
-        with api.Environment.manage():
-            with registry(env[0]).cursor() as new_cr:
-                self.new_env = api.Environment(new_cr, env[1], env[2])
-        self.cr = self.new_env.cr
-
-    def run(self):
-        _logger.info(f'WaitInvoiceProcess running..{self.wizard_domain}')
-
-        with api.Environment.manage():
-            with registry(self.data_env[0]).cursor() as new_cr:
-                current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-                cursor = current_env.cr
-
-                def _chunkIt(seq, size):
-                    newseq = []
-                    splitsize = 1.0 / size * len(seq)
-                    for line in range(size):
-                        newseq.append(seq[int(round(line * splitsize)):int(round((line + 1) * splitsize))])
-                    return newseq
-
-                ddt_ids = self.ddt_ids
-
-                domain = self.wizard_domain + [('id', 'in', ddt_ids)]
-
-                while ddt_ids:
-
-                    try:
-                        number_of_processes = self.number_of_processes
-                        if number_of_processes <= 0:
-                            number_of_processes = multiprocessing.cpu_count() // 2
-                        cpus_available = number_of_processes or 1
-                        i = 0
-                        threads = []
-                        stock_model = current_env['stock.picking.package.preparation']
-                        res = stock_model.read_group(domain,
-                                                     fields=['partner_id', 'id'],
-                                                     groupby=['partner_id'],
-                                                     orderby='partner_id',
-                                                     lazy=False)
-
-                        with multiprocessing.Manager() as manager:
-                            invoice_ids = manager.list()
-                            for split in _chunkIt(res, cpus_available):
-                                if split:
-                                    thread = CreateInvoiceProcess(self.data_env, split, i, invoice_ids)
-                                    thread.daemon = True
-                                    thread.start()
-                                    threads.append(thread)
-                                    i += 1
-                            # wait for invoice created
-                            for job in threads:
-                                job.join()
-
-                    except Exception as e:
-                        # Annulla le modifiche fatte
-                        _logger.error(u'Error: {error}'.format(error=e))
-                        cursor.rollback()
-                        raise
-                    finally:
-                        ddt_ids = list()
-
-
-class CreateInvoiceProcess(multiprocessing.Process):
-
-    def __init__(self, env, partner_list, name_process, invoice_ids):
-        # Inizializzazione superclasse
-        multiprocessing.Process.__init__(self)
-        self.partner_list = partner_list
-        self.name_process = name_process
-        self.invoice_ids = invoice_ids
-        self.data_env = env
-        # with api.Environment.manage():
-        #     with registry(env[0]).cursor() as new_cr:
-        #         self.new_env = api.Environment(new_cr, env[1], env[2])
-        # self.new_connection = sql_db.db_connect(env[0])
-        # self.cr = self.new_connection.cursor()
-
-    def run(self):
-        _logger.info(f'CreateInvoiceProcess running..{self.name_process}')
-
-        registry = Registry.new(self.data_env[0])
-        with api.Environment.manage():
-            with registry.cursor() as cr:
-                _logger.info('cursore {cr}'.format(cr=cr))
-
-                current_env = api.Environment(cr, self.data_env[1], self.data_env[2])
-
-                _logger.info('env {env}'.format(env=current_env))
-
-                try:
-                    cntx = self.data_env[2]
-                    for partner_group in self.partner_list:
-                        pterm = {}
-                        dmn = partner_group.get('__domain')
-                        payment_terms = current_env['stock.picking.package.preparation'].sudo().search(dmn)
-                        for td in payment_terms:
-                            if td.payment_term_id.id not in pterm:
-                                pterm[td.payment_term_id.id] = current_env['stock.picking.package.preparation']
-                            pterm[td.payment_term_id.id] |= td
-
-                        # stock_picking_to_invoice_ids = current_env['stock.picking.package.preparation'].sudo().search(
-                        #     partner_group.get('__domain'))
-                        for key, value in pterm.items():
-                            try:
-                                create_invoice_res = value.with_context(cntx).action_invoice_create()
-                                # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
-                            except Exception as e:
-                                # Annulla le modifiche fatte
-                                _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                                cr.rollback()
-                            finally:
-                                cr.commit()
-                    cr.commit()
-                except Exception as e:
-                    # Annulla le modifiche fatte
-                    _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-                    cr.rollback()
-                _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
-
-            #
-            # with registry(self.data_env[0]).cursor() as new_cr:
-            #     # current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-            #     current_env = api.Environment(self.cr, self.data_env[1], self.data_env[2])
-            #     # cursor = current_env.cr
-            #     cursor = self.cr
-            #     try:
-            #         cntx = self.data_env[2]
-            #         for partner_group in self.partner_list:
-            #             pterm = {}
-            #             dmn = partner_group.get('__domain')
-            #             payment_terms = current_env['stock.picking.package.preparation'].sudo().search(dmn)
-            #             for td in payment_terms:
-            #                 if td.payment_term_id.id not in pterm:
-            #                     pterm[td.payment_term_id.id] = current_env['stock.picking.package.preparation']
-            #                 pterm[td.payment_term_id.id] |= td
-            #
-            #             # stock_picking_to_invoice_ids = current_env['stock.picking.package.preparation'].sudo().search(
-            #             #     partner_group.get('__domain'))
-            #             for key, value in pterm.items():
-            #                 try:
-            #                     create_invoice_res = value.with_context(cntx).action_invoice_create()
-            #                     # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
-            #                 except Exception as e:
-            #                     # Annulla le modifiche fatte
-            #                     _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-            #                     cursor.rollback()
-            #                 finally:
-            #                     cursor.commit()
-            #         cursor.commit()
-            #     except Exception as e:
-            #         # Annulla le modifiche fatte
-            #         _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-            #         cursor.rollback()
-            #     _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
-
-
-# class WaitCreditNoteProcess(threading.Thread):
-#     def __init__(self, env, ddt_ids, wizard_domain):
-#         threading.Thread.__init__(self)
-#         self.ddt_ids = ddt_ids
-#         self.wizard_domain = wizard_domain
-#         self.data_env = env
-#         with api.Environment.manage():
-#             with registry(env[0]).cursor() as new_cr:
-#                 self.new_env = api.Environment(new_cr, env[1], env[2])
-#         self.cr = self.new_env.cr
-#
-#     def run(self):
-#         _logger.info(f'WaitCreditNoteProcess running..{self.wizard_domain}')
-#
-#         with api.Environment.manage():
-#             with registry(self.data_env[0]).cursor() as new_cr:
-#                 current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-#                 cursor = current_env.cr
-#
-#                 def _chunkIt(seq, size):
-#                     newseq = []
-#                     splitsize = 1.0 / size * len(seq)
-#                     for line in range(size):
-#                         newseq.append(seq[int(round(line * splitsize)):int(round((line + 1) * splitsize))])
-#                     return newseq
-#
-#                 ddt_ids = self.ddt_ids
-#                 domain = self.wizard_domain + [('id', 'in', ddt_ids)]
-#                 while ddt_ids:
-#
-#                     try:
-#                         number_of_processes = self.env.user.company_id.sudo().number_of_processes
-#                         if number_of_processes <= 0:
-#                             number_of_processes = multiprocessing.cpu_count() // 2
-#                         cpus_available = number_of_processes or 1
-#                         i = 0
-#                         threads = []
-#                         stock_model = current_env['stock.picking']
-#                         res = stock_model.read_group(domain,
-#                                                      fields=['main_partner', 'id'],
-#                                                      groupby=['main_partner'],
-#                                                      orderby='main_partner',
-#                                                      lazy=False)
-#
-#                         with multiprocessing.Manager() as manager:
-#                             invoice_ids = manager.list()
-#                             for split in _chunkIt(res, cpus_available):
-#                                 if split:
-#                                     thread = CreateCreditNoteProcess(self.data_env, split, i, invoice_ids)
-#                                     thread.daemon = True
-#                                     thread.start()
-#                                     threads.append(thread)
-#                                     i += 1
-#                             # wait for invoice created
-#                             for job in threads:
-#                                 job.join()
-#
-#                     except Exception as e:
-#                         # Annulla le modifiche fatte
-#                         _logger.error(u'Error: {error}'.format(error=e))
-#                         cursor.rollback()
-#                         raise
-#                     finally:
-#                         ddt_ids = list()
-
-
-# class CreateCreditNoteProcess(multiprocessing.Process):
-#
-#     def __init__(self, env, partner_list, name_process, invoice_ids):
-#         # Inizializzazione superclasse
-#         multiprocessing.Process.__init__(self)
-#         self.partner_list = partner_list
-#         self.name_process = name_process
-#         self.invoice_ids = invoice_ids
-#         self.data_env = env
-#         with api.Environment.manage():
-#             with registry(env[0]).cursor() as new_cr:
-#                 self.new_env = api.Environment(new_cr, env[1], env[2])
-#         self.cr = self.new_env.cr
-#
-#     def run(self):
-#         _logger.info(f'CreateCreditNoteProcess running..{self.name_process}')
-#
-#         with api.Environment.manage():
-#             with registry(self.data_env[0]).cursor() as new_cr:
-#                 current_env = api.Environment(new_cr, self.data_env[1], self.data_env[2])
-#                 cursor = current_env.cr
-#                 try:
-#                     cntx = self.data_env[2]
-#                     for partner_group in self.partner_list:
-#                         stock_picking_to_invoice_ids = current_env['stock.picking'].search(
-#                             partner_group.get('__domain'))
-#                         try:
-#
-#                             create_invoice_res = stock_picking_to_invoice_ids.with_context(cntx).action_invoice_refund()
-#                             # _logger.info(u'{id}: Finish create invoice'.format(id=self.name_process))
-#                         except Exception as e:
-#                             # Annulla le modifiche fatte
-#                             _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-#                             cursor.rollback()
-#                         finally:
-#                             cursor.commit()
-#                     cursor.commit()
-#                 except Exception as e:
-#                     # Annulla le modifiche fatte
-#                     _logger.error(u'{id}: Error: {error}'.format(id=self.name_process, error=e))
-#                     cursor.rollback()
-#                 _logger.info(u'{id}: Finish Process'.format(id=self.name_process))
+OdooEnv = collections.namedtuple('OdooEnv', ['dbname', 'uid', 'context'])
 
 
 class WizardInvoiceFromDdt(models.TransientModel):
@@ -327,134 +54,101 @@ class WizardInvoiceFromDdt(models.TransientModel):
         required=True,
     )
 
-    # journal_id_refund = fields.Many2one(
-    #     'account.journal',
-    #     string='Refund journal',
-    #     domain=[('type', '=', 'sale')],
-    #     required=True,
-    # )
-
     group_by_partner = fields.Boolean(
         string='Group by Partner',
         default=True,
     )
 
-    # finished_invoices = fields.Boolean(
-    #     string='',
-    #     default=False,
-    # )
-    #
-    # finished_invoices_message = fields.Text(
-    #     string='',
-    #     default='La generazione delle fatture è terminata con successo.',
-    # )
-
     @api.multi
     def create_invoice(self):
+
         if self.date_from > self.date_to:
             raise UserError('Attenzione!\nVerificare l\'intervallo delle date del periodo.')
+        # end if
 
-        _logger.info('Creating invoices......')
-        start_time = datetime.datetime.now()
-        # lock = multiprocessing.Lock()
-        _logger.info('Create invoices ......')
+        invoice_creation_context = self.get_custom_context()
 
-        invoice_ids = self.create_from_ddt()
-        # if lock.locked():
-        #     lock.release()
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        # Raggruppamento DDT
+        ddt_groups_list = self.env['stock.picking.package.preparation'].read_group(
+            domain=self.get_domain_for_ddt(),
+            fields=['partner_id', 'payment_term_id', 'ids:array_agg(id)'],
+            groupby=['partner_id', 'payment_term_id'],
+            orderby='partner_id, payment_term_id',
+            lazy=False,
+        )
 
-        _logger.info('Invoices created')
-        end_time = datetime.datetime.now()
-        duration_seconds = (end_time - start_time).seconds
-        duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
-                                            sec=duration_seconds - duration_seconds / 60 * 60)
-        _logger.info(u'Fatture Execution time in: {0}'.format(duration))
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        # Fatturazione di ciascun gruppo di DDT
+        total_inv_create_begin = time.time()
+        for ddt_group in ddt_groups_list:
 
-        # start_time = datetime.datetime.now()
-        # # elenco movimenti per note di credito
-        # _logger.info('Create credit notes ......')
-        #
-        # refund_ids = self.create_from_stock_picking()
-        #
-        # end_time = datetime.datetime.now()
-        # duration_seconds = (end_time - start_time).seconds
-        # duration = '{min}m {sec}sec'.format(min=duration_seconds / 60,
-        #                                     sec=duration_seconds - duration_seconds / 60 * 60)
-        # _logger.info(u'Note di credito Execution time in: {0}'.format(duration))
+            ddts_recordset = self.env['stock.picking.package.preparation'].browse(ddt_group['ids'])
 
-        # if lock.locked():
-        #     lock.release()
-        # else:
-        #     return {'type': 'ir.actions.act_window_close'}
+            # Creazione fattura e conferma transazione DB
+            _logger.info(
+                '\n\n'
+                '====>> ====>> ====>> ====>> BEGIN'
+                f'\n\n[Invoice from DDT] Start invoicing for {len(ddts_recordset)} DDTs'
+            )
+            group_inv_create_begin = time.time()
 
-        # return {'type': 'ir.actions.act_window_close'}
-        return {
-            "type": "ir.action.do_nothing",
-        }
+            # ddts_recordset.with_context(invoice_creation_context).with_delay().action_invoice_create()  # Fatturazione con job queue e processi multipli
+            ddts_recordset.with_delay().action_invoice_create_wcontext(invoice_creation_context)  # Fatturazione con job queue e processi multipli
+            # ddts_recordset.with_context(invoice_creation_context).action_invoice_create()  # Fatturazione con processo singolo
+            group_inv_create_time = time.time() - group_inv_create_begin
+            _logger.info(
+                f'[Invoice from DDT] Completed invoicing for {len(ddts_recordset)} DDTs in {group_inv_create_time}s'
+                '\n\n'
+                '<<==== <<==== <<==== <<==== END'
+                '\n\n'
+            )
+        # end for
 
-    def create_from_ddt(self):
-        domain = self.domain_x_invoice()
-        dbname = self.env.cr.dbname
-        uid = self.env.uid
-        processes = self.env.user.company_id.sudo().number_of_processes
-        context = dict(self._context)
-        context.update({
+        total_inv_create_time = time.time() - total_inv_create_begin
+        _logger.info(
+            f'[Invoice from DDT] Completed invoicing for {len(ddt_groups_list)} groups in {total_inv_create_time}s'
+            f'\n\n\n\n'
+        )
+        # end for
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    # end create_from_ddt
+
+    def get_custom_context(self):
+        custom_context = dict(self._context)
+
+        custom_context.update({
             'invoice_date': self.date_invoice,
             'wizard_id': self.id,
-            'invoice_journal_id': self.journal_id.id})
+            'invoice_journal_id': self.journal_id.id,
+        })
+
         if self.group_by_partner is False:
-            context.update({'group': False})
+            custom_context.update({'group': False})
+        # end if
 
-        env = (dbname, uid, context)
-        ddts = self.env['stock.picking.package.preparation'].search(domain)
-        final_process = WaitInvoiceProcess(env, ddts.ids, domain, processes)
-        final_process.start()
-        return domain
+        return custom_context
+    # end get_custom_context
 
-    # def create_from_stock_picking(self):
-    #     sp_domain = self.domain_x_credit_note()
-    #     dbname = self.env.cr.dbname
-    #     uid = self.env.uid
-    #     context = dict(self._context)
-    #     context.update({'invoice_date': self.date_invoice,
-    #                     'refund_journal_id': self.journal_id_refund.id})
-    #     if self.group_by_partner is False:
-    #         context.update({'group': False})
-    #
-    #     env = (dbname, uid, context)
-    #     pickings = self.env['stock.picking'].search(sp_domain)
-    #     final_process = WaitCreditNoteProcess(env, pickings.ids, sp_domain)
-    #     final_process.start()
-    #
-    #     return sp_domain
+    def get_domain_for_ddt(self, other_conditions=None):
 
-    def domain_x_invoice(self, other_conditions=[]):
-        domain = list()
-        domain.append(('to_be_invoiced', '=', True))
-        domain.append(('invoice_id', '=', False))
-        domain.append(('state', '=', 'done'))
+        domain = [
+            ('to_be_invoiced', '=', True),
+            ('invoice_id', '=', False),
+            ('state', '=', 'done'),
+        ]
+
         if self.date_from:
             domain.append(('date', '>=', self.date_from))
+
         if self.date_to:
             domain.append(('date', '<=', self.date_to))
+
         if other_conditions:
-            for tpl in other_conditions:
-                domain.append(tpl)
+            domain += other_conditions
 
         return domain
+    # end get_domain_for_ddt
 
-    # def domain_x_credit_note(self, other_conditions=[]):
-    #     sp_domain = list()
-    #     sp_domain.append(('returned_by', '=', True))
-    #     sp_domain.append(('state', '=', 'done'))
-    #     sp_domain.append(('credit_note', '=', False))
-    #     if self.date_from:
-    #         sp_domain.append(('date_done', '>=', self.date_from))
-    #     if self.date_to:
-    #         sp_domain.append(('date_done', '<=', self.date_to))
-    #     if other_conditions:
-    #         for tpl in other_conditions:
-    #             sp_domain.append(tpl)
-    #
-    #     return sp_domain
-    #
+# WizardInvoiceFromDdt

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_view_form_inherit_maintenance" model="ir.ui.view">
+        <field name="name">res.config.form.inherit.pos.shoppinglist</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@data-key='sale_management']" position="inside" >
+                <h2>Maintenance</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="show_timesheet_name"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="show_timesheet_name"/>
+                            <div class="text-muted">
+                                Allows to show timesheet name activity instead a generic string.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="show_expense_name"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="show_expense_name"/>
+                            <div class="text-muted">
+                                Allows to show expense name activity instead a generic string.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

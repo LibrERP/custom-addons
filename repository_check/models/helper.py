@@ -1,4 +1,7 @@
+# © 2020-2023 Didotech srl <info@didotech.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 import requests
+from requests.exceptions import ConnectionError
 
 
 def get_oca_repositories():
@@ -21,6 +24,9 @@ def get_oca_repositories():
             page_counter += 1
             sorted_list = sorted(list_repos, key=lambda k: k['name'])
             tup = tuple([(repo['name'], repo['name']) for repo in sorted_list])
-        except:
+        except ConnectionError as e:
+            break
+        except Exception as e:
             pass
+
     return tup

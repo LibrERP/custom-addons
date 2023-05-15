@@ -1,7 +1,4 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    Copyright (C) 2020-2021 Didotech srl
+#    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
 #    Created on : 2021-07-01
@@ -24,10 +21,15 @@
 ##############################################################################
 
 from datetime import datetime
+from datetime import timedelta
 
 from odoo import api, models, fields, _
-from odoo.exceptions import UserError
+# from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+
+import logging
+_logger = logging.getLogger(__name__)
+
 
 PAYMENT_STATUSES = [
     ('no', "Nothing to pay"),
@@ -56,7 +58,9 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_delivery_status(self):
-        for order in self:
+        total_count = len(self)
+        for count, order in enumerate(self, start=1):
+            _logger.info(f"Updating Delivery Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to deliver' if order.order_line else 'no'
@@ -71,7 +75,9 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_payment_status(self):
-        for order in self:
+        total_count = len(self)
+        for count, order in enumerate(self, start=1):
+            _logger.info(f"Updating Payment Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to pay' if order.order_line else 'no'
@@ -87,15 +93,26 @@ class SaleOrder(models.Model):
 
     @api.multi
     def _get_invoice_status(self):
-        for order in self:
+        total_count = len(self)
+        for count, order in enumerate(self, start=1):
+            _logger.info(f"Updating Invoice Status: {count} / {total_count} ...")
             ret = 'no'
             if not(order.state in ['cancel']):
                 ret = 'to invoice' if order.order_line else 'no'
-                invoices = len(order.invoice_ids) if order.invoice_ids else 0
-                ret = 'invoiced' if (invoices > 0) else ret
-                ret = 'invoiced part' if (invoices > 1) else ret
-                invoiced = True if (invoices > 0) else False
-                for invoice in order.invoice_ids:
+                invoice_ids = order.order_line.mapped('invoice_lines').mapped('invoice_id').filtered(
+                    lambda r: r.type in ['out_invoice', 'out_refund'])
+                invoices = len(invoice_ids) if invoice_ids else 0
+
+                if invoices > 0:
+                    if invoices == 1:
+                        ret = 'invoiced'
+                    else:
+                        ret = 'invoiced part'
+                    invoiced = True
+                else:
+                    invoiced = False
+
+                for invoice in invoice_ids:
                     invoiced &= (invoice.state in ['open', 'cancel', 'paid'])
                 ret = 'invoiced' if invoiced else ret
             order.invoices_status = ret
@@ -121,9 +138,10 @@ class SaleOrder(models.Model):
     @api.model
     def check_tag_on_sale_orders(self):
         domain = [('state', 'not in', ['cancel'])]
-        thisDate = self.get_last_execution()
-        if thisDate:
-            domain.extend([('write_date', '>=', thisDate)])
+        last_execution = self.get_last_execution()
+        if last_execution:
+            last_execution += timedelta(minutes=5)
+            domain.extend([('write_date', '>=', last_execution.strftime(DEFAULT_SERVER_DATETIME_FORMAT))])
         self.search(domain or []).manage_tags()
         self.set_last_execution()
 
@@ -134,9 +152,9 @@ class SaleOrder(models.Model):
         self._get_payment_status()
 
     def get_last_execution(self):
-        return self.env["ir.config_parameter"].sudo().get_param("sale.latest_tags_update") or False
+        last_execution = self.env["ir.config_parameter"].sudo().get_param("sale.latest_tags_update")
+        return last_execution and datetime.strptime(last_execution, DEFAULT_SERVER_DATETIME_FORMAT) or False
 
     def set_last_execution(self):
-        today = datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+        today = fields.datetime.now().strftime(DEFAULT_SERVER_DATETIME_FORMAT)
         self.env["ir.config_parameter"].sudo().set_param("sale.latest_tags_update", today)
-
