@@ -290,4 +290,10 @@ class StockPickingPackagePreparation(models.Model):
                     })
         return grouped_invoices, references
 
+    @api.multi
+    def action_invoice_create_wcontext(self, cntx=None):
+        if cntx:
+            self = self.with_context(cntx)
+        self.action_invoice_create()
+
 
