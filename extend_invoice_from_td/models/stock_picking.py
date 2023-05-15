@@ -82,7 +82,14 @@ class StockPicking(models.Model):
                     'journal_id': journal_id
                 })
 
-        return [inv.id for inv in list(grouped_invoices.values())]
+        # return [inv.id for inv in list(grouped_invoices.values())]
+
+    @api.multi
+    def action_invoice_refund_wcontext(self, cntx=None):
+        # set context if any
+        if cntx:
+            self = self.with_context(cntx)
+        self.action_invoice_refund()
 
     @api.multi
     def create_td_grouped_invoices(self):
