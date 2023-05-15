@@ -12,5 +12,17 @@
             <field name="default_code">TIME_ENTRY</field>
             <field name="categ_id" ref="product.product_category_1"/>
         </record>
+        <record id="away_base_product" model="product.product">
+            <field name="name">Away Entry</field>
+            <field name="list_price">1.0</field>
+            <field name="standard_price">0.0</field>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">False</field>
+            <field name="type">service</field>
+            <field name="default_code">AWAY_ENTRY</field>
+            <field name="categ_id" ref="product.product_category_1"/>
+            <field name="uom_id" ref="enhance_maintenance.product_uom_cost_km"/>
+            <field name="uom_po_id" ref="enhance_maintenance.product_uom_cost_km"/>
+        </record>
     </data>
 </odoo>

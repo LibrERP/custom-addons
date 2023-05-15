@@ -159,6 +159,21 @@ class MaintenanceRequest(models.Model):
         readonly=True,
         copy=False,
     )
+    away_ids = fields.One2many(
+        'maintenance.away.line',
+        'maintenance_id',
+        string='Away Costs',
+        index=True,
+        copy=False,
+        auto_join=True
+    )
+    away_price = fields.Float(
+        "Total Costs",
+        compute='_compute_away_price',
+        store=True,
+        readonly=True,
+        help="Total Aways Costs.",
+    )
 
     @api.depends('invoice_count')
     def _get_invoiced(self):
@@ -200,6 +215,11 @@ class MaintenanceRequest(models.Model):
     def _compute_spare_price(self):
         for maintenance in self:
             maintenance.spare_price = round(sum(maintenance.spare_ids.mapped('product_price')), 2)
+
+    @api.depends('away_ids.product_price')
+    def _compute_away_price(self):
+        for maintenance in self:
+            maintenance.away_price = round(sum(maintenance.away_ids.mapped('product_price')), 2)
 
     @api.depends('timesheet_ids.unit_amount')
     def _compute_effective_hours(self):
@@ -312,6 +332,7 @@ class MaintenanceRequest(models.Model):
         orderType = self.env['sale.order']
         show_timesheet_name = self.env['ir.config_parameter'].sudo().get_param('enhance_maintenance.show_timesheet_name')
         show_expense_name = self.env['ir.config_parameter'].sudo().get_param('enhance_maintenance.show_expense_name')
+        show_away_name = self.env['ir.config_parameter'].sudo().get_param('enhance_maintenance.show_away_name')
 
         for maintenance_id in self:
             if not(maintenance_id.owner_id):
@@ -366,6 +387,15 @@ class MaintenanceRequest(models.Model):
                             if sale_line_id:
                                 sale_line_id.write({'qty_delivered': 1})
                                 expense_id.maint_sale_line_id = sale_line_id.id
+                for away_id in maintenance_id.away_ids:
+                    if not away_id.maint_sale_line_id:
+                        product_id = away_id.product_id
+                        price = away_id.product_price
+                        product_uom_qty = away_id.product_uom_qty
+                        product_name = away_id.name if show_away_name else product_id.name
+                        sale_line_id = self.create_sale_order_line(price, product_id, product_name, product_uom_qty, sale_order_id, maintenance_id, partner_shipping_id)
+                        if sale_line_id:
+                            away_id.maint_sale_line_id = sale_line_id.id
 
     @api.model
     def check_rel(self, sale_order_id, maintenance_id):
@@ -490,3 +520,89 @@ class MaintenanceInvoiceRel(models.Model):
         index=True,
         ondelete='cascade',
     )
+
+
+class MaintenanceAwayLine(models.Model):
+    _name = 'maintenance.away.line'
+    _description = 'Away Line'
+    _order = 'maintenance_id, sequence, product_id'
+
+    maintenance_id = fields.Many2one(
+        'maintenance.request',
+        string='Maintenance Request',
+        required=True,
+        ondelete='cascade',
+        index=True,
+        copy=False,
+    )
+    name = fields.Text(
+        string='Name',
+        help='Usable in Sale Order & Invoice lines.'
+    )
+    date = fields.Date(
+        string="Date",
+        required=True,
+        default=fields.Date.context_today,
+        )
+    product_id = fields.Many2one(
+        'product.product',
+        string='Away',
+        required=True,
+        ondelete='restrict',
+        index=True,
+        compute='_compute_product',
+        )
+    product_uom_qty = fields.Float(
+        string='Quantity',
+        digits=dp.get_precision('Product Unit of Measure'),
+        required=True,
+        default=1.0,
+    )
+    product_uom = fields.Many2one(
+        'uom.uom',
+        related='product_id.uom_id',
+        string='Unit of Measure',
+        index=True,
+    )
+    product_note = fields.Text(
+        string='Note',
+        help='Usable for internal knowledge.'
+    )
+    product_unit_price = fields.Float(
+        related='product_id.lst_price',
+        string='Unit Cost',
+        digits=dp.get_precision('Product Price'),
+        store=True,
+        readonly=True,
+    )
+    product_price = fields.Float(
+        string='Cost',
+        digits=dp.get_precision('Product Price'),
+        store=True,
+        readonly=True,
+        compute='_compute_price',
+    )
+    sequence = fields.Integer(string='Sequence', default=10)
+    maint_sale_line_id = fields.Many2one(
+        'sale.order.line',
+        string='Sale Order Line',
+        on_delete='set null',
+        copy=False,
+        index=True,
+    )
+
+    @api.model
+    def _compute_product(self):
+        ret = self.env['product.product']
+        criteria = [('default_code', '=', 'AWAY_ENTRY')]
+        product_id = self.env['product.product'].search(criteria, limit=1)
+        if product_id:
+            for away in self:
+                away.product_id = product_id.id
+ 
+    @api.depends('product_uom_qty','product_unit_price')
+    def _compute_price(self):
+        for line in self:
+            if line.product_uom_qty and line.product_unit_price:
+                line.product_price = line.product_uom_qty * line.product_unit_price
+

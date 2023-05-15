@@ -23,7 +23,7 @@
 ##############################################################################
 {
     'name': 'Maintenance Enhancement',
-    'version': '12.0.0.0',
+    'version': '12.0.1.0',
     'author': 'Didotech srl',
     'website': 'http://www.didotech.com',
     'support': 'support@didotech.com',
@@ -38,6 +38,7 @@
         'maintenance',
         'hr_expense',
         'hr_timesheet',
+        'sale_expense',
         ],
     'description':
     """
@@ -53,6 +54,7 @@
     'init_xml': [
         ],
     'data': [
+        'data/uom_data.xml',
         'data/product_data.xml',
         'security/ir.model.access.csv',
         'views/res_config_view.xml',
