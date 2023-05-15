@@ -124,6 +124,12 @@ class StockPicking(models.Model):
                 if line.product_uom_qty > 0:
                     line.invoice_line_create(invoice, line.product_uom_qty)
 
+            origin = invoice.origin
+            if origin and sp.name not in origin.split(', '):
+                invoice.update({
+                    'origin': origin + ', ' + sp.name
+                })
+
         return grouped_invoices, references
 
     @api.multi
