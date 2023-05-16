@@ -154,7 +154,13 @@ class StockPicking(models.Model):
         invoice_description = '' # self._prepare_invoice_description()
         currency_id = journal.currency_id.id or journal.company_id.currency_id.id
 
-        payment_term_id = self.main_partner.property_payment_term_id.id
+        if self.payment_term_id and self.payment_term_id.id:
+            payment_term_id = self.payment_term_id.id
+        else:
+            if self.main_partner.property_payment_term_id and self.main_partner.property_payment_term_id.id:
+                payment_term_id = self.main_partner.property_payment_term_id.id
+            else:
+                payment_term_id = None
 
         fiscal_position_id = None
 
