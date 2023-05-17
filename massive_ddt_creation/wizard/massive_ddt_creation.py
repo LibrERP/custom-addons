@@ -14,7 +14,8 @@ class MassiveDdtCreation(models.TransientModel):
     type_ddt = fields.Many2one(
         'stock.ddt.type',
         string='Required TD Type',
-        required=True
+        required=True,
+        index=True,
     )
     line_ids = fields.One2many('wizard.massive.ddt.creation.line', 'parent_id')
 
@@ -155,12 +156,32 @@ class MassiveDdtCreation(models.TransientModel):
 class MassiveDdtCreationLine(models.TransientModel):
     _name = 'wizard.massive.ddt.creation.line'
 
-    parent_id = fields.Many2one('wizard.massive.ddt.creation')
-    move_id = fields.Many2one('stock.move')
-    picking_id = fields.Many2one('stock.picking')
-    product_id = fields.Many2one('product.product', string='Product')
-    product_uom_qty = fields.Float(digits=dp.get_precision('Product Unit of Measure'))
+    parent_id = fields.Many2one(
+        'wizard.massive.ddt.creation',
+        index=True,
+    )
+    move_id = fields.Many2one(
+        'stock.move',
+        index=True,
+    )
+    picking_id = fields.Many2one(
+        'stock.picking',
+        index=True,
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        string='Product',
+        index=True,
+    )
+    product_uom_qty = fields.Float(
+        'Quantity to deliver',
+        digits=dp.get_precision('Product Unit of Measure'),
+    )
     reserved_availability = fields.Float(digits=dp.get_precision('Product Unit of Measure'))
     quantity_done = fields.Float(digits=dp.get_precision('Product Unit of Measure'))
     qty_in_stock = fields.Float()
-    product_uom = fields.Many2one('uom.uom', string='Unity of measure')
+    product_uom = fields.Many2one(
+        'uom.uom',
+        string='Unity of measure',
+        index=True,
+    )
