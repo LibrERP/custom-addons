@@ -108,14 +108,14 @@ class AccountInvoice(models.Model):
                 if sequences and len(sequences) > 1:
                     seq = max(sequences)
                     line_product = invoice.invoice_line_ids.filtered(lambda x: x.product_id.id == product_sp_inc.id)
-
-                    if line_product and not line_product.invoice_line_tax_ids:
-                        # line_product.sequence = CHARGES_SEQUENCE
-                        tax_id = product_sp_inc.taxes_id.id
-                        line_product.write({
-                            'invoice_line_tax_ids': [(6, 0, [tax_id])],
-                            'sequence': CHARGES_SEQUENCE,
-                        })
+                    for lp in line_product:
+                        if lp and not lp.invoice_line_tax_ids:
+                            # line_product.sequence = CHARGES_SEQUENCE
+                            tax_id = product_sp_inc.taxes_id.id
+                            lp.write({
+                                'invoice_line_tax_ids': [(6, 0, [tax_id])],
+                                'sequence': CHARGES_SEQUENCE,
+                            })
 
     def get_spese_incasso(self):
 
