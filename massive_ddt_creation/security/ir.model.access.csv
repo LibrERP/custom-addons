@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_massive_ddt_creation,access_wizard_massive_ddt_creation,model_wizard_massive_ddt_creation,base.group_user,1,1,1,1
+access_wizard_massive_ddt_creation_line,access_wizard_massive_ddt_creation_line,model_wizard_massive_ddt_creation_line,base.group_user,1,1,1,1
