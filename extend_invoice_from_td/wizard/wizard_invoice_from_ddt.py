@@ -94,7 +94,9 @@ class WizardInvoiceFromDdt(models.TransientModel):
                 f'\n\n[Invoice from DDT] Start invoicing for {len(ddts_recordset)} DDTs'
             )
             group_inv_create_begin = time.time()
-            ddts_recordset.with_context(invoice_creation_context).with_delay().action_invoice_create()  # Fatturazione con job queue e processi multipli
+
+            # ddts_recordset.with_context(invoice_creation_context).with_delay().action_invoice_create()  # Fatturazione con job queue e processi multipli
+            ddts_recordset.with_delay().action_invoice_create_wcontext(invoice_creation_context)  # Fatturazione con job queue e processi multipli
             # ddts_recordset.with_context(invoice_creation_context).action_invoice_create()  # Fatturazione con processo singolo
             group_inv_create_time = time.time() - group_inv_create_begin
             _logger.info(
