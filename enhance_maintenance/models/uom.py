@@ -4,7 +4,7 @@
 #    Copyright (C) 2020-2023 Didotech srl
 #    (<http://www.didotech.com/>).
 #
-#    Created on : 2023-03-24
+#    Created on : 2023-05-13
 #    Author : Fabio Colognesi
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,11 @@
 #
 ##############################################################################
 
-from . import res_config_settings
-from . import maintenance
-from . import product
-from . import analytic_account
-from . import hr_timesheet
-from . import hr_expense
-from . import sale
-from . import uom
+from odoo import api, fields, models, _
+
+
+class UoMCategory(models.Model):
+    _inherit = 'uom.category'
+    _description = 'Product UoM Categories'
+
+    measure_type = fields.Selection(selection_add=[('costkm', 'Cost per km')])

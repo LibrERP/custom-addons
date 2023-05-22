@@ -82,7 +82,14 @@ class StockPicking(models.Model):
                     'journal_id': journal_id
                 })
 
-        return [inv.id for inv in list(grouped_invoices.values())]
+        # return [inv.id for inv in list(grouped_invoices.values())]
+
+    @api.multi
+    def action_invoice_refund_wcontext(self, cntx=None):
+        # set context if any
+        if cntx:
+            self = self.with_context(cntx)
+        self.action_invoice_refund()
 
     @api.multi
     def create_td_grouped_invoices(self):
@@ -117,6 +124,12 @@ class StockPicking(models.Model):
                 if line.product_uom_qty > 0:
                     line.invoice_line_create(invoice, line.product_uom_qty)
 
+            origin = invoice.origin
+            if origin and sp.name not in origin.split(', '):
+                invoice.update({
+                    'origin': origin + ', ' + sp.name
+                })
+
         return grouped_invoices, references
 
     @api.multi
@@ -141,7 +154,13 @@ class StockPicking(models.Model):
         invoice_description = '' # self._prepare_invoice_description()
         currency_id = journal.currency_id.id or journal.company_id.currency_id.id
 
-        payment_term_id = self.main_partner.property_payment_term_id.id
+        if self.payment_term_id and self.payment_term_id.id:
+            payment_term_id = self.payment_term_id.id
+        else:
+            if self.main_partner.property_payment_term_id and self.main_partner.property_payment_term_id.id:
+                payment_term_id = self.main_partner.property_payment_term_id.id
+            else:
+                payment_term_id = None
 
         fiscal_position_id = None
 

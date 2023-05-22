@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--
+        Resource: uom.category
+        -->
+        <record id="product_uom_categ_cost_km" model="uom.category">
+            <field name="name">Cost per km</field>
+            <field name="measure_type">costkm</field>
+        </record>
+       <!--
+            Resource: uom.uom
+        -->
+        <record id="product_uom_cost_km" model="uom.uom">
+            <field name="category_id" ref="product_uom_categ_cost_km"/>
+            <field name="name">€/km</field>
+            <field name="factor" eval="1.0"/>
+            <field name="rounding" eval="0.01"/>
+        </record>
+    </data>
+</odoo>

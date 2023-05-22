@@ -14,7 +14,7 @@
     'author': "Didotech Srl",
     'website': "http://www.didotech.com",
     'category': 'Stock',
-    'version': '12.0.5.0',
+    'version': '12.0.7.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -25,6 +25,7 @@
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'views/res_config_view.xml',
         'wizard/massive_ddt_creation_wizard.xml',
     ]

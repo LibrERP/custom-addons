@@ -28,7 +28,7 @@
             	decoration-danger="reserved_availability==0 or qty_in_stock &lt; quantity_done" 
             	decoration-info="reserved_availability &lt; quantity_done">
 
-                <field name="picking_id"/>
+                <field name="picking_id" readonly="1" force_save="1"/>
                 <field name="move_id" invisible="1"/>
                 <field name="product_id" readonly="1" force_save="1"/>
                 <field name="product_uom_qty" readonly="1" force_save="1"/>
