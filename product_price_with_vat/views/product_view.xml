@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_price_vat_form" model="ir.ui.view">
+        <field name="name">product.template.price.vat.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <field name="list_price" position="after">
+                <field name="price_vat_included" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}" />
+            </field>
+        </field>
+    </record>
+</odoo>
