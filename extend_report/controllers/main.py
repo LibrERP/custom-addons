@@ -91,9 +91,13 @@ class ReportController(report.ReportController):
                 else:
                     # Particular report:
                     # decoding the args represented in JSON
-                    data = url_decode(url.split('?')[1]).items()
-                    response = self.report_routes(
-                        reportname, converter='zpl2', **dict(data))
+                    if (len(url.split('?')) > 1):
+                        data = url_decode(url.split('?')[1]).items()
+                        response = self.report_routes(
+                            reportname, converter='zpl2', **dict(data))
+                    else:
+                        response = self.report_routes(
+                            reportname, converter='zpl2')
 
                 report = request.env['ir.actions.report']._get_report_from_name(reportname)
                 filename = "%s.%s" % (report.name, extension)
