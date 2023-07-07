@@ -1,0 +1,5 @@
+code,name,account_type,default tax,tag_ids,group,currency,reconsile,depreated
+1012222,Notes Payable,asset_current,Tax 15% ,"Operating Activities,Financing Activities",dDemo Group1,INR,1,TRUE
+101223344,Bank,asset_cash,Tax 15% ,Financing Activities,Demo Group2,INR,TRUE,FALSE
+1012323,Property,income,Tax 15% ,"Financing Activities,Operating Activities",,EUR,0,1
+1012432413,Banking Account,liability_credit_card,Tax 15% ,,Demo Group4,USD,1,1
