@@ -103,6 +103,17 @@
             </field>
         </record>
 
+        <!-- Override view action using generic quotations -->
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="context">{'search_default_draft': 1}</field>
+        </record>
+
+        <record id="sale.action_orders" model="ir.actions.act_window">
+             <field name="domain">[('state', 'in', ('sale', 'done'))]</field>
+        </record>
+
+
      </data>
 </odoo>
             
