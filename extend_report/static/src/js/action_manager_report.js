@@ -35,21 +35,21 @@ odoo.define('extend_report.ReportActionManager', function (require) {
             // We may have to build a query string with `action.data`. It's the place
             // were report's using a wizard to customize the output traditionally put
             // their options.
-            //if (_.isUndefined(action.data) || _.isNull(action.data) ||
-            //    (_.isObject(action.data) && _.isEmpty(action.data))) {
-            //    if (action.context.active_ids) {
-            //        var activeIDsPath = '/' + action.context.active_ids.join(',');
-            //        reportUrls = _.mapObject(reportUrls, function (value) {
-            //            return value += activeIDsPath;
-            //        });
-            //    }
-            //} else {
-            //    var serializedOptionsPath = '?options=' + encodeURIComponent(JSON.stringify(action.data));
-            //    serializedOptionsPath += '&context=' + encodeURIComponent(JSON.stringify(action.context));
-            //    reportUrls = _.mapObject(reportUrls, function (value) {
-            //        return value += serializedOptionsPath;
-            //    });
-            //}
+            if (_.isUndefined(action.data) || _.isNull(action.data) ||
+                (_.isObject(action.data) && _.isEmpty(action.data))) {
+                if (action.context.active_ids) {
+                    var activeIDsPath = '/' + action.context.active_ids.join(',');
+                    reportUrls = _.mapObject(reportUrls, function (value) {
+                        return value += activeIDsPath;
+                    });
+                }
+            } else {
+                var serializedOptionsPath = '?options=' + encodeURIComponent(JSON.stringify(action.data));
+                serializedOptionsPath += '&context=' + encodeURIComponent(JSON.stringify(action.context));
+                reportUrls = _.mapObject(reportUrls, function (value) {
+                    return value += serializedOptionsPath;
+                });
+            }
             return reportUrls;
         },
         
