@@ -28,8 +28,8 @@ odoo.define('extend_report.ReportActionManager', function (require) {
             //    text: '/report/text/' + action.report_name,
             //    zpl2: '/report/zpl2/' + action.report_name,
             //};
-
             var reportUrls = this._super.apply(this, arguments);
+            console.log(reportUrls);
             reportUrls.zpl2 = '/report/zpl2/' + action.report_name
 
             // We may have to build a query string with `action.data`. It's the place
@@ -40,7 +40,12 @@ odoo.define('extend_report.ReportActionManager', function (require) {
                 if (action.context.active_ids) {
                     var activeIDsPath = '/' + action.context.active_ids.join(',');
                     reportUrls = _.mapObject(reportUrls, function (value) {
-                        return value += activeIDsPath;
+                        // the main controller split by back slashes and search for 2 elements
+                        // url and id so we check if id is already set
+                        if (!value.endsWith(activeIDsPath))
+                            return value += activeIDsPath;
+                        else
+                            return value;
                     });
                 }
             } else {
