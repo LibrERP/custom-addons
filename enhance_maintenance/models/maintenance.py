@@ -549,6 +549,7 @@ class MaintenanceAwayLine(models.Model):
         string='Away',
         required=True,
         ondelete='restrict',
+        store=True,
         index=True,
         compute='_compute_product',
         )
