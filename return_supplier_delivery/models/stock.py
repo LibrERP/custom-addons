@@ -21,9 +21,5 @@ class StockPickingPackagePreparation(models.Model):
         for record in self:
             record.is_return_supplier = record.transportation_reason_id.return_supplier
 
-    is_return_supplier = fields.Boolean(compute=_compute_is_return)
-
-    def create_credit_note(self):
-        print(self.is_return_supplier)
-        pass
+    is_return_supplier = fields.Boolean(compute=_compute_is_return, string='Reso')
 

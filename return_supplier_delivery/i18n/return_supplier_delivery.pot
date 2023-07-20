@@ -1,0 +1,119 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* return_supplier_delivery
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-20 14:51+0000\n"
+"PO-Revision-Date: 2023-07-20 14:51+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: return_supplier_delivery
+#: model_terms:ir.ui.view,arch_db:return_supplier_delivery.view_ddt_credit_note
+msgid "Cancel"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model_terms:ir.ui.view,arch_db:return_supplier_delivery.view_ddt_credit_note
+msgid "Create"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model_terms:ir.ui.view,arch_db:return_supplier_delivery.ddt_stock_picking_package_preparation_form_return
+msgid "Create credit note"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model,name:return_supplier_delivery.model_ddt_credit_note
+msgid "Credit Note TD"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: code:addons/return_supplier_delivery/wizard/ddt_credinote.py:94
+#, python-format
+msgid "Credit Note from TD"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__id
+msgid "ID"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__date_invoice
+msgid "Invoice Date"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_stock_picking_package_preparation__is_return_supplier
+msgid "Is Return Supplier"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__journal_id
+msgid "Journal"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_ddt_credit_note__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model,name:return_supplier_delivery.model_stock_picking_package_preparation
+msgid "Package Preparation"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model,name:return_supplier_delivery.model_stock_picking_transportation_reason
+msgid "Reason for Transportation"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.model.fields,field_description:return_supplier_delivery.field_stock_picking_transportation_reason__return_supplier
+msgid "Reso fornitore"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model:ir.actions.act_window,name:return_supplier_delivery.action_ddt_credit_note
+#: model_terms:ir.ui.view,arch_db:return_supplier_delivery.view_ddt_credit_note
+msgid "TD Credit Note"
+msgstr ""
+
+#. module: return_supplier_delivery
+#: model_terms:ir.ui.view,arch_db:return_supplier_delivery.view_ddt_credit_note
+msgid "or"
+msgstr ""
+
