@@ -14,6 +14,7 @@
         'l10n_it_ddt',
     ],
     'data': [
+        'wizard/ddt_creditnote.xml',
         'views/stock_picking_package_preparation.xml',
     ],
     'installable': True

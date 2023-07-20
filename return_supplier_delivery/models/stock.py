@@ -11,3 +11,19 @@ class StockPickingTransportationReason(models.Model):
 
     return_supplier = fields.Boolean(string='Reso fornitore')
 
+
+class StockPickingPackagePreparation(models.Model):
+
+    _inherit = 'stock.picking.package.preparation'
+
+    @api.depends('transportation_reason_id')
+    def _compute_is_return(self):
+        for record in self:
+            record.is_return_supplier = record.transportation_reason_id.return_supplier
+
+    is_return_supplier = fields.Boolean(compute=_compute_is_return)
+
+    def create_credit_note(self):
+        print(self.is_return_supplier)
+        pass
+
