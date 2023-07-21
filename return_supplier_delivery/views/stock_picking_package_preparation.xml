@@ -19,9 +19,13 @@
         <field name="inherit_id"
                ref="l10n_it_ddt.ddt_stock_picking_package_preparation_form"/>
         <field name="arch" type="xml">
-             <xpath expr="//button[@name='action_draft']" position="after">
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <field name="is_return_supplier" invisible="1"/>
+                <field name="invoice_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_draft']" position="after">
                 <button name="%(action_ddt_credit_note)d" type="action" string="Create credit note"
-                attrs=""
+                attrs="{'invisible':  ['|', ('invoice_id', '!=', False), ('is_return_supplier', '=', False)]}"
                 />
              </xpath>
         </field>

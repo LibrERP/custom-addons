@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 {
-    'name': 'ITA - DDT: reso a fornitore',
+    'name': 'ITA - Nota di credito da DDT reso a fornitore',
     'version': '12.0.1.0.1',
     'category': 'Localization/Italy',
     'summary': 'Reso a fornitore',
