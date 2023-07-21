@@ -24,8 +24,12 @@
                 <field name="invoice_id" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_draft']" position="after">
-                <button name="%(action_ddt_credit_note)d" type="action" string="Create credit note"
-                attrs="{'invisible':  ['|', ('invoice_id', '!=', False), ('is_return_supplier', '=', False)]}"
+                <button
+                        name="%(action_ddt_credit_note)d"
+                        type="action"
+                        string="Create credit note"
+                        class="btn btn-primary"
+                        attrs="{'invisible':  [('invoice_id', '!=', False)]}"
                 />
              </xpath>
         </field>

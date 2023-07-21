@@ -57,8 +57,7 @@ class DdtCreditNote(models.TransientModel):
             stock_preparation.partner_id.property_account_payable_id.id)
         values['partner_id'] = stock_preparation.partner_id.id
         values['currency_id'] = stock_preparation.partner_id.currency_id.id
-
-        invoice_refund = self.env['account.invoice'].create(values)
+        values['invoice_line_ids'] = []
 
         # invoice lines
         for line in stock_preparation.line_ids:
@@ -93,13 +92,18 @@ class DdtCreditNote(models.TransientModel):
                 'price_unit': price,
                 'uom_id': product.uom_id.id,
                 'product_id': product.id or False,
-                'invoice_id': invoice_refund.id,
+                # 'invoice_id': invoice_refund.id,
             }
             if tax:
                 res['invoice_line_tax_ids'] = (6, 0, tax.ids),
 
-            self.env['account.invoice.line'].create(res)
+            values['invoice_line_ids'].append((0, 0, res))
 
+        invoice_refund = self.env['account.invoice'].create(values)
+
+            # self.env['account.invoice.line'].create(res)
+
+        # invoice_refund.compute_taxes()
         # update ddt with credit note
         stock_preparation.write({
             'invoice_id': invoice_refund.id
