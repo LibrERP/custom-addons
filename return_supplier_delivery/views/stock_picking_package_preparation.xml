@@ -29,7 +29,7 @@
                         type="action"
                         string="Create credit note"
                         class="btn btn-primary"
-                        attrs="{'invisible':  [('invoice_id', '!=', False)]}"
+                        attrs="{'invisible':  ['|', '|', ('invoice_id', '!=', False), ('state', '!=', 'done'), ('is_return_supplier', '=', False)]}"
                 />
              </xpath>
         </field>
