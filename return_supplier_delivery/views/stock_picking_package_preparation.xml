@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_transportation_reason_form_return" model="ir.ui.view">
+        <field name="name">stock.picking.transportation_reason.form</field>
+        <field name="model">stock.picking.transportation_reason</field>
+        <field name="inherit_id" ref="l10n_it_ddt.view_transportation_reason_form"/>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='to_be_invoiced']" position="after">
+                <field name="return_supplier"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="ddt_stock_picking_package_preparation_form_return"
+                model="ir.ui.view">
+        <field name="name">ddt.stock.picking.package.preparation.form.return</field>
+        <field name="model">stock.picking.package.preparation</field>
+        <field name="inherit_id"
+               ref="l10n_it_ddt.ddt_stock_picking_package_preparation_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <field name="is_return_supplier" invisible="1"/>
+                <field name="invoice_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button
+                        name="%(action_ddt_credit_note)d"
+                        type="action"
+                        string="Create credit note"
+                        class="btn btn-primary"
+                        attrs="{'invisible':  ['|', '|', ('invoice_id', '!=', False), ('state', '!=', 'done'), ('is_return_supplier', '=', False)]}"
+                />
+             </xpath>
+        </field>
+    </record>
+
+</odoo>
