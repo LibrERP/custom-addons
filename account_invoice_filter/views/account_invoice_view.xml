@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_invoice_advanced_filter" model="ir.ui.view">
+        <field name="name">view.account.invoice.advanced.filter</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='late']" position="after">
+                <separator/>
+                    <filter icon="terp-go-month" string="Last Month" name="last_month" help="Invoices of the last month" domain="[('date_invoice', '&lt;', datetime.date.today().strftime('%%Y-%%m-01 00:00:00')), ('date_invoice', '&gt;=', (datetime.date.today() - relativedelta(months=1)).strftime('%%Y-%%m-01 00:00:00'))]"/>
+                    <filter icon="terp-go-month" string="Current Month" name="current_month" help="Invoices of the current month" domain="[('date_invoice', '&lt;', (datetime.date.today() + relativedelta(months=1)).strftime('%%Y-%%m-01 00:00:00')), ('date_invoice', '&gt;=', (datetime.date.today()).strftime('%%Y-%%m-01 00:00:00'))]"/>
+                    <filter icon="terp-go-month" string="Next Month" name="next_month" help="Invoices of the next month" domain="[('date_invoice', '&lt;', (datetime.date.today() + relativedelta(months=2)).strftime('%%Y-%%m-01 00:00:00')), ('date_invoice', '&gt;=', (datetime.date.today() + relativedelta(months=1)).strftime('%%Y-%%m-01 00:00:00'))]"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
