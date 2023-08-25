@@ -80,7 +80,9 @@ class CxReportController(ReportController):
                 ("Content-Length", len(pdf)),
                 (
                     "Content-Disposition",
-                    'inline; filename="%s.pdf"' % slugify(filepart),
+#                     'form-data; name="%s.pdf"' % slugify(filepart) + 'filename="%s.pdf"' % slugify(filepart),
+#                     'inline; filename="%s.pdf"' % slugify(filepart),
+                    'attachment; filename="%s.pdf"' % slugify(filepart),
                 ),
             ],
         )

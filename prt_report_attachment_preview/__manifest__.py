@@ -19,7 +19,7 @@
 
 {
     "name": "Open PDF Reports and PDF Attachments in Browser",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "summary": """
     Preview reports and pdf attachments in browser instead of downloading them.
     Open Report or PDF Attachment in new tab instead of downloading.
