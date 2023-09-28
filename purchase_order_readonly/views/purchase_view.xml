@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_order_readonly_form" model="ir.ui.view">
+        <field name="name">purchase.order.readonly.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'sent'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', 'not in', ('draft', 'sent')), ('qty_invoiced', '!=', 0)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
