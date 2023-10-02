@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_requisition_alternatives_form" model="ir.ui.view">
+        <field name="name">Alternative Warning Form</field>
+        <field name="model">purchase.requisition.alternative.warning</field>
+        <field name="inherit_id" ref="purchase_requisition.purchase_requisition_alternative_warning_form"/>
+        <field name="arch" type="xml">
+            <button name="action_cancel_alternatives" position="replace">
+                <button name="action_remove_alternatives" string="Remove Alternatives" data-hotkey="q" type="object" colspan="1" class="btn-primary"/>
+            </button>
+
+        </field>
+    </record>
+</odoo>
