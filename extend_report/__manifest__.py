@@ -23,7 +23,7 @@
 ##############################################################################
 {
     'name': 'extend_report',
-    'version': '12.0.0.5.0',
+    'version': '12.0.0.5.1',
     'category': 'Customization',
     'summary': 'Report extensions and customizations',
     'author': 'powERP enterprise network',
