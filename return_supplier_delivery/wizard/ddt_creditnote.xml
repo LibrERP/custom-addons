@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ddt_credit_note" model="ir.ui.view">
+        <field name="name">TD Credit Note</field>
+        <field name="model">ddt.credit.note</field>
+        <field name="arch" type="xml">
+            <form string="TD Credit Note">
+                <group>
+                    <field name="journal_id" widget="selection"/>
+                    <field name="date_invoice"/>
+                </group>
+                <footer>
+                    <button name="create_credit_note" string="Create" type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ddt_credit_note" model="ir.actions.act_window">
+        <field name="name">TD Credit Note</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">ddt.credit.note</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_ddt_credit_note"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

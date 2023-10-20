@@ -30,26 +30,35 @@ odoo.define('extend_report.ReportActionManager', function (require) {
             //};
 
             var reportUrls = this._super.apply(this, arguments);
-            reportUrls.zpl2 = '/report/zpl2/' + action.report_name
+            console.log(action, 'action')
+            if (action.report_type == 'qweb-zpl2') {
+                console.log('qweb-zpl2')
+                reportUrls.zpl2 = '/report/zpl2/' + action.report_name
 
-            // We may have to build a query string with `action.data`. It's the place
-            // were report's using a wizard to customize the output traditionally put
-            // their options.
-            if (_.isUndefined(action.data) || _.isNull(action.data) ||
-                (_.isObject(action.data) && _.isEmpty(action.data))) {
-                if (action.context.active_ids) {
-                    var activeIDsPath = '/' + action.context.active_ids.join(',');
+                 // We may have to build a query string with `action.data`. It's the place
+                // were report's using a wizard to customize the output traditionally put
+                // their options.
+                if (_.isUndefined(action.data) || _.isNull(action.data) ||
+                    (_.isObject(action.data) && _.isEmpty(action.data))) {
+                    if (action.context.active_ids) {
+                        var activeIDsPath = '/' + action.context.active_ids.join(',');
+                        reportUrls = _.mapObject(reportUrls, function (value) {
+                            return value += activeIDsPath;
+                        });
+                    }
+                } else {
+                    var serializedOptionsPath = '?options=' + encodeURIComponent(JSON.stringify(action.data));
+                    serializedOptionsPath += '&context=' + encodeURIComponent(JSON.stringify(action.context));
                     reportUrls = _.mapObject(reportUrls, function (value) {
-                        return value += activeIDsPath;
+                        return value += serializedOptionsPath;
                     });
                 }
             } else {
-                var serializedOptionsPath = '?options=' + encodeURIComponent(JSON.stringify(action.data));
-                serializedOptionsPath += '&context=' + encodeURIComponent(JSON.stringify(action.context));
-                reportUrls = _.mapObject(reportUrls, function (value) {
-                    return value += serializedOptionsPath;
-                });
+
             }
+
+
+
             return reportUrls;
         },
         
