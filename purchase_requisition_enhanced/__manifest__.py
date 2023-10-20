@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Requisition Enhanced',
-    'version': '0.1',
+    'version': '0.1.0.1',
     'category': 'Inventory/Purchase',
     'description': """
 This module solve some problems in Purchase Requisition module
@@ -14,6 +14,8 @@ Solve problem with multiple presence of the same product in the same order which
     'depends': [
         'purchase_requisition'
     ],
-    'data': [],
+    'data': [
+        'views/purchase_view.xml',
+    ],
     'license': 'LGPL-3',
 }

@@ -7,6 +7,9 @@ from odoo import api, fields, models, _, Command
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
+    allocated = fields.Boolean(default=False)
+
     def action_choose(self):
         self = self.order_id.order_line.filtered(lambda l: l.product_id.id == self.product_id.id)
+        self.write({'allocated': True})
         return super().action_choose()
