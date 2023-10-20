@@ -12,4 +12,5 @@ class PurchaseOrderLine(models.Model):
     def action_choose(self):
         self = self.order_id.order_line.filtered(lambda l: l.product_id.id == self.product_id.id)
         self.write({'allocated': True})
-        return super().action_choose()
+        # We should explicitly pass 'self' to super() if not sometime initial value will be used
+        return super(PurchaseOrderLine, self).action_choose()

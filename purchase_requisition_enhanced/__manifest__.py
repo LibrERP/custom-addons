@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Requisition Enhanced',
-    'version': '0.1.0.1',
+    'version': '0.1.0.2',
     'category': 'Inventory/Purchase',
     'description': """
 This module solve some problems in Purchase Requisition module
