@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/field[1]" position="before">
+                <field
+                    name="default_code"
+                    string="Codice prodotto"
+                    filter_domain="[('default_code', '=ilike', str(self) + '%')]"
+                    context="{'order_by': 'default_code ASC'}"
+                />
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
