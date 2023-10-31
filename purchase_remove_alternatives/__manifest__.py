@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Remove Alternatives',
-    'version': '16.0.0.0.0',
+    'version': '16.0.0.0.1',
     'category': 'Inventory/Purchase',
     'summary': """Substitute button Cancel alternatives with the button Remove alternatives
                which deletes discarded lines""",
