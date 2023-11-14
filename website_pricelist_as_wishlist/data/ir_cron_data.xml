@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="True">
+        <record forcecreate="True" id="ir_cron_update_wishlist" model="ir.cron">
+            <field name="name">Wishlist Update</field>
+            <field name="model_id" ref="model_product_pricelist"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_update_wishlist(website_id=1)</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">1</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+    </data>
+</odoo>
