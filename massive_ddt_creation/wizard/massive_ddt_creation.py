@@ -54,6 +54,8 @@ class MassiveDdtCreation(models.TransientModel):
                 raise ValidationError(_('Select pickings with the same partner'))
             if have_same_term and len(set(map(lambda p: p.payment_term_id.id, sorders))) > 1:
                 raise ValidationError(_('Selected orders must have the same payment term!'))
+            if have_same_term and len(set(map(lambda p: p.transportation_reason_id.id, sorders))) > 1:
+                raise ValidationError(_('Selected orders must have the same payment term!'))
         else:
             raise ValidationError('Not supported')  # should never happen, only fixes python linter
 

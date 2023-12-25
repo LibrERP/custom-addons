@@ -15,6 +15,10 @@ class ResConfigSettings(models.TransientModel):
         "Selected TDs must have same payment term",
         help="Setting to True pickings will be forced to respect the same payment terms. Default False.",
         config_parameter='massive_ddt_creation.massive_ddt_same_term')
+    massive_ddt_same_reason = fields.Boolean(
+        "Selected TDs must have same transportation reason",
+        help="Setting to True pickings will be forced to respect the same transportation reason. Default False.",
+        config_parameter='massive_ddt_creation.massive_ddt_same_reason')
     allow_more_qty = fields.Boolean(
         "Allows more quantity than reserved availability.",
         help="Setting to True pickings will be able to override its reserved quantity availability. Default False.",

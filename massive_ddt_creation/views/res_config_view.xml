@@ -31,6 +31,17 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-6 o_setting_box">
+                         <div class="o_setting_left_pane">
+                  			<field name="massive_ddt_same_reason" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                   			<label for="massive_ddt_same_reason"/>
+                             <div class="text-muted">
+                                Force TD to be applied on same transportation reason flag
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane">
                    			<field name="allow_more_qty" />
                         </div>
