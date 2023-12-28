@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        string="Inventory"
+        id="stock.action_report_inventory"
+        model="stock.inventory"
+        report_type="qweb-pdf"
+        name="stock_inventory_report.report_inventory"
+        file="stock_inventory_report.report_inventory"
+        print_report_name="'Inventory - %s' % (object.name)"
+    />
+</odoo>
