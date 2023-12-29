@@ -1,0 +1,72 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* stock_inventory_report
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-29 15:36+0000\n"
+"PO-Revision-Date: 2023-12-29 15:36+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Cost Price</strong>"
+msgstr "<strong>Prezzo d'Acquisto</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Date</strong>"
+msgstr "<strong>Data</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Inventory Cost</strong>"
+msgstr "<strong>Valore Magazzino</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Inventory</strong>"
+msgstr "<strong>Magazzino</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Location</strong>"
+msgstr "<strong>Ubicazione</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Package</strong>"
+msgstr "<strong>Collo</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Product</strong>"
+msgstr "<strong>Prodotto</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Production Lot</strong>"
+msgstr "<strong>Lotto di produzione</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Quantity</strong>"
+msgstr "<strong>Quantità</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "<strong>Total Quantity</strong>"
+msgstr "<strong>Quantità totale</strong>"
+
+#. module: stock_inventory_report
+#: model_terms:ir.ui.view,arch_db:stock_inventory_report.report_inventory
+msgid "Stock Inventory"
+msgstr "Inventario"
+
