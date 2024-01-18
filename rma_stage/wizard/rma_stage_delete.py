@@ -10,7 +10,7 @@ class RmaStageDelete(models.TransientModel):
     _name = 'rma.stage.delete.wizard'
     _description = 'RMA Stage Delete Wizard'
 
-    stage_ids = fields.Many2many('project.task.type', string='Stages To Delete', ondelete='cascade')
+    stage_ids = fields.Many2many('rma.stage', string='Stages To Delete', ondelete='cascade')
     rma_count = fields.Integer('Number of RMA', compute='_compute_rma_count')
     stages_active = fields.Boolean(compute='_compute_stages_active')
 
@@ -33,7 +33,7 @@ class RmaStageDelete(models.TransientModel):
             'name': _('Confirmation'),
             'view_mode': 'form',
             'res_model': 'rma.stage.delete.wizard',
-            'views': [(self.env.ref('project.view_project_task_type_delete_confirmation_wizard').id, 'form')],
+            'views': [(self.env.ref('rma_stage.view_rma_stage_delete_confirmation_wizard').id, 'form')],
             'type': 'ir.actions.act_window',
             'res_id': self.id,
             'target': 'new',
@@ -51,10 +51,7 @@ class RmaStageDelete(models.TransientModel):
         return self._get_action()
 
     def _get_action(self):
-        if self.env.context.get('stage_view'):
-            action = self.env["ir.actions.actions"]._for_xml_id("rma_stage.open_rma_form")
-        else:
-            action = self.env["ir.actions.actions"]._for_xml_id("rma_stage.action_view_all_rma")
+        action = self.env["ir.actions.actions"]._for_xml_id("rma.rma_action")
 
         context = dict(ast.literal_eval(action.get('context')), active_test=True)
         action['context'] = context

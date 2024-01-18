@@ -8,24 +8,24 @@ var view_registry = require('web.view_registry');
 var KanbanRecord = require('web.KanbanRecord');
 
 var RmaKanbanController = KanbanController.extend({
-//    custom_events: _.extend({}, KanbanController.prototype.custom_events, {
-//        'kanban_column_delete_wizard': '_onDeleteColumnWizard',
-//    }),
-//
-//    _onDeleteColumnWizard: function (ev) {
-//        ev.stopPropagation();
-//        const self = this;
-//        const column_id = ev.target.id;
-//        var state = this.model.get(this.handle, {raw: true});
-//        this._rpc({
-//            model: 'rma.stage',
-//            method: 'unlink_wizard',
-//            args: [column_id],
-//            context: state.getContext(),
-//        }).then(function (res) {
-//            self.do_action(res);
-//        });
-//    }
+    custom_events: _.extend({}, KanbanController.prototype.custom_events, {
+        'kanban_column_delete_wizard': '_onDeleteColumnWizard',
+    }),
+
+    _onDeleteColumnWizard: function (ev) {
+        ev.stopPropagation();
+        const self = this;
+        const column_id = ev.target.id;
+        var state = this.model.get(this.handle, {raw: true});
+        this._rpc({
+            model: 'rma.stage',
+            method: 'unlink_wizard',
+            args: [column_id],
+            context: state.getContext(),
+        }).then(function (res) {
+            self.do_action(res);
+        });
+    }
 });
 
 var RmaKanbanView = KanbanView.extend({

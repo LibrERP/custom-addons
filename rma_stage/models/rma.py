@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo.exceptions import UserError, ValidationError
 
 
 class RmaStage(models.Model):
@@ -25,6 +26,9 @@ class RmaStage(models.Model):
     fold = fields.Boolean(string='Folded in Kanban',
         help='This stage is folded in the kanban view when there are no records in that stage to display.')
     is_closed = fields.Boolean('Closing Stage', help="RMA in this stage are considered as closed.")
+    next_stage_ids = fields.Many2many(comodel_name="rma.stage", relation="rma_next_stage_rel", column1="rma_stage_id", column2="rma_next_stage_id", string="Next Stages")
+    # parent_stage_ids = fields.Many2many(comodel_name="rma.stage", relation="rma_next_stage_rel", column2="rma_stage_id", column1="rma_next_stage_id", string="Parent Stages")
+    team_ids = fields.Many2many(comodel_name="rma.team", string="Teams", required=False)
 
     def unlink_wizard(self, stage_view=False):
         self = self.with_context(active_test=False)
@@ -41,7 +45,8 @@ class RmaStage(models.Model):
             'name': _('Delete Stage'),
             'view_mode': 'form',
             'res_model': 'rma.stage.delete.wizard',
-            'views': [(self.env.ref('project.view_project_task_type_delete_wizard').id, 'form')],
+            # 'views': [(self.env.ref('project.view_project_task_type_delete_wizard').id, 'form')],
+            'views': [(self.env.ref('rma_stage.view_rma_stage_delete_wizard').id, 'form')],
             'type': 'ir.actions.act_window',
             'res_id': wizard.id,
             'target': 'new',
@@ -101,3 +106,17 @@ class Rma(models.Model):
     #             rma.kanban_state_label = rma.legend_blocked
     #         else:
     #             rma.kanban_state_label = rma.legend_done
+
+    @api.onchange('stage_id')
+    def onchange_stage(self):
+        if self._origin.stage_id.next_stage_ids and self.stage_id.id not in self._origin.stage_id.next_stage_ids.ids:
+            message = _(f"You can't move from '{self._origin.stage_id.name}' to '{self.stage_id.name}'")
+            self.stage_id = self._origin.stage_id.id
+            raise ValidationError(message)
+
+        if (self.stage_id.team_ids
+                and self.env.user.id not in self.stage_id.team_ids.member_ids.ids
+                and self.env.user.id not in self.stage_id.team_ids.user_id.ids):
+            message = _(f"You are not allowed to move to '{self.stage_id.name}' stage")
+            self.stage_id = self._origin.stage_id.id
+            raise ValidationError(message)

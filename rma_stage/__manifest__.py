@@ -17,6 +17,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/rma_assets.xml',
-        'views/rma_views.xml'
+        'views/rma_views.xml',
+        'views/rma_stage_views.xml',
+        'wizard/rma_stage_delete_views.xml'
     ],
 }

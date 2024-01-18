@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="rma_stage_view_search" model="ir.ui.view">
+        <field name="model">rma.stage</field>
+        <field name="arch" type="xml">
+            <search string="RMA Stages">
+                <field name="name" />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active','=',False)]"
+                />
+                <filter
+                    string="Active"
+                    name="active"
+                    domain="[('active','!=',False)]"
+                />
+            </search>
+        </field>
+    </record>
+
+    <record id="view_rma_stage_form" model="ir.ui.view">
+        <field name="name">Rma Stages</field>
+        <field name="model">rma.stage</field>
+        <field name="arch" type="xml">
+            <form string="RMA Stage">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                    </group>
+                    <field name="next_stage_ids">
+                        <tree>
+                            <field name="name" />
+                        </tree>
+                    </field>
+                   <field name="team_ids">
+                       <tree>
+                           <field name="name" />
+                       </tree>
+                   </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_rma_stage_list" model="ir.ui.view">
+        <field name="name">RMA Stages</field>
+        <field name="model">rma.stage</field>
+        <field eval="6" name="priority" />
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_rma_stage" model="ir.actions.act_window">
+        <field name="name">RMA Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rma.stage</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create a new RMA Stage
+            </p><p>
+            Manage RMA Stages to better classify them for tracking and analysis purposes.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="rma_configuration_rma_stage_menu"
+        name="RMA Stages"
+        parent="rma.rma_configuration_menu"
+        action="action_rma_stage"
+    />
+</odoo>
