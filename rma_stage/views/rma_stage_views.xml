@@ -30,16 +30,18 @@
                             <field name="name" />
                         </h1>
                     </div>
+                    <label for="next_stage_ids" string="Allowed Next Stages"/>
                     <field name="next_stage_ids">
                         <tree>
                             <field name="name" />
                         </tree>
                     </field>
-                   <field name="team_ids">
-                       <tree>
-                           <field name="name" />
-                       </tree>
-                   </field>
+                    <label for="team_ids" string="Teams Enabled for this Stage"/>
+                    <field name="team_ids">
+                        <tree>
+                            <field name="name" />
+                        </tree>
+                    </field>
                 </sheet>
             </form>
         </field>
