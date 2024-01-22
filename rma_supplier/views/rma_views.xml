@@ -5,9 +5,20 @@
         <field name="model">rma</field>
         <field name="inherit_id" ref="rma.rma_view_form" />
         <field name="arch" type="xml">
-            <field name="partner_invoice_id" position="after">
-                <field name="supplier_id" />
-            </field>
+            <notebook position="before">
+                <group string="Supplier">
+                    <group>
+                        <field name="supplier_id" />
+                        <field name="supplier_credit_note"/>
+                        <field name="supplier_transportation_document" />
+                    </group>
+                    <group>
+                        <field name="inventory_state" />
+                        <field name="supplier_goods_arrival_date"/>
+                        <field name="supplier_return_document" />
+                    </group>
+                </group>
+            </notebook>
         </field>
     </record>
 </odoo>

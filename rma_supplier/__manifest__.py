@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'RMA Supplier',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'RMA',
     'summary': 'Add Supplier to the RMA module',
     'author': 'Codebeex srl',
@@ -14,6 +14,8 @@
         'rma'
     ],
     'data': [
+        'security/ir.model.access.csv',
+        'data/inventory_state.xml',
         'views/rma_views.xml'
     ],
 }
