@@ -132,6 +132,7 @@
                     <field name="user_id" options="{'no_open': True,'no_create': True}" domain="[('share', '=', False)]"/>
                     <field name="company_id" invisible="1"/>
                     <field name="description" invisible="1"/>
+                    <field name="state"  invisible="1"/>
                 </group>
             </form>
         </field>
