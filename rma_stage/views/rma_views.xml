@@ -59,16 +59,18 @@
                                     <div class="o_kanban_record_headings">
                                         <strong class="o_kanban_record_title"><field name="name"/></strong>
                                         <br />
-                                        <field name="description" widget="html"/>
+                                        <strong style="font-weight: bold; font-size: large;"><field name="partner_id"/></strong>
 <!--                                        <t t-if="record.partner_id.value">-->
 <!--                                            <span t-if="!record.partner_is_company.raw_value">-->
 <!--                                                <field name="commercial_partner_id"/>-->
 <!--                                            </span>-->
 <!--                                            <span t-else="">-->
-<!--                                                <field name="partner_id"/>-->
+<!--                                                -->
 <!--                                            </span>-->
 <!--                                        </t>-->
     <!--                                    <t t-else="record.email_from.raw_value"><span><field name="email_from"/></span></t>-->
+                                        <br />
+                                        <field name="product_id"/>
                                     </div>
                                     <div class="o_dropdown_kanban dropdown" t-if="!selection_mode" groups="base.group_user">
                                         <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
