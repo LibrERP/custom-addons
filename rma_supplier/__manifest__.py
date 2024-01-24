@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'RMA Supplier',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'category': 'RMA',
     'summary': 'Add Supplier to the RMA module',
     'author': 'Codebeex srl',

@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="rma.rma_view_form" />
         <field name="arch" type="xml">
             <notebook position="before">
-                <group string="Supplier">
+                <group string="Magazzino">
                     <group>
                         <field name="supplier_id" />
                         <field name="supplier_credit_note"/>
