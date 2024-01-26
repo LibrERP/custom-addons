@@ -1,8 +1,9 @@
 # © 2024 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# noinspection PyStatementEffect
 {
     'name': 'Stock Inventory Costs Report',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'category': 'Stock',
     'summary': 'Stock Inventory Report with product costs',
     'author': 'Codebeex srl',

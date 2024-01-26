@@ -42,6 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <t t-set="total_amount" t-value="0"/>
                                     <t t-foreach="locations" t-as="location">
                                         <tr groups="stock.group_stock_multi_locations">
                                             <td colspan="2"><strong t-esc="location.display_name"/></td>
@@ -57,6 +58,7 @@
                                             <td class="text-right"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="uom.group_uom"/></td>
                                             <td class="text-right"><span t-field="line.product_id.standard_price"/> <span t-field="line.company_id.currency_id.name"/></td>
                                             <t t-set="line_amount" t-value="line.product_qty * line.product_id.standard_price"/>
+                                            <t t-set="total_amount" t-value="total_amount + line_amount"/>
                                             <td class="text-right"><span t-esc="round(line_amount, 3)"/> <span t-field="line.company_id.currency_id.name"/></td>
                                         </tr>
                                     </t>
@@ -64,18 +66,36 @@
                             </table>
 
                             <t t-if="o.filter == 'product' and o.product_id">
-                              <div class="row justify-content-end">
-                                <div class="col-4">
-                                     <table class="table table-sm">
-                                        <tr class="border-black">
-                                            <td><strong>Total Quantity</strong></td>
-                                            <td class="text-right">
-                                                <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                <div class="row justify-content-end">
+                                    <div class="col-8">
+                                        <table class="table table-sm">
+                                            <tr class="border-black">
+                                                <td><strong>Total Quantity</strong></td>
+                                                <td class="text-right">
+                                                    <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
+                                                </td>
+                                                <td><strong>Total Inventory Cost</strong></td>
+                                                <td class="text-right">
+                                                    <span t-esc="round(total_amount, 3)"/> <span t-field="o.company_id.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                              </div>
+                            </t>
+                            <t t-else="">
+                                <div class="row justify-content-end">
+                                    <div class="col-4">
+                                        <table class="table table-sm">
+                                            <tr class="border-black">
+                                                <td><strong>Total Inventory Cost</strong></td>
+                                                <td class="text-right">
+                                                    <span t-esc="round(total_amount, 3)"/> <span t-field="o.company_id.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </t>
                         </div>
                     </t>
