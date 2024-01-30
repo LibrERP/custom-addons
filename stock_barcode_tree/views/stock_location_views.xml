@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="model_stock_location_barcode_tree_view" model="ir.ui.view">
+        <field name="name">stock.location.barcode.form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <field name="complete_name" position="after">
+                <field name="barcode" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>
