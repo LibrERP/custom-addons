@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'RMA Stage',
-    'version': '12.0.0.4',
+    'version': '12.0.0.5',
     'category': 'RMA',
     'summary': 'Module adds configurable stages to RMA',
     'author': 'Codebeex srl',
