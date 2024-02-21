@@ -4,14 +4,6 @@
 from odoo import _, api, Command, fields, models
 
 
-class StockPicking(models.Model):
-    _inherit = "stock.picking"
-
-    @api.onchange('move_ids_without_package.tracking')
-    def onchange_tracking(self):
-        pass
-
-
 class StockMove(models.Model):
     _inherit = "stock.move"
 
@@ -20,24 +12,51 @@ class StockMove(models.Model):
         tracking = self.tracking
         if len(self.move_line_ids) > 1:
             for move_line in self.move_line_ids.filtered(lambda sml: sml.reserved_uom_qty == 0):
+                self.picking_id.move_line_ids = [Command.unlink(move_line.id)]
                 move_line.unlink()
 
+            self.move_line_ids.clear_caches()
+            self.picking_id.clear_caches()
             self.tracking = tracking
 
         if len(self.move_line_ids) == 1:
+            move_line_model = self.env['stock.move.line']
+            new_line = self.env['stock.move.line']
+            move_line = self.move_line_ids[0]
             if self.tracking == 'lot':
-                move_line = self.move_line_ids[0].copy()
-                new_line = move_line
-                new_line.reserved_uom_qty = 0
-                new_line.qty_done = self.move_line_ids[0].reserved_uom_qty
-                new_line.lot_name = self.env['stock.move.line'].get_unique_serial_number()
+                new_values = {
+                    'company_id': move_line.company_id.id,
+                    'location_dest_id': move_line.location_dest_id.id,
+                    'location_id': move_line.location_id.id,
+                    'lot_id': False,
+                    'lot_name': move_line_model.get_unique_serial_number(),
+                    'move_id': move_line.move_id.id,
+                    'package_id': False,
+                    'package_level_id': False,
+                    'picking_id': move_line.picking_id.ids[0],  # This is correct as id con be shown as NewId
+                    'product_id': move_line.product_id.id,
+                    'product_uom_id': move_line.product_uom_id.id,
+                    'qty_done': move_line.reserved_uom_qty
+                }
+                new_line += move_line_model.create(new_values)
+
             elif self.tracking == 'serial':
                 for count in range(int(self.move_line_ids[0].reserved_uom_qty)):
-                    move_line = self.move_line_ids[0].copy()
-                    new_line = move_line
-                    new_line.reserved_uom_qty = 0
-                    new_line.qty_done = 1
-                    new_line.lot_name = self.env['stock.move.line'].get_unique_serial_number()
+                    new_values = {
+                        'company_id': move_line.company_id.id,
+                        'location_dest_id': move_line.location_dest_id.id,
+                        'location_id': move_line.location_id.id,
+                        'lot_id': False,
+                        'lot_name': move_line_model.get_unique_serial_number(),
+                        'move_id': move_line.move_id.id,
+                        'package_id': False,
+                        'package_level_id': False,
+                        'picking_id': move_line.picking_id.ids[0],  # This is correct as id con be shown as NewId
+                        'product_id': move_line.product_id.id,
+                        'product_uom_id': move_line.product_uom_id.id,
+                        'qty_done': 1
+                    }
+                    new_line += move_line_model.create(new_values)
 
 
 class StockMoveLine(models.Model):
