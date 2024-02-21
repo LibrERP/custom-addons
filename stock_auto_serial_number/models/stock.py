@@ -70,7 +70,7 @@ class StockMoveLine(models.Model):
         new_values = []
         for value in values:
             product = self.env['product.product'].browse(value['product_id'])
-            if product.tracking == 'lot' and 'lot_name' not in value:
+            if product.tracking == 'lot' and 'lot_name' not in value and 'lot_id' not in value:
                 new_value = value.copy()
                 new_value.update({
                     'reserved_uom_qty': 0,
@@ -78,7 +78,7 @@ class StockMoveLine(models.Model):
                     'lot_name': self.get_unique_serial_number()
                 })
                 new_values.append(new_value)
-            elif product.tracking == 'serial' and 'lot_name' not in value:
+            elif product.tracking == 'serial' and 'lot_name' not in value and 'lot_id' not in value:
                 for count in range(int(value['reserved_uom_qty'])):
                     new_value = value.copy()
                     new_value.update({
