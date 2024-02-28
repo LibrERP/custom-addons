@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crossovered_budget_expected_form_view" model="ir.ui.view">
+        <field name="name">crossovered.budget.expected.form</field>
+        <field name="model">crossovered.budget</field>
+        <field name="inherit_id" ref="account_budget.crossovered_budget_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page/field[@name='crossovered_budget_line']/tree/field[@name='theoritical_amount']" position="after">
+                <field name="expected_amount" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    <record id="crossovered_budget_expected_tree_view" model="ir.ui.view">-->
+<!--        <field name="name">crossovered.budget.lines.expected.tree</field>-->
+<!--        <field name="model">crossovered.budget.lines</field>-->
+<!--        <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_tree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="theoritical_amount" position="after">-->
+<!--                <field name="expected_amount" optional="hide"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="crossovered_budget_lines_expected_form_view" model="ir.ui.view">-->
+<!--        <field name="name">crossovered.budget.lines.expected.form</field>-->
+<!--        <field name="model">crossovered.budget.lines</field>-->
+<!--        <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//sheet/group/field[@name='theoritical_amount']" position="after">-->
+<!--                <field name="expected_amount" optional="hide"/>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="view_crossovered_budget_line_expected_pivot" model="ir.ui.view">-->
+<!--        <field name="name">crossovered.budget.lines.expected.pivot</field>-->
+<!--        <field name="model">crossovered.budget.lines</field>-->
+<!--        <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_pivot"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="theoritical_amount" position="after">-->
+<!--                <field name="expected_amount"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+<!--    <record id="view_crossovered_budget_line_expected_graph" model="ir.ui.view">-->
+<!--        <field name="name">crossovered.budget.lines.expected.graph</field>-->
+<!--        <field name="model">crossovered.budget.lines</field>-->
+<!--        <field name="inherit_id" ref="account_budget.view_crossovered_budget_line_graph"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="theoritical_amount" position="after">-->
+<!--                <field name="expected_amount"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>
