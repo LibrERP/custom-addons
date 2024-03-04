@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="account_budget_expected.ProjectRightSidePanel" t-inherit="project.ProjectRightSidePanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'budgets'&quot;]/table/thead/tr/th[4]" position="after">
+            <th class="text-end">Expected</th>
+        </xpath>
+        <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'budgets'&quot;]/table/tbody/tr/td[4]" position="after">
+            <td class="text-end align-middle" t-esc="formatMonetary(budget.expected)" />
+        </xpath>
+    </t>
+
+</templates>

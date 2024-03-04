@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Budget Expected',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Accounting/Accounting',
     'summary': "Add Expected column to the Budget. "
                "It's content is based on Sale and Purchase Order valued",
@@ -12,9 +12,16 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        'account_budget'
+        'account_budget',
+        'project_enterprise',
+        'project_account_budget'
     ],
     'data': [
-        'views/budget_views.xml'
+        'views/budget_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'account_budget_expected/static/src/components/**/*',
+        ],
+    },
 }
