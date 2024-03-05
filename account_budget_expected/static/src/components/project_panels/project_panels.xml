@@ -8,6 +8,9 @@
         <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'budgets'&quot;]/table/tbody/tr/td[4]" position="after">
             <td class="text-end align-middle" t-esc="formatMonetary(budget.expected)" />
         </xpath>
+        <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'budgets'&quot;]/table/tfoot/tr/td[4]" position="after">
+            <td class="text-end" t-esc="formatMonetary(budget_total.expected)" />
+        </xpath>
     </t>
 
 </templates>

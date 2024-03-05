@@ -10,8 +10,13 @@ class Project(models.Model):
 
     def _get_budget_items(self, with_action=True):
         results = super()._get_budget_items(with_action)
-
+        total_expected = 0.0
         for line_data in results['data']:
             budget_lines = self.env['crossovered.budget.lines'].search(json.loads(line_data['action']['args'])[0])
-            line_data['expected'] = budget_lines.expected_amount
+            expected = budget_lines.expected_amount
+            line_data['expected'] = expected
+            total_expected += expected
+
+        results['total']['expected'] = total_expected
+
         return results
