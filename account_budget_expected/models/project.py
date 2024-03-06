@@ -16,7 +16,7 @@ class Project(models.Model):
         total_expected = 0.0
         for line_data in results['data']:
             if isinstance(line_data['action']['args'], list):
-                logger.info(f">>>>>>>>> line_data['action']['args']: {line_data['action']['args']}")
+                # logger.info(f">>>>>>>>> line_data['action']['args']: {line_data['action']['args']}")
                 domain = json.loads(line_data['action']['args'][0])
             else:
                 domain = json.loads(line_data['action']['args'])[0]

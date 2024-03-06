@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Budget Expected',
-    'version': '16.0.0.3a',
+    'version': '16.0.0.4',
     'category': 'Accounting/Accounting',
     'summary': "Add Expected column to the Budget. "
                "It's content is based on Sale and Purchase Order valued",
