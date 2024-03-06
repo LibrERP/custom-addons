@@ -4,6 +4,9 @@
 import json
 from odoo import fields, models, _
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Project(models.Model):
     _inherit = "project.project"
@@ -12,7 +15,13 @@ class Project(models.Model):
         results = super()._get_budget_items(with_action)
         total_expected = 0.0
         for line_data in results['data']:
-            budget_lines = self.env['crossovered.budget.lines'].search(json.loads(line_data['action']['args'])[0])
+            if isinstance(line_data['action']['args'], list):
+                logger.info(f">>>>>>>>> line_data['action']['args']: {line_data['action']['args']}")
+                domain = line_data['action']['args']
+            else:
+                domain = json.loads(line_data['action']['args'])[0]
+
+            budget_lines = self.env['crossovered.budget.lines'].search(domain)
             expected = budget_lines.expected_amount
             line_data['expected'] = expected
             total_expected += expected
