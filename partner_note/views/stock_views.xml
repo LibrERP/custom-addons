@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_picking_ddt_notes_form" model="ir.ui.view">
+        <field name="name">stock.picking.ddt.note</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="move_ids_without_package" position="after">
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note per Trasferimenti e DDT" colspan="4"/>
+                    <field name="ddt_note" nolabel="1" invisible="False" />
+                </group>
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note Interne (non stampate) per Trasferimenti e DDT" colspan="4"/>
+                    <field name="ddt_internal_note" nolabel="1" />
+                </group>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_package_preparation_ddt_notes_form" model="ir.ui.view">
+        <field name="name">stock.picking.package.preparation.ddt.note</field>
+        <field name="model">stock.picking.package.preparation</field>
+        <field name="inherit_id" ref="stock_picking_package_preparation.stock_picking_package_preparation_form"/>
+        <field name="arch" type="xml">
+            <field name="picking_ids" position="after">
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note per DDT" colspan="4"/>
+                    <field name="ddt_note" nolabel="1" invisible="False" />
+                </group>
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note Interne (non stampate) per DDT" colspan="4"/>
+                    <field name="ddt_internal_note" nolabel="1" />
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>

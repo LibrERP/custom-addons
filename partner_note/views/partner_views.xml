@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_stock_ddt_notes_form" model="ir.ui.view">
+        <field name="name">res.partner.stock.ddt.note</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <page name="internal_notes" position="inside">
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note per Trasferimenti e DDT" colspan="4"/>
+                    <field name="ddt_note" nolabel="1" />
+                </group>
+                <group colspan="2" col="2" groups="stock.group_warning_stock">
+                    <separator string="Note Interne (non stampate) per Trasferimenti e DDT" colspan="4"/>
+                    <field name="ddt_internal_note" nolabel="1" />
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>
