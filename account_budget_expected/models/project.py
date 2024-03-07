@@ -22,7 +22,7 @@ class Project(models.Model):
                 domain = json.loads(line_data['action']['args'])[0]
 
             budget_lines = self.env['crossovered.budget.lines'].search(domain)
-            expected = budget_lines.expected_amount
+            expected = sum([budget.expected_amount for budget in budget_lines])
             line_data['expected'] = expected
             total_expected += expected
 
