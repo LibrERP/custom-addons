@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-16 09:48+0000\n"
-"PO-Revision-Date: 2022-11-16 09:48+0000\n"
+"POT-Creation-Date: 2024-03-14 15:24+0000\n"
+"PO-Revision-Date: 2024-03-14 15:24+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -76,6 +76,11 @@ msgid "Cancelled"
 msgstr ""
 
 #. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Category of Product"
+msgstr ""
+
+#. module: sale_statistics
 #: model:res.country.group,name:sale_statistics.it-center
 msgid "Center"
 msgstr ""
@@ -117,6 +122,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model,name:sale_statistics.model_res_country_group
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Country Group"
 msgstr ""
 
@@ -144,11 +150,13 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__partner_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Customer"
 msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__country_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Customer Country"
 msgstr ""
 
@@ -164,6 +172,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__region_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Customer Region"
 msgstr ""
 
@@ -174,6 +183,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__state_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Customer State"
 msgstr ""
 
@@ -235,6 +245,16 @@ msgid "Europe extra UE"
 msgstr ""
 
 #. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Extended Filters"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Foreign Sales"
+msgstr ""
+
+#. module: sale_statistics
 #: model:res.country.region,name:sale_statistics.it-fv
 msgid "Friuli-Venezia Giulia"
 msgstr ""
@@ -268,6 +288,11 @@ msgstr ""
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__weight
 msgid "Gross Weight"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Group By"
 msgstr ""
 
 #. module: sale_statistics
@@ -348,6 +373,11 @@ msgid "Monthly"
 msgstr ""
 
 #. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "My Sales"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_month_only_mine
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_month_only_mine
 msgid "My Sales Analysis by Month"
@@ -363,6 +393,16 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_statistics.action_order_report_weekly_only_mine
 #: model:ir.ui.menu,name:sale_statistics.menu_report_product_weekly_only_mine
 msgid "My Sales Analysis by Week"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "My Year"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "National Sales"
 msgstr ""
 
 #. module: sale_statistics
@@ -388,6 +428,11 @@ msgstr ""
 #. module: sale_statistics
 #: model:res.country.group,name:sale_statistics.it-northwest
 msgid "North West"
+msgstr ""
+
+#. module: sale_statistics
+#: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__operating_unit_id
+msgid "Operating Unit"
 msgstr ""
 
 #. module: sale_statistics
@@ -423,6 +468,7 @@ msgstr ""
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__product_id
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Product"
 msgstr ""
 
@@ -433,6 +479,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Product Template"
 msgstr ""
 
@@ -477,6 +524,11 @@ msgid "Quotation Sent"
 msgstr ""
 
 #. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Quotations"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.actions.server,name:sale_statistics.ir_cron_sale_report_action_ir_actions_server
 #: model:ir.cron,cron_name:sale_statistics.ir_cron_sale_report_action
 #: model:ir.cron,name:sale_statistics.ir_cron_sale_report_action
@@ -492,6 +544,11 @@ msgid "Region"
 msgstr ""
 
 #. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Region Group"
+msgstr ""
+
+#. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_res_country__region_ids
 msgid "Regions"
 msgstr ""
@@ -503,6 +560,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__order_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Sale Order"
 msgstr ""
 
@@ -510,6 +568,16 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_statistics.act_advanced_sale_report
 #: model_terms:ir.ui.view,arch_db:sale_statistics.view_advanced_sale_report
 msgid "Sale Report Board"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Sales"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "Sales Analysis"
 msgstr ""
 
 #. module: sale_statistics
@@ -566,11 +634,6 @@ msgid "Sales Order"
 msgstr ""
 
 #. module: sale_statistics
-#: model:ir.model,name:sale_statistics.model_sale_order_line
-msgid "Sales Order Line"
-msgstr ""
-
-#. module: sale_statistics
 #: model:ir.model,name:sale_statistics.model_sale_stat_report
 msgid "Sales Orders Statistics"
 msgstr ""
@@ -583,6 +646,7 @@ msgstr ""
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_board_temporary__user_id
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__user_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Salesperson"
 msgstr ""
 
@@ -634,6 +698,16 @@ msgstr ""
 #. module: sale_statistics
 #: model:ir.model.fields,help:sale_statistics.field_res_country_region__name
 msgid "The full name of the region."
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "This Month"
+msgstr ""
+
+#. module: sale_statistics
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
+msgid "This Year"
 msgstr ""
 
 #. module: sale_statistics
@@ -722,6 +796,7 @@ msgstr ""
 
 #. module: sale_statistics
 #: model:ir.model.fields,field_description:sale_statistics.field_sale_stat_report__warehouse_id
+#: model_terms:ir.ui.view,arch_db:sale_statistics.view_order_product_search
 msgid "Warehouse"
 msgstr ""
 

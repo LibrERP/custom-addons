@@ -123,7 +123,7 @@
        <field name="context">{'group_by': ['product_tmpl_id'], 'measures': ['price_total','product_uom_qty']}</field>
     </record>
 
-    <record id="sale.view_order_product_search" model="ir.ui.view">
+    <record id="view_order_product_search" model="ir.ui.view">
         <field name="name">sale.stat.report.search</field>
         <field name="model">sale.stat.report</field>
  	    <field name="type">search</field>
@@ -176,7 +176,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_team_pivot"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -187,7 +187,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_month"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -198,7 +198,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_quarter"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -209,7 +209,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_week"/>
         <field name="context">{'search_default_ThisYear':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -220,7 +220,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_year"/>
         <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -231,7 +231,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_month"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[]}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -242,7 +242,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_quarter"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[]}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -253,7 +253,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_pivot_week"/>
         <field name="context">{'search_default_ThisYearMine':1, 'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -265,7 +265,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_graph_year"/>
         <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -276,7 +276,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_graph_quarter"/>
         <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
@@ -287,7 +287,7 @@
         <field name="res_model">sale.stat.report</field>
         <field name="view_type">form</field>
         <field name="view_mode">graph,pivot</field>
-        <field name="search_view_id" ref="sale.view_order_product_search"/>
+        <field name="search_view_id" ref="view_order_product_search"/>
         <field name="view_id" ref="view_order_product_graph_month"/>
         <field name="context">{'group_by_no_leaf':0,'group_by':[],'measures': ['price_total','product_uom_qty']}</field>
         <field name="help">This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.</field>
