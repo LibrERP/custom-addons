@@ -69,24 +69,27 @@ class StockMoveLine(models.Model):
     def create(self, values):
         new_values = []
         for value in values:
-            product = self.env['product.product'].browse(value['product_id'])
-            if product.tracking == 'lot' and 'lot_name' not in value and 'lot_id' not in value:
-                new_value = value.copy()
-                new_value.update({
-                    'reserved_uom_qty': 0,
-                    'qty_done': int(value['reserved_uom_qty']),
-                    'lot_name': self.get_unique_serial_number()
-                })
-                new_values.append(new_value)
-            elif product.tracking == 'serial' and 'lot_name' not in value and 'lot_id' not in value:
-                for count in range(int(value['reserved_uom_qty'])):
+            move = self.env['stock.move'].browse(value['move_id'])
+            if move.picking_id and move.picking_id.picking_type_code == 'incoming':
+                product = self.env['product.product'].browse(value['product_id'])
+                quantity = value.get('reserved_uom_qty', False) or value.get('qty_done')
+                if product.tracking == 'lot' and 'lot_name' not in value and 'lot_id' not in value:
                     new_value = value.copy()
                     new_value.update({
                         'reserved_uom_qty': 0,
-                        'qty_done': 1,
+                        'qty_done': int(quantity),
                         'lot_name': self.get_unique_serial_number()
                     })
                     new_values.append(new_value)
+                elif product.tracking == 'serial' and 'lot_name' not in value and 'lot_id' not in value:
+                    for count in range(int(quantity)):
+                        new_value = value.copy()
+                        new_value.update({
+                            'reserved_uom_qty': 0,
+                            'qty_done': 1,
+                            'lot_name': self.get_unique_serial_number()
+                        })
+                        new_values.append(new_value)
 
         values += new_values
         return super().create(values)
