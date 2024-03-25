@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
         
-        <record id="module_form_version" model="ir.ui.view">
-            <field name="name">ir.module.module.form.version</field>
-            <field name="model">ir.module.module</field>
-            <field name="type">form</field>
-            <field name="inherit_id" ref="base.module_form"/>
-            <field name="arch" type="xml">
-                <field name="installed_version" position="before">
-                    <!--installed version:-->
-                    <field name="latest_version" />
-                </field>
+    <record id="module_form_version" model="ir.ui.view">
+        <field name="name">ir.module.module.form.version</field>
+        <field name="model">ir.module.module</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="base.module_form"/>
+        <field name="arch" type="xml">
+            <field name="installed_version" position="before">
+                <!--installed version:-->
+                <field name="latest_version" />
             </field>
-        </record>
-        
-        <record id="module_tree_version" model="ir.ui.view">
-            <field name="name">ir.module.module.tree.version</field>
-            <field name="model">ir.module.module</field>
-            <field name="type">tree</field>
-            <field name="inherit_id" ref="base.module_tree"/>
-            <field name="arch" type="xml">
-                <field name="installed_version" position="before">
-                    <!--installed version:-->
-                    <field name="latest_version" />
-                </field>
-                <field name="state" position="after">
-                    <button name="button_upgrade" states="installed" string="Upgrade" icon="terp-gtk-go-back-rtl" type="object"/>
-                    <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" icon="gtk-cancel" type="object"/>   
-                </field>
-            </field>
-        </record>
-        
-        <record id="base.open_module_tree" model="ir.actions.act_window">
-            <field name="name">Modules</field>
-            <field name="res_model">ir.module.module</field>
-            <field name="view_mode">tree,form,kanban</field>
-            <field name="context">{'search_default_app':0, 'search_default_no_hidden': 0, 'search_default_installed': 1}</field>
-            <field name="search_view_id" ref="base.view_module_filter"/>
-            <field name="help">You can install new modules in order to activate new features, menu, reports or data in your Odoo instance. To install some modules, click on the button "Install" from the form view and then click on "Start Upgrade".</field>
-        </record>
+        </field>
+    </record>
 
-        <record id="action_check_modules" model="ir.actions.server">
-            <field name="name">Check Modules</field>
-            <field name="model_id" ref="model_ir_module_module"/>
-            <field name="state">code</field>
-            <field name="code">
-                if model._context.get('active_model') == 'ir.module.module':
-                    action = model.verify_modules()
+    <record id="module_tree_version" model="ir.ui.view">
+        <field name="name">ir.module.module.tree.version</field>
+        <field name="model">ir.module.module</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="base.module_tree"/>
+        <field name="arch" type="xml">
+            <field name="installed_version" position="before">
+                <!--installed version:-->
+                <field name="latest_version" />
             </field>
-            <field name="binding_model_id" ref="base.model_ir_module_module" />
-        </record>
+            <field name="state" position="after">
+                <button name="button_upgrade" invisible="state != 'installed'" string="Upgrade" icon="fa-refresh" type="object"/>
+                <button name="button_upgrade_cancel" invisible="state != 'to upgrade'" string="Cancel Upgrade" icon="fa-times-circle" type="object"/>
+            </field>
+        </field>
+    </record>
 
-    </data>
+    <record id="base.open_module_tree" model="ir.actions.act_window">
+        <field name="name">Modules</field>
+        <field name="res_model">ir.module.module</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="context">{'search_default_app':0, 'search_default_no_hidden': 0, 'search_default_installed': 1}</field>
+        <field name="search_view_id" ref="base.view_module_filter"/>
+        <field name="help">You can install new modules in order to activate new features, menu, reports or data in your Odoo instance. To install some modules, click on the button "Install" from the form view and then click on "Start Upgrade".</field>
+    </record>
+
+    <record id="action_check_modules" model="ir.actions.server">
+        <field name="name">Check Modules</field>
+        <field name="model_id" ref="model_ir_module_module"/>
+        <field name="state">code</field>
+        <field name="code">
+            if model._context.get('active_model') == 'ir.module.module':
+                action = model.verify_modules()
+        </field>
+        <field name="binding_model_id" ref="base.model_ir_module_module" />
+    </record>
 </odoo>
