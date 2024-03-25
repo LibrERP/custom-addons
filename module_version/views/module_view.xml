@@ -26,8 +26,8 @@
                     <field name="latest_version" />
                 </field>
                 <field name="state" position="after">
-                    <button name="button_upgrade" states="installed" string="Upgrade" icon="terp-gtk-go-back-rtl" type="object"/>
-                    <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" icon="gtk-cancel" type="object"/>   
+                    <button name="button_upgrade" states="installed" string="Upgrade" icon="fa-refresh" type="object"/>
+                    <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" icon="fa-times-circle" type="object"/>
                 </field>
             </field>
         </record>
