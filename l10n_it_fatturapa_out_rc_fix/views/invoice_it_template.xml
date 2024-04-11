@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template
+        id="account_invoice_it_dati_trasmissione"
+        inherit_id="l10n_it_fatturapa_out.account_invoice_it_dati_trasmissione"
+    >
+        <xpath expr="//t[@t-set='transmitter']" position="replace"/>
+    </template>
+
+    <template
         id="account_invoice_it_FatturaPA_export"
         inherit_id="l10n_it_fatturapa_out.account_invoice_it_FatturaPA_export"
     >
+        <xpath
+            expr="//t[@t-call='l10n_it_fatturapa_out.account_invoice_it_dati_trasmissione']"
+            position="inside"
+        >
+            <t
+                t-set="rc_supplier"
+                t-value="invoices.mapped('rc_purchase_invoice_id.rc_original_purchase_invoice_ids.partner_id')
+                         if invoices.rc_purchase_invoice_id.rc_original_purchase_invoice_ids
+                         else invoices.mapped('rc_purchase_invoice_id.partner_id')"
+            />
+            <t t-if="rc_supplier">
+                <t t-set="codice_destinatario" t-value="company_id.partner_id.codice_destinatario" />
+                <t t-set="transmitter" t-value="invoices.partner_id" />
+            </t>
+            <t t-else="">
+                <t t-set="transmitter" t-value="company_id.e_invoice_transmitter_id" />
+            </t>
+        </xpath>
+
         <xpath
             expr="//t[@t-call='l10n_it_fatturapa_out.account_invoice_it_cessionario_committente']"
             position="inside"

@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'ITA - Emissione e-fattura con reverse charge FIX',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Hidden',
     'summary': 'Set Cessionario/committente to My Company in case of Reverse Charge',
     'author': 'Codebeex srl',
