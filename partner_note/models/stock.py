@@ -41,7 +41,7 @@ class StockPickingPackagePreparation(models.Model):
 
     @api.model
     def create(self, values):
-        if self._context['active_model'] == 'stock.picking':
+        if self._context.get('active_model', '') == 'stock.picking':
             pickings = self.env['stock.picking'].browse(self._context['active_ids'])
             values['ddt_internal_note'] = pickings[0].ddt_internal_note
             values['ddt_note'] = pickings[0].ddt_note

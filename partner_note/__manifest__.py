@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Partner Notes in DDT',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Stock',
     'summary': 'Notes added in the Contact will be shown in Stock Picking and DDT',
     'author': 'Codebeex srl',
