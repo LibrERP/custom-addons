@@ -71,7 +71,7 @@ class DdtCreditNote(models.TransientModel):
 
             if stock_preparation.partner_id.property_account_position_id:
                 # Todo: the next line should be tested
-                tax = stock_preparation.partner_id.property_account_position_id.map_taxes(tax)
+                tax = stock_preparation.partner_id.property_account_position_id.map_tax(tax)
 
             product = line.product_id
             account = product.property_account_expense_id or product.categ_id.property_account_expense_categ_id
