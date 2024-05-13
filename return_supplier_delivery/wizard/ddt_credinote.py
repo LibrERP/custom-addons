@@ -63,7 +63,16 @@ class DdtCreditNote(models.TransientModel):
         for line in stock_preparation.line_ids:
             price = 0.0
             qty = line.product_uom_qty
-            tax = line.product_id.taxes_id or False
+
+            if stock_preparation.transportation_reason_id.return_supplier:
+                tax = line.product_id.supplier_taxes_id or False
+            else:
+                tax = line.product_id.taxes_id or False
+
+            if stock_preparation.partner_id.property_account_position_id:
+                # Todo: the next line should be tested
+                tax = stock_preparation.partner_id.property_account_position_id.map_taxes(tax)
+
             product = line.product_id
             account = product.property_account_expense_id or product.categ_id.property_account_expense_categ_id
             stock_in = get_picking_by_product(stock_preparation, product.id)
