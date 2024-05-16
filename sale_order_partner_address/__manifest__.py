@@ -1,11 +1,12 @@
-# © 2022-2024 Andrei Levin <andrei.levin@didotech.com>
+# © 2022-2023 Andrei Levin <andrei.levin@didotech.com>
+# © 2024 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 # noinspection PyStatementEffect
 {
     'name': "Sale Order Partner",
     'summary': """
         Limit Shipping and Invoice addresses to addresses that has partner as parent""",
-    'author': "LibrERP enterprise network",
+    'author': "Codebeex",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Sales',
     'version': '16.0.0.0',
