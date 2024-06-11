@@ -1,9 +1,10 @@
 # © 2021-2022 Didotech srl
+# © 2024 Codebeex srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+# noinspection PyStatementEffect
 {
     "name": "Product Price History",
-    "version": "12.0.2.3",
+    "version": "12.0.2.4",
     'author': 'Didotech srl, Moltis Technologies',
     'website': 'http://www.didotech.com',
     "license": "AGPL-3",

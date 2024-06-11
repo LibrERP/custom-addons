@@ -25,11 +25,10 @@ class ProductTemplate(models.Model):
             t.price_history_count = self.env['product.price.history'].search_count(
                 [('product_tmpl_id', '=', t.id)])
 
-
     @api.multi
     def write(self, values):
         for prod_template in self:
-            if ('lst_price' in values and prod_template.list_price != values['lst_price']) or \
+            if ('list_price' in values and prod_template.list_price != values['list_price']) or \
                     ('standard_price' in values and prod_template.standard_price != values['standard_price']):
 
                 history_values = {
@@ -51,6 +50,7 @@ class ProductTemplate(models.Model):
                 self.env['product.price.history'].create(history_values)
 
         return super(ProductTemplate, self).write(values)
+
 
 class ProductSupplierInfo(models.Model):
     _inherit = 'product.supplierinfo'
