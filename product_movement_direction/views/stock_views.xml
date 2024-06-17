@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_direction_tree" model="ir.ui.view">
+        <field name="name">view_move_direction_tree</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <field name="product_uom_qty" position="before">
+                <field name="direction" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_move__line_direction_tree" model="ir.ui.view">
+        <field name="name">view_move_line_direction_tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <field name="qty_done" position="before">
+                <field name="direction" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
