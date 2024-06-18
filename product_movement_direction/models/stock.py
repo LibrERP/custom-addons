@@ -14,9 +14,9 @@ class StockMove(models.Model):
         for move in self:
             if move.location_id.usage == move.location_dest_id.usage:
                 move.direction = '='
-            elif move.location_dest_id.usage == 'customer':
+            elif move.location_dest_id.usage == 'customer' or move.location_dest_id.usage == 'supplier':
                 move.direction = '-'
-            elif move.location_id.usage == 'supplier':
+            elif move.location_id.usage == 'supplier' or move.location_id.usage == 'customer':
                 move.direction = '+'
             elif move.location_id.usage == 'internal' and move.location_dest_id.usage == 'inventory' \
                     or move.location_id.usage == 'inventory' and move.location_dest_id.usage == 'internal':
@@ -35,9 +35,9 @@ class StockMoveLine(models.Model):
         for move in self:
             if move.location_id.usage == move.location_dest_id.usage:
                 move.direction = '='
-            elif move.location_dest_id.usage == 'customer':
+            elif move.location_dest_id.usage == 'customer' or move.location_dest_id.usage == 'supplier':
                 move.direction = '-'
-            elif move.location_id.usage == 'supplier':
+            elif move.location_id.usage == 'supplier' or move.location_id.usage == 'customer':
                 move.direction = '+'
             elif move.location_id.usage == 'internal' and move.location_dest_id.usage == 'inventory' \
                     or move.location_id.usage == 'inventory' and move.location_dest_id.usage == 'internal':
