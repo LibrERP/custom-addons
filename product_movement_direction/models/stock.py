@@ -13,11 +13,14 @@ class StockMove(models.Model):
     def _get_direction(self):
         for move in self:
             if move.location_id.usage == move.location_dest_id.usage:
-                move.direction = '<>'
+                move.direction = '='
             elif move.location_dest_id.usage == 'customer':
                 move.direction = '-'
             elif move.location_id.usage == 'supplier':
                 move.direction = '+'
+            elif move.location_id.usage == 'internal' and move.location_dest_id.usage == 'inventory' \
+                    or move.location_id.usage == 'inventory' and move.location_dest_id.usage == 'internal':
+                move.direction = '<>'
             else:
                 move.direction = ''
 
@@ -31,10 +34,13 @@ class StockMoveLine(models.Model):
     def _get_direction(self):
         for move in self:
             if move.location_id.usage == move.location_dest_id.usage:
-                move.direction = '<>'
+                move.direction = '='
             elif move.location_dest_id.usage == 'customer':
                 move.direction = '-'
             elif move.location_id.usage == 'supplier':
                 move.direction = '+'
+            elif move.location_id.usage == 'internal' and move.location_dest_id.usage == 'inventory' \
+                    or move.location_id.usage == 'inventory' and move.location_dest_id.usage == 'internal':
+                move.direction = '<>'
             else:
                 move.direction = ''
