@@ -49,9 +49,6 @@
         <field name="model">contract.line</field>
         <field name="inherit_id" ref="contract.contract_line_form_view" />
         <field name="arch" type="xml">
-<!--            <xpath expr="//group[@name='recurrence_info']/group/field[@name='recurring_next_date']" position="attributes">-->
-<!--                <attribute name="string">Data prossimo documento</attribute>-->
-<!--            </xpath>-->
             <field name="recurring_next_date" position="attributes">
                 <attribute name="string">Data prossimo documento</attribute>
             </field>
