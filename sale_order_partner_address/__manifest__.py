@@ -9,7 +9,7 @@
     'author': "Codebeex",
     'website': "https://github.com/LibrERP/custom-addons",
     'category': 'Sales',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'depends': [
         'base',
         'sale'
@@ -19,4 +19,10 @@
     ],
     # only loaded in demonstration mode
     'demo': [],
+    'test': [
+    ],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'LGPL-3',
 }
