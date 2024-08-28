@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    LibrERP, Open Source Product Enterprise Management System    
 #    Copyright (C) 2020-2023 Didotech srl (<http://didotech.com>). All Rights Reserved
+#    Copyright (C) 2024 Codebeex srl (<https://codebeex.com>). All Rights Reserved
 #
 #    Created on : 2023-03-24
 #    Author : Fabio Colognesi
@@ -21,12 +21,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+# noinspection PyStatementEffect
 {
     'name': 'Maintenance Enhancement',
-    'version': '12.0.1.0',
+    'version': '12.0.1.1',
     'author': 'Didotech srl',
-    'website': 'http://www.didotech.com',
-    'support': 'support@didotech.com',
+    'website': 'https://codebeex.com',
+    'support': 'support@codebeex.com',
     'category': 'Human Resources',
     'sequence': 10,
     'summary': 'Maintenance Equipment & Request Enhanced',
@@ -39,7 +40,7 @@
         'hr_expense',
         'hr_timesheet',
         'sale_expense',
-        ],
+    ],
     'description':
     """
         Extends Maintenance Equipment and Request.
@@ -51,17 +52,13 @@
         Allows to manage one or more Sale Orders.
         Allows to register all invoices related to Maintenance Request.
     """,
-    'init_xml': [
-        ],
     'data': [
         'data/uom_data.xml',
         'data/product_data.xml',
         'security/ir.model.access.csv',
         'views/res_config_view.xml',
         'views/maintenance_views.xml',
-       ],
-    'demo_xml': [
-        ],
+    ],
     'installable': True,
     'application': False,
     'auto_install': False,

@@ -1,8 +1,7 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2023 Didotech srl
-#    (<http://www.didotech.com/>).
+#    Copyright (C) 2020-2023 Didotech srl (<http://www.didotech.com/>).
+#    Copyright (C) 2024 Codebeex srl (<https://codebeex.com/>).
 #
 #    Created on : 2023-03-24
 #    Author : Fabio Colognesi
@@ -25,6 +24,7 @@
 from odoo import api, fields, models, _
 from odoo.addons import decimal_precision as dp
 from odoo import exceptions, _
+
 
 class MaintenanceEquipment(models.Model):
     _inherit = 'maintenance.equipment'
@@ -242,9 +242,7 @@ class MaintenanceRequest(models.Model):
     def _compute_editable(self):
         for maintenance in self:
             if maintenance.stage_id:
-                stegeType = self.env['maintenance.stage']
-                stage_id = stegeType.browse(maintenance.stage_id.id)
-                if (stage_id.sequence in [1,2]):
+                if maintenance.stage_id.sequence in (0, 1, 2):
                     maintenance.editable = True
                 else:
                     maintenance.editable = False
@@ -469,12 +467,16 @@ class MaintenanceSpareLine(models.Model):
         string='Product Note',
         readonly=True,
     )
+    # product_price = fields.Float(
+    #     related='product_id.lst_price',
+    #     string='Product Price',
+    #     digits=dp.get_precision('Product Price'),
+    #     store=True,
+    #     readonly=True,
+    # )
     product_price = fields.Float(
-        related='product_id.lst_price',
         string='Product Price',
         digits=dp.get_precision('Product Price'),
-        store=True,
-        readonly=True,
     )
     sequence = fields.Integer(string='Sequence', default=10)
     maint_sale_line_id = fields.Many2one(
@@ -484,6 +486,11 @@ class MaintenanceSpareLine(models.Model):
         copy=False,
         index=True,
     )
+
+    @api.onchange('product_id')
+    def onchange_product_id(self):
+        if self.product_id:
+            self.product_price = self.product_id.lst_price
 
 
 class MaintenanceSaleRel(models.Model):
@@ -605,4 +612,3 @@ class MaintenanceAwayLine(models.Model):
         for line in self:
             if line.product_uom_qty and line.product_unit_price:
                 line.product_price = line.product_uom_qty * line.product_unit_price
-
