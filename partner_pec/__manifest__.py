@@ -6,7 +6,7 @@
 # oca-gen-addon-readme --repo-name=custom-addons --branch=16.0 --addon-dir=partner_pec --org-name=LibrERP
 {
     'name': 'Partner PEC',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Extra Tools',
     'summary': 'Add PEC field on partner',
     'author': 'Codebeex srl',
