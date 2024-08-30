@@ -133,29 +133,42 @@ class MaintenanceRequest(models.Model):
         string='Currency',
         default=lambda self: self.env.user.company_id.currency_id,
     )
+    sales_count = fields.Integer(
+        string='Sale Count',
+        compute='_count_invoices_and_sales',
+        readonly=True,
+        copy=False,
+    )
+    # sale_ids = fields.Many2many(
+    #     "sale.order",
+    #     string='Sale Orders',
+    #     compute='_get_sold',
+    #     readonly=True,
+    #     copy=False,
+    # )
+    sale_ids = fields.Many2many(
+        comodel_name="sale.order",
+        relation="maintenance_sale_rel", column2="sale_id", column1="maintenance_id",
+        string="Sale Orders", readonly=True, copy=False
+    )
+
     invoice_count = fields.Integer(
         string='Invoice Count',
-        compute='_get_invoiced',
+        compute='_count_invoices_and_sales',
         readonly=True,
         copy=False,
     )
+    # invoice_ids = fields.Many2many(
+    #     "account.invoice",
+    #     string='Invoices',
+    #     compute='_get_invoiced',
+    #     readonly=True,
+    #     copy=False,
+    # )
     invoice_ids = fields.Many2many(
         "account.invoice",
+        related='sale_ids.invoice_ids',
         string='Invoices',
-        compute='_get_invoiced',
-        readonly=True,
-        copy=False,
-    )
-    sales_count = fields.Integer(
-        string='Invoice Count',
-        compute='_get_sold',
-        readonly=True,
-        copy=False,
-    )
-    sale_ids = fields.Many2many(
-        "sale.order",
-        string='Sale Orders',
-        compute='_get_sold',
         readonly=True,
         copy=False,
     )
@@ -175,41 +188,11 @@ class MaintenanceRequest(models.Model):
         help="Total Aways Costs.",
     )
 
-    @api.depends('invoice_count')
-    def _get_invoiced(self):
-        lineType = self.env['maintenance.sale.rel']
-        for maintenance_id in self:
-            criteria = [
-                ('maintenance_id', '=', maintenance_id.id),
-            ]
-            line_ids = lineType.search(criteria)
-            if line_ids:
-                sale_ids = line_ids.mapped('sale_id')
-                if sale_ids:
-                    invoice_ids = sale_ids.mapped('invoice_ids')
-                    if invoice_ids:
-                        counted = len(invoice_ids)
-                        maintenance_id.update({
-                            'invoice_count': counted,
-                            'invoice_ids': [(6, 0, invoice_ids.ids)]
-                        })
-
-    @api.depends('sales_count')
-    def _get_sold(self):
-        lineType = self.env['maintenance.sale.rel']
-        for maintenance_id in self:
-            criteria = [
-                ('maintenance_id', '=', maintenance_id.id),
-            ]
-            line_ids = lineType.search(criteria)
-            if line_ids:
-                sale_ids = line_ids.mapped('sale_id')
-                if sale_ids:
-                    counted = len(sale_ids)
-                    maintenance_id.update({
-                        'sales_count': counted,
-                        'sale_ids': [(6, 0, sale_ids.ids)]
-                    })
+    @api.depends('sale_ids')
+    def _count_invoices_and_sales(self):
+        for maintenance in self:
+            maintenance.invoice_count = len(maintenance.invoice_ids)
+            maintenance.sales_count = len(maintenance.sale_ids)
 
     @api.depends('spare_ids.product_price')
     def _compute_spare_price(self):
