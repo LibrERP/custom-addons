@@ -7,17 +7,8 @@ from odoo import _, api, Command, fields, models
 class ModelModel(models.Model):
     _inherit = "mailing.trace"
 
-    # trace_status = fields.Selection(
-    #     selection_add=[
-    #         ('acceptance', 'Accettazione'),  # Always returned, even if destination is not PEC
-    #         ('acknowledgement-delivery', 'Avvenuta-Consegna')  # Returns when message reach the destination server
-    #     ]
-    # )
-
     pec_status = fields.Selection(selection=[
-        ('new', ''),
-        ('acceptance', 'Accettazione'),  # Always returned, even if destination is not PEC
-        ('acknowledgement-delivery', 'Avvenuta-Consegna')  # Returns when message reach the destination server
+        ('accettazione', 'Accettazione'),  # Always returned, even if destination is not PEC
+        ('avvenuta-consegna', 'Avvenuta-Consegna')  # Returns when message reach the destination server
     ])
-
-
+    message_id = fields.Char(string='Message-ID', index=True)

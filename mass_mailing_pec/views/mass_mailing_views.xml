@@ -12,15 +12,4 @@
         </field>
     </record>
 
-    <record id="mailing_maling_pec_form_view" model="ir.ui.view">
-        <field name="name">mailing.mailing.pec.view.form.mail</field>
-        <field name="model">mailing.mailing</field>
-        <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//label[@for='subject']" position="before">
-                <field name="is_pec" string="Sent as PEC" attrs="{'invisible': [('mailing_type', '!=', 'mail')], 'readonly': [('state', 'in', ('sending', 'done'))]}"/>
-            </xpath>
-        </field>
-    </record>
-
 </odoo>
