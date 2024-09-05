@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@data-key='sale_management']" position="inside" >
                 <h2>Maintenance</h2>
-                <div class="row mt16 o_settings_container">
+                <div class="row mt16 o_settings_container" name="maintenance">
                     <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane">
                             <field name="show_timesheet_name"/>
