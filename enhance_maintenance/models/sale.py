@@ -25,6 +25,39 @@
 from odoo import api, fields, models, _
 
 
+class SaleOrder(models.Model):
+    _inherit = 'sale.order'
+
+    maintenance_ids = fields.Many2many(
+        comodel_name="sale.order",
+        relation="maintenance_sale_rel", column1="sale_id", column2="maintenance_id",
+        string="Maintenance", readonly=True, copy=False
+    )
+
+    def action_view_maintenance(self):
+        if len(self.maintenance_ids) == 1:
+            return {
+                'name': _('Related Maintenance Requests'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form,tree',
+                "view_type": "form",
+                'res_model': 'maintenance.request',
+                'res_id': self.maintenance_ids.id,
+                'context': self.env.context,
+                'domain': [('id', '=', self.maintenance_ids.id)],
+            }
+        else:
+            return {
+                'name': _('Related Maintenance Requests'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form',
+                "view_type": "form",
+                'res_model': 'maintenance.request',
+                'context': self.env.context,
+                'domain': [('id', 'in', self.maintenance_ids.ids)],
+            }
+
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -52,4 +85,3 @@ class SaleOrderLine(models.Model):
         index=True,
         copy=False,
     )
-

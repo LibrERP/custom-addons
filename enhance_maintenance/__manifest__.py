@@ -24,7 +24,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Maintenance Enhancement',
-    'version': '12.0.1.3',
+    'version': '12.0.1.4',
     'author': 'Didotech srl',
     'website': 'https://codebeex.com',
     'support': 'support@codebeex.com',
@@ -58,6 +58,7 @@
         'security/ir.model.access.csv',
         'views/res_config_view.xml',
         'views/maintenance_views.xml',
+        'views/sale_views.xml',
     ],
     'installable': True,
     'application': False,

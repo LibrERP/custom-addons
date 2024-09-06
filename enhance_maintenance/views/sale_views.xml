@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_sale_maintenance" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.maintenance</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_delivery']" position="after">
+                <button type="object"
+                    name="action_view_maintenance"
+                    string="Maintenance"
+                    class="oe_stat_button"
+                    icon="fa-wrench"
+                    attrs="{'invisible': [('maintenance_ids', '=', False)]}" groups="base.group_user">
+                    <field name="maintenance_ids" invisible="True" />
+                </button>
+            </xpath>
+       </field>
+    </record>
+</odoo>

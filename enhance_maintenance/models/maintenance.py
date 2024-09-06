@@ -298,15 +298,27 @@ class MaintenanceRequest(models.Model):
         """
             Creates an analytic account if maintenance doesn't provide one
         """
-        return {
-            'name': _('Sale Orders Related'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            "view_type": "form",
-            'res_model': 'sale.order',
-            'context': self.env.context,
-            'domain': [('id', 'in', self.mapped('sale_ids').ids)],
-        }
+        if len(self.sale_ids) == 1:
+            return {
+                'name': _('Sale Orders Related'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form,tree',
+                "view_type": "form",
+                'res_model': 'sale.order',
+                'res_id': self.sale_ids.id,
+                'context': self.env.context,
+                'domain': [('id', '=', self.sale_ids.id)],
+            }
+        else:
+            return {
+                'name': _('Sale Orders Related'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'tree,form',
+                "view_type": "form",
+                'res_model': 'sale.order',
+                'context': self.env.context,
+                'domain': [('id', 'in', self.sale_ids.ids)],
+            }
 
     @api.model
     def action_create_sale_orders(self):
