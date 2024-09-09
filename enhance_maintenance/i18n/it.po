@@ -149,7 +149,7 @@ msgid "Customer"
 msgstr "Cliente"
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:339
+#: code:addons/enhance_maintenance/models/maintenance.py:332
 #, python-format
 msgid "Customer is not set."
 msgstr "Il Cliente non è impostato."
@@ -235,7 +235,7 @@ msgid "Invoices"
 msgstr "Fatture"
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:307
+#: code:addons/enhance_maintenance/models/maintenance.py:288
 #, python-format
 msgid "Invoices Related"
 msgstr "Fatture collegate"
@@ -285,14 +285,17 @@ msgstr "Collega questa manutenzione ad un conto analitico."
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_hr_expense__maintenance_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_hr_timesheet_switch__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__maintenance_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_sale_order__maintenance_ids
 #: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.view_order_form_inherit_sale_maintenance
 msgid "Maintenance"
 msgstr "Manutenzione"
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:294
+#: code:addons/enhance_maintenance/models/maintenance.py:275
 #, python-format
 msgid "Maintenance Analytic Account"
 msgstr "Conto Analitico Manutenzione"
@@ -340,6 +343,12 @@ msgid "Maintenances"
 msgstr "Manutenzioni"
 
 #. module: enhance_maintenance
+#: model:product.product,uom_name:enhance_maintenance.timesheet_base_product
+#: model:product.template,uom_name:enhance_maintenance.timesheet_base_product_product_template
+msgid "NR"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__name
 msgid "Name"
 msgstr "Nome"
@@ -369,6 +378,7 @@ msgstr "Pagata"
 #: model:ir.model,name:enhance_maintenance.model_product_product
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__product_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_hr_expense__product_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_hr_timesheet_switch__product_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__product_id
 msgid "Product"
 msgstr "Prodotto"
@@ -404,11 +414,24 @@ msgid "Refused Expenses"
 msgstr "Spese Rifiutate"
 
 #. module: enhance_maintenance
+#: code:addons/enhance_maintenance/models/sale.py:39
+#: code:addons/enhance_maintenance/models/sale.py:50
+#, python-format
+msgid "Related Maintenance Requests"
+msgstr ""
+
+#. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__remaining_hours
 msgid "Remaining Hours"
 msgstr "Ore residue"
 
 #. module: enhance_maintenance
+#: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__sales_count
+msgid "Sale Count"
+msgstr ""
+
+#. module: enhance_maintenance
+#: model:ir.model,name:enhance_maintenance.model_sale_order
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__sale_id
 msgid "Sale Order"
 msgstr "Ordine di vendita"
@@ -416,6 +439,7 @@ msgstr "Ordine di vendita"
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__maint_sale_line_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_hr_expense__maint_sale_line_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_hr_timesheet_switch__maint_sale_line_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_away_line__maint_sale_line_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_spare_line__maint_sale_line_id
 msgid "Sale Order Line"
@@ -428,7 +452,8 @@ msgid "Sale Orders"
 msgstr "Ordini di vendita"
 
 #. module: enhance_maintenance
-#: code:addons/enhance_maintenance/models/maintenance.py:321
+#: code:addons/enhance_maintenance/models/maintenance.py:303
+#: code:addons/enhance_maintenance/models/maintenance.py:314
 #, python-format
 msgid "Sale Orders Related"
 msgstr "Ordini di Vendita collegati"
@@ -513,6 +538,7 @@ msgstr "Superficie"
 
 #. module: enhance_maintenance
 #: model:ir.model.fields,field_description:enhance_maintenance.field_account_analytic_line__employee_id
+#: model:ir.model.fields,field_description:enhance_maintenance.field_hr_timesheet_switch__employee_id
 msgid "Technician"
 msgstr "Tecnico"
 
