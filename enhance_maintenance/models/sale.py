@@ -1,8 +1,7 @@
-# -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Copyright (C) 2020-2023 Didotech srl
-#    (<http://www.didotech.com/>).
+#    Copyright (C) 2020-2023 Didotech srl (<http://www.didotech.com/>)
+#    Copyright (C) 2024 Codebeex srl (<https://codebeex.com/>)
 #
 #    Created on : 2023-04-06
 #    Author : Fabio Colognesi
@@ -29,7 +28,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     maintenance_ids = fields.Many2many(
-        comodel_name="sale.order",
+        comodel_name="maintenance.request",
         relation="maintenance_sale_rel", column1="sale_id", column2="maintenance_id",
         string="Maintenance", readonly=True, copy=False
     )
