@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mailing_trace_pec_tree_view" model="ir.ui.view">
+        <field name="name">mailing.trace.pec.view.tree.mail</field>
+        <field name="model">mailing.trace</field>
+        <field name="inherit_id" ref="mass_mailing.mailing_trace_view_tree_mail"/>
+        <field name="arch" type="xml">
+            <field name="trace_status" position="after">
+                <field name="pec_status" widget="badge" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

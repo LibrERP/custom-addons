@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mailing_trace_view_tree" model="ir.ui.view">
+        <field name="name">mailing.trace.view.tree.inherit.pec</field>
+        <field name="model">mailing.trace</field>
+        <field name="inherit_id" ref="mass_mailing.mailing_trace_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='trace_status']" position="after">
+                <field name="pec_status" widget="badge" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mailing_trace_view_form" model="ir.ui.view">
+        <field name="name">mailing.trace.view.form.inherit.pec</field>
+        <field name="model">mailing.trace</field>
+        <field name="inherit_id" ref="mass_mailing.mailing_trace_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="after">
+                <widget name="web_ribbon" title="Avvenuta-Consegna" bg_color="bg-success"
+                        attrs="{'invisible': [('pec_status', '!=', 'avvenuta-consegna')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='trace_status']" position="after">
+                <field name="pec_status" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
