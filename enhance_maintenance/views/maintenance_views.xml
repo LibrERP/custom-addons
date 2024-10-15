@@ -54,7 +54,7 @@
                              <tree string="Spare Lines" editable="bottom">
                                  <field name="maint_sale_line_id" invisible="1"/>
                              	 <field name="sequence" widget="handle" />
-                                 <field name="product_id" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
+                                 <field name="product_id" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}" options="{'no_create': True, 'no_create_edit': True}"/>
                                  <field name="product_note"/>
                                  <field name="product_uom_qty" attrs="{'readonly': [('maint_sale_line_id', '!=', False)]}"/>
                                  <field name="product_uom"/>
