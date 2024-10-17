@@ -24,7 +24,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Maintenance Enhancement',
-    'version': '12.0.1.7',
+    'version': '12.0.1.8',
     'author': 'Didotech srl',
     'website': 'https://codebeex.com',
     'support': 'support@codebeex.com',

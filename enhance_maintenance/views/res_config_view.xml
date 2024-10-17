@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="res_config_view_form_inherit_maintenance" model="ir.ui.view">
-        <field name="name">res.config.form.inherit.pos.shoppinglist</field>
+    <record id="res_config_view_form_maintenance" model="ir.ui.view">
+        <field name="name">res.config.form.inherit.maintenance</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="priority" eval="8"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@data-key='sale_management']" position="inside" >
-                <h2>Maintenance</h2>
-                <div class="row mt16 o_settings_container" name="maintenance">
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="show_timesheet_name"/>
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="show_timesheet_name"/>
-                            <div class="text-muted">
-                                Allows to show timesheet name activity instead a generic string.
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Maintenance" string="Maintenance" data-key="maintenance" groups="sales_team.group_sale_manager">
+<!--            <xpath expr="//div[@data-key='sale_management']" position="inside" >-->
+                    <h2>Maintenance</h2>
+                    <div class="row mt16 o_settings_container" name="maintenance">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="show_timesheet_name"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_timesheet_name"/>
+                                <div class="text-muted">
+                                    Allows to show timesheet name activity instead a generic string.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="show_expense_name"/>
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="show_expense_name"/>
-                            <div class="text-muted">
-                                Allows to show expense name activity instead a generic string.
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="show_expense_name"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_expense_name"/>
+                                <div class="text-muted">
+                                    Allows to show expense name activity instead a generic string.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="show_away_name"/>
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label for="show_away_name"/>
-                            <div class="text-muted">
-                                Allows to show away name activity instead a generic string.
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="show_away_name"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_away_name"/>
+                                <div class="text-muted">
+                                    Allows to show away name activity instead a generic string.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,4 +49,22 @@
             </xpath>
         </field>
     </record>
+
+    <record id="action_maintenance_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_view_form_maintenance"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'maintenance'}</field>
+    </record>
+
+    <menuitem id="maintenance_menu_settings"
+        name="Settings"
+        action="action_maintenance_config_settings"
+        parent="maintenance.menu_maintenance_configuration"
+        sequence="0"
+        groups="base.group_system"/>
+
 </odoo>
