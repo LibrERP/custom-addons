@@ -1,4 +1,4 @@
-from . import account_invoice_send
+# from . import account_invoice_send
 from . import res_config_settings
 from . import maintenance
 from . import product
