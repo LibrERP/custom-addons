@@ -22,17 +22,17 @@ msgid "<br/>Customer :"
 msgstr "<br/>Cliente :"
 
 #. module: enhance_maintenance
-#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_maintenance
 msgid "Allows to show away name activity instead a generic string."
 msgstr "Permette di mostrare il nome dell' attività di trasferta invece di un nome generico."
 
 #. module: enhance_maintenance
-#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_maintenance
 msgid "Allows to show expense name activity instead a generic string."
 msgstr "Permette di mostrare il nome dell' attività di spesa invece di un nome generico."
 
 #. module: enhance_maintenance
-#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_maintenance
 msgid "Allows to show timesheet name activity instead a generic string."
 msgstr "Permette di mostrare il nome dell' attività di lavoro invece di un nome generico."
 
@@ -289,7 +289,7 @@ msgstr "Collega questa manutenzione ad un conto analitico."
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_invoice_rel__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_sale_rel__maintenance_id
 #: model:ir.model.fields,field_description:enhance_maintenance.field_sale_order__maintenance_ids
-#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_inherit_maintenance
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.res_config_view_form_maintenance
 #: model_terms:ir.ui.view,arch_db:enhance_maintenance.view_order_form_inherit_sale_maintenance
 msgid "Maintenance"
 msgstr "Manutenzione"
@@ -653,3 +653,8 @@ msgstr "Peso"
 msgid "€/km"
 msgstr ""
 
+#. module: enhance_maintenance
+#: model:ir.ui.menu,name:enhance_maintenance.maintenance_menu_settings
+#: model_terms:ir.ui.view,arch_db:enhance_maintenance.action_maintenance_config_settings
+msgid "Settings"
+msgstr "Impostazioni"
