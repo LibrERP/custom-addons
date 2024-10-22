@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="contract_contract_generic_form_view" model="ir.ui.view">
+        <field name="name">contract.contract.generic.form.view</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='recurring_invoices']/group/label[@for='recurring_interval']" position="attributes">
+                <attribute name="string">Un nuovo documento ogni (giorno/settimana/mese/anno)</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='recurring_invoices']/group/field[@name='recurring_next_date']" position="attributes">
+                <attribute name="string">Data prossimo documento</attribute>
+            </xpath>
+
+            <page name="recurring_invoice_line" position="attributes">
+                <attribute name="string">Righe contratto</attribute>
+            </page>
+
+            <xpath expr="//field[@name='contract_line_fixed_ids']/tree/field[@name='recurring_next_date']" position="attributes">
+                <attribute name="string">Data prossimo documento</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_line_fixed_ids']/tree/field[@name='last_date_invoiced']" position="attributes">
+                <attribute name="string">Data ultimo documento</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_line_ids']/tree/field[@name='recurring_next_date']" position="attributes">
+                <attribute name="string">Data prossimo documento</attribute>
+            </xpath>
+            <xpath expr="//field[@name='contract_line_ids']/tree/field[@name='last_date_invoiced']" position="attributes">
+                <attribute name="string">Data ultimo documento</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="abstract_line_generic_form_view" model="ir.ui.view">
+        <field name="name">abstract line form generic view (in contract)</field>
+        <field name="model">contract.abstract.contract.line</field>
+        <field name="inherit_id" ref="contract.contract_abstract_contract_line_form_view"/>
+        <field name="arch" type="xml">
+            <label for="recurring_interval" position="attributes">
+                <attribute name="string">Un nuovo documento ogni (giorno/settimana/mese/anno)</attribute>
+            </label>
+        </field>
+    </record>
+
+    <record id="contract_line_generic_form_view" model="ir.ui.view">
+        <field name="name">contract line generic form view (in contract)</field>
+        <field name="model">contract.line</field>
+        <field name="inherit_id" ref="contract.contract_line_form_view" />
+        <field name="arch" type="xml">
+            <field name="recurring_next_date" position="attributes">
+                <attribute name="string">Data prossimo documento</attribute>
+            </field>
+            <field name="last_date_invoiced" position="attributes">
+                <attribute name="string">Data ultimo documento</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="contract_line_generic_tree_view" model="ir.ui.view">
+        <field name="name">contract line generic tree view (in contract)</field>
+        <field name="model">contract.line</field>
+        <field name="inherit_id" ref="contract.contract_line_tree_view" />
+        <field name="arch" type="xml">
+            <field name="recurring_next_date" position="attributes">
+                <attribute name="string">Data prossimo documento</attribute>
+            </field>
+            <field name="last_date_invoiced" position="attributes">
+                <attribute name="string">Data ultimo documento</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>
