@@ -568,7 +568,7 @@ msgstr "Riga di foglio ore"
 #: model:ir.model.fields,field_description:enhance_maintenance.field_maintenance_request__timesheet_ids
 #: model_terms:ir.ui.view,arch_db:enhance_maintenance.hr_equipment_request_view_form_enhance
 msgid "Timesheets"
-msgstr "Fogli ore"
+msgstr "Manodopera"
 
 #. module: enhance_maintenance
 #: selection:hr.expense,state:0
