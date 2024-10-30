@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_inventory_report_form_view" model="ir.ui.view">
+        <field name="name">wizard.inventory.report.form</field>
+        <field name="model">wizard.inventory.report</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <form string="Download report">
+                <group colspan="2">
+                    <field name="data_file" filename="filename" readonly="True"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button string="Close" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
