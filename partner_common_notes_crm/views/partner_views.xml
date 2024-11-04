@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_message_form_view" model="ir.ui.view">
+        <field name="name">res.partner.message.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Common Notes" name="common_notes">
+                    <field name="note_filter" widget="statusbar" clickable="True"/>
+                    <field name="common_note_ids">
+                        <tree>
+                            <field name="body_html" widget="html" nolabel="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
