@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Partner Common Notes CRM',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Customer Relationship Management',
     'summary': 'Module add tab inside Partner with notes from CRM and Sale Order',
     'author': 'Codebeex srl',
