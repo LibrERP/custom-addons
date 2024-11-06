@@ -7,7 +7,6 @@ from odoo import _, api, fields, models
 class CrmTeam(models.Model):
     _inherit = "crm.team"
 
-    # lead_color = fields.Char(string='Color', default='white')
     lead_color = fields.Selection(
         [
             ('white', 'White'),
@@ -16,6 +15,6 @@ class CrmTeam(models.Model):
             ('lightyellow', 'Yellow'),
             ('lightgrey', 'Grey'),
             ('black', 'Black'),
-        ], string='Address Type',
+        ], string='Lead Color',
         default='white'
     )
