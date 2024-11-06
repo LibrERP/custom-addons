@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_bg_color_form_view" model="ir.ui.view">
+        <field name="name">crm.lead.bg.color.form</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <field name="color" position="after">
+                <field name="bg_color"/>
+            </field>
+            <xpath expr="//templates/t/div" position="attributes">
+                <attribute name="t-attf-class">#{kanban_color(record.color.raw_value)} oe_kanban_bg_color_#{record.bg_color.raw_value} oe_kanban_global_click</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

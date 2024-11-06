@@ -1,0 +1,35 @@
+.oe_kanban_bg_color_white {
+    background: white !important;
+}
+
+.oe_kanban_bg_color_lightblue {
+    /* background: #90D5FF !important; */
+    /* background: #B0E0FF !important; */ /* This shade is even lighter and has a soft, airy feel. */
+    background: #D0F0FF !important;  /* A very pale blue, almost approaching white, which retains a hint of color. */
+}
+
+.oe_kanban_bg_color_lightyellow {
+    background: #FFFFE0 !important;
+}
+
+.oe_kanban_bg_color_lightgreen {
+    background: #E4FFD9 !important;
+    /* background: #DEEDD6 !important; */
+}
+
+.oe_kanban_bg_color_lightgrey {
+    /* background: #D3D3D3 !important; */ /* Light Grey */
+    /* background: #C0C0C0 !important; */ /* Light Silver */
+    /* background: #DCDCDC !important; */ /* Gainsboro */
+    background: #EDEDED !important;  /*  */
+    /* background: #F5F5F5 !important; */ /* Whitesmoke */
+}
+
+.oe_kanban_bg_color_black {
+    background: black !important;
+}
+
+.oe_kanban_bg_color_undefined {
+    background: black !important;
+}
+
