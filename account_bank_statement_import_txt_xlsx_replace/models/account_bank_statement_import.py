@@ -31,7 +31,7 @@ class AccountBankStatementImport(models.TransientModel):
             try:
                 Parser = self.env['account.bank.statement.import.sheet.parser']
                 return Parser.parse(self.sheet_mapping_id, data_file, self.filename)
-            except BaseException:
+            except BaseException as e:
                 if self.env.context.get('account_bank_statement_import_txt_xlsx_test'):
                     raise
                 _logger.warning('Sheet parser error', exc_info=True)

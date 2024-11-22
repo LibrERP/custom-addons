@@ -10,6 +10,7 @@ from io import BytesIO
 from os import path
 
 from odoo import _, api, exceptions, models
+from openpyxl.utils import cell
 
 _logger = logging.getLogger(__name__)
 
@@ -283,9 +284,19 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
         return csv_options
 
     def _parse_lines(self, mapping, data_file, filename, currency_code):  # noqa: C901
+        def get_index(header, column_name):
+            if column_name and column_name in header:
+                return header.index(column_name)
+            elif column_name and ':' in column_name:
+                name, column = column_name.split(':')
+                return cell.column_index_from_string(column) - 1
+
         def get_index_or_none(header, column_name):
             if column_name and column_name in header:
                 return header.index(column_name)
+            elif column_name and ':' in column_name:
+                name, column = column_name.split(':')
+                return cell.column_index_from_string(column) - 1
             else:
                 return None
 
@@ -366,9 +377,11 @@ class AccountBankStatementImportSheetParser(models.TransientModel):
         header = [str(value) for value in next(csv_or_xlsx)]
 
         columns = {
-            'timestamp': header.index(mapping.timestamp_column),
+            # 'timestamp': header.index(mapping.timestamp_column),
+            'timestamp': get_index(header, mapping.timestamp_column),
             'currency': get_index_or_none(header, mapping.currency_column),
-            'amount': header.index(mapping.amount_column),
+            # 'amount': header.index(mapping.amount_column),
+            'amount': get_index(header, mapping.amount_column),
             'debit': get_index_or_none(header, mapping.debit_column),
             'balance': get_index_or_none(header, mapping.balance_column),
             'original_currency': get_index_or_none(
