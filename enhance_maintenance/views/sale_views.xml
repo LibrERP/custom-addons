@@ -11,7 +11,7 @@
                     string="Maintenance"
                     class="oe_stat_button"
                     icon="fa-wrench"
-                    attrs="{'invisible': [('maintenance_ids', '=', False)]}" groups="base.group_user">
+                    attrs="{'invisible': [('maintenance_ids', '=', [])]}" groups="base.group_user">
                     <field name="maintenance_ids" invisible="True" />
                 </button>
             </xpath>
