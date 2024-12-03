@@ -1,0 +1,20 @@
+"id","code","Name","account_type","reconcile","tag_ids","Tipo P/E","Sezione",,,,,,
+"10","10","Crediti verso soci","asset_current","False",,"P","Attivo",,,,,,
+"1010","1010","Crediti verso soci","asset_current","False",,"P","Attivo",,,," "," "," "
+"101010","101010","Crediti verso soci","asset_current","False",,"P","Attivo",,,,,," "
+"101010010","101010010","Parte già richiamata","asset_current","False",,"P","Attivo",,,," "," "," "
+"101010020","101010020","Parte da richiamare","asset_current","False",,"P","Attivo",,,,,,
+"12","12","Immobilizzazioni","asset_fixed","False",,"P","Attivo",,,,,,
+"1210","1210","Immob. Immateriali","asset_fixed","False",,"P","Attivo",,,,,,
+"121010","121010","Costi impianto ampliam.","asset_fixed","False",,"P","Attivo",,,,,,
+"121010010","121010010","Spese di avviam.impianto","asset_fixed","False",,"P","Attivo",,,,,,
+"121010020","121010020","Spese costituz.società","asset_fixed","False",,"P","Attivo",,,,,,
+"121010030","121010030","Spese modifica statuto","asset_fixed","False",,"P","Attivo",,,,,,
+"121020","121020","Costi R.& Sv. Pubblicita","asset_fixed","False",,"P","Attivo",,,,,,
+"121020010","121020010","Spese ricerca e sviluppo","asset_fixed","False",,"P","Attivo",,,,,,
+"121020020","121020020","Spese di pubblicità","asset_fixed","False",,"P","Attivo",,,,,,
+"121030","121030","Dir.brev.e opere ingegno","asset_fixed","False",,"P","Attivo",,,,,,
+"121030010","121030010","Brevetti industriali","asset_fixed","False",,"P","Attivo",,,,,,
+"121030020","121030020","Opere ingegno","asset_fixed","False",,"P","Attivo",,,,,,
+"121030030","121030030","Know-how","asset_fixed","False",,"P","Attivo",,,,,,
+"121030040","121030040","Software","asset_fixed","False",,"P","Attivo",,,,,,
