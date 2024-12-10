@@ -4,7 +4,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Automatic partner creation based on VAT number',
-    'version': '17.0.1.4.1',
+    'version': '18.0.1.4.1',
     'category': 'Customer Relationship Management',
     'summary': 'Using VIES webservice, name and address information will be fetched and added to the partner.',
     'author': 'Codebeex srl',
