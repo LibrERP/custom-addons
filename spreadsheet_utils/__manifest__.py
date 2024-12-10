@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Speadsheet',
-    'version': '17.0.0.0',
+    'version': '18.0.0.0',
     'category': 'Utility',
     'summary': 'Functions that helps to work with spreadsheet',
     'author': 'Codebeex srl',
