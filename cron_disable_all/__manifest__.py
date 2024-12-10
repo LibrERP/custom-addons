@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Cron Disable All',
-    'version': '17.0.0.0',
+    'version': '18.0.0.0',
     'category': 'Tools',
     'summary': 'Module adds an Action which permits to deactivate all cron records',
     'author': 'Codebeex srl',
@@ -17,5 +17,4 @@
     ],
     'installable': True,
     'auto_install': False,
-
 }
