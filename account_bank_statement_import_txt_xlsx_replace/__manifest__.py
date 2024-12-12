@@ -12,7 +12,7 @@
 {
     "name": "Account Bank Statement Import TXT/CSV/XLSX",
     "summary": "Import TXT/CSV or XLSX files as Bank Statements in Odoo",
-    "version": "12.0.2.0.5_10",
+    "version": "12.0.2.0.5_11",
     "category": "Accounting",
     "website": "https://github.com/LibrERP/custom-addons",
     "author": "ForgeFlow, " "CorporateHub, " "Odoo Community Association (OCA)",

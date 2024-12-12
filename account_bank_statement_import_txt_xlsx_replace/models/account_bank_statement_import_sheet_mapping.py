@@ -16,6 +16,7 @@ class AccountBankStatementImportSheetMapping(models.Model):
     header_name_raw = fields.Selection(
         string="Statement Name raw",
         selection=[
+            (0, ''),
             ('0', '1'),
             ('1', '2'),
             ('2', '3'),
@@ -34,6 +35,7 @@ The name of the file is used if this field is not set""",
     header_name_column = fields.Selection(
         string="Statement Name column",
         selection=[
+            (0, ''),
             ('0', 'A'),
             ('1', 'B'),
             ('2', 'C'),
