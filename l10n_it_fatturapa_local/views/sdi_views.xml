@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_sdi_channel_tree" model="ir.ui.view">
+        <field name="name">sdi.channel.inherit.view.tree</field>
+        <field name="model">sdi.channel</field>
+        <field name="inherit_id" ref="l10n_it_sdi_channel.view_sdi_channel_tree" />
+        <field name="arch" type="xml">
+            <field name="channel_type" position="after">
+                <field name="destination_path" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_sdi_channel_form" model="ir.ui.view">
+        <field name="name">sdi.channel.inherit.view.form</field>
+        <field name="model">sdi.channel</field>
+        <field name="inherit_id" ref="l10n_it_sdi_channel.view_sdi_channel_form" />
+        <field name="arch" type="xml">
+                <xpath expr="//newline" position="after">
+                    <group attrs="{'invisible': [('channel_type', '!=', 'local')]}">
+                        <div
+                            colspan="2"
+                        >Path to the destination folder where invoices XMLs should be collected</div>
+                        <field
+                                name="destination_path"
+                                attrs="{'required': [('channel_type', '=', 'local')]}"
+                        />
+                    </group>
+                </xpath>
+        </field>
+    </record>
+</odoo>

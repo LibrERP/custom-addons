@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="sdi_channel_local" model="sdi.channel">
+        <field name="name">Local folder</field>
+        <field name="channel_type">local</field>
+    </record>
+</odoo>
