@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<odoo>
+    <record id="view_sdi_channel_tree" model="ir.ui.view">
+        <field name="name">sdi.channel.inherit.view.tree</field>
+        <field name="model">sdi.channel</field>
+        <field name="inherit_id" ref="l10n_it_sdi_channel.view_sdi_channel_tree" />
+        <field name="arch" type="xml">
+            <field name="channel_type" position="after">
+                <field name="channel_subtype"/>
+                <field name="sdi_username"/>
+                <field name="sdi_password"/>
+                <field name="sdi_storage_format"/>
+                <field name="sdi_node"/>
+                <field name="node"/>
+                <field name="active_invoice_host"/>
+                <field name="passive_invoice_host"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_sdi_channel_form" model="ir.ui.view">
+        <field name="name">sdi.channel.inherit.view.form</field>
+        <field name="model">sdi.channel</field>
+        <field name="inherit_id" ref="l10n_it_sdi_channel.view_sdi_channel_form" />
+        <field name="arch" type="xml">
+                <xpath expr="//newline" position="after">
+                    <group attrs="{'invisible': [('channel_type', '!=', 'sdi')]}">
+                        <field name="channel_subtype" attrs="{'required': [('channel_type', '=', 'sdi')]}"/>
+                        <field name="sdi_username" attrs="{'required': [('channel_type', '=', 'sdi')]}"/>
+                        <field name="sdi_password" attrs="{'required': [('channel_type', '=', 'sdi')]}"/>
+                        <field name="sdi_storage_format"/>
+                        <field name="sdi_node"/>
+                        <field name="node"/>
+                        <field name="active_invoice_host" attrs="{'required': [('channel_type', '=', 'sdi')]}"/>
+                        <field name="passive_invoice_host" attrs="{'required': [('channel_type', '=', 'sdi')]}"/>
+                    </group>
+                </xpath>
+        </field>
+    </record>
+</odoo>

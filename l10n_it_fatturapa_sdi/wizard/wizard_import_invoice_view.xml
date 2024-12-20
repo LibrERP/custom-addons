@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="wizard_import_invoice_sdi" model="ir.ui.view">
+        <field name="name">Import Passive Invoice</field>
+        <field name="model">wizard.import.passive.invoice</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Move Template" >
+                <header>
+                    <button name="import_sdi_invoice" string="Start Import" type="object" class="btn-primary" />
+                </header>
+                <sheet>
+                    <group col="2" width="600" height="500">
+                        <group col="2">
+                            <field name="start_import_date" colspan="2" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_e_invoice_sdi" model="ir.actions.act_window">
+        <field name="name">Import Invoice from SDI</field>
+        <field name="res_model">wizard.import.passive.invoice</field>
+<!--        <field name="view_type">form</field>-->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_import_invoice_sdi"/>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem action="action_import_e_invoice_sdi" id="menu_check_sdi_invoice"
+                          parent="l10n_it_fatturapa.menu_fattura_pa_payables"/>
+
+</odoo>

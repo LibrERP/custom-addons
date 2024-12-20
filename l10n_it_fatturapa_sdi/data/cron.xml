@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="document_einvoice_state" forcecreate="True" model="ir.cron">
+            <field name="name">Update eInvoice State</field>
+            <field name="model_id" ref="model_fatturapa_attachment_out" />
+            <field name="state">code</field>
+            <field name="code">model.update_status()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+        </record>
+
+        <record id="document_einvoice_send" forcecreate="True" model="ir.cron">
+            <field name="name">Send eInvoice</field>
+            <field name="model_id" ref="model_fatturapa_attachment_out" />
+            <field name="state">code</field>
+            <field name="code">model.send_cron_invoice_sdi()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <!-- UTC time: 21:00 -> 23:00 -->
+            <field name="nextcall" eval="'{today} 21:00:00'.format(today=DateTime.now().strftime('%Y-%m-%d'))" />
+            <field name="numbercall">-1</field>
+            <field name="active">0</field>
+        </record>
+
+        <record id="document_einvoice_receive" forcecreate="True" model="ir.cron">
+            <field name="name">Receive eInvoice</field>
+            <field name="model_id" ref="model_fatturapa_attachment_out" />
+            <field name="state">code</field>
+            <field name="code">model.import_sdi_invoice()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="active">0</field>
+        </record>
+    </data>
+</odoo>

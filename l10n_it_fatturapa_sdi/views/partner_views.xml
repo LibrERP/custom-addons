@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_sdi" model="ir.ui.view">
+        <field name="name">view_partner_form_sdi</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_it_fatturapa.view_partner_form_fatturapa"/>
+        <field name="arch" type="xml">
+            <field name="electronic_invoice_subjected" position="after">
+                <field name="invoice_email" />
+            </field>
+        </field>
+    </record>
+</odoo>
