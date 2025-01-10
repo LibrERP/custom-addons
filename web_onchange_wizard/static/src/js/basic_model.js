@@ -47,7 +47,11 @@ odoo.define('web_onchange_wizard.BasicModel', function (require) {
                     }
                     // allow to perform action
                     if (result.action) {
-                        self.do_action(result.action);
+                        self.do_action(result.action, {
+                        on_close: function () {
+                            self.trigger_up('reload');
+                        }
+                        });
                     }
                     if (result.domain) {
                         record._domains = _.extend(record._domains, result.domain);
