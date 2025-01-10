@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Web Onchange Wizard',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Tools',
     'summary': 'Give the possibility to return Action from Onchange',
     'author': 'Codebeex srl',
