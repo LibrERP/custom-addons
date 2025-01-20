@@ -1,5 +1,5 @@
 # © 2018-2022 Andrei Levin - Didotech srl (www.didotech.com)
-# © 2024-* Andrei Levin - Codebeex srl (www.codebeex.com)
+# © 2024-2025 Andrei Levin - Codebeex srl (www.codebeex.com)
 
 import datetime
 from odoo import models, fields
@@ -22,7 +22,7 @@ class WizardImportInvoice(models.TransientModel):
             order='e_invoice_received_date desc', limit=1)
 
         if last_xmls:
-            return last_xmls[0].sdi_date.date()
+            return last_xmls[0].e_invoice_received_date.date()
         else:
             return datetime.date.today()
 

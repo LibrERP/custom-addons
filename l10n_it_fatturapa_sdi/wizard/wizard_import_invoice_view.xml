@@ -7,9 +7,6 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Move Template" >
-                <header>
-                    <button name="import_sdi_invoice" string="Start Import" type="object" class="btn-primary" />
-                </header>
                 <sheet>
                     <group col="2" width="600" height="500">
                         <group col="2">
@@ -17,6 +14,14 @@
                         </group>
                     </group>
                 </sheet>
+                <footer>
+                <button name="import_sdi_invoice"
+                        type="object"
+                        string="Start Import"
+                        class="oe_highlight"/>
+                <button special="cancel"
+                        string="Cancel"/>
+            </footer>
             </form>
         </field>
     </record>
@@ -27,7 +32,7 @@
 <!--        <field name="view_type">form</field>-->
         <field name="view_mode">form</field>
         <field name="view_id" ref="wizard_import_invoice_sdi"/>
-        <field name="target">current</field>
+        <field name="target">new</field>
     </record>
 
     <menuitem action="action_import_e_invoice_sdi" id="menu_check_sdi_invoice"

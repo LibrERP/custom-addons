@@ -30,7 +30,7 @@ class SdiChannel(models.Model):
     sdi_node = fields.Char(
         'SW Node', size=64, required=True, default='some_node',
         help="Protection against accidentally sending invoice during the tests." 
-             "To be able to send XML invoices to SDI this value should be"
+             "To be able to send XML invoices to SDI this value should be "
              "equal to the name of the local host")
     node = fields.Char(compute=_get_node, string='Server Node', method=True)
     # use_local_storage = fields.Boolean(string="Open documents from local storage", default=True)
