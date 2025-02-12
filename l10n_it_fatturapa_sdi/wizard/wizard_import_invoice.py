@@ -17,9 +17,12 @@ class WizardImportInvoice(models.TransientModel):
     _description = 'Wizard Import Passive Invoice from SDI'
 
     def get_last_download_date(self):
+        # last_xmls = self.env['fatturapa.attachment.in'].search(
+        #     [('e_invoice_received_date', '!=', False)],
+        #     order='e_invoice_received_date desc', limit=1)
         last_xmls = self.env['fatturapa.attachment.in'].search(
-            [('e_invoice_received_date', '!=', False)],
-            order='e_invoice_received_date desc', limit=1)
+            [('sdi_download_date', '!=', False)],
+            order='sdi_download_date desc', limit=1)
 
         if last_xmls:
             return last_xmls[0].e_invoice_received_date.date()

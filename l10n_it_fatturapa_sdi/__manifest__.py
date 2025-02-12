@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Base module to sent/receive xml invoices via SdI',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Localization/Italy',
     'summary': 'Base module to sent/receive xml invoices via SdI',
     'author': 'Codebeex srl',

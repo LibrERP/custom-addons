@@ -1,4 +1,4 @@
-# © 2024 Andrei Levin <andrei.levin@codebeex.com>
+# © 2024-2025 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, Command, fields, models
@@ -12,6 +12,7 @@ class FatturapaAttachmentOut(models.Model):
     sdi_fname = fields.Text('SDI full file path')
     sdi_id = fields.Char('ID SdI', size=12)
     sdi_state = fields.Selection(E_INVOICE_STATE, 'SdI State', readonly=True, required=False)
+    sdi_download_date = fields.Date('Download date')
 
 
 class FatturapaAttachmentIn(models.Model):
