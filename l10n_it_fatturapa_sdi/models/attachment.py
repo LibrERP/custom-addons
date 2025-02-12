@@ -12,7 +12,6 @@ class FatturapaAttachmentOut(models.Model):
     sdi_fname = fields.Text('SDI full file path')
     sdi_id = fields.Char('ID SdI', size=12)
     sdi_state = fields.Selection(E_INVOICE_STATE, 'SdI State', readonly=True, required=False)
-    sdi_download_date = fields.Date('Download date')
 
 
 class FatturapaAttachmentIn(models.Model):
@@ -20,3 +19,4 @@ class FatturapaAttachmentIn(models.Model):
 
     sdi_id = fields.Char('IdSdi', readonly=True)
     office_code = fields.Char('Office Code', readonly=True)
+    sdi_download_date = fields.Date('Download date')

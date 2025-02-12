@@ -25,7 +25,8 @@ class WizardImportInvoice(models.TransientModel):
             order='sdi_download_date desc', limit=1)
 
         if last_xmls:
-            return last_xmls[0].e_invoice_received_date.date()
+            # return last_xmls[0].e_invoice_received_date.date()
+            return last_xmls[0].sdi_download_date
         else:
             return datetime.date.today()
 
