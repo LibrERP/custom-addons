@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Mail Activity Done Fix',
-    'version': '16.0.0.0',
+    'version': '12.0.0.0',
     'category': 'Discuss',
     'summary': 'Module solve the problem of total number of activities calculation introduced by module mail_activity_done',
     'author': 'Codebeex srl',
