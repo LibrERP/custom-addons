@@ -1,4 +1,4 @@
-# © 2024 Andrei Levin <andrei.levin@codebeex.com>
+# © 2024-2025 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, fields, models
@@ -12,15 +12,17 @@ class MailMessage(models.Model):
 
     @api.depends('model', 'res_id')
     def _compute_partner(self):
-        for messsage in self:
-            if messsage.res_id:
-                record = self.env[messsage.model].browse(messsage.res_id)
+        for message in self:
+            if message.model == 'res.partner':
+                message.partner_id = message.res_id
+            elif message.res_id:
+                record = self.env[message.model].browse(message.res_id)
                 if hasattr(record, 'partner_id'):
-                    messsage.partner_id = record.partner_id.id
+                    message.partner_id = record.partner_id.id
                 else:
-                    messsage.partner_id = False
+                    message.partner_id = False
             else:
-                messsage.partner_id = False
+                message.partner_id = False
 
     def _compute_body_html(self):
         for message in self:
