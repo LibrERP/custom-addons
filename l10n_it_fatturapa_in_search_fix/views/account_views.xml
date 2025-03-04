@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="l10n_it_fatturapa_in.view_fatturapa_in_attachment_search" model="ir.ui.view">
+        <field name="name">fatturapa.attachment.in.search</field>
+        <field name="model">fatturapa.attachment.in</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="xml_supplier_id" />
+                <filter
+                    name="to_register"
+                    string="To Register"
+                    domain="[('registered','=',False)]"
+                />
+            </search>
+        </field>
+    </record>
+</odoo>
