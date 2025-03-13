@@ -125,54 +125,54 @@ def import_sheet_generator(filename, content, header_lines_count=1, delimiter=',
     #     table = book.sheet_by_index(0)
     #     for row in table:
     #         yield row
-    # elif file_type == 'csv':
-    #     # "CSV"
-    #     import csv
-    #
-    #     def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
-    #         # csv.py doesn't do Unicode; encode temporarily as UTF-8:
-    #         # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
-    #         csv_reader = csv.reader(
-    #             table_reader(unicode_csv_data),
-    #             delimiter=delimiter,
-    #             dialect=dialect, **kwargs)
-    #         for row in csv_reader:
-    #             # decode UTF-8 back to Unicode, cell by cell:
-    #             # yield [str(cell, 'utf-8') for cell in row]
-    #             yield row
-    #
-    #     # def utf_8_encoder(unicode_csv_data):
-    #     #     for line in unicode_csv_data:
-    #     #         yield line.encode('utf-8')
-    #
-    #     def table_reader(virtual_file_utf8):
-    #         for line in virtual_file_utf8:
-    #             yield line.decode('utf-8')
-    #
-    #     # from io import StringIO
-    #     from io import BytesIO
-    #     ## Create virtual File:
-    #     # virtual_file = StringIO(content.decode('utf-8'))
-    #     # virtual_file_utf8 = StringIO(content.decode('utf-8'))
-    #
-    #     virtual_file = BytesIO(content)
-    #     virtual_file_utf8 = BytesIO(content)
-    #
-    #     ## Process CSV file:
-    #     sample = virtual_file.read(512)
-    #     virtual_file.seek(0)
-    #     dialect = csv.Sniffer().sniff(sample.decode("utf-8"))
-    #
-    #     # table_latin1 = csv.reader(virtual_file, dialect)
-    #     # self.table is an object of type '_csv.reader' and has no len() method
-    #     # number_of_lines = sum(1 for row in table_latin1)
-    #
-    #     table = unicode_csv_reader(virtual_file_utf8, dialect)
-    #     # table = table_reader(virtual_file_utf8, dialect)
-    #
-    #     # virtual_file.seek(0)
-    #
-    #     for row in unicode_csv_reader(virtual_file_utf8, dialect):
-    #         yield row
+    elif file_type == 'csv':
+        # "CSV"
+        import csv
+
+        def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
+            # csv.py doesn't do Unicode; encode temporarily as UTF-8:
+            # csv_reader = csv.reader(utf_8_encoder(unicode_csv_data),
+            csv_reader = csv.reader(
+                table_reader(unicode_csv_data),
+                delimiter=delimiter,
+                dialect=dialect, **kwargs)
+            for row in csv_reader:
+                # decode UTF-8 back to Unicode, cell by cell:
+                # yield [str(cell, 'utf-8') for cell in row]
+                yield row
+
+        # def utf_8_encoder(unicode_csv_data):
+        #     for line in unicode_csv_data:
+        #         yield line.encode('utf-8')
+
+        def table_reader(virtual_file_utf8):
+            for line in virtual_file_utf8:
+                yield line.decode('utf-8')
+
+        # from io import StringIO
+        from io import BytesIO
+        ## Create virtual File:
+        # virtual_file = StringIO(content.decode('utf-8'))
+        # virtual_file_utf8 = StringIO(content.decode('utf-8'))
+
+        virtual_file = BytesIO(content)
+        virtual_file_utf8 = BytesIO(content)
+
+        ## Process CSV file:
+        sample = virtual_file.read(512)
+        virtual_file.seek(0)
+        dialect = csv.Sniffer().sniff(sample.decode("utf-8"))
+
+        # table_latin1 = csv.reader(virtual_file, dialect)
+        # self.table is an object of type '_csv.reader' and has no len() method
+        # number_of_lines = sum(1 for row in table_latin1)
+
+        table = unicode_csv_reader(virtual_file_utf8, dialect)
+        # table = table_reader(virtual_file_utf8, dialect)
+
+        # virtual_file.seek(0)
+
+        for row in unicode_csv_reader(virtual_file_utf8, dialect):
+            yield row
     else:
         raise exceptions.Warning(_('Error: Unknown file extension'))
