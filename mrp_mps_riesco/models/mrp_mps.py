@@ -22,6 +22,7 @@
 #
 ##############################################################################
 
+from datetime import datetime
 from copy import deepcopy
 from odoo import api, fields, models, _
 
@@ -41,6 +42,65 @@ class MrpProductionSchedule(models.Model):
         store=True,
         readonly=False,
     )
+    sales_orders = fields.Boolean('Use Sale Quotations to identify products.')
+    start_date = fields.Date('Start Date')
+    final_date = fields.Date('End Date')
+
+    def get_by_sales(self, vals):
+        """
+            Composes MPS and their forecasted quantities, based on products
+             listed inside sales orders in quotation status. 
+        """
+        mps_ids = self.env['mrp.production.schedule']
+        forecastType = self.env['mrp.product.forecast']
+        product_ids = self.env['product.product']
+        start_date = vals.get('start_date', datetime.now().date().strftime("%Y-%m-%d"))
+        final_date = vals.get('final_date', datetime.now().date().strftime("%Y-%m-%d"))
+        criteria =[
+            ('state', 'in', ['draft','sent']),
+            ('commitment_date', '>=', start_date),
+            ('commitment_date', '<=', final_date),
+        ]
+        sale_ids = self.env['sale.order'].search(criteria)
+        for sale_line_id in sale_ids.mapped('order_line'):
+            product_id = sale_line_id.product_id
+            qty_line = sale_line_id.product_uom_qty
+            commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
+            criteria =[
+                ('product_id', '=', product_id.id),
+                ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
+                ('company_id', '=', vals.get('company_id', self.env.company.id)),
+            ]
+            mps_id = self.search(criteria, limit=1)
+            if not mps_id:
+                product_ids += product_id
+                newvals = deepcopy(vals)
+                newvals['product_id'] = product_id.id
+                newvals['product_category_id'] = product_id.categ_id.id
+                mps_id = super().create([newvals])
+                if mps_id:
+                    values = {
+                        'forecast_qty': qty_line,
+                        'date': commitment_date,
+                        'production_schedule_id': mps_id.id,
+                    }
+                    forecast_id = forecastType.create([values])
+            else:
+                if mps_id.forecast_ids:
+                    forecast_id = mps_id.forecast_ids.filtered_domain([('date', '=', commitment_date)])
+                    if forecast_id:
+                        forecast_qty = forecast_id.forecast_qty + qty_line
+                        forecast_id.write({"forecast_qty": forecast_qty})
+                    else:
+                        values = {
+                            'forecast_qty': qty_line,
+                            'date': commitment_date,
+                            'production_schedule_id': mps_id.id,
+                        }
+                        forecast_id = forecastType.create([values])
+            if mps_id:
+                mps_ids += mps_id
+        return mps_ids
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -48,7 +108,7 @@ class MrpProductionSchedule(models.Model):
         existing_mps = []
         new_vals_list =[]
         go_ahead = False
-        mps = self.env['mrp.production.schedule']
+        sales_mps = mps = self.env['mrp.production.schedule']
         for i, vals in enumerate(vals_list):
             if vals.get('product_id'):
                 go_ahead = True
@@ -62,6 +122,7 @@ class MrpProductionSchedule(models.Model):
                 if mps:
                     mps.bom_id = vals.get('bom_id')
                     existing_mps.append((i, mps.id))
+            # Compose search using product categories amd forecasted quantity
             if vals.get('product_category_id'):
                 criteria =[
                     ('categ_id', '=', vals['product_category_id']),
@@ -74,15 +135,25 @@ class MrpProductionSchedule(models.Model):
                     newvals = deepcopy(vals)
                     newvals['product_id'] = product_id.id
                     new_vals_list.append(newvals)
+            # Compose search using sales quotations and their dates
+            if vals.get('sales_orders'):
+                sales_mps += self.get_by_sales(vals)
+        if sales_mps:
+            go_ahead = True
 
         if new_vals_list:
             vals_list = new_vals_list
+            
         for i_remove, __ in reversed(existing_mps):
             del vals_list[i_remove]
                 
         if go_ahead:
-            mps = super().create(vals_list)
-    
+            if sales_mps:
+                mps = sales_mps
+                vals_list = []
+            else:
+                mps = super().create(vals_list)
+                
             mps_ids = mps.ids
             for i, mps_id in existing_mps:
                 mps_ids.insert(i, mps_id)

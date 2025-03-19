@@ -10,6 +10,12 @@
                 <field name="product_id" readonly="id"/>
                 <field name="product_category_id" />
             </field>
+            <field name="supplier_id" position='after'>
+                <field name="sales_orders"/>
+                <field name="start_date" invisible="not sales_orders" required="sales_orders"/>
+                <field name="final_date" invisible="not sales_orders" required="sales_orders"/>
+            </field>
+            
         </field>
     </record>
 
