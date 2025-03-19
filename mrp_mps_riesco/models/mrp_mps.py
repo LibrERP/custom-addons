@@ -47,7 +47,11 @@ class MrpProductionSchedule(models.Model):
         """ If the BoM is pass at the creation, create MPS for its components """
         existing_mps = []
         new_vals_list =[]
+        go_ahead = False
+        mps = self.env['mrp.production.schedule']
         for i, vals in enumerate(vals_list):
+            if vals.get('product_id'):
+                go_ahead = True
             # Allow to add components of a BoM for MPS already created
             if vals.get('bom_id'):
                 mps = self.search([
@@ -61,8 +65,11 @@ class MrpProductionSchedule(models.Model):
             if vals.get('product_category_id'):
                 criteria =[
                     ('categ_id', '=', vals['product_category_id']),
+                    ('virtual_available', '>', 0),
                 ]
                 product_ids = self.env['product.product'].search(criteria)
+                if product_ids:
+                    go_ahead = True
                 for idx, product_id in enumerate(product_ids):
                     newvals = deepcopy(vals)
                     newvals['product_id'] = product_id.id
@@ -73,39 +80,40 @@ class MrpProductionSchedule(models.Model):
         for i_remove, __ in reversed(existing_mps):
             del vals_list[i_remove]
                 
-        mps = super().create(vals_list)
-
-        mps_ids = mps.ids
-        for i, mps_id in existing_mps:
-            mps_ids.insert(i, mps_id)
-        mps = self.browse(mps_ids)
-
-        mps._assign_mps_sequence()
-
-        components_list = set()
-        components_vals = []
-        for record in mps:
-            bom = record.bom_id
-            if not bom:
-                continue
-            dummy, components = bom.explode(record.product_id, 1)
-            for component in components:
-                if component[0].product_id.is_storable:
-                    components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
-        for component in components_list:
-            if self.env['mrp.production.schedule'].search_count([
-                ('product_id', '=', component[0]),
-                ('warehouse_id', '=', component[1]),
-                ('company_id', '=', component[2]),
-            ], limit=1):
-                continue
-            components_vals.append({
-                'product_id': component[0],
-                'warehouse_id': component[1],
-                'company_id': component[2],
-                'is_indirect': True,
-                'replenish_trigger': 'never',
-            })
-        if components_vals:
-            self.env['mrp.production.schedule'].create(components_vals)
+        if go_ahead:
+            mps = super().create(vals_list)
+    
+            mps_ids = mps.ids
+            for i, mps_id in existing_mps:
+                mps_ids.insert(i, mps_id)
+            mps = self.browse(mps_ids)
+    
+            mps._assign_mps_sequence()
+    
+            components_list = set()
+            components_vals = []
+            for record in mps:
+                bom = record.bom_id
+                if not bom:
+                    continue
+                dummy, components = bom.explode(record.product_id, 1)
+                for component in components:
+                    if component[0].product_id.is_storable:
+                        components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
+            for component in components_list:
+                if self.env['mrp.production.schedule'].search_count([
+                    ('product_id', '=', component[0]),
+                    ('warehouse_id', '=', component[1]),
+                    ('company_id', '=', component[2]),
+                ], limit=1):
+                    continue
+                components_vals.append({
+                    'product_id': component[0],
+                    'warehouse_id': component[1],
+                    'company_id': component[2],
+                    'is_indirect': True,
+                    'replenish_trigger': 'never',
+                })
+            if components_vals:
+                self.env['mrp.production.schedule'].create(components_vals)
         return mps
