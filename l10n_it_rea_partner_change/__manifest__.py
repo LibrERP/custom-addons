@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'No REA check when changing Partner Name',
-    'version': '16.0.0.0',
+    'version': '12.0.0.0',
     'category': 'Localisation/Italy',
     'summary': """To change partner's name we need first create a copy of the partner 
                 so the historic name will be preserved. 
@@ -17,7 +17,5 @@
         'l10n_it_rea',
         'partner_history'
     ],
-    'data': [
-        # 'views/xxx_views.xml'
-    ],
+    'data': [],
 }
