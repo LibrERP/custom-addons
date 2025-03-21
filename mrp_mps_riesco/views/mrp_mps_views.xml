@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_mps_production_schedule_form_view_extend" model="ir.ui.view" >
+        <field name="name">mrp.production.schedule.form.view.extend</field>
+        <field name="model">mrp.production.schedule</field>
+        <field name="inherit_id" ref="mrp_mps.mrp_mps_production_schedule_form_view"></field>
+        <field name="arch" type="xml">
+            <field name="product_id" position='replace'>
+                <field name="product_id" readonly="id"/>
+                <field name="product_category_id" invisible="product_id"/>
+            </field>
+            <field name="supplier_id" position='after'>
+                <field name="sales_orders" invisible="product_id"/>
+                <field name="start_date" invisible="not sales_orders" required="sales_orders"/>
+                <field name="final_date" invisible="not sales_orders" required="sales_orders"/>
+            </field>
+            
+        </field>
+    </record>
+
+</odoo>
