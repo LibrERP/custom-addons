@@ -1,36 +1,29 @@
-# Translation of OpenERP Server.
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* module_version
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenERP Server 6.1\n"
+"Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-24 08:44+0000\n"
-"PO-Revision-Date: 2015-08-03 12:47+0200\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2025-03-21 08:04+0000\n"
+"PO-Revision-Date: 2025-03-21 08:04+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"Language: it\n"
-"X-Generator: Poedit 1.8.2\n"
 
 #. module: module_version
-#: view:ir.module.module:0
-msgid "To upgrade"
-msgstr "Da Aggiornare"
+#: model_terms:ir.ui.view,arch_db:module_version.module_tree_version
+msgid "Cancel Upgrade"
+msgstr "Annulla Aggiornamento"
 
 #. module: module_version
-#: view:ir.module.module:0
-msgid "Upgrade"
-msgstr "Aggiornamento"
-
-#. module: module_version
-#: view:ir.module.module:0
-msgid "Not Installed"
-msgstr "Non installato"
+#: model:ir.actions.server,name:module_version.action_check_modules
+msgid "Check Modules"
+msgstr "Controlla i Moduli"
 
 #. module: module_version
 #: model:ir.model,name:module_version.model_ir_module_module
@@ -38,15 +31,32 @@ msgid "Module"
 msgstr "Modulo"
 
 #. module: module_version
-#: view:ir.module.module:0
-msgid "Cancel Upgrade"
-msgstr "Annulla Aggiornamento"
+#. odoo-python
+#: code:addons/module_version/models/module.py:0
+msgid "Modules to upgrade"
+msgstr "Moduli da aggiornare"
 
 #. module: module_version
-#: code:addons/module_version/module.py:60
-#: code:addons/module_version/module.py:61
-#: field:ir.module.module,check_upgrade:0
-#: field:ir.module.module,need_upgrade:0
-#, python-format
+#. odoo-python
+#: code:addons/module_version/models/module.py:0
+#: model:ir.model.fields,field_description:module_version.field_ir_module_module__need_upgrade
 msgid "Need Upgrade"
 msgstr "Richiede Aggiornamento"
+
+#. module: module_version
+#. odoo-python
+#: code:addons/module_version/models/module.py:0
+#: model:ir.model.fields,field_description:module_version.field_ir_module_module__check_upgrade
+msgid "Need Upgrade (hidden)"
+msgstr "Richiede Aggiornamento (nascosto)"
+
+#. module: module_version
+#. odoo-python
+#: code:addons/module_version/models/module.py:0
+msgid "There are no modules that should be updated"
+msgstr "Non ci sono moduli da aggiornare"
+
+#. module: module_version
+#: model_terms:ir.ui.view,arch_db:module_version.module_tree_version
+msgid "Upgrade"
+msgstr "Aggiornare"
