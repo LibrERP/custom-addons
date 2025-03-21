@@ -32,8 +32,17 @@ class Module(models.Model):
             else:
                 module.need_upgrade = False
 
-    need_upgrade = fields.Boolean(compute='_need_upgrade', string=_lt('Need Upgrade'), store=True)
-    check_upgrade = fields.Boolean(compute='_check_upgrade', string=_lt('Need Upgrade (hidden)'), store=False)
+    need_upgrade = fields.Boolean(
+        compute='_need_upgrade',
+        string=str(_lt('Need Upgrade')),  # Convert LazyGettext to a string, we should use str(),
+                                          # because Odoo tries to hash() the string on Boolean fields and we got
+                                          # NotImplementedError
+        store=True
+    )
+    check_upgrade = fields.Boolean(
+        compute='_check_upgrade',
+        string=str(_lt('Need Upgrade (hidden)')),
+        store=False)
 
     _order = 'name'
 
