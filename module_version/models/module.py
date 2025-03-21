@@ -1,9 +1,12 @@
-# -*- coding: utf-8 -*-
 # © 2013-2021 Didotech srl
+# © 2025 Codebeex srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api
+from odoo.tools.translate import _, LazyTranslate
 from odoo import exceptions
+
+_lt = LazyTranslate(__name__, default_lang='en_US')
 
 
 class Module(models.Model):
@@ -29,8 +32,8 @@ class Module(models.Model):
             else:
                 module.need_upgrade = False
 
-    need_upgrade = fields.Boolean(compute='_need_upgrade', string=_('Need Upgrade'), store=True)
-    check_upgrade = fields.Boolean(compute='_check_upgrade', string=_('Need Upgrade (hidden)'), store=False)
+    need_upgrade = fields.Boolean(compute='_need_upgrade', string=_lt('Need Upgrade'), store=True)
+    check_upgrade = fields.Boolean(compute='_check_upgrade', string=_lt('Need Upgrade (hidden)'), store=False)
 
     _order = 'name'
 
