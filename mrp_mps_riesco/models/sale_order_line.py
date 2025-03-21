@@ -4,7 +4,7 @@
 #    Oddo Addons Module, Open Source   
 #    Copyright (C) 2024-2025 Codebeex srl (<http://www.codebeex.com>). All Rights Reserved
 #
-#    Created on: 2025-03-17
+#    Created on: 2025-03-20
 #    Author : odoo
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,20 @@
 #
 ##############################################################################
 
-from . import mrp_mps
-from . import sale_order_line
-from . import product
+from datetime import timedelta
+
+from odoo import api, fields, models
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+    def _expected_date(self):
+        self.ensure_one()
+        if self.state == 'sale' and self.order_id.date_order:
+            order_date = self.order_id.date_order
+        else:
+            order_date = fields.Datetime.now()
+        delay = self.product_id.get_produce_delay()
+        delayed = order_date + timedelta(days=(self.customer_lead+delay) or 0.0)
+        return delayed

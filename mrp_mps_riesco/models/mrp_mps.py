@@ -25,6 +25,7 @@
 from datetime import datetime
 from copy import deepcopy
 from odoo import api, fields, models, _
+from pickle import FALSE
 
 
 class MrpProductionSchedule(models.Model):
@@ -45,8 +46,97 @@ class MrpProductionSchedule(models.Model):
     sales_orders = fields.Boolean('Use Sale Quotations to identify products.')
     start_date = fields.Date('Start Date')
     final_date = fields.Date('End Date')
+    stop2mats = fields.Boolean('Use only Raw Materials.')
+    stop2half = fields.Boolean('Use only Semi-finished Products.')
 
-    def get_by_sales(self, vals):
+    @api.onchange('sales_orders')
+    def on_change_sales_orders(self):
+        if self.sales_orders:
+            self.stop2mats = True
+
+    @api.onchange('stop2mats')
+    def on_change_stop2mats(self):
+        if self.stop2mats:
+            self.stop2half = False
+
+    @api.onchange('stop2half')
+    def on_change_stop2half(self):
+        if self.stop2half:
+            self.stop2mats = False
+
+    def getMps(self, vals, product_id, qty_line, commitment_date):
+        mps_ids = self.env['mrp.production.schedule']
+        forecastType = self.env['mrp.product.forecast']
+        product_ids = self.env['product.product']
+        criteria =[
+            ('product_id', '=', product_id.id),
+            ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
+            ('company_id', '=', vals.get('company_id', self.env.company.id)),
+        ]
+        mps_id = self.search(criteria, limit=1)
+        if not mps_id:
+            product_ids += product_id
+            newvals = deepcopy(vals)
+            newvals['product_id'] = product_id.id
+            newvals['product_category_id'] = product_id.categ_id.id
+            mps_id = super().create([newvals])
+            if mps_id:
+                values = {
+                    'forecast_qty': qty_line,
+                    'date': commitment_date,
+                    'production_schedule_id': mps_id.id,
+                }
+                forecast_id = forecastType.create([values])
+        else:
+            if mps_id.forecast_ids:
+                forecast_id = mps_id.forecast_ids.filtered_domain([('date', '=', commitment_date)])
+                if forecast_id:
+                    forecast_qty = forecast_id.forecast_qty + qty_line
+                    forecast_id.write({"forecast_qty": forecast_qty})
+                else:
+                    values = {
+                        'forecast_qty': qty_line,
+                        'date': commitment_date,
+                        'production_schedule_id': mps_id.id,
+                    }
+                    forecast_id = forecastType.create([values])
+        return mps_id
+
+    def get_by_sales_rm(self, vals):
+        """
+            Composes MPS and their forecasted quantities, based on products
+             listed inside sales orders in quotation status. 
+        """
+        mps_ids = self.env['mrp.production.schedule']
+        forecastType = self.env['mrp.product.forecast']
+        product_ids = self.env['product.product']
+        children = []
+        start_date = vals.get('start_date', datetime.now().date().strftime("%Y-%m-%d"))
+        final_date = vals.get('final_date', datetime.now().date().strftime("%Y-%m-%d"))
+        criteria =[
+            ('state', 'in', ['draft','sent']),
+            ('commitment_date', '>=', start_date),
+            ('commitment_date', '<=', final_date),
+        ]
+        sale_ids = self.env['sale.order'].search(criteria)
+        for sale_line_id in sale_ids.mapped('order_line'):
+            product_id = sale_line_id.product_id
+            qty_line = sale_line_id.product_uom_qty
+            # uom_type = sale_line_id.product_uom.uom_type
+            # ratio = 1 / sale_line_id.product_uom.ratio if uom_type == 'smaller' else sale_line_id.product_uom.ratio
+            commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
+            if not(product_id in product_ids):
+                children = product_id.getRawMaterials(level=1, add_all=False, unit_qty=qty_line, uom_id=sale_line_id.product_uom)
+                for ch_product_id, qty, uom_id  in children:
+                    uom_type = ch_product_id.uom_id.uom_type
+                    ratio = 1 / ch_product_id.uom_id.ratio if uom_type == 'smaller' else ch_product_id.uom_id.ratio
+                    uom_type = uom_id.uom_type
+                    line_ratio = 1/ uom_id.ratio if uom_type == 'smaller' else uom_id.ratio
+                    quantity = ratio * line_ratio * qty 
+                    mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+        return mps_ids
+
+    def get_by_sales_sf(self, vals):
         """
             Composes MPS and their forecasted quantities, based on products
              listed inside sales orders in quotation status. 
@@ -65,41 +155,34 @@ class MrpProductionSchedule(models.Model):
         for sale_line_id in sale_ids.mapped('order_line'):
             product_id = sale_line_id.product_id
             qty_line = sale_line_id.product_uom_qty
+            ratio = 1 / sale_line_id.product_uom.ratio
             commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
-            criteria =[
-                ('product_id', '=', product_id.id),
-                ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
-                ('company_id', '=', vals.get('company_id', self.env.company.id)),
-            ]
-            mps_id = self.search(criteria, limit=1)
-            if not mps_id:
-                product_ids += product_id
-                newvals = deepcopy(vals)
-                newvals['product_id'] = product_id.id
-                newvals['product_category_id'] = product_id.categ_id.id
-                mps_id = super().create([newvals])
-                if mps_id:
-                    values = {
-                        'forecast_qty': qty_line,
-                        'date': commitment_date,
-                        'production_schedule_id': mps_id.id,
-                    }
-                    forecast_id = forecastType.create([values])
-            else:
-                if mps_id.forecast_ids:
-                    forecast_id = mps_id.forecast_ids.filtered_domain([('date', '=', commitment_date)])
-                    if forecast_id:
-                        forecast_qty = forecast_id.forecast_qty + qty_line
-                        forecast_id.write({"forecast_qty": forecast_qty})
-                    else:
-                        values = {
-                            'forecast_qty': qty_line,
-                            'date': commitment_date,
-                            'production_schedule_id': mps_id.id,
-                        }
-                        forecast_id = forecastType.create([values])
-            if mps_id:
-                mps_ids += mps_id
+            if not(product_id in product_ids):
+                children = product_id.getRawMaterials(level=1)
+                for ch_product_id, qty, uom_id  in children:
+                    if ch_product_id.is_semifinished:
+                        quantity = qty_line * ratio * qty * uom_id.ratio
+                        mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+
+    def get_by_sales(self, vals):
+        """
+            Composes MPS and their forecasted quantities, based on products
+             listed inside sales orders in quotation status. 
+        """
+        mps_ids = self.env['mrp.production.schedule']
+        start_date = vals.get('start_date', datetime.now().date().strftime("%Y-%m-%d"))
+        final_date = vals.get('final_date', datetime.now().date().strftime("%Y-%m-%d"))
+        criteria =[
+            ('state', 'in', ['draft','sent']),
+            ('commitment_date', '>=', start_date),
+            ('commitment_date', '<=', final_date),
+        ]
+        sale_ids = self.env['sale.order'].search(criteria)
+        for sale_line_id in sale_ids.mapped('order_line'):
+            product_id = sale_line_id.product_id
+            qty_line = sale_line_id.product_uom_qty
+            commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
+            mps_ids += self.getMps(vals, product_id, qty_line, commitment_date)
         return mps_ids
 
     @api.model_create_multi
@@ -137,7 +220,14 @@ class MrpProductionSchedule(models.Model):
                     new_vals_list.append(newvals)
             # Compose search using sales quotations and their dates
             if vals.get('sales_orders'):
-                sales_mps += self.get_by_sales(vals)
+                stop2mats = vals.get('stop2mats', False)
+                stop2half = vals.get('stop2half', False)
+                if not stop2mats and not stop2half:
+                    sales_mps += self.get_by_sales(vals)
+                elif stop2mats:
+                    sales_mps += self.get_by_sales_rm(vals)
+                elif stop2half:
+                    sales_mps += self.get_by_sales_sf(vals)
         if sales_mps:
             go_ahead = True
 

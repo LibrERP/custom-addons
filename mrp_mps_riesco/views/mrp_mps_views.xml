@@ -12,6 +12,8 @@
             </field>
             <field name="supplier_id" position='after'>
                 <field name="sales_orders" invisible="product_id"/>
+                <field name="stop2mats" invisible="product_id or not sales_orders"/>
+                <field name="stop2half" invisible="product_id or not sales_orders"/>
                 <field name="start_date" invisible="not sales_orders" required="sales_orders"/>
                 <field name="final_date" invisible="not sales_orders" required="sales_orders"/>
             </field>

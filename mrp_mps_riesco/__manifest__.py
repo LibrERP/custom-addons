@@ -33,11 +33,12 @@
     'author': "Codebeex srl",
     'website': "http://www.codebeex.com",
     'category': 'Customization',
-    'version': '18.0.1.0',
+    'version': '18.0.3.0',
 
     # any module necessary for this one to work correctly
     'depends': [
         'mrp_mps',
+        'sale',
     ],
 
     # always loaded
