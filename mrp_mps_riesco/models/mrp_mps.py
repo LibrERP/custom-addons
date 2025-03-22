@@ -108,8 +108,7 @@ class MrpProductionSchedule(models.Model):
              listed inside sales orders in quotation status. 
         """
         mps_ids = self.env['mrp.production.schedule']
-        forecastType = self.env['mrp.product.forecast']
-        product_ids = self.env['product.product']
+        # product_ids = self.env['product.product']
         children = []
         start_date = vals.get('start_date', datetime.now().date().strftime("%Y-%m-%d"))
         final_date = vals.get('final_date', datetime.now().date().strftime("%Y-%m-%d"))
@@ -140,8 +139,7 @@ class MrpProductionSchedule(models.Model):
              listed inside sales orders in quotation status. 
         """
         mps_ids = self.env['mrp.production.schedule']
-        forecastType = self.env['mrp.product.forecast']
-        product_ids = self.env['product.product']
+        # product_ids = self.env['product.product']
         start_date = vals.get('start_date', datetime.now().date().strftime("%Y-%m-%d"))
         final_date = vals.get('final_date', datetime.now().date().strftime("%Y-%m-%d"))
         criteria =[
@@ -164,8 +162,8 @@ class MrpProductionSchedule(models.Model):
             children = product_id.getRawMaterials(level=1)
             for ch_product_id, qty, uom_id  in children:
                 if ch_product_id.is_semifinished:
-                    quantity = qty_line * ratio * qty * uom_id.ratio
-                    mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+                    mps_ids += self.getMps(vals, ch_product_id, qty, commitment_date)
+        return mps_ids
 
     def get_by_sales(self, vals):
         """

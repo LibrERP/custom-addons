@@ -33,7 +33,7 @@
     'author': "Codebeex srl",
     'website': "http://www.codebeex.com",
     'category': 'Customization',
-    'version': '18.0.3.1',
+    'version': '18.0.4.0',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -44,6 +44,7 @@
     # always loaded
     'data': [
         'views/mrp_mps_views.xml',
+        'views/product_template_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
