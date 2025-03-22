@@ -45,7 +45,7 @@ class ProductProduct(models.Model):
             delay = bom_id.produce_delay + bom_id.days_to_prepare_mo
         return delay
 
-    def getRawMaterials(self, level=0, currlevel=0, bomtype=['normal','kit'], add_all=True, unit_qty=1, uom_id=None):
+    def getRawMaterials(self, level=0, currlevel=0, bomtype=['normal','phantom'], add_all=True, unit_qty=1, uom_id=None):
         """
             Returns a flat list of each child, listed once, in a Bom ( level = 0 one level only, level = 1 all levels)
         """

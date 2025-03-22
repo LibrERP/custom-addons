@@ -125,10 +125,13 @@ class MrpProductionSchedule(models.Model):
             # uom_type = sale_line_id.product_uom.uom_type
             # ratio = 1 / sale_line_id.product_uom.ratio if uom_type == 'smaller' else sale_line_id.product_uom.ratio
             commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
-            if not(product_id in product_ids):
-                children = product_id.getRawMaterials(level=1, add_all=False, unit_qty=qty_line, uom_id=sale_line_id.product_uom)
-                for ch_product_id, qty, uom_id  in children:
-                    mps_ids += self.getMps(vals, ch_product_id, qty, commitment_date)
+            # if not(product_id in product_ids):
+            #     children = product_id.getRawMaterials(level=1, add_all=False, unit_qty=qty_line, uom_id=sale_line_id.product_uom)
+            #     for ch_product_id, qty, uom_id  in children:
+            #         mps_ids += self.getMps(vals, ch_product_id, qty, commitment_date)
+            children = product_id.getRawMaterials(level=1, add_all=False, unit_qty=qty_line, uom_id=sale_line_id.product_uom)
+            for ch_product_id, qty, uom_id  in children:
+                mps_ids += self.getMps(vals, ch_product_id, qty, commitment_date)
         return mps_ids
 
     def get_by_sales_sf(self, vals):
@@ -152,12 +155,17 @@ class MrpProductionSchedule(models.Model):
             qty_line = sale_line_id.product_uom_qty
             ratio = 1 / sale_line_id.product_uom.ratio
             commitment_date = sale_line_id.order_id.commitment_date.date().strftime("%Y-%m-%d")
-            if not(product_id in product_ids):
-                children = product_id.getRawMaterials(level=1)
-                for ch_product_id, qty, uom_id  in children:
-                    if ch_product_id.is_semifinished:
-                        quantity = qty_line * ratio * qty * uom_id.ratio
-                        mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+            # if not(product_id in product_ids):
+            #     children = product_id.getRawMaterials(level=1)
+            #     for ch_product_id, qty, uom_id  in children:
+            #         if ch_product_id.is_semifinished:
+            #             quantity = qty_line * ratio * qty * uom_id.ratio
+            #             mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+            children = product_id.getRawMaterials(level=1)
+            for ch_product_id, qty, uom_id  in children:
+                if ch_product_id.is_semifinished:
+                    quantity = qty_line * ratio * qty * uom_id.ratio
+                    mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
 
     def get_by_sales(self, vals):
         """
