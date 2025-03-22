@@ -128,12 +128,7 @@ class MrpProductionSchedule(models.Model):
             if not(product_id in product_ids):
                 children = product_id.getRawMaterials(level=1, add_all=False, unit_qty=qty_line, uom_id=sale_line_id.product_uom)
                 for ch_product_id, qty, uom_id  in children:
-                    uom_type = ch_product_id.uom_id.uom_type
-                    ratio = 1 / ch_product_id.uom_id.ratio if uom_type == 'smaller' else ch_product_id.uom_id.ratio
-                    uom_type = uom_id.uom_type
-                    line_ratio = 1/ uom_id.ratio if uom_type == 'smaller' else uom_id.ratio
-                    quantity = ratio * line_ratio * qty 
-                    mps_ids += self.getMps(vals, ch_product_id, quantity, commitment_date)
+                    mps_ids += self.getMps(vals, ch_product_id, qty, commitment_date)
         return mps_ids
 
     def get_by_sales_sf(self, vals):

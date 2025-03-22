@@ -33,7 +33,7 @@
     'author': "Codebeex srl",
     'website': "http://www.codebeex.com",
     'category': 'Customization',
-    'version': '18.0.3.0',
+    'version': '18.0.3.1',
 
     # any module necessary for this one to work correctly
     'depends': [

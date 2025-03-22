@@ -61,17 +61,23 @@ class ProductProduct(models.Model):
                 product_uom_id = bomid.product_tmpl_id.uom_id
                 bom_qty = bomid.product_qty * unit_qty
                 bom_uom = bomid.product_uom_id
-                bom_ratio = req_ratio * product_uom_id.ratio / bom_uom.ratio
+                if bom_uom.uom_type =='smaller' and product_uom_id.uom_type =='bigger':
+                    bom_ratio = req_ratio * bom_uom.ratio * product_uom_id.ratio
+                else:
+                    bom_ratio = req_ratio * product_uom_id.ratio / bom_uom.ratio
                 for bomline in bomid.bom_line_ids:
                     if not(bomline.product_id in product_ids):
                         product_ids += bomline.product_id
                         product_id = bomline.product_id
-                        uom_type = product_id.uom_id.uom_type 
-                        base_ratio = 1 / product_id.uom_id.ratio if uom_type == 'smaller' else product_id.uom_id.ratio
-                        uom_type = bomline.product_uom_id.uom_type 
-                        line_ratio = bom_uom.ratio * bomline.product_uom_id.ratio if uom_type =='smaller' else bom_uom.ratio / bomline.product_uom_id.ratio
+                        base_uom_type = product_id.uom_id.uom_type 
+                        base_ratio = 1 / product_id.uom_id.ratio if base_uom_type == 'smaller' else product_id.uom_id.ratio
+                        uom_type = bomline.product_uom_id.uom_type
+                        if uom_type =='smaller':
+                            line_ratio = bom_uom.ratio / bomline.product_uom_id.ratio if uom_type =='smaller' else bom_uom.ratio * bomline.product_uom_id.ratio
+                        else:
+                            line_ratio = bom_uom.ratio * bomline.product_uom_id.ratio if uom_type =='smaller' else bom_uom.ratio / bomline.product_uom_id.ratio
                         base_line_ratio = 1 / bomline.product_uom_id.ratio if uom_type =='smaller' else 1 * bomline.product_uom_id.ratio
-                        qty_line = bom_qty * bom_ratio * line_ratio * (base_line_ratio / base_ratio) * bomline.product_qty
+                        qty_line = bom_qty * bom_ratio * line_ratio * bomline.product_qty
                         if add_all:
                             children.append((bomline.product_id, qty_line, bomline.product_uom_id))
                         else:
