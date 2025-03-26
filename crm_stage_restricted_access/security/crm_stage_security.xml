@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Remove write access from default sales manager group -->
+        <record id="crm.access_crm_stage_manager" model="ir.model.access">
+            <field name="name">crm.stage.manager</field>
+            <field name="model_id" ref="crm.model_crm_stage"/>
+            <field name="group_id" ref="sales_team.group_sale_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Create a new group for CRM Stage management -->
+        <record id="group_crm_stage_manager" model="res.groups">
+            <field name="name">CRM Stage Manager</field>
+            <field name="category_id" ref="base.module_category_crm"/>
+        </record>
+
+        <!-- Create explicit access rights for the new group -->
+        <record id="access_crm_stage_full" model="ir.model.access">
+            <field name="name">crm.stage.full.access</field>
+            <field name="model_id" ref="crm.model_crm_stage"/>
+            <field name="group_id" ref="group_crm_stage_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>
