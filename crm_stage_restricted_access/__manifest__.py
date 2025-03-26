@@ -5,7 +5,7 @@
     'name': 'CRM Stage restricted access',
     'version': '12.0.0.0',
     'category': 'crm',
-    'summary': 'Gain full access to crm stage to a dedicated group',
+    'summary': 'Give full access to crm stage to a dedicated group',
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
