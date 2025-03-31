@@ -3,9 +3,7 @@
     <record id="model_form_view" model="ir.ui.view">
         <field name="name">account.move.form</field>
         <field name="model">account.move</field>
-<!--        <field name="inherit_id" ref="account.view_move_form"/>-->
         <field name="inherit_id" ref="l10n_it_edi.account_invoice_form_l10n_it"/>
-<!--        <field name="priority">16</field>-->
         <field name="arch" type="xml">
             <xpath expr="//field[@name='is_move_sent']" position="replace"/>
             <xpath expr="//field[@name='l10n_it_cup']" position="after">
