@@ -1,5 +1,5 @@
 # © 2013-2021 Andrei Levin - Didotech srl (www.didotech.com)
-# © 2024 Andrei Levin - Codebeex srl (www.codebeex.com)
+# © 2024-2025 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # noinspection PyStatementEffect
 {

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # © 2013-2021 Didotech srl
+# © 2024-2025 Codebeex srl
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, fields, api, _
