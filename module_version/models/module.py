@@ -72,7 +72,15 @@ class Module(models.Model):
                 "domain": [('id', 'in', modules.ids)]
             }
         else:
-            raise exceptions.UserError(_('There are no modules that should be updated'))
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'success',
+                    'title': _("Module upgrade"),
+                    'message': 'There are no modules that should be updated',
+                }
+            }
 
     def _button_immediate_function(self, function):
         super(Module, self)._button_immediate_function(function)

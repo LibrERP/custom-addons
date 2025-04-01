@@ -4,7 +4,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Modules to upgrade',
-    'version': '16.0.2.0.1',
+    'version': '16.0.2.0.2',
     'category': 'Tools',
     "author": "Didotech srl",
     'website': 'https://www.codebeex.com',
