@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="model_form_view" model="ir.ui.view">
-        <field name="name">account.move.form</field>
+    <record id="account_invoice_l10n_it_form_view" model="ir.ui.view">
+        <field name="name">account.move.l10n.it.form</field>
         <field name="model">account.move</field>
+        <field name="priority">20</field>
         <field name="inherit_id" ref="l10n_it_edi.account_invoice_form_l10n_it"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='is_move_sent']" position="replace"/>
-            <xpath expr="//field[@name='l10n_it_cup']" position="after">
+            <field name="l10n_it_ddt_id" position="after">
                 <field name="is_move_sent" readonly="l10n_it_edi_transaction != False" string="Fattura inviata"/>
-            </xpath>
+            </field>
         </field>
     </record>
 </odoo>
