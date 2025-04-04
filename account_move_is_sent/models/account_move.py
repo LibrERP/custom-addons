@@ -11,6 +11,6 @@ class AccountMove(models.Model):
     def onchange_is_move_sent(self):
         for move in self:
             if move.is_move_sent:
-                move.l10n_it_edi_state = 'being_sent'
+                move.l10n_it_edi_state = 'forwarded'
             else:
                 move.l10n_it_edi_state = ''
