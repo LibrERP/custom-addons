@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="invoice_plus_FatturaPA" inherit_id="l10n_it_edi.account_invoice_it_FatturaPA_export">
+        <xpath expr="//DatiGeneraliDocumento/ImportoTotaleDocumento" position="after">
+            <Causale t-if="l10n_it_narration" t-out="l10n_it_narration"/>
+        </xpath>
+        <xpath expr="//CedentePrestatore/IscrizioneREA" position="after">
+            <RiferimentoAmministrazione t-if="seller_info['l10n_it_partner_code']" t-out="seller_info['l10n_it_partner_code']"/>
+        </xpath>
+    </template>
+
+    <template id="invoice_line_plus_FatturaPA" inherit_id="l10n_it_edi.account_invoice_line_it_FatturaPA">
+        <xpath expr="//DettaglioLinee/Natura" position="after">
+            <RiferimentoAmministrazione t-if="it_values['l10n_it_admin_ref']" t-out="it_values['l10n_it_admin_ref']"/>
+            <AltriDatiGestionali t-if="it_values['l10n_it_data_type']">
+                <TipoDato t-out="it_values['l10n_it_data_type']"/>
+                <RiferimentoTesto t-out="it_values['l10n_it_text_ref']"/>
+            </AltriDatiGestionali>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_invoice_edi_form" model="ir.ui.view">
+        <field name="name">invoice.edi.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+<!--        <field name="priority">16</field>-->
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page[@id='invoice_tab']/field[@name='invoice_line_ids']/list/field[@name='analytic_distribution']" position="after">
+                <field name="l10n_it_admin_ref" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="invoice_form_l10n_it" model="ir.ui.view">
+        <field name="name">invoice.form.l10n.it</field>
+        <field name="model">account.move</field>
+        <field name="priority">25</field>
+        <field name="inherit_id" ref="l10n_it_edi.account_invoice_form_l10n_it"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='electronic_invoicing']/group/group/field[@name='l10n_it_cup']" position="after">
+                <field name="l10n_it_data_type" />
+                <field name="l10n_it_text_ref"/>
+            </xpath>
+            <xpath expr="//page[@name='electronic_invoicing']" position="inside">
+                <label for="l10n_it_narration"/>
+                <field name="l10n_it_narration" nolabel="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
