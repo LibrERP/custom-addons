@@ -8,11 +8,10 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     # 1.2.6 RiferimentoAmministrazione
-    l10n_it_partner_code = fields.Char("PA Code for Partner", size=20, required=False, default="")
-
-    def _l10n_it_edi_get_values(self):
-        values = super()._l10n_it_edi_get_values()
-        if self and len(self) == 1:
-            values['l10n_it_partner_code'] = self.l10n_it_partner_code
-
-        return values
+    l10n_it_partner_code = fields.Char(
+        "Riferimento Amministrazione",
+        size=20,
+        required=False,
+        default="",
+        help="1.2.6 <RiferimentoAmministrazione>"
+    )

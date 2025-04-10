@@ -3,9 +3,15 @@
 # noinspection PyStatementEffect
 {
     'name': 'More functionality for FatturaPA',
-    'version': '18.0.0.0',
+    'version': '18.0.0.1',
     'category': 'Accounting/Localizations/EDI',
-    'summary': 'More functionality for FatturaPA',
+    'summary': """Module adds more fields used in FatturaPA:
+        - 2.1.1.11   Causale
+        - 1.2.6      RiferimentoAmministrazione
+        - 2.2.1.15   RiferimentoAmministrazione
+        - 2.2.1.16.1 TipoDato
+        - 2.2.1.16.2 RiferimentoTesto
+    """,
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',

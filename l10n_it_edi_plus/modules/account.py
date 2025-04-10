@@ -15,6 +15,7 @@ class AccountMove(models.Model):
         values = super()._l10n_it_edi_get_values(pdf_values=pdf_values)
 
         values['l10n_it_narration'] = self.l10n_it_narration
+        values['seller_info']['l10n_it_partner_code'] = values['partner'].l10n_it_partner_code
 
         return values
 
@@ -35,4 +36,4 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    l10n_it_admin_ref = fields.Char("Admin. ref.", size=20, copy=False)
+    l10n_it_admin_ref = fields.Char("Rif. Ammin.", size=20, copy=False, help='2.2.1.15 <RiferimentoAmministrazione>')
