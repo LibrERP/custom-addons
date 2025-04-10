@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-21 08:04+0000\n"
-"PO-Revision-Date: 2025-03-21 08:04+0000\n"
+"POT-Creation-Date: 2025-04-10 08:20+0000\n"
+"PO-Revision-Date: 2025-04-10 08:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,12 @@ msgstr "Modulo"
 #. module: module_version
 #. odoo-python
 #: code:addons/module_version/models/module.py:0
+msgid "Module upgrade"
+msgstr "Aggiorna i Moduli"
+
+#. module: module_version
+#. odoo-python
+#: code:addons/module_version/models/module.py:0
 msgid "Modules to upgrade"
 msgstr "Moduli da aggiornare"
 
@@ -41,22 +47,16 @@ msgstr "Moduli da aggiornare"
 #: code:addons/module_version/models/module.py:0
 #: model:ir.model.fields,field_description:module_version.field_ir_module_module__need_upgrade
 msgid "Need Upgrade"
-msgstr "Richiede Aggiornamento"
+msgstr "Richiedono Aggiornamento"
 
 #. module: module_version
 #. odoo-python
 #: code:addons/module_version/models/module.py:0
 #: model:ir.model.fields,field_description:module_version.field_ir_module_module__check_upgrade
 msgid "Need Upgrade (hidden)"
-msgstr "Richiede Aggiornamento (nascosto)"
-
-#. module: module_version
-#. odoo-python
-#: code:addons/module_version/models/module.py:0
-msgid "There are no modules that should be updated"
-msgstr "Non ci sono moduli da aggiornare"
+msgstr "Richiedono Aggiornamento (nascosto)"
 
 #. module: module_version
 #: model_terms:ir.ui.view,arch_db:module_version.module_tree_version
 msgid "Upgrade"
-msgstr "Aggiornare"
+msgstr "Aggiornamento"
