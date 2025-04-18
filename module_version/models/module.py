@@ -45,7 +45,7 @@ class Module(models.Model):
 
         # installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
         for module in self.installed_modules:
-            if not module.latest_version == self.get_module_info(module.name).get('version', '') or module.state in ('to upgrade', 'to remove'):
+            if module.latest_version and not module.latest_version == self.get_module_info(module.name).get('version', '') or module.state in ('to upgrade', 'to remove'):
                 modules += module
 
         if modules:
