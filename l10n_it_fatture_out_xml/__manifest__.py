@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # noinspection PyStatementEffect
 {
-    'name': 'Create XML of Invoice Only',
+    'name': 'Invoice XML Create Only',
     'version': '18.0.0.0',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Module permits to create XML of Invoice without sending it anywhere',
