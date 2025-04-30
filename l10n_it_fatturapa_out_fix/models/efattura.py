@@ -1,3 +1,6 @@
+# © 2025 Andrei Levin <andrei.levin@codebeex.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+
 from odoo.addons.l10n_it_fatturapa_out.wizard.efattura import EFatturaOut
 import functools
 
