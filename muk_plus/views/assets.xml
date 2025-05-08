@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/muk_plus/static/src/css/list_view_fix.css"/>
+            <script type="text/javascript" src="/muk_plus/static/src/js/list_view_fix.js"></script>
+        </xpath>
+    </template>
+</odoo>

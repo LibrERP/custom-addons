@@ -1,0 +1,34 @@
+/* Highly specific selectors with !important flags */
+html body.o_web_client .o_content .o_list_view table tfoot tr td {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Target specific cell types with higher specificity */
+html body.o_web_client .o_content .o_list_view table tfoot .o_list_number,
+html body.o_web_client .o_content .o_list_view table tfoot .o_monetary_cell,
+html body.o_web_client .o_content .o_list_view table tfoot .text-right,
+html body.o_web_client .o_content .o_list_view table tfoot .o_data_cell {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+/* Force background color with high specificity */
+html body.o_web_client .o_content .o_list_view table tfoot tr {
+    background-color: #3D3D3D !important;
+}
+
+/* Handle hover state with high specificity */
+html body.o_web_client .o_content .o_list_view table tfoot tr:hover,
+html body.o_web_client .o_content .o_list_view table tfoot tr:hover td {
+    background-color: #4D4D4D !important;
+    color: white !important;
+}
+
+/* Target our custom class from JS */
+.o_list_view tfoot.muk_plus_footer,
+.o_list_view tfoot.muk_plus_footer td {
+    color: white !important;
+    font-weight: bold !important;
+    background-color: #3D3D3D !important;
+}
