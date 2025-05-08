@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_activity_filtered_popup_view" model="ir.ui.view">
+        <field name="name">mail.activity.filtered.form.popup</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+<!--        <field name="priority">16</field>-->
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group/group/field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('share', '=', False), ('login', '!=', 'admin')]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
