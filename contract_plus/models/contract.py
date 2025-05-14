@@ -17,25 +17,26 @@ class ContractContract(models.Model):
         for sale_values in sales_values:
             for line in sale_values['order_line']:
                 if not self.line_is_valid(line[2].get('display_type'), line[2].get('product_id', False), line[2].get('product_uom', False)):
-                    message = f"Contract \"{sale_values['origin']}\" contains lines without Product or without UoM"
+                    message = _("Contract \"{origin}\" contains lines without Product or without UoM").format(origin=sale_values['origin'])
                     _logger.info(message)
                     raise UserError(message)
 
         return sales_values
 
-    def line_is_valid(self, display_type, product_id, product_uom):
+    def line_is_valid(self, display_type, product_id, product_uom) -> bool:
         """
         "CHECK(display_type IS NOT NULL OR (product_id IS NOT NULL AND product_uom IS NOT NULL))"
         """
 
-        return display_type or (product_id and product_uom)
+        return display_type and True or (product_id and product_uom and True)
 
-    def check_sale_values(self):
+    def check_sale_values(self) -> None:
         self.ensure_one()
 
         for line in self.contract_line_ids:
             if not self.line_is_valid(line.display_type, line.product_id, line.uom_id):
-                message = f"Contract \"{self.name}\" contains line without Product or without UoM: {line.name}"
+                message = _("Contract \"{contract_name}\" contains lines without Product or without UoM: {product_name}").format(
+                    contract_name=self.name, product_name=line.name)
                 _logger.info(message)
                 raise UserError(message)
 
