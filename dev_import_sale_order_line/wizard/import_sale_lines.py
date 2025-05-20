@@ -26,7 +26,7 @@ class import_inventory_lines(models.TransientModel):
     excel_file = fields.Binary(string='Download Sample file', readonly=True)
     file_name = fields.Char('Excel Name', size=64)
     csv_file_name = fields.Char(string='File Name')
-    import_by = fields.Selection(selection=[('name', 'Name'),('internal_ref', 'Interntl ref'),('barcode','Barcode')], default='name', required=True,
+    import_by = fields.Selection(selection=[('name', 'Name'),('internal_ref', 'Internal ref'),('barcode','Barcode')], default='name', required=True,
                                    string='Product Import by')
     def print_report(self):
         if self.file_type == 'csv':
@@ -74,7 +74,7 @@ class import_inventory_lines(models.TransientModel):
             'font:height 215;pattern: pattern solid, fore_color gray25; font:bold True;align: vert center, horiz left;')
 
         worksheet.write(0, 0, 'Product Name',font_style)
-        worksheet.write(0, 1, 'Interntl ref',font_style)
+        worksheet.write(0, 1, 'Internal ref',font_style)
         worksheet.write(0, 2, 'Barcode',font_style)
         worksheet.write(0, 3, 'Description',font_style)
         worksheet.write(0, 4, 'Qty',font_style)

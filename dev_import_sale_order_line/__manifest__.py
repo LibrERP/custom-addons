@@ -10,7 +10,7 @@
 
 {
     'name': 'Import Sales Lines | Import Sale Order Lines | CSV | Excel',
-    'version': '18.0.1.0',
+    'version': '18.0.1.1',
     'sequence': 1,
     'category': 'Sales',
     'description':
