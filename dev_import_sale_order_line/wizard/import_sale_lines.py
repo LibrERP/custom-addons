@@ -28,6 +28,12 @@ class import_inventory_lines(models.TransientModel):
     csv_file_name = fields.Char(string='File Name')
     import_by = fields.Selection(selection=[('name', 'Name'),('internal_ref', 'Internal ref'),('barcode','Barcode')], default='name', required=True,
                                    string='Product Import by')
+    separated_lines = fields.Boolean(
+        string='Separated Lines',
+        default=False,
+        help="Keep lines with the same product separated duplicating them. Default=False."
+    )
+
     def print_report(self):
         if self.file_type == 'csv':
             return self._generate_csv_report()
@@ -37,9 +43,9 @@ class import_inventory_lines(models.TransientModel):
     def _generate_csv_report(self):
         filename = 'Sample_SaleOrder.csv'
         csv_content = [
-            ['Name', 'Internal ref', 'Barcode', 'Description', 'Qty', 'Price'],
-            ['Storage Box', 'E-COM08', '5675', 'black-brown: Box', '1', '200'],
-            ['Office Design Software', 'FURN_9999', '1234', 'white Down', '2', '100']
+            ['Name', 'Internal ref', 'Barcode', 'Description', 'Qty', 'Price','Note'],
+            ['Storage Box', 'E-COM08', '5675', 'black-brown: Box', '1', '200','special note'],
+            ['Office Design Software', 'FURN_9999', '1234', 'white Down', '2', '100','note on line']
         ]
 
         output = StringIO()
@@ -79,6 +85,7 @@ class import_inventory_lines(models.TransientModel):
         worksheet.write(0, 3, 'Description',font_style)
         worksheet.write(0, 4, 'Qty',font_style)
         worksheet.write(0, 5, 'Price',font_style)
+        worksheet.write(0, 6, 'Note',font_style)
 
         counter = 1
         worksheet.write(1, 0, 'Storage Box')
@@ -87,6 +94,7 @@ class import_inventory_lines(models.TransientModel):
         worksheet.write(1, 3, 'black-brown: Box')
         worksheet.write(1,  4, '1')
         worksheet.write(1, 5, '200')
+        worksheet.write(1, 6, 'special note')
 
         counter = 1
         worksheet.write(2, 0, 'Office Design Software')
@@ -95,6 +103,7 @@ class import_inventory_lines(models.TransientModel):
         worksheet.write(2, 3, 'white Down')
         worksheet.write(2, 4, '2')
         worksheet.write(2, 5, '100')
+        worksheet.write(2, 6, 'note on line')
 
         fp = BytesIO()
         workbook.save(fp)
@@ -150,21 +159,25 @@ class import_inventory_lines(models.TransientModel):
             product_id = self.env['product.product'].search(domain)
 
             if product_id:
-                existing_line_ids = self.env['sale.order.line'].search(
-                    [('order_id', '=', sale_id.id), ('product_id', '=', product_id.id)]
-                )
-                existing_line_ids._compute_price_unit()
-                existing_line_ids._compute_tax_id()
+                existing_line_ids = self.env['sale.order.line']
+                if not self.separated_lines:
+                    existing_line_ids = self.env['sale.order.line'].search(
+                        [('order_id', '=', sale_id.id), ('product_id', '=', product_id.id)]
+                    )
+                    existing_line_ids._compute_price_unit()
+                    existing_line_ids._compute_tax_id()
                 if existing_line_ids:
                     for existing_line_id in existing_line_ids:
                         existing_line_id.product_uom_qty += float(line[4])
                         existing_line_id.price_unit = float(line[5])
+                        existing_line_id.line_note = line[6] or ''
                 else:
                     vals = {
                         'product_id': product_id.id or False,
                         'name': line[3] or '',
                         'product_uom_qty': float(line[4]) or 0.0,
                         'price_unit': float(line[5]) or 0.0,
+                        'line_note': line[6] or '',
                         'order_id': sale_id.id or False,
                         'product_uom': product_id and product_id.uom_id and product_id.uom_id.id,
                     }

@@ -16,7 +16,8 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
                 <group>
                    <group>
 		            <field name="file_type" required="1" widget="radio"/>
-		             <field name="select_file" filename="csv_file_name"/> 
+ 		            <field name="separated_lines"/>
+		            <field name="select_file" filename="csv_file_name"/> 
 		            <field name="csv_file_name" invisible="1" readonly="1"/>
                     </group>
                     <group>

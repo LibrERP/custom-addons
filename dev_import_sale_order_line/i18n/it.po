@@ -1,0 +1,213 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dev_import_sale_order_line
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-20 08:37+0000\n"
+"PO-Revision-Date: 2025-05-20 08:37+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields.selection,name:dev_import_sale_order_line.selection__import_sale_lines__import_by__barcode
+msgid "Barcode"
+msgstr "Codice a Barre"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields.selection,name:dev_import_sale_order_line.selection__import_sale_lines__file_type__csv
+msgid "CSV"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_dev_import_sale_log_form
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__create_uid
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__create_date
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__display_name
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__display_name
+msgid "Display Name"
+msgstr "Mostra Nome"
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "Download Sample File"
+msgstr "Scarica file d'esempio"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__excel_file
+msgid "Download Sample file"
+msgstr "Scarica file d'esempio"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields.selection,name:dev_import_sale_order_line.selection__import_sale_lines__file_type__excel
+msgid "Excel"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__file_name
+msgid "Excel Name"
+msgstr "Nome Excel"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__select_file
+msgid "File"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__csv_file_name
+msgid "File Name"
+msgstr "Nome file"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__file_type
+msgid "File Type"
+msgstr "Tipo File"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__id
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__id
+msgid "ID"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "Import Line"
+msgstr "Importa Linee"
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.sale_inherit
+msgid "Import Order Line"
+msgstr "Importa Linee d'Ordine"
+
+#. module: dev_import_sale_order_line
+#: model:ir.actions.act_window,name:dev_import_sale_order_line.action_import_sale_lines
+msgid "Import Sale Lines"
+msgstr "Importa Linee di Vendita"
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "Import Sale Order Lines"
+msgstr "Importa Linee d'Ordine di Vendita"
+
+#. module: dev_import_sale_order_line
+#: model:ir.actions.act_window,name:dev_import_sale_order_line.action_dev_import_sale_order_log
+msgid "Import Sale Order Log"
+msgstr "Importa Log di Ordine di Vendita"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields.selection,name:dev_import_sale_order_line.selection__import_sale_lines__import_by__internal_ref
+msgid "Internal ref"
+msgstr "Rif. Interno"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,help:dev_import_sale_order_line.field_import_sale_lines__separated_lines
+msgid ""
+"Keep lines with the same product separated duplicating them. Default=False."
+msgstr "Mantieni separate le linee aventi lo stesso prodotto, duplicandole. Predefinito = Falso."
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__write_uid
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo Aggiornamento da"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__write_date
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__write_date
+msgid "Last Updated on"
+msgstr "Ultimo Aggiornamento il"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_log__name
+msgid "Logs"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields.selection,name:dev_import_sale_order_line.selection__import_sale_lines__import_by__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: dev_import_sale_order_line
+#. odoo-python
+#: code:addons/dev_import_sale_order_line/wizard/import_sale_lines.py:0
+msgid "No file uploaded!"
+msgstr "Nesun file caricato!"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_sale_order_line__line_note
+msgid "Note"
+msgstr "Nota"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__import_by
+msgid "Product Import by"
+msgstr "Importa Prodotto da"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model,name:dev_import_sale_order_line.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Riga ordine di vendita"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model.fields,field_description:dev_import_sale_order_line.field_import_sale_lines__separated_lines
+msgid "Separated Lines"
+msgstr "Linee Separate"
+
+#. module: dev_import_sale_order_line
+#. odoo-python
+#: code:addons/dev_import_sale_order_line/wizard/import_sale_lines.py:0
+msgid "The uploaded file is not a valid CSV file."
+msgstr "Il file caricato non è un file CSV valido."
+
+#. module: dev_import_sale_order_line
+#. odoo-python
+#: code:addons/dev_import_sale_order_line/wizard/import_sale_lines.py:0
+msgid "The uploaded file is not a valid Excel file."
+msgstr "Il file caricato non è un file CSV valido."
+
+#. module: dev_import_sale_order_line
+#. odoo-python
+#: code:addons/dev_import_sale_order_line/__init__.py:0
+msgid "This Application is only supported in 18.0 version of odoo !"
+msgstr "Questa applicazione è supportata solamente nella versione 18.0 di Odoo."
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "Upload CSV or XSL file for sale Order Line."
+msgstr "Carica il file CSV o XLS per le Linee d'Ordine di Vendita."
+
+#. module: dev_import_sale_order_line
+#: model:ir.model,name:dev_import_sale_order_line.model_import_sale_lines
+msgid "import.sale.lines"
+msgstr ""
+
+#. module: dev_import_sale_order_line
+#: model_terms:ir.ui.view,arch_db:dev_import_sale_order_line.view_import_sale_lines
+msgid "or"
+msgstr "o"
+
+#. module: dev_import_sale_order_line
+#: model:ir.model,name:dev_import_sale_order_line.model_sale_log
+msgid "sale.log"
+msgstr ""

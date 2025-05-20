@@ -13,6 +13,9 @@ For Module Support : devintelle@gmail.com  or Skype : devintelle
 			 <xpath expr="//header" position="inside">
 	           <button type="action" name="%(dev_import_sale_order_line.action_import_sale_lines)d" invisible="state == 'sale'"  class="oe_highlight" string="Import Order Line"/>
 	        </xpath>
+			<xpath expr="//page[@name='order_lines']/field[@name='order_line']/list/field[@name='customer_lead']" position="after">
+ 				<field name="line_note"/>
+            </xpath>
 	    </field>
 	</record>
 </odoo>
