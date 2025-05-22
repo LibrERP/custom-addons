@@ -49,7 +49,7 @@ class ContractContract(models.Model):
 
     @api.model_create_multi
     def create(self, values):
-        contracts = super().create(values=values)
+        contracts = super().create(values)
         for contract in contracts:
             if contract.generation_type == 'sale':
                 contract.check_sale_values()

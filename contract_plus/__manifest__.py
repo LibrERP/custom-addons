@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Contract plus',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Contract Management',
     'summary': 'Additional functionality for contract',
     'author': 'Codebeex srl',
