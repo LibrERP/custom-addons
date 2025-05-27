@@ -15,11 +15,11 @@
         <!--                <field name="company_id" invisible="True"/>-->
                     </tree>
                 </field>
+                <footer>
+                    <button name="add_selected_line" string="Add lines" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel" class="btn-secondary"/>
+                </footer>
             </form>
-            <footer>
-                <button name="add_selected_line" string="Add lines" type="object" class="btn-primary"/>
-                <button special="cancel" string="Cancel" class="btn-secondary"/>
-            </footer>
         </field>
     </record>
 
