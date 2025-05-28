@@ -12,31 +12,6 @@ from odoo.http import request
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    # @api.onchange('sale_order_template_id')
-    # def onchange_sale_order_template_id(self):
-    #     # super().onchange_sale_order_template_id()
-    #     # template = self.sale_order_template_id.with_context(lang=self.partner_id.lang)
-    #
-    #     if self.sale_order_template_id:
-    #         # Return a special flag to JavaScript
-    #         # return {
-    #         #     'warning': {
-    #         #         'title': "Let's select lines",
-    #         #         'message': "Opening configuration wizard...",
-    #         #     },
-    #         #     'open_wizard': True,  # Custom key for JS to handle
-    #         # }
-    #         return {
-    #             'js_data': {
-    #                 'sale_order_template_id': self.sale_order_template_id.id,  # Make sure this exists
-    #                 'context': {
-    #                     'default_order_id': self.id,
-    #                 }
-    #             }
-    #         }
-    #     else:
-    #         return {}
-
     def select_lines(self):
         if self.sale_order_template_id:
             view_id = self.env.ref(
@@ -58,20 +33,18 @@ class SaleOrder(models.Model):
                 })
 
             return {
-                # 'action': {
-                    'name': 'Select Products',
-                    'type': 'ir.actions.act_window',
-                    'res_model': 'sale.order.template',
-                    'res_id': self.sale_order_template_id.id,
-                    'view_mode': 'form',  # should be 'tree,form' without a space
-                    'view_id': view_id,
-                    'views': [
-                        # [view_id, 'list']
-                        [view_id, 'form']
-                    ],
-                    'target': 'new',
-                    'context': context
-                # }
+                'name': _('Select Products'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'sale.order.template',
+                'res_id': self.sale_order_template_id.id,
+                'view_mode': 'form',  # should be 'tree,form' without a space
+                'view_id': view_id,
+                'views': [
+                    # [view_id, 'list']
+                    [view_id, 'form']
+                ],
+                'target': 'new',
+                'context': context
             }
         else:
             return None
@@ -142,7 +115,7 @@ class SaleOrderTemplate(models.Model):
             # Handle NewId case
             sale_order = SaleOrderNewIdManager.get_order_from_session(self.env, request.session, context.get('default_sale_order_ref'))
             if not sale_order:
-                raise UserError("Sale Order not found or session expired")
+                raise UserError(_("Sale Order not found or session expired"))
         else:
             # Handle regular ID
             order_id = context.get('order_id')

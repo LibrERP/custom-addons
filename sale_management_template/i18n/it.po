@@ -1,0 +1,64 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* sale_management_template
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-28 13:40+0000\n"
+"PO-Revision-Date: 2025-05-28 13:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_management_template
+#: model_terms:ir.ui.view,arch_db:sale_management_template.view_sale_order_template_form
+msgid "Add lines"
+msgstr "Aggiungi Righe"
+
+#. module: sale_management_template
+#: model_terms:ir.ui.view,arch_db:sale_management_template.view_sale_order_template_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: sale_management_template
+#: model:ir.model.fields,field_description:sale_management_template.field_sale_order_template_line__check
+msgid "Check"
+msgstr "Seleziona"
+
+#. module: sale_management_template
+#: model:ir.model,name:sale_management_template.model_sale_order_template
+msgid "Quotation Template"
+msgstr "Modello preventivo"
+
+#. module: sale_management_template
+#: model:ir.model,name:sale_management_template.model_sale_order_template_line
+msgid "Quotation Template Line"
+msgstr "Riga modello di preventivo"
+
+#. module: sale_management_template
+#: model:ir.model,name:sale_management_template.model_sale_order
+msgid "Sale Order"
+msgstr "Ordine di vendita"
+
+#. module: sale_management_template
+#: code:addons/sale_management_template/models/sale.py:118
+#, python-format
+msgid "Sale Order not found or session expired"
+msgstr "Preventivo non trovato o sessione scaduta"
+
+#. module: sale_management_template
+#: model_terms:ir.ui.view,arch_db:sale_management_template.view_sale_order_form_template
+msgid "Select Lines"
+msgstr "Seleziona Righe"
+
+#. module: sale_management_template
+#: code:addons/sale_management_template/models/sale.py:36
+#, python-format
+msgid "Select Products"
+msgstr "Seleziona Righe del Modello di Preventivo"
+
