@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="crm_case_kanban_view_leads_right_click" model="ir.ui.view">
+<record id="crm_case_kanban_view_leads_right_click" model="ir.ui.view">
         <field name="name">crm.lead.kanban.right.click</field>
         <field name="model">crm.lead</field>
         <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
@@ -18,10 +18,12 @@
                      style="position: relative;">
 
                     <div style="position: relative; z-index: 2;">
-                        <a t-attf-href="/web#id={{ record_id }}&amp;view_type=form&amp;model=crm.lead"
+                        <a t-attf-href="/web#id={{ record.id.raw_value }}&amp;view_type=form&amp;model=crm.lead"
                            target="_blank"
-                           style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; text-decoration: none;">
-                        </a>
+                           class="right-click-hidden-link"
+                           style="display:none;"/>
+
+
                         <div class="o_dropdown_kanban dropdown">
                             <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown"
                                data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">

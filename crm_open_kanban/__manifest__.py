@@ -14,6 +14,7 @@
         'crm'
     ],
     'data': [
-        'views/crm_views.xml'
+        'views/crm_views.xml',
+        'views/templates.xml'
     ],
 }
