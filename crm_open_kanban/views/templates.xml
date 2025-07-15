@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="custom styles" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/crm_open_kanban/static/src/js/right_click_open_new_tab.js"/>
+        </xpath>
+    </template>
+
+
+</odoo>
