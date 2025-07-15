@@ -2,10 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # noinspection PyStatementEffect
 {
-    'name': 'Module name',
+    'name': 'Sale Order Restricted Confirm',
     'version': '12.0.0.0',
-    'category': 'XXX',
-    'summary': 'Add summary of the module',
+    'category': 'Sales',
+    'summary': 'Module restricts access to Confirm button in Sale Order only to the members of dedicated group',
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
