@@ -8,19 +8,21 @@ from odoo import exceptions
 
 class Module(models.Model):
     _inherit = "ir.module.module"
-
-    def _check_upgrade(self):
-        installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
-        for module in installed_modules:
-            # if module.name == 'module_version':
-            #     print module.name
-            #     pdb.set_trace()
-            if not module.latest_version == self.get_module_info(module.name).get('version', '') and not module.need_upgrade:
-                # module.need_upgrade = True
-                module.write({'need_upgrade': True})
-            elif module.latest_version == self.get_module_info(module.name).get('version', '') and module.need_upgrade:
-                module.need_upgrade = False
-
+    
+    # Compute method related to the deprecated 'check_upgrade' field
+    # def _check_upgrade(self):
+    #     installed_modules = self.search([('state', 'in', ['installed', 'to upgrade', 'to remove'])])
+    #     for module in installed_modules:
+    #         # if module.name == 'module_version':
+    #         #     print module.name
+    #         #     pdb.set_trace()
+    #         if not module.latest_version == self.get_module_info(module.name).get('version', '') and not module.need_upgrade:
+    #             # module.need_upgrade = True
+    #             module.write({'need_upgrade': True})
+    #         elif module.latest_version == self.get_module_info(module.name).get('version', '') and module.need_upgrade:
+    #             module.need_upgrade = False
+    
+    
     @api.depends('installed_version', 'latest_version')
     def _need_upgrade(self):
         for module in self:
@@ -30,7 +32,9 @@ class Module(models.Model):
                 module.need_upgrade = False
 
     need_upgrade = fields.Boolean(compute='_need_upgrade', string=_('Need Upgrade'), store=True)
-    check_upgrade = fields.Boolean(compute='_check_upgrade', string=_('Need Upgrade (hidden)'), store=False)
+    
+    # Deprecated field
+    # check_upgrade = fields.Boolean(compute='_check_upgrade', string=_('Need Upgrade (hidden)'), store=False)
 
     _order = 'name'
 
