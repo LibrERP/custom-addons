@@ -92,7 +92,7 @@ class StockMoveLine(models.Model):
                             'lot_name': self.get_unique_serial_number()
                         })
                         new_values.append(new_value)
-                if product.tracking == 'none':
+                elif product.tracking == 'none':
                     new_value = deepcopy(value)
                     new_values.append(new_value)
 
