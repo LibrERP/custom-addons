@@ -1,6 +1,8 @@
 # © 2024 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from copy import deepcopy
+
 from odoo import _, api, Command, fields, models
 
 
@@ -74,7 +76,7 @@ class StockMoveLine(models.Model):
                 product = self.env['product.product'].browse(value['product_id'])
                 quantity = value.get('reserved_uom_qty', False) or value.get('qty_done')
                 if product.tracking == 'lot' and 'lot_name' not in value and 'lot_id' not in value:
-                    new_value = value.copy()
+                    new_value = deepcopy(value)
                     new_value.update({
                         'reserved_uom_qty': 0,
                         'qty_done': int(quantity),
@@ -83,13 +85,15 @@ class StockMoveLine(models.Model):
                     new_values.append(new_value)
                 elif product.tracking == 'serial' and 'lot_name' not in value and 'lot_id' not in value:
                     for count in range(int(quantity)):
-                        new_value = value.copy()
+                        new_value = deepcopy(value)
                         new_value.update({
                             'reserved_uom_qty': 0,
                             'qty_done': 1,
                             'lot_name': self.get_unique_serial_number()
                         })
                         new_values.append(new_value)
+                if product.tracking == 'none':
+                    new_value = deepcopy(value)
+                    new_values.append(new_value)
 
-        values += new_values
-        return super().create(values)
+        return super().create(new_values)
