@@ -22,7 +22,7 @@
     'development_status': 'Alpha',
     'license': 'AGPL-3',
     'depends': [
-        'hr_holidays_public'
+        'hr_holidays_public'  # OCA/hr
     ],
     'external_dependencies': {
         'python': ['vobject']
