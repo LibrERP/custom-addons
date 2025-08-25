@@ -7,7 +7,7 @@
         <field name="priority">16</field>
         <field name="arch" type="xml">
             <xpath expr="//tree[hasclass('o_sale_order')]" position="inside">
-                <field name="has_lines_without_tax" invisible="0"/>
+                <field name="has_lines_without_tax" invisible="False"/>
             </xpath>
             <xpath expr="//tree[hasclass('o_sale_order')]" position="attributes">
                 <attribute name="decoration-danger">has_lines_without_tax == True</attribute>
