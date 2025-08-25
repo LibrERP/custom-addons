@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_no_tax_form_view" model="ir.ui.view">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree[hasclass('o_sale_order')]" position="inside">
+                <field name="has_lines_without_tax" invisible="0"/>
+            </xpath>
+            <xpath expr="//tree[hasclass('o_sale_order')]" position="attributes">
+                <attribute name="decoration-danger">has_lines_without_tax == True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

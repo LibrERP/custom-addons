@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Order block confirm without tax',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Sales',
     'summary': 'Block confirmation of an Order if it contains lines without any tax',
     'author': 'Codebeex srl',
@@ -13,5 +13,7 @@
         'base',
         'sale'
     ],
-    'data': [],
+    'data': [
+        'views/sale_views.xml'
+    ],
 }
