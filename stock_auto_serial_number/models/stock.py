@@ -95,5 +95,6 @@ class StockMoveLine(models.Model):
                 elif product.tracking == 'none':
                     new_value = deepcopy(value)
                     new_values.append(new_value)
-
+        if not new_values:
+            new_values = values
         return super().create(new_values)

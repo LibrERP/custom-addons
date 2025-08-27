@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Stock Auto Serial Number',
-    'version': '12.0.0.4',
+    'version': '12.0.0.5',
     'category': 'Inventory/Inventory',
     'summary': 'Automatic Serial number creationi',
     'author': 'Codebeex srl',
