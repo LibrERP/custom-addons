@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_view" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+<!--        <field name="priority">16</field>-->
+        <field name="arch" type="xml">
+            <xpath expr="//page/group[hasclass('oe_invoice_lines_tab')]" position="after">
+                <group name="tax_notes">
+                    <field name="tax_invoice_notes"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
