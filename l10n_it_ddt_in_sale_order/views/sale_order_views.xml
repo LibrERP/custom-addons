@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_ddt_list_view" model="ir.ui.view">
+        <field name="name">sale.order.ddt.list</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_status']" position="before">
+                <field name="has_ddt" optional="hide" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_ddt_search_view" model="ir.ui.view">
+        <field name="name">sale.order.ddt.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='upselling']" position="after">
+                <filter string="DDT to Invoice" name="ddt_to_invoice" domain="[('has_ddt','=',True), ('invoice_status', '=', 'to invoice')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
