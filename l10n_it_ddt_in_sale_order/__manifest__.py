@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'DDT in Sale Order',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Sales',
     'summary': 'DDT in Sale Order',
     'author': 'Codebeex srl',
@@ -11,10 +11,8 @@
     'license': 'AGPL-3',
     'depends': [
         'base',
-        # 'sale',
         'sale_stock',
-        'pos_sale',
-        'point_of_sale'
+        'l10n_it_delivery_note'  # l10n-italy
     ],
     'data': [
         'views/sale_order_views.xml'

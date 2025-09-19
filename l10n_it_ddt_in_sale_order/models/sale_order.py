@@ -9,7 +9,7 @@ class SaleOrder(models.Model):
 
     has_ddt = fields.Boolean(compute='_compute_has_ddt', store=True)
 
-    @api.depends('delivery_count', 'pos_order_count')
+    @api.depends('picking_ids.delivery_note_state')
     def _compute_has_ddt(self):
         for order in self:
-            order.has_ddt = order.delivery_count and not order.pos_order_count
+            order.has_ddt = order.picking_ids.filtered_domain([('delivery_note_state', '=', 'confirm')])
