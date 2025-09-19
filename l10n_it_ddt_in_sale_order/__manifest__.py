@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'DDT in Sale Order',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Sales',
     'summary': 'DDT in Sale Order',
     'author': 'Codebeex srl',
