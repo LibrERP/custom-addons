@@ -23,4 +23,12 @@ class SaleOrder(models.Model):
         self.ensure_one()
 
         if self.type_id and self.type_id.sale_order_template_id:
+            if self.sale_order_template_id:
+                first_time = False
+            else:
+                first_time = True
+
             self.sale_order_template_id = self.type_id.sale_order_template_id.id
+
+            if first_time:
+                self._onchange_sale_order_template_id()
