@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Order Type Template',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Sales',
     'summary': 'Module creates a connection between Order Type and Order Template',
     'author': 'Codebeex srl',
