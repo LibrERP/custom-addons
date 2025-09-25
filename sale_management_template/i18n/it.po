@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-28 13:40+0000\n"
-"PO-Revision-Date: 2025-05-28 13:40+0000\n"
+"POT-Creation-Date: 2025-09-25 14:36+0000\n"
+"PO-Revision-Date: 2025-09-25 14:36+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,6 +31,11 @@ msgid "Check"
 msgstr "Seleziona"
 
 #. module: sale_management_template
+#: model:ir.model,name:sale_management_template.model_product_template
+msgid "Product Template"
+msgstr "Modello prodotto"
+
+#. module: sale_management_template
 #: model:ir.model,name:sale_management_template.model_sale_order_template
 msgid "Quotation Template"
 msgstr "Modello preventivo"
@@ -46,7 +51,7 @@ msgid "Sale Order"
 msgstr "Ordine di vendita"
 
 #. module: sale_management_template
-#: code:addons/sale_management_template/models/sale.py:118
+#: code:addons/sale_management_template/models/sale.py:122
 #, python-format
 msgid "Sale Order not found or session expired"
 msgstr "Preventivo non trovato o sessione scaduta"
@@ -57,8 +62,13 @@ msgid "Select Lines"
 msgstr "Seleziona Righe"
 
 #. module: sale_management_template
-#: code:addons/sale_management_template/models/sale.py:36
+#: code:addons/sale_management_template/models/sale.py:40
 #, python-format
 msgid "Select Products"
 msgstr "Seleziona Righe del Modello di Preventivo"
 
+#. module: sale_management_template
+#: model:ir.model.fields,field_description:sale_management_template.field_product_product__selected_in_template
+#: model:ir.model.fields,field_description:sale_management_template.field_product_template__selected_in_template
+msgid "Selected in template"
+msgstr "Preselezionati nel Preventivo"
