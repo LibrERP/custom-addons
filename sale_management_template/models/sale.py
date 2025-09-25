@@ -32,6 +32,10 @@ class SaleOrder(models.Model):
                     'order_id': self.id
                 })
 
+            for line in self.sale_order_template_id.sale_order_template_line_ids:
+                if not line.product_id or line.product_id and line.product_id.selected_in_template:
+                    line.check = True
+
             return {
                 'name': _('Select Products'),
                 'type': 'ir.actions.act_window',

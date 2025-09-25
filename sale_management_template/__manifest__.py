@@ -17,6 +17,7 @@
     ],
     'data': [
         # 'views/assets.xml',
+        'views/product_views.xml',
         'views/sale_views.xml'
     ],
 }

@@ -23,30 +23,6 @@
         </field>
     </record>
 
-<!--    <record id="view_sale_order_template_line_list" model="ir.ui.view">-->
-<!--        <field name="name">sale.order.template.line.list</field>-->
-<!--        <field name="model">sale.order.template.line</field>-->
-<!--        <field name="priority">1001</field>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <tree string="Template Lines">-->
-<!--                <field name="name"/>-->
-<!--                <field name="product_id"/>-->
-<!--            </tree>-->
-<!--        </field>-->
-<!--    </record>-->
-
-<!--    <record id="action_view_sale_order_line_list" model="ir.actions.act_window">-->
-<!--        <field name="name">Select Products</field>-->
-<!--        <field name="res_model">sale.order.line</field>-->
-<!--        <field name="view_mode">tree</field>-->
-<!--        <field name="target">new</field>-->
-<!--        <field name="view_id" eval="view_sale_order_line_list"/>-->
-<!--&lt;!&ndash;        <field name="search_view_id" ref="view_module_filter"/>&ndash;&gt;-->
-<!--        <field name="context">{'order_id': context['active_id']}</field>-->
-<!--        <field name="domain">[('order_id', '=', context['active_id'])]</field>-->
-<!--&lt;!&ndash;        <field name="groups_id" eval="[(4,ref('pdm.group_plm_admin')),(4,ref('extend_pdm_gr.group_plm_purchaser'))]"/>&ndash;&gt;-->
-<!--    </record>-->
-
     <record id="view_sale_order_form_template" model="ir.ui.view">
         <field name="name">sale.order.form.template</field>
         <field name="model">sale.order</field>
@@ -56,9 +32,6 @@
             <xpath expr="//field[@name='sale_order_template_id']" position="after">
                 <button name="select_lines" string="Select Lines" type="object" class="oe_highlight"/>
             </xpath>
-<!--            <header position="inside">-->
-<!--                <button name="select_lines" string="Select Lines" type="object" class="btn-primary"/>-->
-<!--            </header>-->
         </field>
     </record>
 </odoo>
