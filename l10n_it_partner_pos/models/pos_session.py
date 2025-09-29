@@ -13,9 +13,15 @@ class PosSession(models.Model):
         except ValueError:
             fiscalcode_index = len(fields) - 1
 
-        for field in ["pec_destinatario", "codice_destinatario"]:
+        insert_pos = fiscalcode_index + 1
+        for field in [
+            "pec_destinatario",
+            "codice_destinatario",
+            "electronic_invoice_subjected",
+            "electronic_invoice_obliged_subject",
+        ]:
             if field not in fields:
-                fields.insert(fiscalcode_index + 1, field)
-                fiscalcode_index += 1
+                fields.insert(insert_pos, field)
+                insert_pos += 1
 
         return result

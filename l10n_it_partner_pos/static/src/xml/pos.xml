@@ -7,6 +7,15 @@
         t-inherit-mode="extension"
         owl="1"
     >
+        <xpath expr="//input[@name='fiscalcode']" position="replace">
+            <input
+                class="detail fiscalcode"
+                name="fiscalcode"
+                t-model="changes.fiscalcode"
+                t-on-change="captureChange"
+                placeholder="Codice fiscale"
+            />
+        </xpath>
         <xpath expr="//input[@name='fiscalcode']/.." position="after">
             <div class="partner-detail">
                 <span class="label">PEC</span>
