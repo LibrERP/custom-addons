@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t
+        t-name="PartnerDetailsEdit"
+        t-inherit="point_of_sale.PartnerDetailsEdit"
+        t-inherit-mode="extension"
+        owl="1"
+    >
+        <xpath expr="//input[@name='fiscalcode']/.." position="after">
+            <div class="partner-detail">
+                <span class="label">PEC</span>
+                <input
+                    class="detail pec_destinatario"
+                    name="pec_destinatario"
+                    t-model="changes.pec_destinatario"
+                    t-on-change="captureChange"
+                    placeholder="PEC"
+                />
+            </div>
+            <div class="partner-detail">
+                <span class="label">Codice destinatario</span>
+                <input
+                    class="detail codice_destinatario"
+                    name="codice_destinatario"
+                    t-model="changes.codice_destinatario"
+                    t-on-change="captureChange"
+                    placeholder="Codice destinatario"
+                />
+            </div>
+        </xpath>
+    </t>
+
+</templates>
