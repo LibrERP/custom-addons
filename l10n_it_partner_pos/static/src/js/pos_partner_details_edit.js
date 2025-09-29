@@ -48,7 +48,7 @@ odoo.define("l10n_it_partner_pos.PartnerDetailsEdit", function (require) {
             _syncElectronicInvoiceFlags() {
                 const codice = (this.changes.codice_destinatario || "").trim();
                 const pec = (this.changes.pec_destinatario || "").trim();
-                const enabled = Boolean(codice && pec);
+                const enabled = Boolean(codice || pec);
                 this.changes.electronic_invoice_subjected = enabled;
                 this.changes.electronic_invoice_obliged_subject = enabled;
             }

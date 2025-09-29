@@ -13,7 +13,7 @@ class ResPartner(models.Model):
         if codice_present or pec_present:
             codice = (partner_values.get("codice_destinatario") or "").strip()
             pec = (partner_values.get("pec_destinatario") or "").strip()
-            enabled = bool(codice and pec)
+            enabled = bool(codice or pec)
             partner_values["electronic_invoice_subjected"] = enabled
             partner_values["electronic_invoice_obliged_subject"] = enabled
 
