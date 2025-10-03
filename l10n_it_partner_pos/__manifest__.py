@@ -1,3 +1,6 @@
+# © 2024-2025 Rachid - Codebeex srl (www.codebeex.com)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# noinspection PyStatementEffect
 {
     "name": "ITA - POS - Partner E-invoicing Fields",
     "summary": "Expose recipient PEC and SDI code for partners in POS loader",
