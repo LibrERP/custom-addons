@@ -1,0 +1,15 @@
+.partner-details.edit .partner-details-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.partner-details.edit .partner-details-left,
+.partner-details.edit .partner-details-right {
+    flex: 1 1 320px;
+}
+
+.partner-details.edit .partner-details-left .partner-detail,
+.partner-details.edit .partner-details-right .partner-detail {
+    width: 100%;
+}
