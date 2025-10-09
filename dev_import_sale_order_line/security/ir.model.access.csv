@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_import_sale_lines,access_import_sale_lines_name,model_import_sale_lines,base.group_user,1,1,1,1
+
+access_sale_log,access_sale_log,model_sale_log,base.group_user,1,1,1,1

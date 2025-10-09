@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="week_reg" model="res.calendar.week">
+            <field name="name">Regular Week</field>
+            <field name="week_code">rw</field>
+            <field name="day_ids" 
+                eval="[(6,0,[ref('monday_reg'),ref('tuesday_reg'),ref('wednesday_reg'),ref('thursday_reg'),ref('friday_reg')])]"/>
+         </record>
+
+        <record id="week_std" model="res.calendar.week">
+            <field name="name">Standard Week</field>
+            <field name="week_code">sw</field>
+            <field name="day_ids" 
+                eval="[(6,0,[ref('monday_std'),ref('tuesday_std'),ref('wednesday_std'),ref('thursday_std'),ref('friday_std')])]"/>
+         </record>
+
+        <record id="week_nrm" model="res.calendar.week">
+            <field name="name">Normal Week</field>
+            <field name="week_code">nw</field>
+            <field name="day_ids" 
+                eval="[(6,0,[ref('monday_std'),ref('tuesday_std'),ref('wednesday_std'),ref('thursday_std'),ref('friday_std'),ref('saturday_std'),ref('sunday_std')])]"/>
+         </record>
+
+    </data>
+</odoo>

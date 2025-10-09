@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="monday_reg" model="res.calendar.day">
+            <field name="name">Regular Monday</field>
+            <field name="code">Monday</field>
+            <field name="day_code">mo</field>
+            <field eval="0" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_reg'),ref('afternoon_reg')])]"/>
+         </record>
+        <record id="tuesday_reg" model="res.calendar.day">
+            <field name="name">Regular Tuesday</field>
+            <field name="code">Tuesday</field>
+            <field name="day_code">tu</field>
+            <field eval="1" name="day_number" />
+            <field name="interval_ids" eval="[(6,0,[
+                ref('morning_reg'),ref('afternoon_reg')])]"/>
+        </record>
+        <record id="wednesday_reg" model="res.calendar.day">
+            <field name="name">Regular Wednesday</field>
+            <field name="code">Wednesday</field>
+            <field name="day_code">we</field>
+            <field eval="2" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_reg'),ref('afternoon_reg')])]"/>
+        </record>
+        <record id="thursday_reg" model="res.calendar.day">
+            <field name="name">Regular Thursday</field>
+            <field name="code">Thursday</field>
+            <field name="day_code">th</field>
+            <field eval="3" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_reg'),ref('afternoon_reg')])]"/>
+        </record>
+        <record id="friday_reg" model="res.calendar.day">
+            <field name="name">Regular Friday</field>
+            <field name="code">Friday</field>
+            <field name="day_code">fr</field>
+            <field eval="4" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_reg'),ref('afternoon_reg')])]"/>
+        </record>
+        <record id="saturday_reg" model="res.calendar.day">
+            <field name="name">Regular Saturday</field>
+            <field name="code">Saturday</field>
+            <field name="day_code">sa</field>
+            <field eval="5" name="day_number" />
+        </record>
+        <record id="sunday_reg" model="res.calendar.day">
+            <field name="name">Regular Sunday</field>
+            <field name="code">Sunday</field>
+            <field name="day_code">su</field>
+            <field eval="6" name="day_number" />
+        </record>
+
+        <record id="monday_std" model="res.calendar.day">
+            <field name="name">Standard Monday</field>
+            <field name="code">Monday</field>
+            <field name="day_code">mo</field>
+            <field eval="0" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_std'),ref('afternoon_std')])]"/>
+         </record>
+        <record id="tuesday_std" model="res.calendar.day">
+            <field name="name">Standard Tuesday</field>
+            <field name="code">Tuesday</field>
+            <field name="day_code">tu</field>
+            <field eval="1" name="day_number" />
+            <field name="interval_ids" eval="[(6,0,[
+                ref('morning_std'),ref('afternoon_std')])]"/>
+        </record>
+        <record id="wednesday_std" model="res.calendar.day">
+            <field name="name">Standard Wednesday</field>
+            <field name="code">Wednesday</field>
+            <field name="day_code">we</field>
+            <field eval="2" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_std'),ref('afternoon_std')])]"/>
+        </record>
+        <record id="thursday_std" model="res.calendar.day">
+            <field name="name">Standard Thursday</field>
+            <field name="code">Thursday</field>
+            <field name="day_code">th</field>
+            <field eval="3" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_std'),ref('afternoon_std')])]"/>
+        </record>
+        <record id="friday_std" model="res.calendar.day">
+            <field name="name">Standard Friday</field>
+            <field name="code">Friday</field>
+            <field name="day_code">fr</field>
+            <field eval="4" name="day_number" />
+            <field name="interval_ids" 
+                eval="[(6,0,[ref('morning_std'),ref('afternoon_std')])]"/>
+        </record>
+        <record id="saturday_std" model="res.calendar.day">
+            <field name="name">Standard Saturday</field>
+            <field name="code">Saturday</field>
+            <field name="day_code">sa</field>
+            <field eval="5" name="day_number" />
+        </record>
+        <record id="sunday_std" model="res.calendar.day">
+            <field name="name">Standard Sunday</field>
+            <field name="code">Sunday</field>
+            <field name="day_code">su</field>
+            <field eval="6" name="day_number" />
+        </record>
+    </data>
+</odoo>

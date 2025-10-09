@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle
+ -->
+<odoo>
+    <record id="view_import_sale_lines" model="ir.ui.view">
+        <field name="name">Import Sale Line</field>
+        <field name="model">import.sale.lines</field>
+        <field name="arch" type="xml">
+            <form string="Import Sale Order Lines">
+                <p class="oe_grey">
+                    Upload CSV or XSL file for sale Order Line.
+                </p>
+                <group>
+                   <group>
+		            <field name="file_type" required="1" widget="radio"/>
+ 		            <field name="separated_lines"/>
+		            <field name="select_file" filename="csv_file_name"/> 
+		            <field name="csv_file_name" invisible="1" readonly="1"/>
+                    </group>
+                    <group>
+		           <field name="import_by" widget="radio"/>
+		             <button type="object" name="print_report" class="oe_highlight" string="Download Sample File"/>
+		            <field name="excel_file"  invisible="1" readonly="1" filename="file_name"/>
+                           <field name="file_name" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="import_line" string="Import Line" type="object" class="btn-primary"/>
+                    or
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_import_sale_lines" model="ir.actions.act_window">
+        <field name="name">Import Sale Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">import.sale.lines</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_import_sale_lines"/>
+        <field name="target">new</field>
+    </record>
+    
+
+    <record id="view_dev_import_sale_log_form" model="ir.ui.view">
+        <field name="name">Import Line Logs</field>
+        <field name="model">sale.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" readonly="1"/>
+                </group>
+                <footer>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dev_import_sale_order_log" model="ir.actions.act_window">
+	    <field name="name">Import Sale Order Log</field>
+	    <field name="type">ir.actions.act_window</field>
+	    <field name="res_model">sale.log</field>
+	    <field name="view_id" ref="view_dev_import_sale_log_form"/>
+	    <field name="view_mode">form</field>
+	    <field name="target">new</field>
+	</record>
+    
+</odoo>
