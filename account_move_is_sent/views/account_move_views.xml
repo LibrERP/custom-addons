@@ -12,4 +12,18 @@
             </field>
         </field>
     </record>
+
+    <record id="view_invoice_sending_list" model="ir.ui.view">
+        <field name="name">account.invoice.sending.list</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_sent_values']" position="after">
+                <field name="sending_data"
+                       optional="hide"
+                       groups="base.group_no_one"
+                />
+            </xpath>
+        </field>
+    </record>
 </odoo>

@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Account Move Is Sent',
-    'version': '18.0.0.2',
+    'version': '18.0.0.3',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Give a possibility to set an Invoice as sent or as not sent in case there is no transaction ID',
     'author': 'Codebeex srl',
