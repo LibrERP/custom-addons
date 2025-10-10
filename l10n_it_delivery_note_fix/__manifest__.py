@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'FIX - Documento di trasporto',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Localization/Italy',
     'summary': 'Module take the name of the product in ddt from Sale Order Line',
     'author': 'Codebeex srl',
