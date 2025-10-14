@@ -13,7 +13,9 @@ class StockDeliveryNoteLine(models.Model):
 
         for line in lines:
             move = self.env['stock.move'].browse(line['move_id'])
-            line['name'] = move.sale_line_id.name
+            sale_line_name = move.sale_line_id.name
+            if sale_line_name:
+                line['name'] = sale_line_name
             # if move.move_line_ids:
             #     line['name'] += '\n Matricola/e: n° ' + ', n° '.join(move.move_line_ids.mapped('lot_id').mapped('name'))
 
