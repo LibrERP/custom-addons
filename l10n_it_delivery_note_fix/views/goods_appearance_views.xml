@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_goods_appearance_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.goods.appearance.form</field>
+        <field name="model">stock.picking.goods.appearance</field>
+        <field name="inherit_id" ref="l10n_it_delivery_note_base.stock_picking_goods_appearance_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <field name="code"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_picking_goods_appearance_list_view" model="ir.ui.view">
+        <field name="name">stock.picking.goods.appearance.list</field>
+        <field name="model">stock.picking.goods.appearance</field>
+        <field name="inherit_id" ref="l10n_it_delivery_note_base.stock_picking_goods_appearance_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
