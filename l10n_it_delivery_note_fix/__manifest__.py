@@ -3,9 +3,10 @@
 # noinspection PyStatementEffect
 {
     'name': 'FIX - Documento di trasporto',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Localization/Italy',
-    'summary': 'Module take the name of the product in ddt from Sale Order Line',
+    'summary': """Module take the name of the product in ddt from Sale Order Line,
+    it also removes the block that forbids to invoice lines with 'order' invoice_policy""",
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
