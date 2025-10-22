@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_invoice_picking_autoconfirm
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-22 12:25+0000\n"
+"PO-Revision-Date: 2025-10-22 12:25+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_invoice_picking_autoconfirm
+#: model:ir.model.fields,field_description:sale_invoice_picking_autoconfirm.field_sale_advance_payment_inv__confirm_picking
+msgid "Confirm Picking"
+msgstr "Conferma uscite"
+
+#. module: sale_invoice_picking_autoconfirm
+#: model:ir.model,name:sale_invoice_picking_autoconfirm.model_sale_advance_payment_inv
+msgid "Sales Advance Payment Invoice"
+msgstr "Fattura di vendita con pagamento anticipato"
+
+#. module: sale_invoice_picking_autoconfirm
+#. odoo-python
+#: code:addons/sale_invoice_picking_autoconfirm/wizard/sale_make_invoice_advance.py:0
+#, python-format
+msgid ""
+"⚠️ <strong>Lot Numbers Mismatch</strong><br/>\n"
+"        The lot numbers in the picking do not match the sale order lines."
+msgstr ""
+"⚠️ <strong>Numeri di Lotto non corrispondenti</strong><br/>\n"
+"        I numeri di lotto nel picking non corrispondono alle righe dell'ordine di vendita."
