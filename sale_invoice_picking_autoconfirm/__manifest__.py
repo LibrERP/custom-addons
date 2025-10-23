@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Order to Invoice, Picking Autoconfirm',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Sale',
     'summary': 'Autoconfirm Picking when creating Invoice from Sale Order',
     'author': 'Codebeex srl',
