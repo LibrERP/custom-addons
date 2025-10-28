@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_delivery_note_invoice_journal_view" model="ir.ui.view">
+        <field name="name">stock.delivery.note.journal.invoice.wizard.form</field>
+        <field name="model">stock.delivery.note.invoice.wizard</field>
+        <field name="inherit_id" ref="l10n_it_delivery_note.view_stock_delivery_note_invoice_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group>
+                    <field name="journal_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
