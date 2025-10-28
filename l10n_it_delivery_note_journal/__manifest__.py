@@ -5,7 +5,7 @@
     'name': 'Documento di trasporto - Registro',
     'version': '16.0.0.0',
     'category': 'Localization/Italy',
-    'summary': 'Module adds possibility to select journal during invoice creation from delivery note',
+    'summary': 'Module adds a possibility to select journal during invoice creation from delivery note',
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
