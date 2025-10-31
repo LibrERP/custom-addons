@@ -11,26 +11,27 @@ class AccountTax(models.Model):
         values_per_grouping_key = {}
 
         for line in lines:
-            if line['tax_ids'].id in values_per_grouping_key:
-                values_per_grouping_key[line['tax_ids'].id]['tax_amount_currency'] += line['tax_details']['raw_total_included_currency'] - line['tax_details']['raw_total_excluded_currency']
-                values_per_grouping_key[line['tax_ids'].id]['tax_amount'] += line['tax_details']['raw_total_included'] - line['tax_details']['raw_total_excluded']
-                values_per_grouping_key[line['tax_ids'].id]['base_amount_currency'] += line['tax_details']['total_excluded_currency']
-                values_per_grouping_key[line['tax_ids'].id]['base_amount'] += line['tax_details']['total_excluded']
-                values_per_grouping_key[line['tax_ids'].id]['display_base_amount_currency'] += line['tax_details']['total_excluded_currency']
-                values_per_grouping_key[line['tax_ids'].id]['display_base_amount'] += line['tax_details']['total_excluded']
-            else:
-                values_per_grouping_key[line['tax_ids'].id] = {
-                    'id': line['tax_ids'].id,
-                    # 'involved_tax_ids': involved_taxes.ids,
-                    'tax_amount_currency': line['tax_details']['raw_total_included_currency'] - line['tax_details']['raw_total_excluded_currency'],
-                    'tax_amount': line['tax_details']['raw_total_included'] - line['tax_details']['raw_total_excluded'],
-                    'base_amount_currency': line['tax_details']['total_excluded_currency'],
-                    'base_amount': line['tax_details']['total_excluded'],
-                    'display_base_amount_currency': line['tax_details']['total_excluded_currency'],
-                    'display_base_amount': line['tax_details']['total_excluded'],
-                    'group_name': line['tax_ids'].name,
-                    'group_label': line['tax_ids'].name
-                }
+            for tax in line['tax_details']['taxes_data']:
+                if tax['tax'].id in values_per_grouping_key:
+                    values_per_grouping_key[tax['tax'].id]['tax_amount_currency'] += tax['tax_amount_currency']
+                    values_per_grouping_key[tax['tax'].id]['tax_amount'] += tax['tax_amount']
+                    values_per_grouping_key[tax['tax'].id]['base_amount_currency'] += tax['base_amount_currency']
+                    values_per_grouping_key[tax['tax'].id]['base_amount'] += tax['base_amount']
+                    values_per_grouping_key[tax['tax'].id]['display_base_amount_currency'] += tax['base_amount_currency']
+                    values_per_grouping_key[tax['tax'].id]['display_base_amount'] += tax['base_amount']
+                else:
+                    values_per_grouping_key[tax['tax'].id] = {
+                        'id': tax['tax'].id,
+                        # 'involved_tax_ids': involved_taxes.ids,
+                        'tax_amount_currency': tax['tax_amount_currency'],
+                        'tax_amount': tax['tax_amount'],
+                        'base_amount_currency': tax['base_amount_currency'],
+                        'base_amount': tax['base_amount'],
+                        'display_base_amount_currency': tax['base_amount_currency'],
+                        'display_base_amount': tax['base_amount'],
+                        'group_name': tax['tax'].name,
+                        'group_label': tax['tax'].name
+                    }
 
         return list(values_per_grouping_key.values())
 
