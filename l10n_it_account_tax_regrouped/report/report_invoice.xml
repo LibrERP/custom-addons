@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="document_tax_totals_template_inherit" inherit_id="account.document_tax_totals_template">
+            <xpath expr='//t[@t-foreach="subtotal[&apos;tax_groups&apos;]"]' position="attributes">
+                <attribute name="t-foreach">subtotal['tax_grouped_by_tax']</attribute>
+            </xpath>
+        </template>
+    </data>
+</odoo>
