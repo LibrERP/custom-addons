@@ -5,7 +5,7 @@
     'name': 'New Tax Grouping',
     'version': '18.0.0.0',
     'category': 'Accounting/Localizations/EDI',
-    'summary': 'Module removes the tax grouping as it is required in Italy',
+    'summary': 'Module removes the tax grouping not required in Italy',
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
