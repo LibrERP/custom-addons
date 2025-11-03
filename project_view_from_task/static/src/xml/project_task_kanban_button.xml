@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="project_view_from_task.KanbanButtons" t-inherit="web.KanbanView" t-inherit-mode="extension">
+        <xpath expr="//Layout/t[@t-set-slot='control-panel-create-button']" position="inside">
+            <t t-if="props.resModel === 'project.task'">
+                <button type="button"
+                        class="btn btn-primary ms-2"
+                        t-on-click="() => this.openProject()">
+<!--                    <i class="fa fa-folder-open me-1"/>-->
+                    Project
+                </button>
+            </t>
+        </xpath>
+    </t>
+</templates>
