@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_inherit_milestone_button" model="ir.ui.view">
+        <field name="name">project.project.form.milestone.button</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+
+            <!-- Ensure the computed fields are present in the form (invisible) -->
+            <xpath expr="//header" position="inside">
+                <field name="milestone_reached_count" invisible="1"/>
+                <field name="milestone_total_count" invisible="1"/>
+            </xpath>
+
+            <!-- Insert the smart button into the button_box area -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button
+                    name="action_view_milestones"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-flag-checkered"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <!-- Use <field/> tags — OWL/QWeb directives (t-esc) are forbidden here -->
+                            <field name="milestone_reached_count"/>
+                            <span>/</span>
+                            <field name="milestone_total_count"/>
+                        </span>
+                        <span class="o_stat_text">Milestones</span>
+                    </div>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
