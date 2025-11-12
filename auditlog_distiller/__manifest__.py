@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Auditlog Distilled',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Tools',
     'summary': 'Module create a table from auditlog_log where rows of the same task are united',
     'author': 'Codebeex srl',
@@ -17,6 +17,6 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
-        # 'views/xxx_views.xml'
+        'views/auditlog_distilled_views.xml'
     ],
 }

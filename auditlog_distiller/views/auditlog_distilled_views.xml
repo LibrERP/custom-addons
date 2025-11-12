@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="auditlog_distilled_list_view" model="ir.ui.view">
+        <field name="name">auditlog.distilled.list</field>
+        <field name="model">auditlog.distilled</field>
+        <field name="arch" type="xml">
+            <tree string="Auditlog, distilled version" create="false">
+                <field name="log_date"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="res_id"/>
+                <field name="method"/>
+                <field name="user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_auditlog_distilled_tree" model="ir.actions.act_window">
+        <field name="name">Distilled Logs</field>
+        <field name="res_model">auditlog.distilled</field>
+        <field name="view_type">form</field>
+<!--        <field name="search_view_id" ref="view_auditlog_distilled_search"/>-->
+    </record>
+
+    <menuitem id="menu_audit_logs_distilled" name="Distilled Logs"
+        parent="auditlog.menu_audit" action="action_auditlog_distilled_tree"/>
+</odoo>

@@ -3,11 +3,15 @@
 
 from odoo import _, api, fields, models
 import datetime
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class AuditlogDistilled(models.Model):
     _name = "auditlog.distilled"
     _description = "A distilled version of auditlog_log table"
+    _order = 'log_date desc'
 
     name = fields.Char()
     model_id = fields.Many2one(
@@ -39,7 +43,7 @@ class AuditlogDistilled(models.Model):
             'res_id': row.res_id,
             'user_id': row.user_id.id,
             'method': row.method,
-            'log_date': last_log.create_date
+            'log_date': last_log['create_date']
         })
 
         return last_log
@@ -57,3 +61,27 @@ class AuditlogDistilled(models.Model):
         while row:
             last_log = self.distill(row)
             row = self.env['auditlog.log'].search([('id', '>', last_log['id'])], limit=1, order='id')
+
+    @api.model
+    def autovacuum(self, days, chunk_size=None):
+        """Delete all logs older than ``days``. This includes:
+            - Distilled logs (create, read, write, unlink)
+
+        Called from a cron.
+        """
+        days = (days > 0) and int(days) or 0
+        deadline = datetime.datetime.now() - datetime.timedelta(days=days)
+        data_models = (
+            'auditlog.distilled',
+        )
+        for data_model in data_models:
+            records = self.env[data_model].search(
+                [('log_date', '<=', fields.Datetime.to_string(deadline))],
+                limit=chunk_size, order='log_date asc')
+            nb_records = len(records)
+            with self.env.norecompute():
+                records.unlink()
+            _logger.info(
+                "AUTOVACUUM - %s '%s' records deleted",
+                nb_records, data_model)
+        return True
