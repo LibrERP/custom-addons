@@ -24,7 +24,7 @@
     </record>
 
     <record id="view_sale_order_template_preselect_form" model="ir.ui.view">
-        <field name="name">sale.order.template.form</field>
+        <field name="name">sale.order.template.preselect.form</field>
         <field name="model">sale.order.template</field>
         <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
         <field name="arch" type="xml">
