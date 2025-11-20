@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Management Template',
-    'version': '12.0.0.4',
+    'version': '12.0.0.5-alpha',
     'category': 'Customer Relationship Management',
     'summary': 'Module enhance Sale Management Template related functionality',
     'author': 'Codebeex srl',

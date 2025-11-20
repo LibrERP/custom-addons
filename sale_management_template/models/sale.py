@@ -139,3 +139,4 @@ class SaleOrderTemplateLine(models.Model):
     _inherit = "sale.order.template.line"
 
     check = fields.Boolean()
+    preselected = fields.Boolean()
