@@ -33,9 +33,12 @@ class SaleOrder(models.Model):
                 })
 
             for line in self.sale_order_template_id.sale_order_template_line_ids:
-                # if not line.product_id or line.product_id and line.product_id.selected_in_template:
-                if line.product_id and line.product_id.selected_in_template:
+                if line.preselected:
                     line.check = True
+                elif line.product_id and getattr(line.product_id, 'selected_in_template', False):
+                    line.check = True
+                else:
+                    line.check = False
 
             return {
                 'name': _('Select Products'),
@@ -131,7 +134,10 @@ class SaleOrderTemplate(models.Model):
 
         # sale_order = self.env.context.get('order')
         sale_order.add_selected_lines()
-        new_lines.write({'check': False})
+        # Restore the checkbox state to the saved preselection so the template
+        # keeps its original defaults for next time.
+        for line in new_lines:
+            line.check = bool(line.preselected)
         return {'type': 'ir.actions.act_window_close'}
 
 
