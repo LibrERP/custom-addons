@@ -29,7 +29,7 @@ class AccountTax(models.Model):
                         'base_amount': tax['base_amount'],
                         'display_base_amount_currency': tax['base_amount_currency'],
                         'display_base_amount': tax['base_amount'],
-                        'group_name': tax['tax'].name,
+                        'group_name': tax['tax'].invoice_label or tax['tax'].name,
                         'group_label': tax['tax'].name
                     }
 
