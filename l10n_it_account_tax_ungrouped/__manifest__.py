@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'No Tax Grouping',
-    'version': '18.0.0.1',
+    'version': '18.0.0.2',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Module removes the tax grouping not required in Italy',
     'author': 'Codebeex srl',
