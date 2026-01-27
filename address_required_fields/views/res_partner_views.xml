@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form_required_view" model="ir.ui.view">
+        <field name="name">res.partner.form.required</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='street']" position="attributes">
+                <attribute name="attrs">{'required': [('parent_id', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='city']" position="attributes">
+                <attribute name="attrs">{'required': [('parent_id', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='state_id']" position="attributes">
+                <attribute name="attrs">{'required': [('parent_id', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('o_address_format')]/field[@name='zip']" position="attributes">
+                <attribute name="attrs">{'required': [('parent_id', '=', False)]}</attribute>
+            </xpath>
+            <xpath expr="//group/field[@name='mobile']" position="attributes">
+                <attribute name="attrs">{'required': [('parent_id', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//group/field[@name='vat']" position="attributes">
+                <attribute name="attrs">{'required': [
+                    ('parent_id', '=', False),
+                    ('is_company', '=', True)
+                ]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_form_l10n_required_view" model="ir.ui.view">
+        <field name="name">res.partner.form.l10n.required</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="l10n_it_fiscalcode.view_partner_form_fiscalcode_data"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='fiscalcode_info']/field[@name='fiscalcode']" position="attributes">
+                <attribute name="attrs">{'required': [
+                    ('parent_id', '=', False),
+                    ('is_company', '=', False)
+                ]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
