@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'HR City Holiday',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'category': 'Human Resources',
     'summary': 'Module permits to define a public holiday for an address',
     'author': 'Codebeex srl',

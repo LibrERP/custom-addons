@@ -39,7 +39,8 @@ class HrHolidaysPublic(models.Model):
 
                     holiday_lines |= city_holiday_line
         else:
-            raise ValidationError(_("There is no calendar for year {year}").format(year=year))
+            # raise ValidationError(_("There is no calendar for year {year}").format(year=year))
+            pass
 
         return holiday_lines
 
