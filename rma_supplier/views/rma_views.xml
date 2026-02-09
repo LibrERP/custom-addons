@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rma_view_supplier_form" model="ir.ui.view">
+        <field name="name">rma.view.form</field>
+        <field name="model">rma</field>
+        <field name="inherit_id" ref="rma.rma_view_form" />
+        <field name="arch" type="xml">
+            <notebook position="before">
+                <group string="Magazzino">
+                    <group>
+                        <field name="supplier_id" />
+                        <field name="supplier_credit_note"/>
+                        <field name="supplier_transportation_document" />
+                    </group>
+                    <group>
+                        <field name="inventory_state" />
+                        <field name="supplier_goods_arrival_date"/>
+                        <field name="supplier_return_document" />
+                    </group>
+                </group>
+            </notebook>
+        </field>
+    </record>
+</odoo>
