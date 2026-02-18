@@ -2,19 +2,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
-from odoo import models
-
-from pypdf.errors import PyPdfError
 import odoo.tools.pdf as odoo_pdf
 
 _logger = logging.getLogger(__name__)
 
 
 def safe_fill_form_fields_pdf(writer, form_fields=None):
-    """
-    Safe replacement for odoo.tools.pdf.fill_form_fields_pdf
-    Skips update if no AcroForm / Fields dictionary exists.
-    """
     if not form_fields:
         return
 
@@ -36,13 +29,13 @@ def safe_fill_form_fields_pdf(writer, form_fields=None):
     for page in writer.pages:
         try:
             writer.update_page_form_field_values(page, form_fields)
-        except PyPdfError:
+        except Exception:
+            # DO NOT depend on pypdf import
             _logger.warning(
-                "PyPdfError while updating form fields. Skipping.",
+                "Error while updating form fields. Skipping.",
                 exc_info=True,
             )
             return
 
 
-# Apply monkey patch at module load
 odoo_pdf.fill_form_fields_pdf = safe_fill_form_fields_pdf
