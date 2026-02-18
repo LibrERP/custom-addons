@@ -1,0 +1,48 @@
+# © 2026 Andrei Levin <andrei.levin@codebeex.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+
+import logging
+from odoo import models
+
+from pypdf.errors import PyPdfError
+import odoo.tools.pdf as odoo_pdf
+
+_logger = logging.getLogger(__name__)
+
+
+def safe_fill_form_fields_pdf(writer, form_fields=None):
+    """
+    Safe replacement for odoo.tools.pdf.fill_form_fields_pdf
+    Skips update if no AcroForm / Fields dictionary exists.
+    """
+    if not form_fields:
+        return
+
+    try:
+        root = getattr(writer, "_root_object", None)
+        acroform = root.get("/AcroForm") if root else None
+        has_fields = (
+            acroform
+            and acroform.get("/Fields")
+            and len(acroform.get("/Fields")) > 0
+        )
+    except Exception:
+        has_fields = False
+
+    if not has_fields:
+        _logger.debug("Skipping PDF form fill: no AcroForm fields present.")
+        return
+
+    for page in writer.pages:
+        try:
+            writer.update_page_form_field_values(page, form_fields)
+        except PyPdfError:
+            _logger.warning(
+                "PyPdfError while updating form fields. Skipping.",
+                exc_info=True,
+            )
+            return
+
+
+# Apply monkey patch at module load
+odoo_pdf.fill_form_fields_pdf = safe_fill_form_fields_pdf
