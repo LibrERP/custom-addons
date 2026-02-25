@@ -3,13 +3,51 @@
 
 import logging
 import odoo.tools.pdf as odoo_pdf
+from PyPDF2.generic import NameObject, DictionaryObject, ArrayObject
 
 _logger = logging.getLogger(__name__)
+
+# Keep original reference
+_original_fill = odoo_pdf.fill_form_fields_pdf
+
+
+def _ensure_acroform_from_pages(writer):
+    """
+    If writer lost /AcroForm (which happens when pages are concatenated),
+    rebuild a minimal one from page widget annotations.
+    """
+
+    if writer._root_object.get("/AcroForm"):
+        return
+
+    fields = ArrayObject()
+
+    for page in writer.pages:
+        annots = page.get("/Annots")
+        if not annots:
+            continue
+
+        for annot in annots:
+            obj = annot.get_object()
+            if obj.get("/Subtype") == "/Widget" and obj.get("/T"):
+                fields.append(annot)
+
+    if not fields:
+        return
+
+    acroform = DictionaryObject()
+    acroform[NameObject("/Fields")] = fields
+
+    writer._root_object[NameObject("/AcroForm")] = acroform
+
+    _logger.debug("Reconstructed /AcroForm from widget annotations.")
 
 
 def safe_fill_form_fields_pdf(writer, form_fields=None):
     if not form_fields:
         return
+
+    _ensure_acroform_from_pages(writer)
 
     try:
         root = getattr(writer, "_root_object", None)
