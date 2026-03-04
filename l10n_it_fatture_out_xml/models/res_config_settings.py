@@ -56,7 +56,7 @@ class ResConfigSettings(models.TransientModel):
             'company_id': company_id.id,
             'proxy_type': 'dummy',
             'edi_identification': 'dummy',
-            'id_client': 'dummy',
+            'id_client': f'dummy-{company_id.id}',
             'edi_mode': edi_mode
         })
 

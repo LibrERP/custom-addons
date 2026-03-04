@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Invoice XML Create Only',
-    'version': '18.0.0.0',
+    'version': '18.0.0.1',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Module permits to create XML of Invoice without sending it anywhere',
     'author': 'Codebeex srl',
