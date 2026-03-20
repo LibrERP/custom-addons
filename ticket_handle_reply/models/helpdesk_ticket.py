@@ -18,7 +18,7 @@ class HelpdeskTicket(models.Model):
         logger.info(f"{msg_dict}")
 
         # Detect inbound email (important!)
-        if msg_dict.get('type') == 'email':
+        if msg_dict.get('message_type') == 'email':
             logger.info('--2-- Type: Email')
             author_id = msg_dict.get('author_id')
 
@@ -32,23 +32,23 @@ class HelpdeskTicket(models.Model):
 
         return ticket
 
-    def message_post(self, **kwargs):
-        logger.info('--1-- Message post')
-        message = super().message_post(**kwargs)
-
-        if not message:
-            return message
-
-        if message.message_type == 'email':
-            logger.info('--2-- Type: Email')
-            for ticket in self:
-                stage = ticket._get_reopen_stage()
-                logger.info(f'--3-- New stage: {stage.name}')
-                if stage:
-                    logger.info(f"--4-- Setting New stage...")
-                    ticket.stage_id = stage.id
-
-        return message
+    # def message_post(self, **kwargs):
+    #     logger.info('--1-- Message post')
+    #     message = super().message_post(**kwargs)
+    #
+    #     if not message:
+    #         return message
+    #
+    #     if message.message_type == 'email':
+    #         logger.info('--2-- Type: Email')
+    #         for ticket in self:
+    #             stage = ticket._get_reopen_stage()
+    #             logger.info(f'--3-- New stage: {stage.name}')
+    #             if stage:
+    #                 logger.info(f"--4-- Setting New stage...")
+    #                 ticket.stage_id = stage.id
+    #
+    #     return message
 
     def _get_reopen_stage(self):
         param = self.env['ir.config_parameter'].sudo()
