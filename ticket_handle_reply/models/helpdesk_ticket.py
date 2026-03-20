@@ -20,11 +20,12 @@ class HelpdeskTicket(models.Model):
         if message.message_type == 'email':
             # logger.info('--2-- Type: Email')
             for ticket in self:
-                stage = ticket._get_reopen_stage()
-                # logger.info(f'--3-- New stage: {stage.name}')
-                if stage:
-                    # logger.info(f"--4-- Setting New stage...")
-                    ticket.stage_id = stage.id
+                if not ticket.stage_id.unattended:
+                    stage = ticket._get_reopen_stage()
+                    # logger.info(f'--3-- New stage: {stage.name}')
+                    if stage:
+                        # logger.info(f"--4-- Setting New stage...")
+                        ticket.stage_id = stage.id
 
         return message
 

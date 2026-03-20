@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Move Ticket on Reply',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Tools',
     'summary': 'On reply Move Ticket to dedicated stage',
     'author': 'Codebeex srl',
