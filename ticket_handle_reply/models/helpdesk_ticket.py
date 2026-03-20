@@ -40,12 +40,11 @@ class HelpdeskTicket(models.Model):
         if message.message_type == 'email':
             logger.info('--2-- Type: Email')
             for ticket in self:
-                if ticket.stage_id.is_close:
-                    stage = ticket._get_reopen_stage()
-                    logger.info(f'--3-- New stage: {stage.name}')
-                    if stage:
-                        logger.info(f"--4-- Setting New stage...")
-                        ticket.stage_id = stage.id
+                stage = ticket._get_reopen_stage()
+                logger.info(f'--3-- New stage: {stage.name}')
+                if stage:
+                    logger.info(f"--4-- Setting New stage...")
+                    ticket.stage_id = stage.id
 
         return message
 
