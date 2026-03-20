@@ -6,6 +6,7 @@
     'version': '16.0.0.0',
     'category': 'Localization/Italy',
     'summary': 'Export Fatturapa in local folder',
+    'description': "Please set channel to 'local' and configure where to save XMLs",
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
