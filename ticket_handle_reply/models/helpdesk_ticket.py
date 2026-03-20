@@ -30,6 +30,25 @@ class HelpdeskTicket(models.Model):
 
         return ticket
 
+    def message_post(self, **kwargs):
+        logger.info('--1-- Message post')
+        message = super().message_post(**kwargs)
+
+        if not message:
+            return message
+
+        if message.message_type == 'email':
+            logger.info('--2-- Type: Email')
+            for ticket in self:
+                if ticket.stage_id.is_close:
+                    stage = ticket._get_reopen_stage()
+                    logger.info(f'--3-- New stage: {stage.name}')
+                    if stage:
+                        logger.info(f"--4-- Setting New stage...")
+                        ticket.stage_id = stage.id
+
+        return message
+
     def _get_reopen_stage(self):
         param = self.env['ir.config_parameter'].sudo()
         stage_id = param.get_param('helpdesk.reply_stage_id')
