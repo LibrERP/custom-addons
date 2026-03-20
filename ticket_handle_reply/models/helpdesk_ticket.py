@@ -15,22 +15,47 @@ class HelpdeskTicket(models.Model):
 
         ticket = super().message_update(msg_dict, update_vals)
 
-        logger.info(f"{msg_dict}")
+        # Get the actual message record
+        message_id = msg_dict.get('message_id')
+        message = self.env['mail.message'].browse(message_id) if message_id else False
 
-        # Detect inbound email (important!)
-        if msg_dict.get('message_type') == 'email':
+        if message and message.message_type == 'email':
             logger.info('--2-- Type: Email')
-            author_id = msg_dict.get('author_id')
 
-            # Optional: avoid internal users
-            if not self.env['res.users'].sudo().search([('partner_id', '=', author_id)]):
-                new_stage = self._get_reopen_stage()
-                logger.info(f'--3-- New stage: {new_stage.name}')
-                if new_stage:
-                    logger.info(f"--4-- Setting New stage...")
-                    ticket.stage_id = new_stage.id
+            # Skip internal users
+            if message.author_id and message.author_id.user_ids:
+                return ticket
+
+            new_stage = self._get_reopen_stage()
+            logger.info(f'--3-- New stage: {new_stage.name if new_stage else "None"}')
+
+            if new_stage:
+                logger.info("--4-- Setting New stage...")
+                ticket.stage_id = new_stage.id
 
         return ticket
+
+    # def message_update(self, msg_dict, update_vals=None):
+    #     logger.info('--1-- Message update')
+    #
+    #     ticket = super().message_update(msg_dict, update_vals)
+    #
+    #     logger.info(f"{msg_dict}")
+    #
+    #     # Detect inbound email (important!)
+    #     if msg_dict.get('message_type') == 'email':
+    #         logger.info('--2-- Type: Email')
+    #         author_id = msg_dict.get('author_id')
+    #
+    #         # Optional: avoid internal users
+    #         if not self.env['res.users'].sudo().search([('partner_id', '=', author_id)]):
+    #             new_stage = self._get_reopen_stage()
+    #             logger.info(f'--3-- New stage: {new_stage.name}')
+    #             if new_stage:
+    #                 logger.info(f"--4-- Setting New stage...")
+    #                 ticket.stage_id = new_stage.id
+    #
+    #     return ticket
 
     # def message_post(self, **kwargs):
     #     logger.info('--1-- Message post')
