@@ -9,6 +9,6 @@ class ResConfigSettings(models.TransientModel):
 
     reply_stage_id = fields.Many2one(
         'helpdesk.ticket.stage',
-        string="Reopen Stage",
+        string="Move ticket to Stage",
         config_parameter='helpdesk.reply_stage_id',
     )

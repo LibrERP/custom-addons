@@ -11,8 +11,8 @@
                     <div class="col-12 col-lg-6 o_setting_box">
                         <div class="o_setting_left_pane" />
                         <div class="o_setting_right_pane">
-                            <label for="helpdesk_mgmt_portal_select_team" />
-                            <div class="text-muted">Show teams form</div>
+                            <label for="reply_stage_id" />
+                            <div class="text-muted">Set where to move ticket on reply</div>
                             <field name="reply_stage_id"/>
                         </div>
                     </div>
