@@ -25,7 +25,7 @@ class HelpdeskTicket(models.Model):
                 new_stage = self._get_reopen_stage()
                 logger.info(f'--3-- New stage: {new_stage.name}')
                 if new_stage:
-                    logger.info(f'--4-- Setting New stage...")
+                    logger.info(f"--4-- Setting New stage...")
                     ticket.stage_id = new_stage.id
 
         return ticket
