@@ -15,6 +15,8 @@ class HelpdeskTicket(models.Model):
 
         ticket = super().message_update(msg_dict, update_vals)
 
+        logger.info(f"{msg_dict}")
+
         # Detect inbound email (important!)
         if msg_dict.get('type') == 'email':
             logger.info('--2-- Type: Email')
