@@ -8,6 +8,9 @@
             <xpath expr="//search" position="inside">
                 <field name="analytic_account_ids"
                        string="Analytic Account"/>
+                <group string="Group By">
+                    <filter name="groupby_analytic_account" string="Analytic Account" context="{'group_by': 'analytic_account_ids'}"/>
+                </group>
             </xpath>
         </field>
     </record>
