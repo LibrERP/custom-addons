@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_invoice_spinlife_search_view" model="ir.ui.view">
+        <field name="name">account.invoice.spinlife.search</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="analytic_account_ids"
+                       string="Analytic Account"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
