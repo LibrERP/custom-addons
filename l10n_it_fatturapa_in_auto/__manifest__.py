@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'FatturaPA In Auto',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Localization/Italy',
     'summary': 'Automatically create and confirm suppliers invoice',
     'author': 'Codebeex srl',

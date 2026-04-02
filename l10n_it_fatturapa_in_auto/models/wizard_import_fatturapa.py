@@ -23,6 +23,8 @@ class WizardImportFatturapa(models.TransientModel):
         })
 
         invoices_form = wizard.importFatturaPA()
+        self.env.cr.commit()
+        
         invoices_domain = invoices_form.get('domain', False)
         if invoices_domain:
             invoice_ids = invoices_domain[0][2]
