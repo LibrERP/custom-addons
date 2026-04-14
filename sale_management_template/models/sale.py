@@ -108,6 +108,25 @@ class SaleOrder(models.Model):
         if template.note:
             self.note = template.note
 
+    @api.model
+    def create(self, vals):
+        order = super().create(vals)
+
+        if vals.get('sale_order_template_id', False):
+            template = self.env['sale.order.template'].browse(vals['sale_order_template_id'])
+            message = _(f"Order template is '{template.name}'")
+            order.message_post(body=message)
+
+        return order
+
+    def write(self, vals):
+        if vals.get('sale_order_template_id', False):
+            template = self.env['sale.order.template'].browse(vals['sale_order_template_id'])
+            message = _(f"Order template changed to '{template.name}'")
+            self.message_post(body=message)
+
+        return super().write(vals)
+
 
 class SaleOrderTemplate(models.Model):
     _inherit = "sale.order.template"
