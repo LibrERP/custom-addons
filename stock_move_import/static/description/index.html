@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stock Move Import</title>
+    <style>
+      :root {
+        --bg: #f5f4ef;
+        --card: #ffffff;
+        --ink: #1f1f1f;
+        --muted: #6a6a6a;
+        --accent: #0b7285;
+        --border: #e5e2d7;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Georgia", "Times New Roman", serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, #faf8f1 0%, #f1efe6 100%);
+      }
+
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 48px 20px 64px;
+      }
+
+      header {
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 36px;
+        letter-spacing: 0.5px;
+        margin: 0 0 8px;
+      }
+
+      p.lead {
+        font-size: 18px;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px 24px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+        margin-top: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+        margin: 0 0 12px;
+      }
+
+      ul {
+        margin: 0 0 0 18px;
+        padding: 0;
+      }
+
+      li {
+        margin: 6px 0;
+      }
+
+      code {
+        background: #f4f4f4;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+      }
+
+      .steps {
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        border-left: 4px solid var(--accent);
+        padding-left: 12px;
+      }
+
+      .footer {
+        margin-top: 28px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Stock Move Import</h1>
+        <p class="lead">Use Odoo's built-in import to add stock moves from a CSV or XLSX file.</p>
+      </header>
+
+      <section class="card">
+        <h2>CSV columns</h2>
+        <ul>
+          <li><strong>Product</strong>: Product name or internal reference + name.</li>
+          <li><strong>Quantity</strong>: Quantity for the move.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>How to import</h2>
+        <div class="steps">
+          <div class="step">Open a transfer that is not done or cancelled.</div>
+          <div class="step">Click <strong>Import Moves</strong> in the header.</div>
+          <div class="step">Upload your CSV or XLSX file.</div>
+          <div class="step">Click <strong>Test</strong> to validate, then <strong>Import</strong>.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Screenshot</h2>
+        <p>Button Import at Stock picking</p>
+        <img src="banner.png" alt="Purchase order line import wizard" style="max-width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+        <p>Import wizard showing the file upload and column mapping for stock.move.</p>
+        <img src="img.png" alt="Purchase order line import wizard" style="max-width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+        <p style="margin-top: 16px;">Stock picking after importing lines from a file.</p>
+        <img src="img_1.png" alt="Purchase order lines after import" style="max-width: 100%; border-radius: 10px; border: 1px solid var(--border);">
+      </section>
+
+      <section class="card">
+        <h2>Sample file</h2>
+        <p>See <code>tests/sample_import_moves.csv</code> inside this module for a ready-to-use template.</p>
+      </section>
+
+      <div class="footer">Products must already exist in the database for the import to match them.</div>
+    </div>
+  </body>
+</html>
