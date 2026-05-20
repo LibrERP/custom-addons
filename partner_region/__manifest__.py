@@ -5,7 +5,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Partner Region',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Contacts',
     'summary': 'Adds region (sub-country / supra-state) hierarchy on partners',
     'author': 'Didotech srl',

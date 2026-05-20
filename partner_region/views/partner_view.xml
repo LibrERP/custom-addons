@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='country_id']" position="before">
-                <field name="region_id"/>
+                <field name="region_id" placeholder="Regione"/>
             </xpath>
         </field>
     </record>
