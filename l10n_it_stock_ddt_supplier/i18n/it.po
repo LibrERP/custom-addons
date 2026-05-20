@@ -1,0 +1,41 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_it_stock_ddt_supplier
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-20 10:42+0000\n"
+"PO-Revision-Date: 2026-05-20 10:42+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_it_stock_ddt_supplier
+#: model:ir.model.fields,help:l10n_it_stock_ddt_supplier.field_stock_picking__l10n_it_supplier_ddt_number
+msgid "DDT number issued by the supplier and reported on the goods received."
+msgstr "Numero del DDT emesso dal fornitore e riportato sulla merce ricevuta."
+
+#. module: l10n_it_stock_ddt_supplier
+#: model_terms:ir.ui.view,arch_db:l10n_it_stock_ddt_supplier.view_picking_form_inherit_l10n_it_supplier_ddt
+msgid "Supplier DDT"
+msgstr "DDT Fornitore"
+
+#. module: l10n_it_stock_ddt_supplier
+#: model:ir.model.fields,field_description:l10n_it_stock_ddt_supplier.field_stock_picking__l10n_it_supplier_ddt_date
+msgid "Supplier DDT Date"
+msgstr "Data DDT Fornitore"
+
+#. module: l10n_it_stock_ddt_supplier
+#: model:ir.model.fields,field_description:l10n_it_stock_ddt_supplier.field_stock_picking__l10n_it_supplier_ddt_number
+msgid "Supplier DDT Number"
+msgstr "Numero DDT Fornitore"
+
+#. module: l10n_it_stock_ddt_supplier
+#: model:ir.model,name:l10n_it_stock_ddt_supplier.model_stock_picking
+msgid "Transfer"
+msgstr "Trasferimento"
