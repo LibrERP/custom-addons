@@ -1,5 +1,6 @@
 # © 2026 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# noinspection PyStatementEffect
 {
     'name': 'Italy - Supplier DDT Number on Receipts',
     'version': '18.0.1.0.0',
