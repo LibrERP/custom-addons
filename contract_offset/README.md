@@ -33,6 +33,8 @@ after `last_date_invoiced`. The exact day of `last_date_invoiced` doesn't
 matter — periods stay calendar-aligned.
 
 ## Formula
+period_start - start of the period to be invoiced
+next_period_start - period after current period
 
 ```
 pre-paid                            post-paid (one period forward)
