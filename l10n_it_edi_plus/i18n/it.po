@@ -1,0 +1,94 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_it_edi_plus
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-22 08:14+0000\n"
+"PO-Revision-Date: 2026-05-22 08:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_res_partner__l10n_it_partner_code
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_res_users__l10n_it_partner_code
+msgid "1.2.6 <RiferimentoAmministrazione>"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_narration
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_move__l10n_it_narration
+msgid "2.1.1.11 <Causale>"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_move_line__l10n_it_admin_ref
+msgid "2.2.1.15 <RiferimentoAmministrazione>"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_data_type
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_move__l10n_it_data_type
+msgid "2.2.1.16.1 <TipoDato>"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_text_ref
+#: model:ir.model.fields,help:l10n_it_edi_plus.field_account_move__l10n_it_text_ref
+msgid "2.2.1.16.2 <RiferimentoTesto>"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_narration
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_move__l10n_it_narration
+msgid "Causale"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model,name:l10n_it_edi_plus.model_res_partner
+msgid "Contact"
+msgstr "Contatto"
+
+#. module: l10n_it_edi_plus
+#: model:ir.model,name:l10n_it_edi_plus.model_account_move
+msgid "Journal Entry"
+msgstr "Registrazione contabile"
+
+#. module: l10n_it_edi_plus
+#: model:ir.model,name:l10n_it_edi_plus.model_account_move_line
+msgid "Journal Item"
+msgstr "Movimento contabile"
+
+#. module: l10n_it_edi_plus
+#: model_terms:ir.ui.view,arch_db:l10n_it_edi_plus.view_account_move_filter
+msgid "Rejected"
+msgstr "Rifiutato SdI"
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_move_line__l10n_it_admin_ref
+msgid "Rif. Ammin."
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_text_ref
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_move__l10n_it_text_ref
+msgid "Rif. testo"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_res_partner__l10n_it_partner_code
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_res_users__l10n_it_partner_code
+msgid "Riferimento Amministrazione"
+msgstr ""
+
+#. module: l10n_it_edi_plus
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_bank_statement_line__l10n_it_data_type
+#: model:ir.model.fields,field_description:l10n_it_edi_plus.field_account_move__l10n_it_data_type
+msgid "Tipo dato"
+msgstr ""

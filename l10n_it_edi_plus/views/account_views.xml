@@ -29,4 +29,20 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_account_move_filter" model="ir.ui.view">
+        <field name="name">account.move.filter</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='not_sent']" position="after">
+                <filter name="rejected"
+                        string="Rejected"
+                        domain="[('l10n_it_edi_state', '=', 'rejected')]"
+                        invisible="context.get('default_move_type') in ('in_invoice', 'in_refund', 'in_receipt')"
+                />
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
