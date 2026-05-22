@@ -15,14 +15,22 @@ class ContractRecurrencyBasicMixin(models.AbstractModel):
         readonly=False,
         copy=True,
         help=(
-            "Positive (>=1): day N within the relevant period.\n"
-            "  - pre-paid: day N of the current period.\n"
-            "  - post-paid: day N of the next period (the one after the "
-            "service period).\n"
-            "Negative (<=-1): N days before the start of the period after "
-            "the anchor period.\n"
-            "  - pre-paid: anchor = next_period_start.\n"
-            "  - post-paid: anchor = period_after_next_start."
+            "Pre-paid (offset counted from the service period start):\n"
+            "  - N >= 1: day N within the service period "
+            "(rnd = period_start + N - 1).\n"
+            "  - N = 0: invoice on period_start. The service period itself "
+            "is advanced one delta forward vs. the positive case.\n"
+            "  - N <= -1: N days before period_start "
+            "(rnd = period_start + N). The service period is advanced "
+            "one delta forward (so offset -1 is the day before the "
+            "period starts).\n"
+            "Post-paid (offset counted from the service period end):\n"
+            "  - N >= 1: rnd = period_end + N (N days after period_end).\n"
+            "  - N = 0: rnd = period_end + 1 (the day after the period "
+            "ends; same as offset 1).\n"
+            "  - N <= -1: rnd = period_end + N + 1 (offset -1 invoices "
+            "on the last day of the period; offset -2 invoices one day "
+            "before period_end, etc.)."
         ),
     )
 
@@ -39,28 +47,6 @@ class ContractRecurrencyMixin(models.AbstractModel):
     )
 
     @api.model
-    def _contract_offset_anchors(
-        self,
-        next_period_date_start,
-        recurring_invoicing_type,
-        recurring_rule_type,
-        recurring_interval,
-    ):
-        """Return (positive_anchor, negative_anchor) for the offset formula.
-
-        Pre-paid: positive = period_start, negative = next_period_start.
-        Post-paid: each shifted one delta forward.
-        """
-        delta = self.get_relative_delta(recurring_rule_type, recurring_interval)
-        if recurring_invoicing_type == "post-paid":
-            positive_anchor = next_period_date_start + delta
-            negative_anchor = next_period_date_start + delta + delta
-        else:  # pre-paid (default)
-            positive_anchor = next_period_date_start
-            negative_anchor = next_period_date_start + delta
-        return positive_anchor, negative_anchor
-
-    @api.model
     def get_next_invoice_date(
         self,
         next_period_date_start,
@@ -72,22 +58,30 @@ class ContractRecurrencyMixin(models.AbstractModel):
     ):
         if not next_period_date_start:
             return False
-        positive_anchor, negative_anchor = self._contract_offset_anchors(
-            next_period_date_start,
-            recurring_invoicing_type,
-            recurring_rule_type,
-            recurring_interval,
-        )
-        if recurring_invoicing_offset > 0:
-            rnd = positive_anchor + relativedelta(
-                days=recurring_invoicing_offset - 1
+        if recurring_invoicing_type == "post-paid":
+            delta = self.get_relative_delta(
+                recurring_rule_type, recurring_interval
             )
-        elif recurring_invoicing_offset < 0:
-            rnd = negative_anchor + relativedelta(
-                days=recurring_invoicing_offset
+            period_end = (
+                next_period_date_start + delta - relativedelta(days=1)
             )
-        else:
-            rnd = positive_anchor
+            if recurring_invoicing_offset > 0:
+                rnd = period_end + relativedelta(
+                    days=recurring_invoicing_offset
+                )
+            else:
+                rnd = period_end + relativedelta(
+                    days=recurring_invoicing_offset + 1
+                )
+        else:  # pre-paid
+            if recurring_invoicing_offset > 0:
+                rnd = next_period_date_start + relativedelta(
+                    days=recurring_invoicing_offset - 1
+                )
+            else:
+                rnd = next_period_date_start + relativedelta(
+                    days=recurring_invoicing_offset
+                )
         if max_date_end and rnd > max_date_end:
             return False
         return rnd
@@ -96,12 +90,16 @@ class ContractRecurrencyMixin(models.AbstractModel):
         "last_date_invoiced",
         "date_start",
         "date_end",
+        "recurring_invoicing_type",
+        "recurring_invoicing_offset",
         "recurring_rule_type",
         "recurring_interval",
     )
     def _compute_next_period_date_start(self):
         """Walk the recurrence sequence from date_start; pick the first
-        period_start that comes after last_date_invoiced."""
+        period_start that comes after last_date_invoiced. For pre-paid
+        with non-positive offset, advance one extra delta because the
+        invoice lands at or before the period starts."""
         for rec in self:
             if not rec.date_start:
                 rec.next_period_date_start = False
@@ -111,11 +109,20 @@ class ContractRecurrencyMixin(models.AbstractModel):
                 delta = rec.get_relative_delta(
                     rec.recurring_rule_type, rec.recurring_interval
                 )
-                # Safety bound to avoid runaway loops on bad data.
-                for _ in range(10000):
+                # Recompute from date_start each step so the original
+                # day-of-month is preserved through short months (e.g.
+                # day 30 doesn't get clamped to 28 by February).
+                n = 0
+                while n < 10000:
+                    period_start = rec.date_start + n * delta
                     if period_start > rec.last_date_invoiced:
                         break
-                    period_start = period_start + delta
+                    n += 1
+                if (
+                    rec.recurring_invoicing_type == "pre-paid"
+                    and rec.recurring_invoicing_offset <= 0
+                ):
+                    period_start = rec.date_start + (n + 1) * delta
             if rec.date_end and period_start > rec.date_end:
                 rec.next_period_date_start = False
             else:
@@ -162,17 +169,38 @@ class ContractRecurrencyMixin(models.AbstractModel):
         self.ensure_one()
         if not (self.recurring_next_date and self.next_period_date_start):
             return
-        positive_anchor, negative_anchor = self._contract_offset_anchors(
-            self.next_period_date_start,
-            self.recurring_invoicing_type,
-            self.recurring_rule_type,
-            self.recurring_interval,
-        )
-        if self.recurring_invoicing_offset >= 0:
-            days = (self.recurring_next_date - positive_anchor).days
-            new_offset = days + 1 if days >= 0 else days
-        else:
-            new_offset = (self.recurring_next_date - negative_anchor).days
+        if self.recurring_invoicing_type == "post-paid":
+            delta = self.get_relative_delta(
+                self.recurring_rule_type, self.recurring_interval
+            )
+            period_end = (
+                self.next_period_date_start
+                + delta
+                - relativedelta(days=1)
+            )
+            days = (self.recurring_next_date - period_end).days
+            if days > 1:
+                new_offset = days
+            elif days == 1:
+                # rnd == period_end + 1, ambiguous between offset 0 and 1
+                new_offset = (
+                    1 if self.recurring_invoicing_offset >= 1 else 0
+                )
+            elif days == 0:
+                # rnd == period_end, only offset -1 produces this
+                new_offset = -1
+            else:  # days < 0
+                new_offset = days - 1
+        else:  # pre-paid
+            days = (
+                self.recurring_next_date - self.next_period_date_start
+            ).days
+            if self.recurring_invoicing_offset > 0:
+                new_offset = days + 1
+            elif self.recurring_invoicing_offset < 0:
+                new_offset = days
+            else:  # current offset == 0, disambiguate by sign of days
+                new_offset = days + 1 if days > 0 else days
         if self.recurring_invoicing_offset != new_offset:
             self.recurring_invoicing_offset = new_offset
 
