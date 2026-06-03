@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- © 2026 Andrei Levin - Codebeex srl (www.codebeex.com)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+
+    <!-- Expose next_period_date_start_shift as an invisible field so
+         the web client tracks it across form interactions. Without
+         this, the onchange's setattr modifies the backend NewId record
+         correctly but the value is dropped the moment the line modal
+         closes (because the parent form's in-memory state only carries
+         fields listed in the view) — when the user reopens the line,
+         the field reverts to its DB value (0), period_start snaps back
+         to naive, and rnd recomputes incorrectly.
+         Inheriting contract_line_form_view also covers the customer
+         and supplier form views, which inherit from it. -->
+    <record id="contract_line_form_view_inherit" model="ir.ui.view">
+        <field name="name">contract.line form view (contract_offset)</field>
+        <field name="model">contract.line</field>
+        <field name="inherit_id" ref="contract.contract_line_form_view" />
+        <field name="arch" type="xml">
+            <field name="recurring_next_date" position="after">
+                <field name="next_period_date_start_shift" invisible="1" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Same fix for contract.contract: when rnd is edited on the
+         contract header (line_recurrence=False), the same tracking
+         issue applies. -->
+    <record id="contract_contract_form_view_inherit" model="ir.ui.view">
+        <field name="name">contract.contract form view (contract_offset)</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <field name="recurring_next_date" position="after">
+                <field name="next_period_date_start_shift" invisible="1" />
+            </field>
+        </field>
+    </record>
+
+</odoo>
