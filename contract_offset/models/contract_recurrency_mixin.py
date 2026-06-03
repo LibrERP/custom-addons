@@ -3,7 +3,8 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ContractRecurrencyBasicMixin(models.AbstractModel):
@@ -18,12 +19,10 @@ class ContractRecurrencyBasicMixin(models.AbstractModel):
             "Pre-paid (offset counted from the service period start):\n"
             "  - N >= 1: day N within the service period "
             "(rnd = period_start + N - 1).\n"
-            "  - N = 0: invoice on period_start. The service period itself "
-            "is advanced one delta forward vs. the positive case.\n"
+            "  - N = 0: invoice on period_start (same as offset 1).\n"
             "  - N <= -1: N days before period_start "
-            "(rnd = period_start + N). The service period is advanced "
-            "one delta forward (so offset -1 is the day before the "
-            "period starts).\n"
+            "(rnd = period_start + N; offset -1 is the day before "
+            "the period starts).\n"
             "Post-paid (offset counted from the service period end):\n"
             "  - N >= 1: rnd = period_end + N (N days after period_end).\n"
             "  - N = 0: rnd = period_end + 1 (the day after the period "
@@ -97,9 +96,7 @@ class ContractRecurrencyMixin(models.AbstractModel):
     )
     def _compute_next_period_date_start(self):
         """Walk the recurrence sequence from date_start; pick the first
-        period_start that comes after last_date_invoiced. For pre-paid
-        with non-positive offset, advance one extra delta because the
-        invoice lands at or before the period starts."""
+        period_start that comes after last_date_invoiced."""
         for rec in self:
             if not rec.date_start:
                 rec.next_period_date_start = False
@@ -118,11 +115,6 @@ class ContractRecurrencyMixin(models.AbstractModel):
                     if period_start > rec.last_date_invoiced:
                         break
                     n += 1
-                if (
-                    rec.recurring_invoicing_type == "pre-paid"
-                    and rec.recurring_invoicing_offset <= 0
-                ):
-                    period_start = rec.date_start + (n + 1) * delta
             if rec.date_end and period_start > rec.date_end:
                 rec.next_period_date_start = False
             else:
@@ -215,3 +207,43 @@ class ContractRecurrencyMixin(models.AbstractModel):
         offset display updates immediately."""
         for rec in self:
             rec._derive_offset_from_recurring_next_date()
+
+
+class ContractLine(models.Model):
+    _inherit = "contract.line"
+
+    @api.constrains(
+        "date_start", "date_end", "last_date_invoiced", "recurring_next_date"
+    )
+    def _check_last_date_invoiced(self):
+        """For pre-paid with offset <= 0, the next invoice legitimately lands
+        on or before last_date_invoiced (the period_end just invoiced), since
+        the invoice for period N+1 happens at/before its start, which falls
+        inside period N. Skip only that specific sub-check in those cases;
+        all other sub-checks still apply."""
+        relaxed = self.filtered(
+            lambda r: (
+                r.recurring_invoicing_type == "pre-paid"
+                and r.recurring_invoicing_offset <= 0
+            )
+        )
+        super(ContractLine, self - relaxed)._check_last_date_invoiced()
+        for rec in relaxed.filtered("last_date_invoiced"):
+            if rec.date_end and rec.date_end < rec.last_date_invoiced:
+                raise ValidationError(
+                    _(
+                        "You can't have the end date before the date of "
+                        "last invoice for the contract line '%s'"
+                    )
+                    % rec.name
+                )
+            if not rec.contract_id.line_recurrence:
+                continue
+            if rec.date_start and rec.date_start > rec.last_date_invoiced:
+                raise ValidationError(
+                    _(
+                        "You can't have the start date after the date of "
+                        "last invoice for the contract line '%s'"
+                    )
+                    % rec.name
+                )
