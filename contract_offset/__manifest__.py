@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Contract offset',
-    'version': '16.0.0.3',
+    'version': '16.0.0.4',
     'category': 'Contract Management',
     'summary': "Editable recurring_invoicing_offset with sign-based "
                "semantics; periods march calendar-aligned from date_start. "
@@ -14,5 +14,7 @@
     'depends': [
         'contract',
     ],
-    'data': [],
+    'data': [
+        'views/contract_line_views.xml',
+    ],
 }
