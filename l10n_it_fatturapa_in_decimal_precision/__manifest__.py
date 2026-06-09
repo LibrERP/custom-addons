@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Fatturapa: Set Decimal Precision for import',
-    'version': '12.0.0.0',
+    'version': '12.0.0.1',
     'category': 'Generic Modules/Accounting',
     'summary': """Automatically set Decimal Precision for invoice XML import""",
     'author': 'Codebeex srl',
