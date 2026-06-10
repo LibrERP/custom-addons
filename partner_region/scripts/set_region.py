@@ -24,9 +24,6 @@ Installation:
 import odoolib
 import getopt
 import sys
-import re
-from openpyxl import load_workbook
-from dataclasses import dataclass
 
 
 def get_category_code(model, name):
