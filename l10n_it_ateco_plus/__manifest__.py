@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'ITA - Codici Ateco Update',
-    'version': '18.0.0.3',
+    'version': '18.0.0.4',
     'pre_init_hook': 'pre_init_deactivate_ateco_categories',
     'category': 'Localization/Italy',
     'summary': """This module extends functionality of l10n_it_ateco module

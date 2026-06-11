@@ -10,6 +10,8 @@ class AtecoCategory(models.Model):
     macro_category_name = fields.Char(
         compute='_get_macro_category_name',
         store=True,
+        recursive=True,
+        string="Macro settore"
     )
     active = fields.Boolean(default=True)
     search_code = fields.Char(
