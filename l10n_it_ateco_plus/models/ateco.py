@@ -7,7 +7,10 @@ from odoo import _, api, Command, fields, models
 class AtecoCategory(models.Model):
     _inherit = "ateco.category"
 
-    macro_category_name = fields.Char(compute='_get_macro_category_name')
+    macro_category_name = fields.Char(
+        compute='_get_macro_category_name',
+        store=True,
+    )
     active = fields.Boolean(default=True)
     search_code = fields.Char(
         string="Code",
@@ -20,6 +23,7 @@ class AtecoCategory(models.Model):
         search='_search_name_starts_with',
     )
 
+    @api.depends('parent_id.macro_category_name', 'code', 'name')
     def _get_macro_category_name(self):
         for category in self:
             category.macro_category_name = category.parent_id and category.get_macro_category() or ''

@@ -6,6 +6,7 @@ _logger = logging.getLogger(__name__)
 
 
 def pre_init_deactivate_ateco_categories(env):
+    # This function is executed before the first installation of the module (only)
     env.cr.execute(
         "ALTER TABLE ateco_category "
         "ADD COLUMN IF NOT EXISTS active BOOLEAN DEFAULT TRUE"
