@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_journal_form_bank_view" model="ir.ui.view">
+        <field name="name">account.journal.bank.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='advanced_settings']/group" position="inside">
+                <group name="payment_bank" string="Payment Bank" attrs="{'invisible': [('type', 'not in',  ('sale',))]}">
+                    <field name="payment_bank_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
