@@ -28,5 +28,5 @@ msgstr "Registrazione contabile"
 #. module: account_journal_bank
 #: model:ir.model.fields,field_description:account_journal_bank.field_account_journal__payment_bank_id
 #: model_terms:ir.ui.view,arch_db:account_journal_bank.view_account_journal_form_bank_view
-msgid "Payment Bank"
+msgid "Beneficiary Bank"
 msgstr "Banca di accredito"

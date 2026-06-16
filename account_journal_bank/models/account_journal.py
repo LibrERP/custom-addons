@@ -9,6 +9,6 @@ class AccountJournal(models.Model):
 
     payment_bank_id = fields.Many2one(
         comodel_name="res.partner.bank",
-        string="Payment Bank",
+        string="Beneficiary Bank",
         domain="[('partner_id', '=', company_partner_id)]",
     )
