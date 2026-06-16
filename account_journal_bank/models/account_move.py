@@ -11,9 +11,11 @@ class AccountMove(models.Model):
     def _compute_partner_bank_id(self):
         super()._compute_partner_bank_id()
         for move in self:
+            term = move.invoice_payment_term_id
             if (
                 move.is_sale_document(include_receipts=True)
                 and move.journal_id.payment_bank_id
-                and not move.invoice_payment_term_id.riba
+                and not term.riba
+                and not getattr(term, "already_paid", False)
             ):
                 move.partner_bank_id = move.journal_id.payment_bank_id
