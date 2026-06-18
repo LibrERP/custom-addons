@@ -6,7 +6,7 @@
     "name": "Partner history",
     # "summary":
     #     "Module to make the VAT number unique for customers and suppliers.",
-    "version": "12.0.0.0.2",
+    "version": "12.0.0.0.3",
     "category": "Customer Relationship Management",
     "website": "https://github.com/LibrERP/custom-addons",
     "author": "Didotech srl, Odoo Community Association (OCA)",
