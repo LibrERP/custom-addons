@@ -56,7 +56,7 @@ class ResPartner(models.Model):
                     "NOTE: This partner may be archived."
                 )) % record.vat)
 
-    def action_rebranding_copy(self):
+    def rebranding_copy(self):
         self.ensure_one()
 
         parent_orig_id = self.parent_orig_id.id or self.id
@@ -89,6 +89,13 @@ class ResPartner(models.Model):
         if hasattr(self, 'id_numbers'):
             for number in self.id_numbers:
                 number.partner_id = new_partner.id
+
+        return new_partner
+
+    def action_rebranding_copy(self):
+        self.ensure_one()
+
+        new_partner = self.rebranding_copy()
 
         return {
             'name': self.name,
