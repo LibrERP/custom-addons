@@ -19,3 +19,15 @@ class AccountMove(models.Model):
                 and not getattr(term, "already_paid", False)
             ):
                 move.partner_bank_id = move.journal_id.payment_bank_id
+            elif term.riba or getattr(term, "already_paid", False):
+                move.partner_bank_id = False
+
+    @api.onchange('journal_id', 'invoice_payment_term_id')
+    def _onchange_journal_id(self):
+        super()._onchange_journal_id()
+        self._compute_partner_bank_id()
+
+    @api.onchange('invoice_payment_term_id')
+    def _onchange_invoice_payment_term_id(self):
+        # super()._onchange_invoice_payment_term_id()
+        self._compute_partner_bank_id()

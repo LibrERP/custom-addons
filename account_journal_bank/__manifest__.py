@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Account Journal Payment Bank',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Accounting',
     'summary': 'Module adds payment bank to Account Journal which is used when creating an Invoice',
     'author': 'Codebeex srl',
