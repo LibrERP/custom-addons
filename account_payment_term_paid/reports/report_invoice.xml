@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_document_already_paid"
+                  inherit_id="account.report_invoice_document">
+            <!-- Only show the standard payment communication when the invoice
+                 is not flagged as already paid through its payment term. -->
+            <xpath expr="//p[@name='payment_communication']" position="attributes">
+                <attribute name="t-if">o.move_type in ('out_invoice', 'in_refund') and o.payment_reference and not o.invoice_payment_term_id.already_paid</attribute>
+            </xpath>
+            <!-- When the payment term is flagged as already paid, show a notice instead. -->
+            <xpath expr="//p[@name='payment_communication']" position="after">
+                <p t-if="o.move_type in ('out_invoice', 'in_refund') and o.invoice_payment_term_id.already_paid"
+                   name="payment_already_paid" class="mt-4">
+                    <b>Already paid</b>
+                </p>
+            </xpath>
+        </template>
+    </data>
+</odoo>

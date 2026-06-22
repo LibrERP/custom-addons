@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 13:59+0000\n"
-"PO-Revision-Date: 2026-06-16 13:59+0000\n"
+"POT-Creation-Date: 2026-06-22 08:22+0000\n"
+"PO-Revision-Date: 2026-06-22 08:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_payment_term_paid
+#: model_terms:ir.ui.view,arch_db:account_payment_term_paid.report_invoice_document_already_paid
+msgid "<b>Already paid</b>"
+msgstr "<b>Pagamento Avvenuto</b>"
+
+#. module: account_payment_term_paid
 #: model:ir.model.fields,field_description:account_payment_term_paid.field_account_payment_term__already_paid
 msgid "Already Paid"
-msgstr "Già pagato"
+msgstr "Pagamento Avvenuto"
 
 #. module: account_payment_term_paid
 #: model:ir.model.fields,help:account_payment_term_paid.field_account_payment_term__already_paid
@@ -27,8 +32,8 @@ msgid ""
 "and no payment info (e.g. bank account) is set."
 msgstr ""
 "Se selezionato, le fatture che utilizzano questo termine di pagamento "
-"vengono considerate già saldate e non viene impostata alcuna informazione "
-"di pagamento (ad es. il conto bancario)."
+"vengono considerate già saldate e non viene impostata alcuna informazione di"
+" pagamento (ad es. il conto bancario)."
 
 #. module: account_payment_term_paid
 #: model:ir.model,name:account_payment_term_paid.model_account_move

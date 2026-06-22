@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Account Payment Term Already Paid',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Accounting',
     'summary': 'Flag a payment term as already paid; invoices using it skip payment info',
     'author': 'Codebeex srl',
@@ -14,5 +14,6 @@
     ],
     'data': [
         'views/account_payment_term_views.xml',
+        'reports/report_invoice.xml',
     ],
 }
