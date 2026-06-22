@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Account Journal Payment Bank',
-    'version': '16.0.0.2',
+    'version': '16.0.0.3',
     'category': 'Accounting',
     'summary': 'Module adds payment bank to Account Journal which is used when creating an Invoice',
     'author': 'Codebeex srl',
@@ -12,7 +12,7 @@
     'depends': [
         'base',
         'account',
-        'l10n_it_riba',
+        'l10n_it_riba_oca',
     ],
     'data': [
         'views/account_journal_views.xml'
