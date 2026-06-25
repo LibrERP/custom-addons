@@ -1,7 +1,7 @@
-# © 2025 Andrei Levin <andrei.levin@codebeex.com>
+# © 2025-2026 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from odoo import _, api, fields, models
+from odoo import _, models
 
 
 class SaleOrder(models.Model):
@@ -15,6 +15,9 @@ class SaleOrder(models.Model):
                     try:
                         picking.action_set_quantities_to_reservation()
                         picking.button_validate()
+                        order.message_post(
+                            body=_(f"""Convalidata la uscita {picking.name}""")
+                        )
                     except Exception as e:
                         order.message_post(
                             body=_(f"""⚠️ <strong>Error</strong><br/>

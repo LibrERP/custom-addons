@@ -1,9 +1,9 @@
-# © 2025 Andrei Levin - Codebeex srl (www.codebeex.com)
+# © 2025-2026 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # noinspection PyStatementEffect
 {
     'name': 'Sale Order to Invoice, Picking Autoconfirm',
-    'version': '16.0.0.2',
+    'version': '16.0.0.3',
     'category': 'Sale',
     'summary': 'Autoconfirm Picking when creating Invoice from Sale Order',
     'author': 'Codebeex srl',
