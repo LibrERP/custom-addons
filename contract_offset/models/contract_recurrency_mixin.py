@@ -1,20 +1,10 @@
 # © 2026 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import threading
-
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-
-# Thread-local guard for one specific cross-onchange interaction:
-# _derive_offset_from_recurring_next_date may write recurring_invoicing_offset
-# from inside the rnd onchange. Odoo then queues the offset's @api.onchange
-# AFTER _derive returns, which would clobber the shift _derive just set.
-# _derive sets this flag right before writing offset; the offset onchange
-# checks-and-clears it on entry, skipping its reset exactly once.
-_DERIVE_GUARD = threading.local()
 
 
 class ContractRecurrencyBasicMixin(models.AbstractModel):
@@ -50,8 +40,10 @@ class ContractRecurrencyMixin(models.AbstractModel):
     # Number of deltas next_period_date_start is shifted away from its
     # naive value. Written by the inverse on recurring_next_date (when
     # the user picks a date that requires a shift to preserve the
-    # offset's sign), and reset to 0 by the form-side onchange on
-    # offset. Plain Integer (not a compute field) so onchange writes
+    # offset's sign). Orthogonal to recurring_invoicing_offset: editing
+    # the offset keeps the period (and this shift) fixed and only moves
+    # recurring_next_date; only editing recurring_next_date changes the
+    # shift. Plain Integer (not a compute field) so onchange writes
     # propagate to the form without any compute-precedence surprises.
     next_period_date_start_shift = fields.Integer(
         default=0,
@@ -462,7 +454,6 @@ class ContractRecurrencyMixin(models.AbstractModel):
         in_onchange = not isinstance(self.id, int)
         vals = {"next_period_date_start_shift": shift}
         if current != new_offset:
-            _DERIVE_GUARD.suppress_offset_onchange = True
             vals["recurring_invoicing_offset"] = new_offset
         if in_onchange:
             for fname, value in vals.items():
@@ -535,29 +526,6 @@ class ContractRecurrencyMixin(models.AbstractModel):
                     vals["recurring_invoicing_offset"] = new_offset
         return super().write(vals)
 
-    @api.onchange("recurring_invoicing_offset")
-    def _onchange_recurring_invoicing_offset(self):
-        """When the user edits the offset directly in the form, drop
-        any prior manual period shift by zeroing
-        next_period_date_start_shift. The @api.depends-driven recompute
-        of next_period_date_start (which depends on the shift) then
-        snaps the period back to its naive value, and rnd recomputes
-        consistently.
-
-        Suppressed once when _derive_offset_from_recurring_next_date is
-        the writer: Odoo queues this onchange after _derive returns, and
-        without the guard it would clobber the shift _derive just set
-        (e.g. user types rnd=Jun 4, _derive sets shift=-1 and
-        offset=-27, this callback would then zero the shift, causing
-        period_start to snap back to naive Aug 1 and rnd to recompute
-        as Jul 5 instead of Jun 4)."""
-        if getattr(_DERIVE_GUARD, "suppress_offset_onchange", False):
-            _DERIVE_GUARD.suppress_offset_onchange = False
-            return
-        for rec in self:
-            if rec.next_period_date_start_shift:
-                rec.next_period_date_start_shift = 0
-
 
 class ContractLine(models.Model):
     _inherit = "contract.line"
@@ -589,6 +557,51 @@ class ContractLine(models.Model):
                 rec.recurring_interval,
                 max_date_end=rec.date_end,
             )
+
+    def _get_period_to_invoice(
+        self, last_date_invoiced, recurring_next_date, stop_at_date_end=True
+    ):
+        """Use next_period_date_start/end as the invoiced period so the
+        markers (#START#/#END#) on generated invoice/sale lines honor any
+        active period shift.
+
+        Upstream derives first_date_invoiced from last_date_invoiced + 1
+        day, which assumes a contiguous cadence. When the user has shifted
+        the next period away from the natural cadence (e.g. the previous
+        cycle ended 01/06 but the next period was shifted to start 01/07),
+        upstream renders the stale start 02/06 while period_end and rnd
+        already reflect the shifted period — producing e.g.
+        "Dal 02/06 al 31/07" instead of "Dal 01/07 al 31/07".
+
+        next_period_date_start already incorporates the shift, and
+        next_period_date_end is the matching period end (period_start +
+        delta - 1, clamped to date_end) — the same value
+        _update_recurring_next_date writes to last_date_invoiced after
+        invoicing, so the period we render stays consistent with how the
+        cursor advances. We deliberately read next_period_date_end rather
+        than re-deriving the end from rnd via the reverse formula, which
+        uses upstream's offset convention and would be off by one day for
+        positive offsets.
+        """
+        self.ensure_one()
+        if not recurring_next_date:
+            return False, False, False
+        first_date_invoiced = self.next_period_date_start
+        if not first_date_invoiced:
+            return super()._get_period_to_invoice(
+                last_date_invoiced, recurring_next_date, stop_at_date_end
+            )
+        if stop_at_date_end:
+            # next_period_date_end is already clamped to date_end.
+            last_date_invoiced = self.next_period_date_end
+        else:
+            last_date_invoiced = self.get_next_period_date_end(
+                first_date_invoiced,
+                self.recurring_rule_type,
+                self.recurring_interval,
+                max_date_end=False,
+            )
+        return first_date_invoiced, last_date_invoiced, recurring_next_date
 
     @api.constrains(
         "date_start", "date_end", "last_date_invoiced", "recurring_next_date"
