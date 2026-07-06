@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="hr_attendance_geolocation_fix assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/hr_attendance_geolocation_fix/static/src/js/attendance_geolocation_fix.js"></script>
+        </xpath>
+    </template>
+</odoo>
