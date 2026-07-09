@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2026 Andrei Levin - Codebeex srl (www.codebeex.com) -->
+<!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+
+    <record id="view_users_list" model="ir.ui.view">
+        <field name="name">res.users.last.access.list</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <!-- The window action exposes no form view, so clicking a row is a
+                 no-op (openFormView bails out when no form view exists and the
+                 record already has an id): rows are effectively not clickable. -->
+            <list string="Users"
+                  create="false" edit="false" delete="false">
+                <field name="name"/>
+                <field name="last_access_time"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_users_list" model="ir.actions.act_window">
+        <field name="name">Users List</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_users_list"/>
+    </record>
+
+    <menuitem id="menu_users_last_access"
+              name="Users"
+              parent="hr.menu_human_resources_configuration"
+              action="action_users_list"
+              sequence="100"/>
+
+</odoo>
