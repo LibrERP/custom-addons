@@ -1,0 +1,37 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hr_user_list
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-09 07:11+0000\n"
+"PO-Revision-Date: 2026-07-09 07:11+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr_user_list
+#: model:ir.model.fields,field_description:hr_user_list.field_res_users__last_access_time
+msgid "Last Access Time"
+msgstr "Ultimo accesso"
+
+#. module: hr_user_list
+#: model:ir.model,name:hr_user_list.model_res_users
+msgid "User"
+msgstr "Utente"
+
+#. module: hr_user_list
+#: model:ir.ui.menu,name:hr_user_list.menu_users_last_access
+#: model_terms:ir.ui.view,arch_db:hr_user_list.view_users_list
+msgid "Users"
+msgstr "Utenti"
+
+#. module: hr_user_list
+#: model:ir.actions.act_window,name:hr_user_list.action_users_list
+msgid "Users List"
+msgstr "Lista utenti"
