@@ -1,4 +1,4 @@
-# © 2025 Andrei Levin <andrei.levin@codebeex.com>
+# © 2025-2026 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import models, fields
@@ -27,11 +27,13 @@ class ProjectProject(models.Model):
 
     def action_view_milestones(self):
         self.ensure_one()
+        view_id = self.env.ref('project.project_milestone_view_tree').id
         return {
             "name": "Milestones",
             "type": "ir.actions.act_window",
             "res_model": "project.milestone",
             "view_mode": "list,form",
+            'views': [(view_id, 'list')],
             "domain": [("project_id", "=", self.id)],
             "context": {"default_project_id": self.id},
         }
