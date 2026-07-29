@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Jsonify Exceptions',
-    'version': '16.0.0.0',
+    'version': '18.0.0.0',
     'category': 'Uncategorized',
     'summary': 'Adds possibility to show exceptions raised during record parsing',
     'author': 'Codebeex srl',
