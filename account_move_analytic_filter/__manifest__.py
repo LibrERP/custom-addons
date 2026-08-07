@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Account Move Analytic Filter',
-    'version': '18.0.0.1',
+    'version': '18.0.0.2',
     'category': 'Accounting',
     'summary': "Adds possibility to filter by Analytic account",
     'author': 'Codebeex srl',
