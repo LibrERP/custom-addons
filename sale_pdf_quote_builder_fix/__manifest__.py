@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Pdf Quote Builder Fix',
-    'version': '18.0.0.1',
+    'version': '18.0.0.2',
     'category': 'Sales/Sales',
     'summary': 'Add summary of the module',
     'author': 'Codebeex srl',

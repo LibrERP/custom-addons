@@ -3,7 +3,10 @@
 
 import logging
 import odoo.tools.pdf as odoo_pdf
-from PyPDF2.generic import NameObject, DictionaryObject, ArrayObject
+
+NameObject = odoo_pdf.generic.NameObject
+DictionaryObject = odoo_pdf.generic.DictionaryObject
+ArrayObject = odoo_pdf.generic.ArrayObject
 
 _logger = logging.getLogger(__name__)
 
