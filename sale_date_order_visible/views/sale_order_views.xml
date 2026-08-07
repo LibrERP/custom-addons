@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_date_order_visible" model="ir.ui.view">
+        <field name="name">sale.order.form.date_order.visible</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!--
+                Show the quotation-stage "Order Date" (date_order) to all users,
+                not only in developer mode (base.group_no_one).
+
+                We also tighten `invisible` to "state not in ['draft', 'sent']" so
+                this field is the exact complement of the second date_order field
+                ("Order Date", invisible in draft/sent). Otherwise, in the custom
+                `revise` state (from sale_revision) neither field is excluded and
+                BOTH date_order inputs would render at once.
+            -->
+
+            <!-- Quotation-stage "Quotation Date" label -->
+            <xpath expr="//div[@groups='base.group_no_one' and label[@for='date_order']]" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="invisible">state not in ['draft', 'sent']</attribute>
+            </xpath>
+
+            <!-- Quotation-stage date_order field -->
+            <xpath expr="//field[@name='date_order'][@groups='base.group_no_one']" position="attributes">
+                <attribute name="groups"/>
+                <attribute name="invisible">state not in ['draft', 'sent']</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
