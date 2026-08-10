@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_sale_project_fix" model="ir.ui.view">
+        <field name="name">sale.order.form.sale.project.fix</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_project.view_order_form_inherit_sale_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="attributes">
+                <attribute name="readonly">state != 'draft'</attribute>
+            </xpath>
+            <xpath expr="//list/field[@name='company_id']" position="after">
+                <field name="project_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
