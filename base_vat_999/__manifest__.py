@@ -1,4 +1,4 @@
-# © 2024 Andrei Levin - Codebeex srl (www.codebeex.com)
+# © 2024-2026 Andrei Levin - Codebeex srl (www.codebeex.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # noinspection PyStatementEffect
 {
