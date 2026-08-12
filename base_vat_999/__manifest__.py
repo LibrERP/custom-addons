@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Add 9999x VATs as valid',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'Accounting/Accounting',
     'summary': """Module adds support for generic 99999x VAT's
         Supported countries:

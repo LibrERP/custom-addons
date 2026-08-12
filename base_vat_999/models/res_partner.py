@@ -1,4 +1,4 @@
-# © 2024 Andrei Levin <andrei.levin@codebeex.com>
+# © 2024-2026 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import models
@@ -15,5 +15,18 @@ class ResPartner(models.Model):
         if vat == '999999999':
             return True
         else:
-            import stdnum.de.vat
-            return stdnum.de.vat.is_valid(vat)
+            # import stdnum.de.vat
+            # return stdnum.de.vat.is_valid(vat)
+            return super().check_vat_de(vat)
+
+    def check_vat_in(self, vat):
+        '''
+        Check Indian VAT number.
+        '''
+
+        if vat == '999999999':
+            return True
+        else:
+            # import stdnum.de.vat
+            # return stdnum.de.vat.is_valid(vat)
+            return super().check_vat_in(vat)
