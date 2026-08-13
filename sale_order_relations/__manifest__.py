@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Order Relation',
-    'version': '18.0.0.0',
+    'version': '18.0.0.1',
     'category': 'Sale',
     'summary': 'Module adds possibility to add relation parent/child among the orders',
     'author': 'Codebeex srl',
