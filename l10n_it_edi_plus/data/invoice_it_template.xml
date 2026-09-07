@@ -18,4 +18,10 @@
             </AltriDatiGestionali>
         </xpath>
     </template>
+
+    <template id="invoice_origin_document_plus" inherit_id="l10n_it_edi.account_invoice_FatturaPA_origin_document">
+        <xpath expr="//Data" position="after">
+            <CodiceCommessaConvenzione t-if="l10n_it_project_contract_code" t-esc="format_alphanumeric(l10n_it_project_contract_code, 100)"/>
+        </xpath>
+    </template>
 </odoo>

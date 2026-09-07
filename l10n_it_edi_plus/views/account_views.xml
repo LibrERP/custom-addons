@@ -19,13 +19,16 @@
         <field name="priority">25</field>
         <field name="inherit_id" ref="l10n_it_edi.account_invoice_form_l10n_it"/>
         <field name="arch" type="xml">
+            <xpath expr="//page[@name='electronic_invoicing']/group/group/field[@name='l10n_it_origin_document_date']" position="after">
+                <field name="l10n_it_project_contract_code" readonly="state != 'draft'"/>
+            </xpath>
             <xpath expr="//page[@name='electronic_invoicing']/group/group/field[@name='l10n_it_cup']" position="after">
-                <field name="l10n_it_data_type" />
-                <field name="l10n_it_text_ref"/>
+                <field name="l10n_it_data_type" readonly="state != 'draft'"/>
+                <field name="l10n_it_text_ref" readonly="state != 'draft'"/>
             </xpath>
             <xpath expr="//page[@name='electronic_invoicing']" position="inside">
                 <label for="l10n_it_narration"/>
-                <field name="l10n_it_narration" nolabel="1"/>
+                <field name="l10n_it_narration" nolabel="1" readonly="state != 'draft'"/>
             </xpath>
         </field>
     </record>

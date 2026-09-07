@@ -1,4 +1,4 @@
-# © 2025 Andrei Levin <andrei.levin@codebeex.com>
+# © 2025-2026 Andrei Levin <andrei.levin@codebeex.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo import _, api, Command, fields, models
@@ -7,6 +7,7 @@ from odoo import _, api, Command, fields, models
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    l10n_it_project_contract_code = fields.Char('Codice della commessa o della convenzione', help='2.1.2.5 <CodiceCommessaConvenzione>', size=100)
     l10n_it_narration = fields.Text('Causale', help='2.1.1.11 <Causale>')
     l10n_it_data_type = fields.Char('Tipo dato', help='2.2.1.16.1 <TipoDato>')
     l10n_it_text_ref = fields.Char('Rif. testo', help='2.2.1.16.2 <RiferimentoTesto>')
@@ -16,6 +17,7 @@ class AccountMove(models.Model):
 
         values['l10n_it_narration'] = self.l10n_it_narration
         values['seller_info']['l10n_it_partner_code'] = values['partner'].l10n_it_partner_code
+        values['l10n_it_project_contract_code'] = self.l10n_it_project_contract_code
 
         return values
 

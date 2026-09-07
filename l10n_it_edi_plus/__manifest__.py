@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'More functionality for FatturaPA',
-    'version': '18.0.0.2',
+    'version': '18.0.0.3',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Module adds more fields used in FatturaPA',
     'description': """
@@ -13,12 +13,13 @@ FatturaPA Fields Extension
 Module adds more fields used in FatturaPA:
 
 - 2.1.1.11   Causale
+- 2.1.2.5    CodiceCommessaConvenzione
 - 1.2.6      RiferimentoAmministrazione
 - 2.2.1.15   RiferimentoAmministrazione
 - 2.2.1.16.1 TipoDato
 - 2.2.1.16.2 RiferimentoTesto
 
-Filter to see only rejected invoices
+Module adds filter to see only rejected invoices
     """,
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
