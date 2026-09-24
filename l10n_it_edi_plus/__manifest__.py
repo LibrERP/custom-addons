@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'More functionality for FatturaPA',
-    'version': '18.0.0.3',
+    'version': '18.0.0.4',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Module adds more fields used in FatturaPA',
     'description': """

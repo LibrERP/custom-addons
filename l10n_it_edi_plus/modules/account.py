@@ -7,6 +7,7 @@ from odoo import _, api, Command, fields, models
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    l10n_it_origin_document_name = fields.Char(help='2.1.2.2 <IdDocumento>')
     l10n_it_project_contract_code = fields.Char('Codice della commessa o della convenzione', help='2.1.2.5 <CodiceCommessaConvenzione>', size=100)
     l10n_it_narration = fields.Text('Causale', help='2.1.1.11 <Causale>')
     l10n_it_data_type = fields.Char('Tipo dato', help='2.2.1.16.1 <TipoDato>')
