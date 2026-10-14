@@ -13,6 +13,8 @@ class AccountMove(models.Model):
     l10n_it_data_type = fields.Char('Tipo dato', help='2.2.1.16.1 <TipoDato>')
     l10n_it_text_ref = fields.Char('Rif. testo', help='2.2.1.16.2 <RiferimentoTesto>')
 
+    l10n_it_edi_state_update_date = fields.Datetime('Edi State Updated')
+
     def _l10n_it_edi_get_values(self, pdf_values=None):
         values = super()._l10n_it_edi_get_values(pdf_values=pdf_values)
 
