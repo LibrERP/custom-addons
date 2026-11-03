@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_invoice_filter_number_range" model="ir.ui.view">
+        <field name="name">account.invoice.select.number.range</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+
+            <!--
+                Range filtering on the invoice Number.
+
+                These boxes target the `number_search` helper field, whose custom
+                `_search_number_range` method auto-scopes the comparison to the
+                series prefix you type (see models/account_move.py). So
+                "Number ≥ 2026/0432" only ever compares inside the 2026/… series
+                and never leaks in the PA/…, ACQ/…, NC/… series — no Journal
+                filter required.
+
+                `self` is the value the user types in the search box.
+            -->
+            <xpath expr="//field[@name='ref']" position="before">
+                <field name="number_search" string="Number ≥"
+                       filter_domain="[('number_search', '>=', self)]"/>
+                <field name="number_search" string="Number ≤"
+                       filter_domain="[('number_search', '&lt;=', self)]"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
