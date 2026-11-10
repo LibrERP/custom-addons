@@ -18,7 +18,14 @@ class IrAttachment(models.Model):
 
         if any(tuple(term) == marker for term in domain):
             base = self._filestore()
+            # Mentioning res_field in the domain disables core ir.attachment's
+            # implicit ('res_field', '=', False) filter (see
+            # base/models/ir_attachment.py::_search), so field-backed
+            # attachments (images, web icons, stored reports, ...) are scanned
+            # too — these are the ones that usually spam the log with missing
+            # file errors.
             attachments = self.search([
+                "|", ("res_field", "=", False), ("res_field", "!=", False),
                 ("store_fname", "!=", False),
             ])
 

@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'Tools: Remove Dead Attachments',
-    'version': '16.0.0.0',
+    'version': '16.0.0.1',
     'category': 'tools',
     'summary': 'Clean database from dead attachments',
     'author': 'Codebeex srl',
