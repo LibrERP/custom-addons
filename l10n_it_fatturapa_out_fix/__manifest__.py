@@ -3,11 +3,13 @@
 # noinspection PyStatementEffect
 {
     'name': 'ITA - Emissione e-fattura FIX',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Hidden',
     'summary': 'Fix errors in out invoice composition',
     'description': """Module solve problems with the VAT composition for countries different from Italy.
-        Also l'XML in the state 'sender_error' can be deleted without setting it to 'ready'
+        Also l'XML in the state 'sender_error' can be deleted without setting it to 'ready'.
+        Adds <Arrotondamento> to DatiRiepilogo when price-included per-line VAT
+        rounding makes Imposta != round(Imponibile x aliquota), avoiding SdI scarto 00421.
     """,
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
@@ -16,5 +18,7 @@
         'base',
         'l10n_it_fatturapa_out'
     ],
-    'data': [],
+    'data': [
+        'views/invoice_it_template.xml',
+    ],
 }
