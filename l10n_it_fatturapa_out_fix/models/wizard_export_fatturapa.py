@@ -12,21 +12,39 @@ _logger = logging.getLogger(__name__)
 # are Amount2DecimalType in the FatturaPA schema: exactly 2 decimals.
 FPA_RIEPILOGO_PRECISION = 2
 
+# SdI applies a rounding tolerance to control 00421
+# (Imposta == round(ImponibileImporto * aliquota / 100)). As long as the booked
+# VAT stays within this tolerance of the recomputed value, SdI accepts it, so we
+# keep Odoo's booked Imposta (which matches the registro IVA) untouched. We only
+# override it when the gap would actually trigger a scarto.
+SDI_00421_TOLERANCE = 0.01
+
 
 class WizardExportFatturapa(models.TransientModel):
     _inherit = "wizard.export.fatturapa"
 
     def getAllTaxes(self, invoice):
-        """Add <Arrotondamento> to each VAT summary line whose tax breaks the
-        SdI 00421 constraint `Imposta == round(ImponibileImporto * aliquota / 100)`.
+        """Fix VAT summary lines that would break SdI 00421
+        `Imposta == round(ImponibileImporto * aliquota / 100)`.
 
-        With price-included taxes, Odoo rounds VAT per line, so the booked tax
-        (sum of per-line rounded VAT) can differ by a cent or two from
-        `round(taxable_base * rate)`. The base OCA module copies the booked base
-        and tax verbatim and never emits <Arrotondamento>, so SdI rejects the
-        file. We mirror core `l10n_it_edi` here: pin the taxable base to
-        `Imposta * 100 / aliquota` and record the delta vs the per-line base in
-        <Arrotondamento>. Booked VAT and the document total are left untouched.
+        With price-included taxes Odoo rounds VAT per line, so the booked tax
+        (sum of per-line rounded VAT) can differ from `round(taxable_base * rate)`.
+        The base OCA module copies the booked base and tax verbatim.
+
+        Tolerance-aware behaviour: SdI accepts a small rounding gap on 00421, so
+        whenever the booked Imposta is within SDI_00421_TOLERANCE of the recomputed
+        value we leave it exactly as Odoo booked it - this keeps the e-invoice in
+        sync with the registro IVA (the common one-cent price-included case, e.g.
+        booked 20.40 vs recomputed 20.39). Only when the gap exceeds the tolerance
+        (where SdI would actually reject, e.g. a 0.02 delta) do we pin <Imposta>
+        to `round(ImponibileImporto * aliquota / 100)`.
+
+        We keep the real taxable base (which equals the sum of the lines'
+        PrezzoTotale, so 00423 stays satisfied) and never emit <Arrotondamento>
+        nor inflate the base (the earlier `Imposta * 100 / aliquota` approach),
+        because that pushed ImponibileImporto above the real line total
+        (e.g. 92.68 -> 92.73) and broke the
+        Imponibile + Imposta = ImportoTotaleDocumento reconciliation.
         """
         all_taxes = super().getAllTaxes(invoice)
         prec = FPA_RIEPILOGO_PRECISION
@@ -34,11 +52,8 @@ class WizardExportFatturapa(models.TransientModel):
             tax = self.env["account.tax"].browse(key)
             # Margin-scheme taxes (l10n_it_second_hand_tax) are collapsed to
             # AliquotaIVA 0 / Natura N5 / Imposta 0, with the whole gross folded
-            # back into ImponibileImporto. The SdI 00421 constraint
-            # (Imposta == round(Imponibile x aliquota)) does not apply to them,
-            # so the Arrotondamento correction below must not touch them -
-            # otherwise it shrinks the taxable base by the per-line VAT rounding
-            # delta (e.g. 250.00 -> 249.95 + a spurious Arrotondamento -0.05).
+            # back into ImponibileImporto. The SdI 00421 constraint does not apply
+            # to them, so the correction below must not touch them.
             # getattr keeps this safe when that module is not installed.
             if (
                 tax.exists()
@@ -54,35 +69,33 @@ class WizardExportFatturapa(models.TransientModel):
                     if float_is_zero(imposta, precision_digits=prec):
                         continue
 
-                    sign = -1.0 if base < 0 else 1.0
-                    abase = abs(base)
-                    aimposta = abs(imposta)
+                    sign = -1.0 if imposta < 0 else 1.0
+                    expected_imposta = sign * float_round(
+                        abs(base) * rate / 100.0, precision_digits=prec
+                    )
 
-                    # Already consistent? Leave it exactly as the base module produced it.
+                    # Within the SdI tolerance (includes the already-consistent
+                    # case)? Keep Odoo's booked Imposta so the XML matches the books.
+                    gap = float_round(
+                        abs(imposta - expected_imposta), precision_digits=prec
+                    )
                     if float_compare(
-                        float_round(abase * rate / 100.0, precision_digits=prec),
-                        aimposta,
-                        precision_digits=prec,
-                    ) == 0:
+                        gap, SDI_00421_TOLERANCE, precision_digits=prec
+                    ) <= 0:
                         continue
 
-                    target_base = float_round(aimposta * 100.0 / rate, precision_digits=prec)
-                    arrotondamento = float_round(target_base - abase, precision_digits=prec)
-
-                    if float_is_zero(arrotondamento, precision_digits=prec):
-                        continue
-
-                    tax_data["ImponibileImporto"] = sign * target_base
-                    tax_data["Arrotondamento"] = sign * arrotondamento
+                    tax_data["Imposta"] = expected_imposta
                     _logger.info(
-                        "FatturaPA %s: tax %s (%.2f%%) price-included rounding fixed: "
-                        "ImponibileImporto %.2f -> %.2f, Arrotondamento %.2f, Imposta %.2f",
+                        "FatturaPA %s: tax %s (%.2f%%) price-included VAT gap %.2f "
+                        "exceeds SdI tolerance %.2f: Imposta %.2f -> %.2f on "
+                        "ImponibileImporto %.2f (Arrotondamento omitted)",
                         invoice.name or invoice.id,
                         tax.name,
                         rate,
-                        abase,
-                        target_base,
-                        arrotondamento,
-                        aimposta,
+                        gap,
+                        SDI_00421_TOLERANCE,
+                        imposta,
+                        expected_imposta,
+                        base,
                     )
         return all_taxes
