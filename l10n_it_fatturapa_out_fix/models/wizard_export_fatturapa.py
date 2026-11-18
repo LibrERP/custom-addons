@@ -32,7 +32,20 @@ class WizardExportFatturapa(models.TransientModel):
         prec = FPA_RIEPILOGO_PRECISION
         for key, tax_data in all_taxes.items():
             tax = self.env["account.tax"].browse(key)
-            if tax.exists() and tax.amount_type == "percent" and tax.price_include:
+            # Margin-scheme taxes (l10n_it_second_hand_tax) are collapsed to
+            # AliquotaIVA 0 / Natura N5 / Imposta 0, with the whole gross folded
+            # back into ImponibileImporto. The SdI 00421 constraint
+            # (Imposta == round(Imponibile x aliquota)) does not apply to them,
+            # so the Arrotondamento correction below must not touch them -
+            # otherwise it shrinks the taxable base by the per-line VAT rounding
+            # delta (e.g. 250.00 -> 249.95 + a spurious Arrotondamento -0.05).
+            # getattr keeps this safe when that module is not installed.
+            if (
+                tax.exists()
+                and tax.amount_type == "percent"
+                and tax.price_include
+                and not getattr(tax, "is_margin_tax", False)
+            ):
                 rate = tax.amount
                 if rate:
                     base = tax_data.get("ImponibileImporto") or 0.0

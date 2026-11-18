@@ -3,7 +3,7 @@
 # noinspection PyStatementEffect
 {
     'name': 'ITA - Emissione e-fattura FIX',
-    'version': '16.0.0.2',
+    'version': '16.0.0.3',
     'category': 'Hidden',
     'summary': 'Fix errors in out invoice composition',
     'description': """Module solve problems with the VAT composition for countries different from Italy.
