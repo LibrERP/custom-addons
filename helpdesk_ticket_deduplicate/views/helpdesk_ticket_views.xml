@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="helpdesk_ticket_view_form_deduplicate" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.deduplicate</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="after">
+                <div class="alert alert-warning w-100 d-flex align-items-center gap-1 mb-0" role="alert"
+                     invisible="not duplicated_ticket_ids">
+                    <span>Warning: this ticket might be a duplicate of</span>
+                    <field name="duplicated_ticket_ids" widget="x2many_buttons" string="Duplicated Tickets"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="helpdesk_tickets_view_search_base_deduplicate" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.base.deduplicate</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base"/>
+        <field name="arch" type="xml">
+            <filter name="unassigned" position="after">
+                <filter string="Possible Duplicates" name="possible_duplicates"
+                        domain="[('duplicated_ticket_ids', '!=', False)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
