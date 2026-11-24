@@ -3,9 +3,9 @@
 # noinspection PyStatementEffect
 {
     'name': 'Sale Project Fix',
-    'version': '18.0.0.0',
+    'version': '18.0.0.2',
     'category': 'Sale',
-    'summary': 'Module solves the problem with setting the project on an Order without setting the project on Order Lines',
+    'summary': 'Fixes for sale_project: set the Order project on its service lines; Sales Order Item dialog keeps the typed description and reuses an empty quotation',
     'author': 'Codebeex srl',
     'website': 'https://www.codebeex.com',
     'license': 'AGPL-3',
