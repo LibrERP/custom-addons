@@ -26,4 +26,26 @@
             </filter>
         </field>
     </record>
+
+    <record id="helpdesk_stage_view_form_deduplicate" model="ir.ui.view">
+        <field name="name">helpdesk.stage.form.deduplicate</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_stage_view_form"/>
+        <field name="arch" type="xml">
+            <field name="fold" position="after">
+                <field name="is_cancel"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="helpdesk_stage_view_tree_deduplicate" model="ir.ui.view">
+        <field name="name">helpdesk.stage.list.deduplicate</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_stage_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="fold" position="after">
+                <field name="is_cancel" optional="show"/>
+            </field>
+        </field>
+    </record>
 </odoo>

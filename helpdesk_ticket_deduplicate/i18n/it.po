@@ -6,20 +6,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:00+0000\n"
+"POT-Creation-Date: 2026-11-24 16:26+0000\n"
 "PO-Revision-Date: 2026-11-24 16:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"Language: it\n"
 
 #. module: helpdesk_ticket_deduplicate
 #: model_terms:ir.ui.view,arch_db:helpdesk_ticket_deduplicate.helpdesk_ticket_view_form_deduplicate
 msgid "<span>Warning: this ticket might be a duplicate of</span>"
 msgstr "<span>Avviso: il ticket può essere un duplicato di</span>"
+
+#. module: helpdesk_ticket_deduplicate
+#: model:ir.model.fields,field_description:helpdesk_ticket_deduplicate.field_helpdesk_stage__is_cancel
+msgid "Cancelled"
+msgstr "Annullato"
 
 #. module: helpdesk_ticket_deduplicate
 #: model:ir.model.fields,field_description:helpdesk_ticket_deduplicate.field_helpdesk_ticket__duplicated_ticket_ids
@@ -28,20 +33,19 @@ msgid "Duplicated Tickets"
 msgstr "Ticket duplicati"
 
 #. module: helpdesk_ticket_deduplicate
+#: model:ir.model,name:helpdesk_ticket_deduplicate.model_helpdesk_stage
+msgid "Helpdesk Stage"
+msgstr "Fase assistenza"
+
+#. module: helpdesk_ticket_deduplicate
 #: model:ir.model,name:helpdesk_ticket_deduplicate.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
 msgstr "Ticket assistenza clienti"
 
 #. module: helpdesk_ticket_deduplicate
 #: model:ir.model.fields,help:helpdesk_ticket_deduplicate.field_helpdesk_ticket__duplicated_ticket_ids
-msgid ""
-"Other tickets that received the same email (same Message-Id). It happens "
-"when a customer writes to more than one helpdesk address at once: the mail "
-"gateway creates one ticket per address."
-msgstr ""
-"Altri ticket che hanno ricevuto la stessa e-mail (stesso Message-Id). Succede "
-"quando un cliente scrive contemporaneamente a più indirizzi dell'assistenza: "
-"il gateway di posta crea un ticket per ogni indirizzo."
+msgid "Other tickets that received the same email (same Message-Id). It happens when a customer writes to more than one helpdesk address at once: the mail gateway creates one ticket per address. Archived and cancelled tickets are ignored."
+msgstr "Altri ticket che hanno ricevuto la stessa e-mail (stesso Message-Id). Succede quando un cliente scrive contemporaneamente a più indirizzi dell'assistenza: il gateway di posta crea un ticket per ogni indirizzo. I ticket archiviati e annullati vengono ignorati."
 
 #. module: helpdesk_ticket_deduplicate
 #: model_terms:ir.ui.view,arch_db:helpdesk_ticket_deduplicate.helpdesk_tickets_view_search_base_deduplicate
@@ -53,6 +57,11 @@ msgstr "Possibili duplicati"
 #: code:addons/helpdesk_ticket_deduplicate/models/helpdesk_ticket.py:0
 msgid "Ticket"
 msgstr "Ticket"
+
+#. module: helpdesk_ticket_deduplicate
+#: model:ir.model.fields,help:helpdesk_ticket_deduplicate.field_helpdesk_stage__is_cancel
+msgid "Tickets in this stage are considered cancelled: they are not reported as duplicates, nor do they make other tickets look duplicated."
+msgstr "I ticket in questa fase sono considerati annullati: non vengono segnalati come duplicati né fanno risultare duplicati altri ticket."
 
 #. module: helpdesk_ticket_deduplicate
 #. odoo-python

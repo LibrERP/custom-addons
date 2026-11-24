@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:00+0000\n"
-"PO-Revision-Date: 2026-11-24 16:00+0000\n"
+"POT-Creation-Date: 2026-11-24 16:26+0000\n"
+"PO-Revision-Date: 2026-11-24 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,19 @@ msgid "<span>Warning: this ticket might be a duplicate of</span>"
 msgstr ""
 
 #. module: helpdesk_ticket_deduplicate
+#: model:ir.model.fields,field_description:helpdesk_ticket_deduplicate.field_helpdesk_stage__is_cancel
+msgid "Cancelled"
+msgstr ""
+
+#. module: helpdesk_ticket_deduplicate
 #: model:ir.model.fields,field_description:helpdesk_ticket_deduplicate.field_helpdesk_ticket__duplicated_ticket_ids
 #: model_terms:ir.ui.view,arch_db:helpdesk_ticket_deduplicate.helpdesk_ticket_view_form_deduplicate
 msgid "Duplicated Tickets"
+msgstr ""
+
+#. module: helpdesk_ticket_deduplicate
+#: model:ir.model,name:helpdesk_ticket_deduplicate.model_helpdesk_stage
+msgid "Helpdesk Stage"
 msgstr ""
 
 #. module: helpdesk_ticket_deduplicate
@@ -36,7 +46,8 @@ msgstr ""
 msgid ""
 "Other tickets that received the same email (same Message-Id). It happens "
 "when a customer writes to more than one helpdesk address at once: the mail "
-"gateway creates one ticket per address."
+"gateway creates one ticket per address. Archived and cancelled tickets are "
+"ignored."
 msgstr ""
 
 #. module: helpdesk_ticket_deduplicate
@@ -48,6 +59,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/helpdesk_ticket_deduplicate/models/helpdesk_ticket.py:0
 msgid "Ticket"
+msgstr ""
+
+#. module: helpdesk_ticket_deduplicate
+#: model:ir.model.fields,help:helpdesk_ticket_deduplicate.field_helpdesk_stage__is_cancel
+msgid ""
+"Tickets in this stage are considered cancelled: they are not reported as "
+"duplicates, nor do they make other tickets look duplicated."
 msgstr ""
 
 #. module: helpdesk_ticket_deduplicate
